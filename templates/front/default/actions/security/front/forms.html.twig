@@ -19,6 +19,7 @@
 {%- endblock -%}
 
 {%- block body -%}
+    <div id="content-security-front" class="template-page">
     {%- if displayHeader -%}
         {%- include 'front/'~websiteTemplate~'/blocks/title-header/default.html.twig' with {
             pageTitle: "Connectez-vous"|trans,
@@ -26,16 +27,33 @@
         } -%}
     {%- endif -%}
     {%- set frontRegistration = website.security.frontRegistration -%}
-    <div class="container mt-5 mb-5">
+    {%- set hasAdminSwitch = adminBackUser is defined and adminBackUser -%}
+    <div class="layout-zone bg-lighten">
+    <div class="container py-lg">
         <div class="row d-flex">
-            <div class="{% if frontRegistration %}col-lg-5{% else %}col-lg-6 col-xl-5 col-xxl-4{% endif %}{% if not frontRegistration %} mx-auto{% endif %}">
-                {{ render_esi(path('security_front_login', {view: 'form'})) }}
-            </div>
-            {%- if frontRegistration -%}
-                <div class="col-lg-7 mt-5 mt-lg-0">
-                    {{ render_esi(path('security_front_register', {view: 'form'})) }}
+            {%- if hasAdminSwitch -%}
+                <div class="col-lg-6 mb-4 mb-lg-0">
+                    {%- include 'front/'~websiteTemplate~'/actions/security/front/admin-switcher.html.twig' with {
+                        websiteTemplate: websiteTemplate,
+                        backUser: adminBackUser,
+                        userFronts: adminUserFronts
+                    } only -%}
                 </div>
+                <div class="col-lg-6">
+                    {{ render_esi(path('security_front_login', {view: 'form'})) }}
+                </div>
+            {%- else -%}
+                <div class="{% if frontRegistration %}col-lg-5{% else %}col-lg-6 col-xl-5 col-xxl-4{% endif %}{% if not frontRegistration %} mx-auto{% endif %}">
+                    {{ render_esi(path('security_front_login', {view: 'form'})) }}
+                </div>
+                {%- if frontRegistration -%}
+                    <div class="col-lg-7 mt-5 mt-lg-0">
+                        {{ render_esi(path('security_front_register', {view: 'form'})) }}
+                    </div>
+                {%- endif -%}
             {%- endif -%}
         </div>
+    </div>
+    </div>
     </div>
 {%- endblock -%}

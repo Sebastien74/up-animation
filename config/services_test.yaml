@@ -1,0 +1,7 @@
+services:
+    # Avoid hitting the database for translations during tests.
+    App\Service\Translation\Loader:
+        class: App\Tests\Support\NullTranslationLoader
+        arguments: []
+        tags:
+            - { name: translation.loader, alias: db, priority: 20 }

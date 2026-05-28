@@ -47,6 +47,8 @@ class NewsletterController extends FrontController
 
         $configuration = $website->configuration;
         $template = $configuration->template;
+        $displayModal = $request->query->getBoolean('displayModal');
+        $idSuffix = '-modal' === $request->query->get('idSuffix') ? '-modal' : '';
         $form = $this->createForm(FrontType::class, new Email(), ['form_data' => $campaign]);
         $form->handleRequest($request);
         $arguments = [
@@ -55,18 +57,23 @@ class NewsletterController extends FrontController
             'website' => $website,
             'campaign' => $campaign,
             'form' => $form->createView(),
+            'idSuffix' => $idSuffix,
         ];
+
+        $contentTemplate = '-modal' === $idSuffix ? 'view-modal-content.html.twig' : 'view.html.twig';
 
         if ($form->isSubmitted()) {
             $response = $manager->execute($form, $campaign, $form->getData());
             return new JsonResponse([
                 'success' => $response instanceof Email,
                 'redirection' => $response instanceof Email ? $this->generateUrl('front_newsletter_thanks', ['token' => $response->getToken()]) : false,
-                'html' => $this->renderView('front/'.$template.'/actions/newsletter/view.html.twig', $arguments),
+                'html' => $this->renderView('front/'.$template.'/actions/newsletter/'.$contentTemplate, $arguments),
             ]);
         }
 
-        return $this->render('front/'.$template.'/actions/newsletter/view.html.twig', $arguments);
+        $viewTemplate = $displayModal ? 'view-modal.html.twig' : $contentTemplate;
+
+        return $this->render('front/'.$template.'/actions/newsletter/'.$viewTemplate, $arguments);
     }
 
     /**

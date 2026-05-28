@@ -187,6 +187,14 @@ class IndexController extends FrontController
     {
         $pageRepository = $this->coreLocator->em()->getRepository(Page::class);
 
+        if (null !== $url) {
+            $url = str_replace(["\xC2\xA0", '%C2%A0', '%c2%a0'], '', $url);
+            $url = trim($url);
+            if ('' === $url) {
+                $url = null;
+            }
+        }
+
         return !$url ? $pageRepository->findIndex($website, $request->getLocale(), $preview)
             : $pageRepository->findByUrlCodeAndLocale($website, $url, $request->getLocale(), $preview);
     }

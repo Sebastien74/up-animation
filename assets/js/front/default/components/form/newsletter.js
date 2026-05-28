@@ -5,9 +5,17 @@
  */
 
 import Modal from '../../../bootstrap/dist/modal';
+import Cookies from 'js-cookie';
 import {onSubmit} from "../../../../vendor/components/recaptcha";
 
 import('../../../../../scss/front/default/components/form/_newsletter.scss');
+
+/** Module-scope state shared across lazy-load invocations (inline + modal trigger the same module) */
+let inputsReset = false;
+let subscribedModals = new WeakSet();
+let cookieDomain = window.location.host.replace('www.', '');
+let cookieSecure = location.protocol !== "http:";
+let baseCookieOptions = {path: '/', domain: cookieDomain, secure: cookieSecure};
 
 export default function () {
 
@@ -35,11 +43,51 @@ export default function () {
         });
     }
 
-    resetInputs();
+    if (!inputsReset) {
+        inputsReset = true;
+        resetInputs();
+    }
 
-    /** Events */
+    /** Delayed newsletter modals (1 min wait, session cookie on close, 1-year cookie on subscribe) */
+    let initDelayedModals = function () {
+        document.querySelectorAll('.newsletter-modal[data-newsletter-modal-delay]').forEach(function (modalEl) {
+            if (modalEl.dataset.newsletterModalBound === '1') {
+                return;
+            }
+            modalEl.dataset.newsletterModalBound = '1';
+
+            let cookieName = modalEl.dataset.newsletterModalCookie;
+            if (cookieName && Cookies.get(cookieName)) {
+                return;
+            }
+
+            let delay = parseInt(modalEl.dataset.newsletterModalDelay, 10) || 60000;
+            let modal = new Modal(modalEl, {keyboard: true});
+
+            setTimeout(function () {
+                if (!cookieName || !Cookies.get(cookieName)) {
+                    modal.show();
+                }
+            }, delay);
+
+            modalEl.addEventListener('hidden.bs.modal', function () {
+                if (!cookieName || subscribedModals.has(modalEl)) {
+                    return;
+                }
+                Cookies.set(cookieName, '1', baseCookieOptions);
+            });
+        });
+    }
+
+    initDelayedModals();
+
+    /** Events — idempotent per form to support multiple lazy-load invocations */
     let formsEvents = function () {
         document.querySelectorAll('.newsletter-form').forEach(function (form) {
+            if (form.dataset.newsletterBound === '1') {
+                return;
+            }
+            form.dataset.newsletterBound = '1';
             form.addEventListener('keydown', function (event) {
                 if (event.key === "Enter") {
                     sendRequest(event, this);
@@ -66,7 +114,9 @@ export default function () {
 
         let icon = form.querySelector('.newsletter-submit').querySelector('svg');
         let iconSpinner = form.querySelector('.spinner-border');
-        let containerId = form.closest('.newsletter-form-container').getAttribute('id');
+        let container = form.closest('.newsletter-form-container');
+        let containerId = container.getAttribute('id');
+        let modalEl = form.closest('.newsletter-modal');
 
         let beforeSend = function () {
             /** Remove errors */
@@ -92,6 +142,13 @@ export default function () {
                 }).catch(error => console.error(error.message));
                 if (response.success) {
                     resetInputs();
+                    if (modalEl) {
+                        let cookieName = modalEl.dataset.newsletterModalCookie;
+                        if (cookieName) {
+                            subscribedModals.add(modalEl);
+                            Cookies.set(cookieName, '1', Object.assign({expires: 365}, baseCookieOptions));
+                        }
+                    }
                 }
                 if (response.success && response.redirection) {
                     document.location.href = response.redirection;

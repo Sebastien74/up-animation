@@ -1,11 +1,13 @@
 {%- trans_default_domain 'front_default' -%}
 
+{%- set idSuffix = idSuffix|default('') -%}
+
 {%- if not form.isRendered() -%}
     <section class="content">
         {{ form_start(form, {attr: {
-            id: "newsletter-form-"~campaign.id,
+            id: "newsletter-form-"~campaign.id~idSuffix,
             class: campaign.recaptcha ? 'security newsletter-form' : 'newsletter-form',
-            action: path('front_newsletter_view', {filter: campaign.slug, website: website.id}),
+            action: path('front_newsletter_view', {filter: campaign.slug, website: website.id}|merge(idSuffix ? {idSuffix: idSuffix} : {})),
             novalidate: "novalidate",
             'data-modal': modalId
         }}) }}
@@ -17,7 +19,7 @@
                             <span class="newsletter-eyebrow-stroke" aria-hidden="true"></span>
                             <span class="newsletter-eyebrow-text">{{ "Newsletter"|trans }}</span>
                         </div>
-                        <label for="front_newsletter_email" class="newsletter-title required d-block fw-900 text-white text-uppercase m-0">
+                        <label for="front_newsletter_email{{ idSuffix }}" class="newsletter-title required d-block fw-900 text-white text-uppercase m-0">
                             <span class="label-name">{{ "S'inscrire à la newsletter"|trans|raw }}</span>
                         </label>
                         {%- if intro|striptags|length > 0 -%}
@@ -25,8 +27,8 @@
                         {%- endif -%}
                     </div>
                     <div class="refer-group col-12 col-lg-6 col-xl-7">
-                        <div id="newsletter-fields" class="newsletter-fields">
-                            <div class="newsletter-input flex-grow-1">{{ form_widget(form.email) }}</div>
+                        <div id="newsletter-fields{{ idSuffix }}" class="newsletter-fields">
+                            <div class="newsletter-input flex-grow-1">{{ form_widget(form.email, {id: 'front_newsletter_email'~idSuffix}) }}</div>
                             <div class="btn-container">
                                 <button aria-label="{{"Je m'inscris"|trans|raw }}" class="newsletter-submit newsletter-track btn btn-secondary w-100 fw-900 text-uppercase">
                                     <span class="newsletter-submit-label">{{ "Je m'inscris"|trans|raw }}</span>

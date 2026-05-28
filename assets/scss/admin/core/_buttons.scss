@@ -448,6 +448,25 @@
     }
 }
 
+img[src*="/medias/icons/flags/"],
+img[data-src*="/medias/icons/flags/"] {
+    border-radius: $radius-xs;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, .12);
+}
+
+.active-urls .btn-icon {
+
+    .locale-flag {
+        width: 20px;
+        height: auto;
+    }
+
+    &.muted .locale-flag {
+        filter: grayscale(1);
+        opacity: .45;
+    }
+}
+
 #delete-pack-btn {
     position: fixed;
     right: 1.5rem;

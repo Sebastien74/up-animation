@@ -66,6 +66,14 @@
                 </div>
             </div>
         </div>
-        {{ render(controller('App\\Controller\\refonte-admin\\Development\\ToolController::fileRename' )) }}
+        <div class="col-md-3 reveal">
+            <div class="card mb-3">
+                <div class="card-body pb-3">
+                    <h4 class="main-subtitle"><i class="icm-envelope"></i>{{ "Tests"|trans|raw }}</h4>
+                    <a href="{{ path('admin_mail_tests') }}" class="btn-app center no-icon w-100">{{ "Suite de tests mail"|trans|raw }}</a>
+                </div>
+            </div>
+        </div>
+        {{ render(controller('App\\Controller\\Admin\\Development\\ToolController::fileRename' )) }}
     </div>
 {%- endblock -%}

@@ -70,7 +70,9 @@ document.body.addEventListener('click', function (e) {
 
                     dropifyJS();
 
-                    modalEl.querySelectorAll('[data-toggle="tooltip"]').forEach(el => new Tooltip(el));
+                    import('../plugins/tooltips').then(({default: tooltipsInit}) => {
+                        tooltipsInit(modalEl);
+                    }).catch(error => console.error(error.message));
                     modalEl.addEventListener('hidden.bs.modal', function () {
                         modalEl.remove();
                     });

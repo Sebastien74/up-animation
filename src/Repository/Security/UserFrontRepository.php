@@ -80,6 +80,23 @@ class UserFrontRepository extends ServiceEntityRepository
     }
 
     /**
+     * Find active UserFront of a website for the front admin switcher.
+     *
+     * @return array<UserFront>
+     */
+    public function findForFrontSwitcher(Website $website): array
+    {
+        return $this->createQueryBuilder('u')
+            ->andWhere('u.website = :website')
+            ->andWhere('u.active = :active')
+            ->setParameter('website', $website)
+            ->setParameter('active', true)
+            ->orderBy('u.login', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
      * Find User[] by role.
      *
      * @return array<UserFront>

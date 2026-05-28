@@ -26,7 +26,7 @@
                        data-bs-toggle="tooltip"
                        title="{{ statusLabel }}">
                         {%- if multiLocales -%}
-                            <span class="language text-uppercase label">{{ url.locale }}</span>
+                            <img src="{{ asset('/medias/icons/flags/'~url.locale~'.svg') }}" class="label locale-flag" width="20" height="14" alt="{{ languageName }}">
                         {%- else -%}
                             <i class="label icm-{% if 'offline' == status %}snooze{% else %}wifi{% endif %}"></i>
                         {%- endif -%}
@@ -38,7 +38,11 @@
             {%- if not exist -%}
                 <span class="btn-icon small muted cursor-not-allowed"
                       data-bs-toggle="tooltip" title="{{ languageName(configLocale, app.user.locale)|capitalize~" : "~"URL non générée"|trans|striptags }}">
-                    <i class="label icm-ban"></i>
+                    {%- if multiLocales -%}
+                        <img src="{{ asset('/medias/icons/flags/'~configLocale~'.svg') }}" class="label locale-flag" width="20" height="14" alt="{{ languageName(configLocale, app.user.locale) }}">
+                    {%- else -%}
+                        <i class="label icm-ban"></i>
+                    {%- endif -%}
                 </span>
             {%- endif -%}
         {%- endfor -%}

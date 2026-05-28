@@ -23,12 +23,32 @@ export default function () {
         return;
     }
 
+    const hideTooltips = function () {
+        if (typeof bootstrap === 'undefined') {
+            return;
+        }
+        document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(t => {
+            const instance = bootstrap.Tooltip.getInstance(t);
+            if (instance) {
+                instance.hide();
+            }
+        });
+    };
+
     jQuery(container).nestable({
         maxDepth: 1,
         expandBtnHTML: '',
         collapseBtnHTML: '',
         expandContentBtnHTML: '',
         collapseContentBtnHTML: '',
+        onDragStart: function () {
+            document.body.classList.add('sorting-active');
+            hideTooltips();
+        },
+        beforeDragStop: function () {
+            document.body.classList.remove('sorting-active');
+            hideTooltips();
+        },
         callback: function () {
             persistOrder();
         }

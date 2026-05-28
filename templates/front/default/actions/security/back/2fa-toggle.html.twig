@@ -1,23 +1,24 @@
 {%- trans_default_domain 'front_default' -%}
 
-<section id="user-2fa-toggle" class="mt-4 mb-4">
-    <h3>{{ "Sécurité du compte"|trans|raw }}</h3>
-    <p class="text-muted mb-3">
+<div id="user-2fa-toggle" class="security-2fa bg-secondary text-white">
+    <p class="security-2fa-desc">
         {{ "Activez la vérification en deux étapes pour recevoir un code par e-mail à chaque connexion."|trans|raw }}
     </p>
 
-    <form method="post" action="{{ path('security_front_2fa_toggle') }}" class="d-flex align-items-center">
+    <form method="post" action="{{ path('security_front_2fa_toggle') }}" class="security-2fa-form">
         <input type="hidden" name="_token" value="{{ csrf_token('front_2fa_toggle') }}">
+        <span class="security-2fa-state bg-white text-secondary {{ user.emailAuthEnabled ? 'is-on' : 'is-off' }}">
+            <span class="security-2fa-dot"></span>
+            {{ (user.emailAuthEnabled ? "Activée"|trans : "Désactivée"|trans)|raw }}
+        </span>
         {%- if user.emailAuthEnabled -%}
-            <span class="badge bg-success me-3">{{ "Activée"|trans|raw }}</span>
-            <button type="submit" class="btn btn-outline-secondary btn-sm">
+            <button type="submit" class="btn btn-light btn-sm security-2fa-btn">
                 {{ "Désactiver la double authentification"|trans|raw }}
             </button>
         {%- else -%}
-            <span class="badge bg-secondary me-3">{{ "Désactivée"|trans|raw }}</span>
-            <button type="submit" class="btn btn-primary btn-sm">
+            <button type="submit" class="btn btn-primary btn-sm security-2fa-btn">
                 {{ "Activer la double authentification"|trans|raw }}
             </button>
         {%- endif -%}
     </form>
-</section>
+</div>

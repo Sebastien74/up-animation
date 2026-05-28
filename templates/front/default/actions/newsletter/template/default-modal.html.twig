@@ -1,0 +1,58 @@
+{%- trans_default_domain 'front_default' -%}
+
+{%- set idSuffix = idSuffix|default('-modal') -%}
+
+{%- if not form.isRendered() -%}
+    <section class="content">
+        {{ form_start(form, {
+            attr: {
+                id: "newsletter-form-"~campaign.id~idSuffix,
+                class: campaign.recaptcha ? 'security newsletter-form' : 'newsletter-form',
+                action: path('front_newsletter_view', {filter: campaign.slug, website: website.id, idSuffix: idSuffix}),
+                novalidate: "novalidate",
+                'data-modal': "#"~modalId
+            }}) }}
+            {%- include 'front/'~websiteTemplate~'/include/recaptcha-fields.html.twig' with {entity: campaign} -%}
+            <div class="text-center">
+                <div class="newsletter-eyebrow d-inline-flex align-items-center justify-content-center gap-2 text-uppercase fw-900 text-white mb-3">
+                    <span class="newsletter-eyebrow-stroke" aria-hidden="true"></span>
+                    <span class="newsletter-eyebrow-text">{{ "Newsletter"|trans }}</span>
+                    <span class="newsletter-eyebrow-stroke" aria-hidden="true"></span>
+                </div>
+                <label for="front_newsletter_email{{ idSuffix }}" class="newsletter-title required d-block fw-900 text-white text-uppercase m-0 mb-3">
+                    <span class="label-name">{{ "S'inscrire à la newsletter"|trans|raw }}</span>
+                </label>
+                {%- if intro|striptags|length > 0 -%}
+                    <p class="newsletter-intro text-white mb-4">{{ intro|unescape|raw|nl2br }}</p>
+                {%- endif -%}
+                <div class="refer-group">
+                    <div id="newsletter-fields{{ idSuffix }}" class="newsletter-fields newsletter-fields-stack d-grid gap-3">
+                        <div class="newsletter-input">{{ form_widget(form.email, {id: 'front_newsletter_email'~idSuffix}) }}</div>
+                        <div class="btn-container">
+                            <button aria-label="{{"Je m'inscris"|trans|raw }}" class="newsletter-submit newsletter-track btn btn-secondary w-100 fw-900 text-uppercase">
+                                <span class="newsletter-submit-label">{{ "Je m'inscris"|trans|raw }}</span>
+                                <span class="newsletter-submit-icon d-inline-flex align-items-center justify-content-center" aria-hidden="true">
+                                    {{ 'fas sign-in-alt'|icon(17, 17) }}
+                                    <span class="spinner-border d-none" role="status"></span>
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                    {{ form_errors(form.email) }}
+                    {%- for type, flashes in app.session.flashbag.all -%}
+                        {%- for flash in flashes -%}
+                            <span class="{% if 'error' in type %}invalid{% else %}valid{% endif %}-feedback d-block mt-2">
+                                <span class="mb-0 d-block">
+                                    <span class="form- {% if 'error' in type %}error{% else %}success{% endif %}-message">{{ flash|raw }}</span>
+                                </span>
+                            </span>
+                        {%- endfor -%}
+                    {%- endfor -%}
+                </div>
+            </div>
+            {%- if campaign.recaptcha -%}
+                <div class="form-data" data-id="{{ campaign.securityKey }}" data-website="{{ websiteId() }}"></div>
+            {%- endif -%}
+        {{ form_end(form) }}
+    </section>
+{%- endif -%}

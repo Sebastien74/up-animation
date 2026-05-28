@@ -16,14 +16,18 @@
 {%- endblock -%}
 
 {%- block body -%}
-    {%- include 'front/'~websiteTemplate~'/blocks/title-header/default.html.twig' with {
-        pageTitle: "Inscrivez-vous"|trans,
-        thumbConfiguration: thumbConfigurationHeader
-    } -%}
-    <div class="container mt-5 mb-5">
-        <div class="row d-flex">
-            <div class="col-lg-6 mx-auto">
-                {%- include 'front/'~websiteTemplate~'/actions/security/register-form.html.twig' -%}
+    <div id="content-security-front" class="template-page">
+        {%- include 'front/'~websiteTemplate~'/blocks/title-header/default.html.twig' with {
+            pageTitle: "Inscrivez-vous"|trans,
+            thumbConfiguration: thumbConfigurationHeader
+        } -%}
+        <div class="layout-zone bg-lighten">
+            <div class="container py-lg">
+                <div class="row d-flex">
+                    <div class="col-lg-6 mx-auto">
+                        {%- include 'front/'~websiteTemplate~'/actions/security/register-form.html.twig' -%}
+                    </div>
+                </div>
             </div>
         </div>
     </div>

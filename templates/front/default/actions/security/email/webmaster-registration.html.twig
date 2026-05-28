@@ -1,52 +1,85 @@
-{%- extends 'core/email/base.html.twig' -%}
+{%- extends 'core/email/base-security.html.twig' -%}
 
 {%- trans_default_domain 'email' -%}
 
-{%- block title -%}
+{%- block metaTitle -%}
     {%- if user is defined -%}
-        {{ "Nouvel inscrit"|trans~" "~user.username }}
+        {{ ("Nouvel inscrit")|trans }}{% if user.username is defined %} - {{ user.username }}{% endif %}
+    {%- else -%}
+        {{ ("Nouvel inscrit")|trans }}
     {%- endif -%}
 {%- endblock -%}
 
+{%- block preheader -%}{{ ("Un nouveau compte vient d etre cree.")|trans|raw }}{%- endblock -%}
+
+{%- block headerRight -%}{{ ("Notification interne")|trans|raw }}{%- endblock -%}
+
+{%- block kicker -%}{{ ("Compte / Inscription")|trans|raw }}{%- endblock -%}
+
+{%- block title -%}{{ ("Nouvel inscrit.")|trans|raw }}{%- endblock -%}
+
 {%- block body -%}
-    <tr>
-        <td align="center" bgcolor="#ffffff" style="padding: 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;">
-            {%- set profile = user.profile is defined ? user.profile : null -%}
-            {%- if profile.gender is defined and profile.gender -%}
-                <p style="font-size: 14px;"><strong>{{ "Civilité :"|trans|raw }}</strong> {%- if profile.gender == 'mr' -%}{{ "Monsieur"|trans|raw }}{%- elseif profile.gender == 'ms' -%}{{ "Madame"|trans|raw }}{%- endif -%}</p>
-            {%- endif -%}
-            {%- if user.lastName is defined and user.lastName -%}
-                <p style="font-size: 14px;"><strong>{{ "Nom :"|trans|raw }}</strong> {{ user.lastName }}</p>
-            {%- endif -%}
-            {%- if user.firstName is defined and user.firstName -%}
-                <p style="font-size: 14px;"><strong>{{ "Prénom :"|trans|raw }}</strong> {{ user.firstName }}</p>
-            {%- endif -%}
-            {%- if user.email is defined and user.email -%}
-                <p style="font-size: 14px;"><strong>{{ "Email"|trans|raw }} :</strong> <a href="mailto: {{ user.email }}">{{ user.email }}</a></p>
-            {%- endif -%}
-            {%- set phone = profile.phones[0] is defined ? profile.phones[0] : null -%}
-            {%- if phone.number is defined and phone.number -%}
-                <p style="font-size: 14px;"><strong>{{ "Téléphone :"|trans|raw }}</strong> {{ phone.number }}</p>
-            {%- endif -%}
-            {%- set address = profile.addresses[0] is defined ? profile.addresses[0] : null -%}
-            {%- if address.address is defined and address.address -%}
-                <p style="font-size: 14px;"><strong>{{ "Adresse :"|trans|raw }}</strong> {{ address.address }}</p>
-            {%- endif -%}
-            {%- if address.zipCode is defined and address.zipCode -%}
-                <p style="font-size: 14px;"><strong>{{ "Code postal :"|trans|raw }}</strong> {{ address.zipCode }}</p>
-            {%- endif -%}
-            {%- if address.city is defined and address.city -%}
-                <p style="font-size: 14px;"><strong>{{ "Ville :"|trans|raw }}</strong> {{ address.city }}</p>
-            {%- endif -%}
-            {%- if address.department is defined and address.department -%}
-                <p style="font-size: 14px;"><strong>{{ "Département :"|trans|raw }}</strong> {{ address.department }}</p>
-            {%- endif -%}
-            {%- if address.region is defined and address.region -%}
-                <p style="font-size: 14px;"><strong>{{ "Région :"|trans|raw }}</strong> {{ address.region }}</p>
-            {%- endif -%}
-            {%- if address.country is defined and address.country -%}
-                <p style="font-size: 14px;"><strong>{{ "Pays :"|trans|raw }}</strong> {{ address.country|countryName(app.request.locale) }}</p>
-            {%- endif -%}
-        </td>
-    </tr>
+    {%- set profile = user.profile is defined ? user.profile : null -%}
+    <p style="margin:0 0 18px 0;">{{ ("Un nouveau compte vient d etre cree sur votre site. Voici les informations transmises.")|trans|raw }}</p>
+    <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="border-top:1px solid #E4DCCC;">
+        {%- if profile.gender is defined and profile.gender -%}
+            <tr>
+                <td style="padding:14px 0; border-bottom:1px solid #E4DCCC;">
+                    <div style="font-family:Consolas, 'Lucida Console', Monaco, monospace; font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:#7D7B8C; margin-bottom:6px;">{{ ("Civilite")|trans|raw }}</div>
+                    <div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif; font-size:15px; font-weight:500; color:#22254E;">{% if profile.gender == 'mr' %}{{ ("Monsieur")|trans|raw }}{% elseif profile.gender == 'ms' %}{{ ("Madame")|trans|raw }}{% endif %}</div>
+                </td>
+            </tr>
+        {%- endif -%}
+        {%- if user.lastName is defined and user.lastName -%}
+            <tr>
+                <td style="padding:14px 0; border-bottom:1px solid #E4DCCC;">
+                    <div style="font-family:Consolas, 'Lucida Console', Monaco, monospace; font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:#7D7B8C; margin-bottom:6px;">{{ ("Nom")|trans|raw }}</div>
+                    <div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif; font-size:15px; font-weight:500; color:#22254E;">{{ user.lastName }}</div>
+                </td>
+            </tr>
+        {%- endif -%}
+        {%- if user.firstName is defined and user.firstName -%}
+            <tr>
+                <td style="padding:14px 0; border-bottom:1px solid #E4DCCC;">
+                    <div style="font-family:Consolas, 'Lucida Console', Monaco, monospace; font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:#7D7B8C; margin-bottom:6px;">{{ ("Prenom")|trans|raw }}</div>
+                    <div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif; font-size:15px; font-weight:500; color:#22254E;">{{ user.firstName }}</div>
+                </td>
+            </tr>
+        {%- endif -%}
+        {%- if user.email is defined and user.email -%}
+            <tr>
+                <td style="padding:14px 0; border-bottom:1px solid #E4DCCC;">
+                    <div style="font-family:Consolas, 'Lucida Console', Monaco, monospace; font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:#7D7B8C; margin-bottom:6px;">{{ ("Email")|trans|raw }}</div>
+                    <div style="font-family:Consolas, 'Lucida Console', Monaco, monospace; font-size:15px; font-weight:500; color:#22254E; word-break:break-all;"><a href="mailto:{{ user.email }}" style="color:#22254E; text-decoration:none;">{{ user.email }}</a></div>
+                </td>
+            </tr>
+        {%- endif -%}
+        {%- set phone = profile.phones[0] is defined ? profile.phones[0] : null -%}
+        {%- if phone.number is defined and phone.number -%}
+            <tr>
+                <td style="padding:14px 0; border-bottom:1px solid #E4DCCC;">
+                    <div style="font-family:Consolas, 'Lucida Console', Monaco, monospace; font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:#7D7B8C; margin-bottom:6px;">{{ ("Telephone")|trans|raw }}</div>
+                    <div style="font-family:Consolas, 'Lucida Console', Monaco, monospace; font-size:15px; font-weight:500; color:#22254E;">{{ phone.number }}</div>
+                </td>
+            </tr>
+        {%- endif -%}
+        {%- set address = profile.addresses[0] is defined ? profile.addresses[0] : null -%}
+        {%- if address.address is defined and address.address -%}
+            <tr>
+                <td style="padding:14px 0; border-bottom:1px solid #E4DCCC;">
+                    <div style="font-family:Consolas, 'Lucida Console', Monaco, monospace; font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:#7D7B8C; margin-bottom:6px;">{{ ("Adresse")|trans|raw }}</div>
+                    <div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif; font-size:15px; font-weight:500; color:#22254E; line-height:1.5;">
+                        {{ address.address }}
+                        {%- if address.zipCode is defined and address.zipCode %}<br>{{ address.zipCode }}{% endif -%}
+                        {%- if address.city is defined and address.city %} {{ address.city }}{% endif -%}
+                        {%- if address.country is defined and address.country %}<br>{{ address.country|countryName(app.request.locale) }}{% endif -%}
+                    </div>
+                </td>
+            </tr>
+        {%- endif -%}
+    </table>
+{%- endblock -%}
+
+{%- block info -%}
+    {{ ("Aucune action urgente n est requise. Cette notification confirme la creation du compte.")|trans|raw }}
 {%- endblock -%}

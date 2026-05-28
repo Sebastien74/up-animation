@@ -161,3 +161,49 @@
         border-radius: 12px;
     }
 }
+
+/* Drag clone — Nestable3 appends `<ol class="dd-list dd-dragel">` to
+   document.body during drag, with the dragged `<li class="dd-item">`
+   inside. Outside #medias-sortable-container so we style it globally
+   for the media-item shape. */
+.dd-dragel {
+
+    position: absolute;
+    pointer-events: none;
+    z-index: 9000;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    > .dd-item {
+
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        background: $bg-gradient-primary;
+        border: 1px solid $crumb-border-hover;
+        border-radius: 12px;
+        box-shadow: 0 14px 32px rgba(0, 0, 0, .35);
+        transform: rotate(.4deg);
+        overflow: hidden;
+
+        > .row {
+
+            margin: 0;
+
+            .title-block {
+                line-height: 50px;
+            }
+
+            .dd-handle {
+                cursor: grabbing;
+                color: $primary;
+
+                i, svg {
+                    color: inherit;
+                    fill: currentColor;
+                }
+            }
+        }
+    }
+}

@@ -9,6 +9,7 @@ use App\Entity\Security\Profile;
 use App\Entity\Security\User;
 use App\Entity\Security\UserFront;
 use App\Model\Core\WebsiteModel;
+use App\Security\BackUserSessionDetector;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Component\Filesystem\Filesystem;
@@ -31,9 +32,18 @@ class SecurityRuntime implements RuntimeExtensionInterface
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
         private readonly TokenStorageInterface $tokenStorage,
+        private readonly BackUserSessionDetector $backUserSessionDetector,
         private readonly string $projectDir,
     ) {
         $this->user = !empty($this->tokenStorage->getToken()) ? $this->tokenStorage->getToken()->getUser() : null;
+    }
+
+    /**
+     * Get back-office user authenticated in session, if eligible to front switch.
+     */
+    public function adminBackUser(): ?User
+    {
+        return $this->backUserSessionDetector->getEligibleBackUser();
     }
 
     /**

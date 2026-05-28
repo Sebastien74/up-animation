@@ -519,5 +519,12 @@ $form-file-button-hover-color: $secondary;
 -----------------------------------*/
 
 $alert-font-size: 14px;
+$alert-font-weight: $font-weight-light;
+$alert-line-height: 1.3;
+$alert-padding-x: 1.25rem;
+$alert-padding-y: 1rem;
+$alert-margin-bottom: 1rem;
 $alert-border-radius: .75rem;
-$alert-border-width: 1px;
+$alert-border-width: 0;
+$alert-link-font-weight: 600;
+$alert-dismissible-padding-r: 3rem;

@@ -9,7 +9,7 @@
 {%- block metaRobots -%}{%- endblock -%}
 
 {%- block stylesheets -%}
-    {{ encore_entry_link_tags('front-'~websiteTemplate~'-'~templateName, null, webpack) }}
+    {{ encore_entry_link_tags('front-'~websiteTemplate~'-'~templateName~'-'~frontTheme, null, webpack) }}
     {{ parent() }}
 {%- endblock -%}
 
@@ -20,40 +20,67 @@
 
 {%- block body -%}
 
-    {%- include 'front/'~websiteTemplate~'/blocks/title-header/default.html.twig' with {
-        forceBreadcrumb: true,
-        website: website,
-        websiteTemplate: websiteTemplate,
-        logos: logos,
-        breadcrumbOptions: {pages: breadcrumbs is defined ? breadcrumbs : []},
-        pageTitle: pageTitle,
-        subTitle: subTitle is defined ? subTitle : false,
-        thumbConfiguration: thumbConfigurationHeader
-    } only -%}
+    <div id="content-{{ templateName }}" class="template-page">
 
-    <div class="container-fluid">
-        <div class="btns-wrap row py-3">
-            <div class="col-lg-6">
-                {%- if 'security_front_dashboard' != masterRequest().get('_route') -%}
-                    {%- set backLink = backLink is defined ? backLink : path('security_front_dashboard') -%}
-                    <a href="{{ backLink }}" class="btn btn-outline-primary d-inline-flex align-center px-3"><i class="icon-chevron-left me-2"></i>{{ "Retour"|trans|raw }}</a>
+        {%- include 'front/'~websiteTemplate~'/blocks/title-header/default.html.twig' with {
+            forceBreadcrumb: true,
+            website: website,
+            websiteTemplate: websiteTemplate,
+            logos: logos,
+            breadcrumbOptions: {pages: breadcrumbs is defined ? breadcrumbs : []},
+            pageTitle: pageTitle,
+            subTitle: subTitle is defined ? subTitle : false,
+            disableImage: true,
+            thumbConfiguration: thumbConfigurationHeader
+        } only -%}
+
+        <div class="container">
+            <div class="btns-wrap d-flex justify-content-lg-end py-3">
+                {%- set siteLabel = "Accéder au site"|trans|striptags -%}
+                <a href="{{ path('front_index') }}"
+                   class="btn btn-circle btn-success"
+                   aria-label="{{ siteLabel }}"
+                   data-bs-toggle="tooltip"
+                   title="{{ siteLabel }}">
+                    <i class="icon-desktop-alt" aria-hidden="true"></i>
+                </a>
+                {%- if 'security_front_profile' == masterRequest().attributes.get('_route') -%}
+                    {%- set editLabel = "Éditer mon profil"|trans|striptags -%}
+                    <a href="{{ path('security_front_profile_edit') }}"
+                       class="btn btn-circle btn-success"
+                       aria-label="{{ editLabel }}"
+                       data-bs-toggle="tooltip"
+                       title="{{ editLabel }}">
+                        <i class="icon-user-edit" aria-hidden="true"></i>
+                    </a>
                 {%- endif -%}
-            </div>
-            <div class="col-lg-6 d-flex justify-content-end">
-                <a href="{{ path('front_index') }}" class="btn btn-success d-inline-flex align-center me-3 px-3"><i class="icon-desktop-alt me-2"></i>{{ "Accéder au site"|trans|raw }}</a>
-                {%- if 'security_front_profile' == masterRequest().get('_route') -%}
-                    <a href="{{ path('security_front_profile_edit') }}" class="btn btn-success d-inline-flex align-center me-3 px-3"><i class="icon-user-edit me-2"></i>{{ "Éditer mon profil"|trans|raw }}</a>
+                {%- if 'security_front_profile' != masterRequest().attributes.get('_route') -%}
+                    {%- set viewLabel = "Voir mon profil"|trans|striptags -%}
+                    <a href="{{ path('security_front_profile') }}"
+                       class="btn btn-circle btn-primary"
+                       aria-label="{{ viewLabel }}"
+                       data-bs-toggle="tooltip"
+                       title="{{ viewLabel }}">
+                        <i class="icon-user" aria-hidden="true"></i>
+                    </a>
                 {%- endif -%}
-                {%- if 'security_front_profile' != masterRequest().get('_route') -%}
-                    <a href="{{ path('security_front_profile') }}" class="btn btn-primary d-inline-flex align-center me-3"><i class="icon-user me-2"></i>{{ "Voir mon profil"|trans|raw }}</a>
-                {%- endif -%}
-                <a href="{{ path('app_logout') }}" class="btn btn-primary d-inline-flex align-center"><i class="icon-power-off me-2"></i>{{ "Déconnexion"|trans|raw }}</a>
+                {%- set logoutLabel = "Déconnexion"|trans|striptags -%}
+                <a href="{{ path('app_logout') }}"
+                   class="btn btn-circle btn-primary"
+                   aria-label="{{ logoutLabel }}"
+                   data-bs-toggle="tooltip"
+                   title="{{ logoutLabel }}">
+                    <i class="icon-power-off" aria-hidden="true"></i>
+                </a>
             </div>
         </div>
+
+        {%- include "front/"~websiteTemplate~"/include/flashbag.html.twig" -%}
+
+        <div class="layout-zone bg-lighten">
+            {%- block content -%}{%- endblock -%}
+        </div>
+
     </div>
-
-    {%- include "front/"~websiteTemplate~"/include/flashbag.html.twig" -%}
-
-    {%- block content -%}{%- endblock -%}
 
 {%- endblock -%}

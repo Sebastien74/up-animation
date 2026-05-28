@@ -1,0 +1,19 @@
+{%- trans_default_domain 'front_default' -%}
+
+<div id="newsletter-modal-{{ campaign.id }}"
+     class="modal fade newsletter-modal"
+     tabindex="-1"
+     role="dialog"
+     aria-labelledby="newsletter-modal-{{ campaign.id }}-label"
+     aria-hidden="true"
+     data-newsletter-modal-delay="60000"
+     data-newsletter-modal-cookie="newsletter-modal-{{ campaign.id }}-{{ app.request.locale }}">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content border-0 overflow-hidden">
+            <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-3 z-1" data-bs-dismiss="modal" aria-label="{{ "Fermer"|trans|raw }}"></button>
+            <div class="modal-body p-0">
+                {%- include 'front/'~websiteTemplate~'/actions/newsletter/view-modal-content.html.twig' -%}
+            </div>
+        </div>
+    </div>
+</div>

@@ -150,7 +150,7 @@ class IntlRuntime implements RuntimeExtensionInterface
     /**
      * Get language name by locale.
      */
-    public function languageName(string $countryCode, ?string $locale = null): ?string
+    public function languageName(?string $countryCode, ?string $locale = null): ?string
     {
         if (!$countryCode) {
             return null;

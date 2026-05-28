@@ -105,14 +105,9 @@ export default function () {
                             }
                         }
 
-                        const tooltips = document.querySelectorAll('[data-bs-toggle=tooltip]');
-                        if (tooltips.length > 0) {
-                            import('../bootstrap/dist/tooltip').then(({default: Tooltip}) => {
-                                tooltips.forEach(t => {
-                                    new Tooltip(t, {trigger: "hover"});
-                                });
-                            }).catch(error => console.error(error.message));
-                        }
+                        import('../plugins/tooltips').then(({default: tooltipsInit}) => {
+                            tooltipsInit();
+                        }).catch(error => console.error(error.message));
 
                         if (mainLoader) mainLoader.classList.add('d-none');
 

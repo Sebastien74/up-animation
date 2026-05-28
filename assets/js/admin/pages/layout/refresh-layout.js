@@ -1,5 +1,4 @@
 import layoutActivation from './vendor';
-import Tooltip from '../../bootstrap/dist/tooltip';
 
 /**
  * Refresh layout
@@ -64,9 +63,9 @@ export default function (Routing, form, modal, event) {
 
             layoutActivation(Routing);
 
-            document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => {
-                new Tooltip(el, {trigger: "hover"});
-            });
+            import('../../plugins/tooltips').then(({default: tooltipsInit}) => {
+                tooltipsInit();
+            }).catch(error => console.error(error.message));
 
             if (loader) {
                 loader.classList.add('d-none');

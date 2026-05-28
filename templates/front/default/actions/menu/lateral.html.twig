@@ -217,14 +217,6 @@
                     </div>
                 </div>
                 <div class="side d-flex align-items-center justify-content-end ms-auto ps-lg-4 gap-2">
-                    {%- if haveLogin -%}
-                        {%- include 'front/'~websiteTemplate~'/actions/menu/login-nav.html.twig' with {
-                            website: website,
-                            expand: expand,
-                            haveLogin: haveLogin,
-                            microDataActive: microDataActive,
-                        } only -%}
-                    {%- endif -%}
                     {%- if networks is not empty -%}
                         <nav class="socials-list d-inline-flex align-items-center justify-content-center me-md-3 gap-3 gap-md-2"
                              aria-label="{{"Navigation des liens sociaux"|trans|striptags }}">
@@ -241,6 +233,14 @@
                                 {%- endif -%}
                             {%- endfor -%}
                         </nav>
+                    {%- endif -%}
+                    {%- if haveLogin -%}
+                        {%- include 'front/'~websiteTemplate~'/actions/menu/login-nav.html.twig' with {
+                            website: website,
+                            expand: expand,
+                            haveLogin: haveLogin,
+                            microDataActive: microDataActive,
+                        } only -%}
                     {%- endif -%}
                     {%- if contactPageUrl -%}
                         {%- include 'front/'~websiteTemplate~'/blocks/link/default.html.twig' with {

@@ -19,21 +19,15 @@
 {%- set class = class is defined ? class : null -%}
 
 {%- if 'alert' == display -%}
-    <div class="alert alert-{{ bgColor }} position-relative d-flex d-flex {% if class %} {{ class }}{% endif %}">
-        <div class="icon d-flex align-items-center justify-content-center position-relative bg-{{ bgColor }}"><i class="icon-{{ icon }} text-{{ iconColor }}"></i></div>
-        <div class="message w-100 d-flex align-items-center px-3 py-3 gap-3 text-start text-{{ iconColor }}">
-            <div class="inner">
-                {%- if 'small' == size -%}
-                <small class="d-inline-block text-{{ iconColor }}">
-                    {%- endif -%}
-                    {{ message|raw }}
-                    {%- if help -%}
-                        <br>{{ help|raw }}
-                    {%- endif -%}
-                    {%- if 'small' == size -%}
-                </small>
-                {%- endif -%}
-            </div>
+    <div class="alert alert-{{ bgColor }} d-flex align-items-center gap-3 shadow-sm{% if class %} {{ class }}{% endif %}" role="alert">
+        <span class="alert-icon d-inline-flex align-items-center justify-content-center rounded-circle bg-{{ bgColor }} text-white flex-shrink-0">
+            <i class="icon-{{ icon }}"></i>
+        </span>
+        <div class="flex-grow-1 text-start">
+            {%- if 'small' == size -%}<small class="d-inline-block">{%- endif -%}
+            {{ message|raw }}
+            {%- if help -%}<br>{{ help|raw }}{%- endif -%}
+            {%- if 'small' == size -%}</small>{%- endif -%}
         </div>
     </div>
 {%- elseif 'toast' == display -%}

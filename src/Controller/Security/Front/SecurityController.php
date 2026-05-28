@@ -16,6 +16,7 @@ use App\Form\Type\Security\Front\RegistrationType;
 use App\Model\Core\WebsiteModel;
 use App\Repository\Core\WebsiteRepository;
 use App\Repository\Security\UserFrontRepository;
+use App\Security\BackUserSessionDetector;
 use App\Security\BaseAuthenticator;
 use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\NonUniqueResultException;
@@ -50,8 +51,12 @@ class SecurityController extends FrontController
         'es' => '/espacio-personal/identificacion/{view}',
         'it' => '/spazio-personale/identificazione/{view}',
     ], name: 'security_front_forms', defaults: ['view' => null], methods: 'GET|POST', schemes: '%protocol%')]
-    public function forms(Request $request, ?string $view = null): RedirectResponse|Response
-    {
+    public function forms(
+        Request $request,
+        BackUserSessionDetector $backDetector,
+        UserFrontRepository $userFrontRepository,
+        ?string $view = null,
+    ): RedirectResponse|Response {
         if (self::SEPARATE_FORMS) {
             return $this->redirectToRoute('security_front_login');
         }
@@ -66,10 +71,17 @@ class SecurityController extends FrontController
             return $this->redirect($website->securityDashboardUrl);
         }
 
+        $adminBackUser = $backDetector->getEligibleBackUser();
+        $adminUserFronts = null !== $adminBackUser && $website->entity
+            ? $userFrontRepository->findForFrontSwitcher($website->entity)
+            : [];
+
         return $this->render('front/'.$websiteTemplate.'/actions/security/front/forms.html.twig', array_merge([
             'view' => $view,
             'templateName' => 'security-front',
             'security' => $security,
+            'adminBackUser' => $adminBackUser,
+            'adminUserFronts' => $adminUserFronts,
         ], $this->defaultArgs($website)));
     }
 

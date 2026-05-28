@@ -14,7 +14,7 @@ use Symfony\Component\String\Slugger\AsciiSlugger;
 class Urlizer
 {
     /**
-     * To slugify a string
+     * To slugify a string.
      */
     public static function urlize(?string $string = null, ?string $separator = '-'): ?string
     {

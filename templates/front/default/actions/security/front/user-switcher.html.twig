@@ -16,10 +16,12 @@
 
 {%- block body -%}
     {%- if granted('ROLE_ALLOWED_TO_SWITCH') -%}
-        <div class="container mt-5 mb-5">
-            <div class="row d-flex justify-content-center">
-                <div class="col-lg-4">
-                    <div class="card form-container login-card shadow-lg border-0">
+        <div id="content-security-front" class="template-page">
+            <div class="layout-zone bg-lighten">
+                <div class="container py-lg">
+                    <div class="row d-flex justify-content-center">
+                        <div class="col-lg-4">
+                    <div class=" card form-container login-card shadow-lg border-0 h-100">
                         <div class="card-body form-ajax-container p-4 p-md-5">
                             <div class="login-head mb-4 pb-2">
                                 <p class="login-eyebrow text-uppercase mb-2">{{ "Commutation"|trans|raw }}</p>
@@ -28,6 +30,9 @@
                             {%- include 'front/'~websiteTemplate~'/include/alert.html.twig' with {alert: 'info', message: "Vous êtes déjà connecté en tant qu'administrateur. Veuillez utiliser le commutateur pour vous connecter en tant qu'un autre utilisateur."|trans} only -%}
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
                 </div>
             </div>
         </div>

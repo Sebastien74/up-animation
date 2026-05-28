@@ -18,66 +18,144 @@
 
 ---
 
-### Getting started
+### Installation
 
-#### 1. Files configuration
+#### 1. Configuration des fichiers
 
-> Create ```.env.local```, ```.env.preprod``` & ```.env.prod``` file in root dir
+> Créer `.env.local`, `.env.preprod` et `.env.prod` à la racine
 
-> Copy and paste ```.env.dist``` content in ```.env``` files and complete configuration
+> Copier le contenu de `.env.dist` dans ces fichiers et compléter la configuration
 
-> Complete ```./bin/data/config/default.yaml``` file configuration
+> Compléter `./bin/data/config/default.yaml`
 
-> Change defaults medias in ```./assets/medias/images/default``` dir
+> Remplacer les médias par défaut dans `./assets/medias/images/default`
 
-> Change scss variables in ```./assets/scss/front/default/variables.scss``` file
+> Adapter les variables SCSS dans `./assets/scss/front/default/variables.scss`
 
-#### 2. Run this command
+#### 2. Initialisation
 
 ```bash
-# Composer dev mode
+composer install
+php composer.phar update --with-all-dependencies
 php composer.phar dump-autoload
 
-# Doctrine
 php bin/console doctrine:database:create
 php bin/console doctrine:schema:update --force
 php bin/console doctrine:fixtures:load --no-interaction
 
-# Extras :
-
-php bin/phpunit --display-deprecations
-
-```
-
-```bash
-# Assets
-php bin/console assets:install
-php bin/console fos:js-routing:dump --format=json --target=public/js/fos_js_routes.json
-```
-
-```bash
-# Yarn
-yarn cache clean
 yarn install
-yarn dev --watch # Dev mode
-yarn encore production # Production mode
+yarn build
+```
 
-# Extras :
+---
 
-# To check if dependencies are up to date / To upgrade dependencies remove yarn.lock and reinstall all node_modules
-yarn upgrade-interactive --latest
+### Commandes
 
-# To upgrade all dependencies in same time
-yarn yarn-upgrade-all
+#### Backend (Symfony)
 
-# To update yarn to last version
-npm install --global yarn
+```bash
+composer install                                                            # dépendances PHP
+php bin/console doctrine:database:create                                    # création base
+php bin/console doctrine:migrations:migrate                                 # migrations
+php bin/console doctrine:schema:update --force                              # mise à jour schéma
+php bin/console doctrine:fixtures:load --no-interaction                     # fixtures
+php bin/console cache:clear                                                 # cache Symfony
+php bin/console fos:js-routing:dump --format=json --target=public/js/fos_js_routes.json
+php bin/console assets:install                                              # assets statiques
+```
 
-# To update all dependencies to latest
-yarn upgrade --latest
+#### Frontend (Yarn)
 
-# To update browserslist
-npx update-browserslist-db@latest
+```bash
+yarn install
+yarn dev-server                                                             # dev server avec HMR
+yarn watch                                                                  # build dev en watch
+yarn dev                                                                    # build dev unique
+yarn build                                                                  # build production optimisé
+yarn build:font-fallbacks                                                   # génération fallbacks polices
+yarn xss-check                                                              # audit patterns XSS
+```
+
+Mise à jour des dépendances :
+
+```bash
+yarn upgrade-interactive --latest                                           # upgrade ciblé
+yarn upgrade --latest                                                       # upgrade global
+npx update-browserslist-db@latest                                           # update browserslist
+```
+
+#### Tests
+
+```bash
+php bin/phpunit                                                             # suite complète
+php bin/phpunit --display-deprecations                                      # avec deprecations
+php bin/phpunit --testdox                                                   # sortie lisible par cas
+php bin/phpunit --filter NewsletterEmailTest                                # test ciblé
+php bin/phpunit tests/Form/Manager/Front/                                   # dossier ciblé
+```
+
+Tests d'envoi de mail disponibles dans `tests/` (Newsletter, Contact, Inscription, Reset Password front/back, 2FA, Password Expire). Utilisent un transport mailer `null://null` et la `MailerAssertionsTrait` Symfony — aucune base de données requise.
+
+#### Commandes custom
+
+Crawl et import SEO :
+
+```bash
+php bin/console app:crawl:all                                               # pipeline complet
+php bin/console app:crawl:internal-urls                                     # découverte URLs
+php bin/console app:crawl:contents-map                                      # mapping contenus
+php bin/console app:crawl:metas                                             # extraction métadonnées
+php bin/console app:crawl:product-contents                                  # enrichissement produits
+php bin/console app:crawl:category-urls                                     # crawl catégories
+php bin/console app:crawl:pages-urls                                        # crawl pages
+php bin/console app:import:contents                                         # import JSON en DB
+```
+
+Cache et assets :
+
+```bash
+php bin/console app:cache:clear                                             # clear optimisé (rename FS)
+php bin/console liip:imagine:cache:remove                                   # clear thumbnails Liip
+php bin/console app:cache:unused                                            # purge fichiers cache inutilisés
+```
+
+Médias :
+
+```bash
+php bin/console app:thumbs:generate                                         # regénération thumbnails
+php bin/console app:media:update-info                                       # métadonnées (dimensions, EXIF)
+```
+
+Scheduler et analytics :
+
+```bash
+php bin/console scheduler:execute                                           # exécute les commandes planifiées
+php bin/console app:analytics:install-scheduler                             # installation rollup/purge
+php bin/console app:analytics:rollup                                        # agrégation horaire/journalière
+php bin/console app:analytics:purge                                         # suppression événements anciens
+php bin/console app:analytics:seed-fake                                     # données analytics de test
+```
+
+Sécurité et GDPR :
+
+```bash
+php bin/console security:reset:token                                        # invalide tokens reset password > 24h
+php bin/console security:password:expire                                    # marque mots de passe expirés
+php bin/console gdpr:remove                                                 # suppression données utilisateur
+php bin/console app:contact:delete                                          # purge anciens messages contact
+```
+
+Traductions :
+
+```bash
+php bin/console app:cmd:translations                                        # extraction + génération traductions
+```
+
+#### Outils dev
+
+```bash
+./bin/mailpit.exe                                                           # interface SMTP catcher local
+php php-cs-fixer.phar fix src/                                              # PHP CS Fixer
 ```
 
 ### Production

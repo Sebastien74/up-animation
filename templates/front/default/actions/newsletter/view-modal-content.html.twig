@@ -1,0 +1,21 @@
+{%- trans_default_domain 'front_default' -%}
+
+{%- set customTemplate = 'front/'~websiteTemplate~'/actions/newsletter/template/'~campaign.slug~'-modal.html.twig' -%}
+{%- set customTemplateExist = (customTemplate)|fileExist -%}
+{%- set template = customTemplateExist
+    ? 'front/'~websiteTemplate~'/actions/newsletter/template/'~campaign.slug~'-modal.html.twig'
+    : 'front/'~websiteTemplate~'/actions/newsletter/template/default-modal.html.twig' -%}
+{%- set intl = campaign|intl -%}
+{%- set intro = intl ? intl.introduction : null -%}
+{%- set modalMessage = intl and intl.placeholder ? intl.placeholder : "Merci pour votre inscription !!"|trans -%}
+{%- set modalId = "newsletter-thanks-modal-"~campaign.id -%}
+{%- set idSuffix = '-modal' -%}
+
+<div id="newsletter-form-container-{{ campaign.slug }}{{ idSuffix }}" class="newsletter-form-container newsletter-form-container-modal keep-form-module position-relative bg-primary p-4 p-md-5{% if campaign.recaptcha %} recaptcha-referer{% endif %}">
+    {{ component('WebmasterEdit', {
+        title: "Éditer la campagne"|trans([], 'front_webmaster'),
+        role: 'ROLE_NEWSLETTER',
+        path: path('admin_campaign_edit', {website: website.id, campaign: campaign.id})
+    }) }}
+    {%- include template -%}
+</div>

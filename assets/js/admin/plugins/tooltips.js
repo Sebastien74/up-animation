@@ -1,10 +1,19 @@
 /**
- * Tooltips
+ * Tooltips — single source of truth.
+ *
+ * Initializes Bootstrap tooltips with `trigger: hover` only and
+ * force-hides them on mouseleave / click / drag so a tooltip never
+ * lingers outside the cursor zone. Safe to call multiple times :
+ * disposes the previous instance before recreating, so AJAX response
+ * handlers can re-call it after replacing DOM.
+ *
+ * @param {Element|Document} [root=document]  Restrict init to a subtree.
  *
  * @author Sébastien FOURNIER <fournier.sebastien@outlook.com>
  */
-export default function () {
-    import('../bootstrap/dist/tooltip').then(({default: Tooltip}) => {
+export default function (root = document) {
+
+    return import('../bootstrap/dist/tooltip').then(({default: Tooltip}) => {
 
         function forceHide(trigger, tooltip) {
             tooltip.hide();
@@ -16,18 +25,30 @@ export default function () {
             }
         }
 
-        const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-        tooltipTriggerList.map(function (tooltipTriggerEl) {
-            const tooltip = new Tooltip(tooltipTriggerEl, {
-                trigger: 'hover'
+        // Bootstrap-style trigger attribute + legacy alias
+        const selector = '[data-bs-toggle="tooltip"], [data-toggle="tooltip"]';
+        const triggers = root.querySelectorAll(selector);
+
+        triggers.forEach(function (triggerEl) {
+
+            const existing = Tooltip.getInstance(triggerEl);
+            if (existing) {
+                existing.dispose();
+            }
+
+            const tooltip = new Tooltip(triggerEl, {
+                trigger: 'hover',
             });
-            tooltipTriggerEl.addEventListener('mouseleave', function () {
-                forceHide(tooltipTriggerEl, tooltip);
+
+            triggerEl.addEventListener('mouseleave', function () {
+                forceHide(triggerEl, tooltip);
             });
-            tooltipTriggerEl.addEventListener('click', function () {
-                forceHide(tooltipTriggerEl, tooltip);
+            triggerEl.addEventListener('click', function () {
+                forceHide(triggerEl, tooltip);
             });
-            return tooltip;
+            triggerEl.addEventListener('blur', function () {
+                forceHide(triggerEl, tooltip);
+            });
         });
     }).catch(error => console.error(error.message));
 };

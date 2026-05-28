@@ -1,22 +1,40 @@
-{%- extends 'core/email/base.html.twig' -%}
+{%- extends 'core/email/base-security.html.twig' -%}
 
 {%- trans_default_domain 'front_default' -%}
 
-{%- block metaTitle -%}{{ "Votre code de vérification"|trans|htmlEntities }}{%- endblock -%}
+{%- block metaTitle -%}{{ ("Votre code de verification")|trans|striptags }}{%- endblock -%}
 
-{%- block preheader -%}{%- endblock -%}
-
-{%- block info -%}
-    {{ "Cet e-mail vous a été envoyé suite à une tentative de connexion à votre espace personnel."|trans|raw }}
+{%- block preheader -%}
+    {{ ("Code unique pour finaliser votre connexion.")|trans|raw }}
 {%- endblock -%}
 
+{%- block headerRight -%}{{ ("Securite")|trans|raw }}{%- endblock -%}
+
+{%- block kicker -%}{{ ("Securite / Authentification a deux facteurs")|trans|raw }}{%- endblock -%}
+
+{%- block title -%}{{ ("Votre code de verification.")|trans|raw }}{%- endblock -%}
+
 {%- block body -%}
-    <tr>
-        <td id="content-fixtures" align="center" bgcolor="#ffffff" style="padding: 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;">
-            <p>{{ "Bonjour,"|trans|raw }}</p>
-            <p>{{ "Voici votre code de vérification pour finaliser la connexion :"|trans|raw }}</p>
-            <p style="font-size: 28px; letter-spacing: 6px; font-weight: bold; margin: 24px 0;">{{ code }}</p>
-            <p>{{ "Ce code expire après un court délai. Si vous n'êtes pas à l'origine de cette connexion, ignorez simplement cet e-mail et envisagez de changer votre mot de passe."|trans|raw }}</p>
-        </td>
-    </tr>
+    <p style="margin:0 0 24px 0;">{{ ("Voici le code a usage unique a saisir pour finaliser votre connexion. Il expire apres un court delai.")|trans|raw }}</p>
+
+    {# Code stamp : large mono, framed #}
+    <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
+        <tr>
+            <td align="center" style="padding:8px 0;">
+                <table role="presentation" border="0" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <td bgcolor="#22254E" style="background-color:#22254E; padding:24px 36px; mso-padding-alt:24px 36px; border-top:3px solid #0081AC; border-bottom:3px solid #0081AC;">
+                            <div class="otp" style="font-family:Consolas, 'Lucida Console', Monaco, monospace; font-size:38px; font-weight:600; letter-spacing:0.32em; color:#FFFFFF; line-height:1;">
+                                {{ code }}
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+{%- endblock -%}
+
+{%- block info -%}
+    {{ ("Si vous n etes pas a l origine de cette connexion, ignorez simplement cet email et envisagez de changer votre mot de passe.")|trans|raw }}
 {%- endblock -%}

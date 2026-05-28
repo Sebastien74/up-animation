@@ -1,0 +1,50 @@
+{%- trans_default_domain 'front_default' -%}
+
+<div class=" card form-container login-card shadow-lg border-0 h-100">
+    <div class="card-body p-4 p-md-5">
+        <div class="login-head mb-4 pb-2">
+            <p class="login-eyebrow text-uppercase mb-2">{{ "Administrateur connecté"|trans|raw }}</p>
+            <h3 class="login-title text-uppercase fw-800 mb-0">{{ "Se connecter en tant qu'utilisateur"|trans|raw }}</h3>
+        </div>
+
+        {%- set backLabel = backUser.username ?: backUser.email -%}
+        {%- include 'front/'~websiteTemplate~'/include/alert.html.twig' with {
+            display: 'alert',
+            alert: 'info',
+            message: ("Connecté en back-office en tant que <strong>%name%</strong>. Choisissez un compte utilisateur pour vous y connecter directement.")|trans({'%name%': backLabel|escape('html')}),
+            class: 'w-100 mb-4'
+        } only -%}
+
+        {%- if userFronts is not empty -%}
+            <form method="post" action="{{ path('security_front_admin_switch') }}" id="form-admin-switch" class="security">
+                <input type="hidden" name="_token" value="{{ csrf_token('admin_switch_front') }}">
+                <div class="row">
+                    <div class="col-12 group-form">
+                        <div class="form-floating">
+                            <select id="admin-switch-user-front" name="userFront" class="form-select" required>
+                                <option value="" selected>{{ "Sélectionnez un compte"|trans }}</option>
+                                {%- for user in userFronts -%}
+                                    {%- set label = user.username ?: user.email -%}
+                                    <option value="{{ user.id }}">{{ label }}{% if user.email and user.email != label %} ({{ user.email }}){% endif %}</option>
+                                {%- endfor -%}
+                            </select>
+                            <label for="admin-switch-user-front">{{ "Utilisateur"|trans }}</label>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-primary btn-block text-uppercase w-100 mt-3 d-flex justify-content-center">
+                            {{ "Se connecter"|trans }}
+                        </button>
+                    </div>
+                </div>
+            </form>
+        {%- else -%}
+            {%- include 'front/'~websiteTemplate~'/include/alert.html.twig' with {
+                display: 'alert',
+                alert: 'warning',
+                message: "Aucun compte utilisateur disponible pour ce site."|trans,
+                class: 'w-100 mb-0'
+            } only -%}
+        {%- endif -%}
+    </div>
+</div>

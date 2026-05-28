@@ -2,36 +2,57 @@
 
 {%- trans_default_domain 'email' -%}
 
+{%- block metaTitle -%}{{ ("Nouveau message via le formulaire de contact")|trans|striptags }}{%- endblock -%}
+
+{%- block preheader -%}
+    {{ ("Un visiteur vous a contacte via le site.")|trans|raw }}
+{%- endblock -%}
+
+{%- block headerRight -%}{{ ("Notification interne")|trans|raw }}{%- endblock -%}
+
+{%- block kicker -%}{{ ("Contact / Nouvelle demande")|trans|raw }}{%- endblock -%}
+
+{%- block title -%}{{ ("Nouveau message.")|trans|raw }}{%- endblock -%}
+
 {%- block body -%}
-    <tr>
-        <td align="center" bgcolor="#ffffff" style="padding: 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;">
-            {%- for fieldKey, field in fields -%}
-                {%- set label = field.label ? field.label : fieldKey -%}
-                {%- set display = true -%}
-                {%- if not field.valueIntl|isArray and not field.valueIntl -%}
-                    {%- set display = false -%}
-                {%- endif -%}
-                {%- if not isUploadedFile(field.valueIntl) and display -%}
-                    <p style="font-size: 14px;">
-                        <strong>{{ label|raw }} :</strong>
-                        {%- if field.valueIntl|isArray and field.valueIntl|length == 1 -%}
-                            {%- include 'core/data-formater.html.twig' with {dataValue: field.valueIntl[0]} -%}
-                        {%- elseif field.valueIntl|isArray -%}
-                            {%- for value in field.valueIntl -%}
-                                {%- include 'core/data-formater.html.twig' with {dataValue: value} only -%}
-                            {%- endfor -%}
-                        {%- else -%}
-                            {%- include 'core/data-formater.html.twig' with {dataValue: field.valueIntl, span: true} only -%}
-                        {%- endif -%}
-                    </p>
-                {%- endif -%}
-            {%- endfor -%}
-            {%- if attachments is defined and attachments|length > 0 -%}
-                <p style="font-size: 14px;">
-                    <strong>{{ "Pièces jointes"|trans|raw }} :</strong>  {{ attachments|length }}
-                </p>
+    <p style="margin:0 0 18px 0;">{{ ("Un visiteur vient de soumettre le formulaire de contact. Voici le detail de sa demande.")|trans|raw }}</p>
+    <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="border-top:1px solid #E4DCCC;">
+        {%- for fieldKey, field in fields -%}
+            {%- set label = field.label ? field.label : fieldKey -%}
+            {%- set display = true -%}
+            {%- if not field.valueIntl|isArray and not field.valueIntl -%}
+                {%- set display = false -%}
             {%- endif -%}
-{#            <img src="{{ email.image('@images/medias/email/pixel.png')~'?classname='~classname|url_encode~'&code='~entityId }}" alt="Image" />#}
-        </td>
-    </tr>
+            {%- if not isUploadedFile(field.valueIntl) and display -%}
+                <tr>
+                    <td style="padding:14px 0; border-bottom:1px solid #E4DCCC;">
+                        <div style="font-family:Consolas, 'Lucida Console', Monaco, monospace; font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:#7D7B8C; margin-bottom:6px;">{{ label|raw }}</div>
+                        <div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif; font-size:15px; font-weight:500; color:#22254E; line-height:1.5;">
+                            {%- if field.valueIntl|isArray and field.valueIntl|length == 1 -%}
+                                {%- include 'core/data-formater.html.twig' with {dataValue: field.valueIntl[0]} -%}
+                            {%- elseif field.valueIntl|isArray -%}
+                                {%- for value in field.valueIntl -%}
+                                    {%- include 'core/data-formater.html.twig' with {dataValue: value} only -%}
+                                {%- endfor -%}
+                            {%- else -%}
+                                {%- include 'core/data-formater.html.twig' with {dataValue: field.valueIntl, span: true} only -%}
+                            {%- endif -%}
+                        </div>
+                    </td>
+                </tr>
+            {%- endif -%}
+        {%- endfor -%}
+        {%- if attachments is defined and attachments|length > 0 -%}
+            <tr>
+                <td style="padding:14px 0;">
+                    <div style="font-family:Consolas, 'Lucida Console', Monaco, monospace; font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:#FF7100; margin-bottom:6px;">{{ ("Pieces jointes")|trans|raw }}</div>
+                    <div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif; font-size:15px; font-weight:600; color:#22254E;">{{ attachments|length }}</div>
+                </td>
+            </tr>
+        {%- endif -%}
+    </table>
+{%- endblock -%}
+
+{%- block info -%}
+    {{ ("Repondez directement a cet email pour ecrire au visiteur : son adresse est positionnee en Reply-To.")|trans|raw }}
 {%- endblock -%}

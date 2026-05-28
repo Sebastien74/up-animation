@@ -15,71 +15,124 @@
 
 {%- block content -%}
 
-    <div id="user-profile-show" class="bg-light pt-lg pb-lg">
+    {%- set displayName = '' -%}
+    {%- if user.firstName or user.lastName -%}
+        {%- set displayName = (user.firstName ? user.firstName : '') ~ (user.lastName ? ' ' ~ user.lastName : '') -%}
+    {%- else -%}
+        {%- set displayName = user.login -%}
+    {%- endif -%}
+    {%- set displayName = displayName|trim -%}
+
+    {%- set addresses = user|profile_addresses -%}
+    {%- set hasAddresses = addresses.basic is defined or addresses.billing is defined -%}
+
+    <div id="user-profile-show" class="profile-page pt-lg pb-lg">
         <div class="container">
-            <div class="row">
-                <div class="col-md-8 pe-lg-5">
-{#                    {%- include "front/"~websiteTemplate~"/include/flashbag.html.twig" -%}#}
-                    <section id="user-profile-container" class="mb-4">
-                        <h2>
-                            {%- set username = '' -%}
-                            {%- if user.lastName -%}
-                                {%- set username = user.lastName -%}
-                            {%- endif -%}
-                            {%- if user.firstName -%}
-                                {%- set username = ' '~user.firstName -%}
-                            {%- endif -%}
-                            {%- if not username -%}
-                                {%- set username = user.login -%}
-                            {%- endif -%}
-                            {{ username|trim }}
+
+            <section id="user-profile-container" class="profile-hero bg-white">
+                <div class="row m-0 g-0 align-items-stretch">
+                    <div class="col-lg-8 profile-hero-text">
+                        <span class="profile-eyebrow">{{ "Espace personnel"|trans|raw }}</span>
+                        <h2 class="profile-greeting">
+                            <span class="profile-greeting-hi">{{ "Bonjour,"|trans|raw }}</span>
+                            <span class="profile-greeting-name">{{ displayName }}</span>
                         </h2>
-                        <ul class="reset">
-                            <li><strong>{{ "Nom d'utilisateur :"|trans|raw }}</strong> {{ user.login }}</li>
-                            <li class="d-flex align-items-center">
-                                <strong class="me-1">{{ "E-mail :"|trans|raw }}</strong> {{ user.email }}
-                                {%- set emailValidMessage = user.confirmEmail ? 'E-mail confirmé'|trans : 'E-mail non confirmé'|trans -%}
-                                {%- set iconEmailValid = user.confirmEmail ? 'check-circle' : 'times-circle' -%}
-                                {%- set iconEmailColor = user.confirmEmail ? 'success' : 'danger' -%}
-                                <i class="icon-{{ iconEmailValid }} fz-xs ms-2 text-{{ iconEmailColor }}" data-bs-toggle="tooltip" title="{{ emailValidMessage|striptags }}"></i>
+                        <ul class="profile-status reset">
+                            <li class="status-pill bg-white {{ user.confirmEmail ? 'is-on' : 'is-off' }}">
+                                <i class="icon-{{ user.confirmEmail ? 'check-circle' : 'times-circle' }}"></i>
+                                <span>{{ (user.confirmEmail ? "E-mail confirmé"|trans : "E-mail à confirmer"|trans)|raw }}</span>
                             </li>
-                            <li><strong>{{ "Langue :"|trans|raw }}</strong> {{ user.locale|languageName }}</li>
+                            <li class="status-pill bg-white {{ user.emailAuthEnabled ? 'is-on' : 'is-off' }}">
+                                <i class="icon-shield-alt"></i>
+                                <span>{{ (user.emailAuthEnabled ? "Double authentification active"|trans : "Double authentification désactivée"|trans)|raw }}</span>
+                            </li>
                         </ul>
-                    </section>
-                    {%- set addresses = user|profile_addresses -%}
-                    {%- if addresses.basic is defined -%}
-                        <hr>
-                        <section class="user-address-container mb-4 mt-4">
-                            <h3>
-                                {{ "Adresse de facturation"|trans|raw }}
-                                <span class="d-inline-block ms-3" data-bs-toggle="tooltip" title="{{"Éditer mes informations"|trans|raw }}">
-                                    <a href="{{ path('security_front_profile_edit') }}">
-                                        {{ 'fal pencil'|icon(null, 20) }}
-                                    </a>
-                                </span>
-                            </h3>
-                            {{ addresses.basic|address(website) }}
-                        </section>
-                    {%- endif -%}
-                    {%- if addresses.billing is defined -%}
-                        <section class="user-address-container">
-                            <h3>
-                                {{ "Adresse de livraison"|trans|raw }}
-                                <span class="d-inline-block ms-3" data-bs-toggle="tooltip" title="{{"Éditer mes informations"|trans|striptags }}">
-                                    <a href="{{ path('security_front_profile_edit') }}">
-                                        {{ 'fal pencil'|icon(null, 20) }}
-                                    </a>
-                                </span>
-                            </h3>
-                            {{ addresses.billing|address(website) }}
-                        </section>
-                    {%- endif -%}
-                    {%- include 'front/default/actions/security/back/2fa-toggle.html.twig' with {user: user} only -%}
+                    </div>
+                    <div class="col-lg-4 profile-hero-avatar bg-secondary">
+                        <div class="avatar-frame">
+                            <div class="avatar-ring"></div>
+                            <div class="avatar-media bg-secondary-light">
+                                {{ asset(user|profile_img)|file({}, {maxHeight: 220}) }}
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-md-4 d-flex justify-content-center justify-content-lg-end">
-                    {{ asset(user|profile_img)|file({}, {maxHeight: 100}) }}
+            </section>
+
+            <section class="profile-section">
+                <header class="profile-section-head">
+                    <span class="section-index">01</span>
+                    <h3 class="profile-section-title">{{ "Identité"|trans|raw }}</h3>
+                </header>
+                <div class="row g-4 profile-info-grid">
+                    <div class="col-md-4">
+                        <article class="info-tile bg-white">
+                            <span class="info-tile-label">{{ "Nom d'utilisateur"|trans|raw }}</span>
+                            <span class="info-tile-value">{{ user.login }}</span>
+                        </article>
+                    </div>
+                    <div class="col-md-4">
+                        <article class="info-tile bg-white">
+                            <span class="info-tile-label">{{ "E-mail"|trans|raw }}</span>
+                            <span class="info-tile-value">
+                                <span class="info-tile-text">{{ user.email }}</span>
+                                <i class="icon-{{ user.confirmEmail ? 'check-circle' : 'times-circle' }} info-tile-mark {{ user.confirmEmail ? 'text-success' : 'text-danger' }}"
+                                   data-bs-toggle="tooltip"
+                                   title="{{ (user.confirmEmail ? 'E-mail confirmé'|trans : 'E-mail non confirmé'|trans)|striptags }}"></i>
+                            </span>
+                        </article>
+                    </div>
+                    <div class="col-md-4">
+                        <article class="info-tile bg-white">
+                            <span class="info-tile-label">{{ "Langue"|trans|raw }}</span>
+                            <span class="info-tile-value">{{ user.locale ? (user.locale|languageName ?: user.locale|upper) : '-' }}</span>
+                        </article>
+                    </div>
                 </div>
-            </div>
+            </section>
+
+            {%- if hasAddresses -%}
+                <section class="profile-section">
+                    <header class="profile-section-head">
+                        <span class="section-index">02</span>
+                        <h3 class="profile-section-title">{{ "Mes adresses"|trans|raw }}</h3>
+                        <a href="{{ path('security_front_profile_edit') }}"
+                           class="section-edit bg-white"
+                           data-bs-toggle="tooltip"
+                           title="{{ "Éditer mes informations"|trans|striptags }}">
+                            {{ 'fal pencil'|icon(null, 18) }}
+                            <span class="visually-hidden">{{ "Éditer mes informations"|trans|raw }}</span>
+                        </a>
+                    </header>
+                    <div class="row g-4">
+                        {%- if addresses.basic is defined -%}
+                            <div class="col-md-6">
+                                <article class="address-card bg-white">
+                                    <span class="address-card-label bg-beige">{{ "Facturation"|trans|raw }}</span>
+                                    <div class="address-card-body">{{ addresses.basic|address(website) }}</div>
+                                </article>
+                            </div>
+                        {%- endif -%}
+                        {%- if addresses.billing is defined -%}
+                            <div class="col-md-6">
+                                <article class="address-card bg-white">
+                                    <span class="address-card-label bg-beige">{{ "Livraison"|trans|raw }}</span>
+                                    <div class="address-card-body">{{ addresses.billing|address(website) }}</div>
+                                </article>
+                            </div>
+                        {%- endif -%}
+                    </div>
+                </section>
+            {%- endif -%}
+
+            <section class="profile-section profile-section-security">
+                <header class="profile-section-head">
+                    <span class="section-index">{{ hasAddresses ? '03' : '02' }}</span>
+                    <h3 class="profile-section-title">{{ "Sécurité du compte"|trans|raw }}</h3>
+                </header>
+                {%- include 'front/default/actions/security/back/2fa-toggle.html.twig' with {user: user} only -%}
+            </section>
+
         </div>
     </div>
 

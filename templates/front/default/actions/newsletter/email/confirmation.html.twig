@@ -2,19 +2,39 @@
 
 {%- trans_default_domain 'email' -%}
 
+{%- block metaTitle -%}{{ ("Confirmez votre inscription")|trans|striptags }}{%- endblock -%}
+
+{%- block preheader -%}
+    {{ ("Un dernier geste pour rejoindre nos actualites.")|trans|raw }}
+{%- endblock -%}
+
+{%- block headerRight -%}{{ ("Newsletter")|trans|raw }}{%- endblock -%}
+
+{%- block kicker -%}{{ ("Newsletter / Confirmation")|trans|raw }}{%- endblock -%}
+
+{%- block title -%}{{ ("Plus qu un clic.")|trans|raw }}{%- endblock -%}
+
 {%- block body -%}
-    <tr>
-        <td align="center" bgcolor="#ffffff" style="padding: 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;">
-            {%- if message -%}
-                {{ message|replace({'%confirmationLink%': absolute_url(confirmationLink)})|raw }}
-            {%- else -%}
-                <p>Bonjour,</p>
-                <p>Vous avez demand&eacute; &agrave; recevoir notre newsletter.<br>Pour finaliser votre inscription et commencer &agrave; recevoir nos actualit&eacute;s, veuillez confirmer votre adresse e-mail en cliquant sur le lien ci-dessous :</p>
-                <p><strong><a href="{{ confirmationLink }}">Confirmer mon inscription</a></strong></p>
-                <p>Ce lien est valable pendant 24 heures. Pass&eacute; ce d&eacute;lai, vous devrez effectuer une nouvelle demande d'inscription.</p>
-                <p>Si vous n&rsquo;&ecirc;tes pas &agrave; l&rsquo;origine de cette demande, vous pouvez ignorer cet e-mail. Aucune action ne sera entreprise sans votre confirmation.</p>
-                <p>Merci et &agrave; bient&ocirc;t,<br>L&rsquo;&eacute;quipe de [Nom de votre site].</p>
-            {%- endif -%}
-        </td>
-    </tr>
+    {%- if message -%}
+        {{ message|replace({'%confirmationLink%': absolute_url(confirmationLink)})|raw }}
+    {%- else -%}
+        <p style="margin:0 0 14px 0;">{{ ("Bonjour,")|trans|raw }}</p>
+        <p style="margin:0 0 14px 0;">{{ ("Vous avez demande a recevoir notre newsletter. Pour finaliser votre inscription et commencer a recevoir nos actualites, confirmez votre adresse email en cliquant sur le bouton ci-dessous.")|trans|raw }}</p>
+    {%- endif -%}
+{%- endblock -%}
+
+{%- block cta -%}
+    <table role="presentation" border="0" cellpadding="0" cellspacing="0">
+        <tr>
+            <td align="center" bgcolor="#FF7100" style="background-color:#FF7100; padding:18px 32px; mso-padding-alt:18px 32px;">
+                <a href="{{ confirmationLink }}" target="_blank" style="display:inline-block; color:#FFFFFF; font-family:Consolas, 'Lucida Console', Monaco, monospace; font-size:13px; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; text-decoration:none; line-height:1;">
+                    {{ ("Confirmer mon inscription")|trans|raw }}&nbsp;&nbsp;&rarr;
+                </a>
+            </td>
+        </tr>
+    </table>
+{%- endblock -%}
+
+{%- block info -%}
+    {{ ("Ce lien est valable pendant 24 heures. Passe ce delai, vous devrez effectuer une nouvelle demande d inscription. Si vous n etes pas a l origine de cette demande, ignorez simplement cet email.")|trans|raw }}
 {%- endblock -%}

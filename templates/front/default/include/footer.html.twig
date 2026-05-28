@@ -79,6 +79,7 @@
 
     {%- if 'newsletter'|moduleActive(configuration) -%}
         {{ render_esi(path('front_newsletter_view', {filter: 'main', website: website.id} )) }}
+        {{ render_esi(path('front_newsletter_view', {filter: 'main', website: website.id, displayModal: true, idSuffix: '-modal'} )) }}
     {%- endif -%}
 
     <section class="footer-main pt-4 pt-md-5 pb-5">

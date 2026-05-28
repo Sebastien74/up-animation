@@ -110,12 +110,13 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // ==============================================================
-    //tooltip
+    // Tooltip — delegated to the centralized hover-only initializer
+    // (plugins/tooltips.js) so re-init after AJAX shares the same
+    // mouseleave/click/blur forceHide guards.
     // ==============================================================
-    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-    tooltipTriggerList.map(function (tooltipTriggerEl) {
-        return new bootstrap.Tooltip(tooltipTriggerEl)
-    });
+    import('../plugins/tooltips').then(({default: tooltipsInit}) => {
+        tooltipsInit();
+    }).catch(error => console.error(error.message));
 
     // ==============================================================
     //Popover

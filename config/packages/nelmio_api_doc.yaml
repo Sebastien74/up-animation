@@ -1,0 +1,243 @@
+nelmio_api_doc:
+    documentation:
+        info:
+            title: 'Up Animation - Admin dev API'
+            description: |
+                # Outils internes de développement
+
+                API d'administration reservée aux utilisateurs internes (`ROLE_INTERNAL`) et destinée
+                à la **vérification des envois transactionnels** depuis le back-office.
+
+                ## Périmètre
+
+                - Exécution de la suite **PHPUnit mail** sur le transport `null` (aucun mail réellement émis).
+                - Envoi réel d'un ou plusieurs scénarios via le transport configuré dans `MAILER_DSN`.
+                - Catalogue des scénarios disponibles (newsletter, sécurité, formulaires, etc.).
+
+                ## Authentification
+
+                Toutes les routes utilisent la **session admin** courante (`PHPSESSID`). Les routes
+                mutantes (`POST`) exigent en plus un **CSRF token** (récupérable via `/csrf-token`)
+                transmis soit dans le header `X-CSRF-Token`, soit dans le body JSON sous `csrf_token`.
+
+                ## Garde-fous
+
+                - Les routes mutantes sont **désactivées en production** (réponse `403`).
+                - Les destinataires doivent être des adresses de test internes ou des comptes contrôlés.
+                - Aucune donnée personnelle réelle ne doit transiter par ces scénarios.
+
+                ## Flux recommandé
+
+                1. `GET /scenarios` — obtenir la liste des identifiants disponibles.
+                2. `GET /csrf-token` — récupérer un token valide pour la session.
+                3. `POST /send` (un seul) ou `POST /send-all` (tous) — déclencher les envois.
+                4. `POST /run` — exécuter la suite PHPUnit pour valider le rendu sans expédier.
+            version: 1.0.0
+            contact:
+                name: 'Équipe technique'
+            license:
+                name: 'Usage interne — Up Animation'
+        tags:
+            - name: 'Mail tests'
+              description: |
+                  Outils de validation et d'envoi des emails transactionnels.
+                  Chaque endpoint refuse silencieusement les appels hors environnement de développement.
+        components:
+            securitySchemes:
+                Session:
+                    type: apiKey
+                    in: cookie
+                    name: PHPSESSID
+                    description: 'Cookie de session admin (`PHPSESSID`). Connectez-vous au back-office avant d''utiliser ces endpoints.'
+        security:
+            - Session: []
+    html_config:
+        scalar_config:
+            theme: default
+            layout: modern
+            darkMode: true
+            forceDarkModeState: dark
+            hideDarkModeToggle: true
+            hideTestRequestButton: false
+            defaultOpenAllTags: false
+            hideClientButton: true
+            hideDownloadButton: false
+            proxyUrl: ''
+            metaData:
+                title: 'Up Animation - API admin'
+            customCss: |
+                :root {
+                    --scalar-radius: 14px;
+                    --scalar-radius-lg: 22px;
+                    --scalar-font: 'Hankengrotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+                    --scalar-font-code: 'JetBrains Mono', 'Fira Code', 'SFMono-Regular', Menlo, Consolas, monospace;
+                }
+                .dark-mode {
+                    --scalar-color-1: #f4f5fa;
+                    --scalar-color-2: #b5b9cc;
+                    --scalar-color-3: #7b7e92;
+                    --scalar-color-accent: #ff7100;
+                    --scalar-background-1: #0f1018;
+                    --scalar-background-2: #161826;
+                    --scalar-background-3: #1f2233;
+                    --scalar-background-accent: rgba(255, 113, 0, 0.18);
+                    --scalar-border-color: rgba(255, 255, 255, 0.07);
+                    --scalar-code-language-color-supersede: #f4f5fa;
+                    --scalar-sidebar-background-1: #0a0b13;
+                    --scalar-sidebar-item-hover-color: #ff7100;
+                    --scalar-sidebar-item-hover-background: rgba(255, 113, 0, 0.1);
+                    --scalar-sidebar-item-active-background: rgba(255, 113, 0, 0.16);
+                    --scalar-sidebar-color-1: #e8e9f0;
+                    --scalar-sidebar-color-2: #8b8fa3;
+                    --scalar-sidebar-color-active: #ff7100;
+                    --scalar-sidebar-border-color: rgba(255, 255, 255, 0.05);
+                    --scalar-sidebar-search-background: rgba(255, 255, 255, 0.04);
+                    --scalar-sidebar-search-border-color: rgba(255, 255, 255, 0.08);
+                    --scalar-sidebar-search-color: #b5b9cc;
+                    --scalar-button-1: #ff7100;
+                    --scalar-button-1-color: #ffffff;
+                    --scalar-button-1-hover: #e66600;
+                    --scalar-color-green: #5bcb8a;
+                    --scalar-color-red: #ff6b7a;
+                    --scalar-color-yellow: #f5c451;
+                    --scalar-color-blue: #5aaeff;
+                    --scalar-color-orange: #ff7100;
+                    --scalar-color-purple: #a78bfa;
+                }
+                .scalar-card,
+                .scalar-card-header,
+                .references-rendered .reference-card {
+                    box-shadow: 0 24px 56px -36px rgba(0, 0, 0, 0.55) !important;
+                }
+                .sidebar-search:hover,
+                .sidebar-search:focus {
+                    border-color: rgba(255, 113, 0, 0.55) !important;
+                }
+                .scalar-api-client__send-request-button,
+                button[data-testid="send-request-button"] {
+                    background: #ff7100 !important;
+                    color: #ffffff !important;
+                }
+                .scalar-api-client__send-request-button:hover {
+                    background: #e66600 !important;
+                }
+                wbr {
+                    display: none !important;
+                }
+                .sidebar,
+                aside.sidebar,
+                [class*="sidebar"][class*="layout"],
+                .scalar-app .sidebar {
+                    position: fixed !important;
+                    top: 64px !important;
+                    bottom: 0 !important;
+                    left: 0 !important;
+                    height: calc(100vh - 64px) !important;
+                    max-height: calc(100vh - 64px) !important;
+                    overflow-y: auto !important;
+                    z-index: 50 !important;
+                }
+                .scalar-app .layout-aside-content,
+                .scalar-app .layout-content {
+                    margin-left: var(--scalar-sidebar-width, 280px) !important;
+                }
+                @media (max-width: 768px) {
+                    .sidebar,
+                    aside.sidebar,
+                    [class*="sidebar"][class*="layout"],
+                    .scalar-app .sidebar {
+                        top: 56px !important;
+                        height: calc(100vh - 56px) !important;
+                        max-height: calc(100vh - 56px) !important;
+                    }
+                    .scalar-app .layout-aside-content,
+                    .scalar-app .layout-content {
+                        margin-left: 0 !important;
+                    }
+                }
+                .introduction-section,
+                [class*="introduction-section"],
+                .references-rendered > section:first-child,
+                .references-rendered .section:first-of-type {
+                    padding-top: 1.5rem !important;
+                }
+                html,
+                body,
+                .scalar-app,
+                .references-rendered,
+                .references-rendered > *,
+                [class*="layout-content"],
+                [class*="layout-aside"] {
+                    scroll-behavior: smooth !important;
+                    scroll-padding-top: 80px !important;
+                }
+                kbd {
+                    text-transform: uppercase !important;
+                }
+                kbd .sr-only,
+                kbd .visually-hidden {
+                    clip: auto !important;
+                    clip-path: none !important;
+                    height: auto !important;
+                    margin: 0 !important;
+                    overflow: visible !important;
+                    padding: 0 !important;
+                    position: static !important;
+                    text-transform: uppercase !important;
+                    white-space: nowrap !important;
+                    width: auto !important;
+                }
+                kbd .sr-only::after,
+                kbd .visually-hidden::after {
+                    content: ' + ';
+                }
+                kbd [aria-hidden="true"] {
+                    display: none !important;
+                }
+                .references-rendered,
+                .references-rendered > section:last-child,
+                .references-rendered .section:last-of-type,
+                [class*="layout-content"] > *:last-child {
+                    padding-bottom: 50vh !important;
+                }
+                [role="dialog"],
+                dialog,
+                .scalar-client,
+                .scalar-api-client,
+                .scalar-app [class*="modal"],
+                .scalar-app [class*="overlay"],
+                .scalar-app [class*="Dialog"],
+                .scalar-app [data-state="open"][role="dialog"],
+                [data-radix-popper-content-wrapper] {
+                    z-index: 99999 !important;
+                }
+                /* Surface the API client sidebar toggle so the user notices it. No structural override. */
+                .scalar-sidebar-toggle {
+                    color: #ff7100 !important;
+                }
+                a[href*="scalar.com"],
+                a[href*="scalar.com"] *,
+                [class*="powered-by"],
+                [class*="powered_by"] {
+                    display: none !important;
+                    visibility: hidden !important;
+                }
+                .show-api-client-button,
+                .show-api-client-button * {
+                    color: #ffffff !important;
+                }
+                .show-api-client-button svg {
+                    color: #ffffff !important;
+                    fill: #ffffff !important;
+                    stroke: #ffffff !important;
+                }
+                .show-api-client-button svg path,
+                .show-api-client-button svg polyline,
+                .show-api-client-button svg line {
+                    stroke: #ffffff !important;
+                }
+    areas:
+        default:
+            disable_default_routes: true
+            path_patterns:
+                - ^/admin-[^/]+/development/mail-tests

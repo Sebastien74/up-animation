@@ -2,7 +2,8 @@
 
 {%- set bottom = true -%}
 {%- set website = website is defined ? website : website() -%}
-{%- set isUserFront = isUserFront(app.user) -%}
+{%- set displayUserFront = false -%}
+{%- set isUserFront = isUserFront(app.user) and displayUserFront -%}
 
 {%- if this.toolbox.allowIp or this.toolbox.userAllowed -%}
     <div {{ attributes }}>

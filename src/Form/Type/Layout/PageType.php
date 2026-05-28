@@ -147,7 +147,7 @@ class PageType extends AbstractType
                     'color' => 'app',
                     'label' => $this->translator->trans('Page sécurisée', [], 'admin'),
                     'attr' => ['class' => 'col-12 w-100'],
-                    'row_attr' => ['class' => 'col-12 ' . (!$mainMenu ? 'col-md-12 col-lg-6 text-center' : 'col-md-12 col-lg-6 text-center')],
+                    'row_attr' => ['class' => 'col-12 ' . (!$mainMenu ? 'col-md-12 col-lg-6 text-center' : 'col-md-12 col-lg-4 text-center')],
                 ]);
             }
 

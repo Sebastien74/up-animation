@@ -20,8 +20,10 @@ $tooltip-surface-bottom: mix(#000000, $tooltip-surface, 6%) !default;
 
 .tooltip {
 
-    /* Core */
-    --bs-tooltip-zindex: 9999;
+    /* Core — kept below the .app-loader stack (9050) so any loader
+       overlay covers active tooltips, but above modals (9000) so
+       tooltips inside modals still render on top. */
+    --bs-tooltip-zindex: 9040;
     --bs-tooltip-max-width: 280px;
     --bs-tooltip-padding-x: 12px;
     --bs-tooltip-padding-y: 10px;
@@ -39,6 +41,13 @@ $tooltip-surface-bottom: mix(#000000, $tooltip-surface, 6%) !default;
     /* Force stacking above UI */
     z-index: var(--bs-tooltip-zindex) !important;
     pointer-events: none;
+
+    /* Hide all tooltips while any drag is active. Defense in depth :
+       JS hides them on dragStart, but a tooltip can re-appear if the
+       cursor lingers on a trigger during drop animation. */
+    body.sorting-active & {
+        display: none !important;
+    }
 
     .tooltip-arrow {
         display: none !important;

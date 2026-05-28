@@ -16,11 +16,13 @@
 {%- endblock -%}
 
 {%- block body -%}
-    {%- include 'front/'~websiteTemplate~'/blocks/title-header/default.html.twig' with {
-        pageTitle: "Inscrivez-vous"|trans,
-        thumbConfiguration: thumbConfigurationHeader
-    } -%}
-    <div class="container-fluid mt-5 mb-5 form-security-container">
+    <div id="content-security-front" class="template-page">
+        {%- include 'front/'~websiteTemplate~'/blocks/title-header/default.html.twig' with {
+            pageTitle: "Inscrivez-vous"|trans,
+            thumbConfiguration: thumbConfigurationHeader
+        } -%}
+        <div class="layout-zone bg-lighten">
+        <div class="container-fluid py-lg form-security-container">
         <div class="row d-flex">
             <div class="col-md-4 mx-auto recaptcha-referer">
                 {%- if app.user -%}
@@ -45,6 +47,8 @@
                     {{ form_end(form) }}
                 {%- endif -%}
             </div>
+        </div>
+        </div>
         </div>
     </div>
 {%- endblock -%}

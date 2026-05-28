@@ -13,7 +13,7 @@
         <server name="APP_ENV" value="test" force="true" />
         <server name="SHELL_VERBOSITY" value="-1" />
         <server name="SYMFONY_PHPUNIT_REMOVE" value="" />
-        <server name="SYMFONY_PHPUNIT_VERSION" value="7.5" />
+        <server name="SYMFONY_PHPUNIT_VERSION" value="11.5" />
 
         <!-- ###+ symfony/lock ### -->
         <!-- Choose one of the stores below -->
@@ -22,20 +22,25 @@
         <!-- ###- symfony/lock ### -->
 
         <!-- ###+ doctrine/doctrine-bundle ### -->
-        <!-- Format described at https://www.doctrine-project.org/projects/doctrine-dbal/en/latest/reference/configuration.html#connecting-using-a-url -->
-        <!-- IMPORTANT: You MUST configure your server version, either here or in config/packages/doctrine.yaml -->
-        <!--  -->
-        <!-- DATABASE_URL="sqlite:///%kernel.project_dir%/var/data.db" -->
-        <!-- DATABASE_URL="mysql://app:!ChangeMe!@127.0.0.1:3306/app?serverVersion=8.0.32&charset=utf8mb4" -->
-        <!-- DATABASE_URL="mysql://app:!ChangeMe!@127.0.0.1:3306/app?serverVersion=10.11.2-MariaDB&charset=utf8mb4" -->
-        <env name="DATABASE_URL" value="postgresql://app:!ChangeMe!@127.0.0.1:5432/app?serverVersion=15&amp;charset=utf8"/>
+        <!-- Test env : valeurs factices. Les tests ne se connectent pas reellement a la base. -->
+        <env name="DB_HOST" value="127.0.0.1"/>
+        <env name="DB_PORT" value="3306"/>
+        <env name="DB_USER" value="test"/>
+        <env name="DB_PASSWORD" value="test"/>
+        <env name="DB_NAME" value="test"/>
+        <env name="DB_VERSION" value="8.0"/>
+        <env name="DATABASE_PREFIX" value="cms"/>
         <!-- ###- doctrine/doctrine-bundle ### -->
+        <!-- App env defaults -->
+        <env name="APP_PROTOCOL" value="https"/>
+        <env name="APP_LOCALE" value="fr"/>
+        <env name="SECURITY_TOKEN" value="test-security-token"/>
         <!-- ###+ symfony/mailer ### -->
-        <!-- MAILER_DSN=null://null -->
+        <env name="MAILER_DSN" value="null://null"/>
         <!-- ###- symfony/mailer ### -->
         <!-- ###+ symfony/framework-bundle ### -->
-        <env name="APP_ENV" value="dev"/>
         <env name="APP_SECRET" value="d943448f27e6fcbbdb2adf949bd026df"/>
+        <env name="KERNEL_CLASS" value="App\Kernel"/>
         <!-- ###- symfony/framework-bundle ### -->
 
         <!-- ###+ symfony/messenger ### -->
@@ -47,8 +52,11 @@
     </php>
 
     <testsuites>
-        <testsuite name="Project Test Suite">
-            <directory>tests</directory>
+        <testsuite name="mail">
+            <directory>tests/Form/Manager</directory>
+            <directory>tests/Service/Core</directory>
+            <directory>tests/Security</directory>
+            <directory>tests/Message</directory>
         </testsuite>
     </testsuites>
 

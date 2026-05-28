@@ -33,6 +33,7 @@ security:
         user:
             pattern: ^/(secure/user|admin-%env(SECURITY_TOKEN)%)
             lazy: true
+            context: app
             provider: user_provider
             form_login:
                 login_path: front_index
@@ -83,6 +84,7 @@ security:
         user_front:
             pattern: ^/(espace-personnel|personal-space|espacio-personal|spazio-personale)/
             lazy: true
+            context: app
             provider: user_front_provider
             form_login:
                 login_path: security_front_forms
@@ -118,6 +120,7 @@ security:
         main:
             pattern: ^/
             lazy: true
+            context: app
             provider: chain_providers
             logout:
                 path: app_logout

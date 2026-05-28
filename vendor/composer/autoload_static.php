@@ -108,11 +108,16 @@ class ComposerStaticInitb6f039734207b56291bf391c5da7ade3
         '98aea6e41b9cb79b379b10f37ba1f0b7' => __DIR__ . '/..' . '/sabberworm/php-css-parser/src/RuleSet/RuleContainer.php',
         '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
         'a1105708a18b76903365ca1c4aa61b02' => __DIR__ . '/..' . '/symfony/translation/Resources/functions.php',
+        '92c8763cd6170fce6fcfe7e26b4e8c10' => __DIR__ . '/..' . '/symfony/phpunit-bridge/bootstrap.php',
         '74ed299072414d276bb7568fe71d5b0c' => __DIR__ . '/..' . '/tinify/tinify/lib/Tinify.php',
         '9635627915aaea7a98d6d14d04ca5b56' => __DIR__ . '/..' . '/tinify/tinify/lib/Tinify/Exception.php',
     );
 
     public static $prefixLengthsPsr4 = array (
+        'p' =>
+        array (
+            'phpDocumentor\\Reflection\\' => 25,
+        ),
         'l' =>
         array (
             'libphonenumber\\' => 15,
@@ -120,6 +125,10 @@ class ComposerStaticInitb6f039734207b56291bf391c5da7ade3
         'Z' =>
         array (
             'ZipStream\\' => 10,
+        ),
+        'W' =>
+        array (
+            'Webmozart\\Assert\\' => 17,
         ),
         'T' =>
         array (
@@ -195,6 +204,7 @@ class ComposerStaticInitb6f039734207b56291bf391c5da7ade3
             'Symfony\\Component\\Config\\' => 25,
             'Symfony\\Component\\Clock\\' => 24,
             'Symfony\\Component\\Cache\\' => 24,
+            'Symfony\\Component\\BrowserKit\\' => 29,
             'Symfony\\Component\\Asset\\' => 24,
             'Symfony\\Bundle\\WebProfilerBundle\\' => 33,
             'Symfony\\Bundle\\TwigBundle\\' => 26,
@@ -204,6 +214,7 @@ class ComposerStaticInitb6f039734207b56291bf391c5da7ade3
             'Symfony\\Bundle\\FrameworkBundle\\' => 31,
             'Symfony\\Bundle\\DebugBundle\\' => 27,
             'Symfony\\Bridge\\Twig\\' => 20,
+            'Symfony\\Bridge\\PhpUnit\\' => 23,
             'Symfony\\Bridge\\Monolog\\' => 23,
             'Symfony\\Bridge\\Doctrine\\' => 24,
             'Svg\\' => 4,
@@ -221,6 +232,7 @@ class ComposerStaticInitb6f039734207b56291bf391c5da7ade3
             'React\\Dns\\' => 10,
             'React\\ChildProcess\\' => 19,
             'React\\Cache\\' => 12,
+            'Radebatz\\TypeInfoExtras\\' => 24,
         ),
         'P' =>
         array (
@@ -244,12 +256,14 @@ class ComposerStaticInitb6f039734207b56291bf391c5da7ade3
         array (
             'Oro\\ORM\\' => 8,
             'Oro\\DBAL\\' => 9,
+            'OpenApi\\' => 8,
             'OTPHP\\' => 6,
         ),
         'N' =>
         array (
             'NunoMaduro\\PhpInsights\\' => 23,
             'Nette\\' => 6,
+            'Nelmio\\ApiDocBundle\\' => 20,
         ),
         'M' =>
         array (
@@ -342,6 +356,12 @@ class ComposerStaticInitb6f039734207b56291bf391c5da7ade3
     );
 
     public static $prefixDirsPsr4 = array (
+        'phpDocumentor\\Reflection\\' =>
+        array (
+            0 => __DIR__ . '/..' . '/phpdocumentor/reflection-docblock/src',
+            1 => __DIR__ . '/..' . '/phpdocumentor/type-resolver/src',
+            2 => __DIR__ . '/..' . '/phpdocumentor/reflection-common/src',
+        ),
         'libphonenumber\\' =>
         array (
             0 => __DIR__ . '/..' . '/giggsey/libphonenumber-for-php/src',
@@ -349,6 +369,10 @@ class ComposerStaticInitb6f039734207b56291bf391c5da7ade3
         'ZipStream\\' =>
         array (
             0 => __DIR__ . '/..' . '/maennchen/zipstream-php/src',
+        ),
+        'Webmozart\\Assert\\' =>
+        array (
+            0 => __DIR__ . '/..' . '/webmozart/assert/src',
         ),
         'Twig\\Extra\\TwigExtraBundle\\' =>
         array (
@@ -626,6 +650,10 @@ class ComposerStaticInitb6f039734207b56291bf391c5da7ade3
         array (
             0 => __DIR__ . '/..' . '/symfony/cache',
         ),
+        'Symfony\\Component\\BrowserKit\\' =>
+        array (
+            0 => __DIR__ . '/..' . '/symfony/browser-kit',
+        ),
         'Symfony\\Component\\Asset\\' =>
         array (
             0 => __DIR__ . '/..' . '/symfony/asset',
@@ -661,6 +689,10 @@ class ComposerStaticInitb6f039734207b56291bf391c5da7ade3
         'Symfony\\Bridge\\Twig\\' =>
         array (
             0 => __DIR__ . '/..' . '/symfony/twig-bridge',
+        ),
+        'Symfony\\Bridge\\PhpUnit\\' =>
+        array (
+            0 => __DIR__ . '/..' . '/symfony/phpunit-bridge',
         ),
         'Symfony\\Bridge\\Monolog\\' =>
         array (
@@ -720,6 +752,10 @@ class ComposerStaticInitb6f039734207b56291bf391c5da7ade3
         'React\\Cache\\' =>
         array (
             0 => __DIR__ . '/..' . '/react/cache/src',
+        ),
+        'Radebatz\\TypeInfoExtras\\' =>
+        array (
+            0 => __DIR__ . '/..' . '/radebatz/type-info-extras/src',
         ),
         'Psr\\SimpleCache\\' =>
         array (
@@ -790,6 +826,10 @@ class ComposerStaticInitb6f039734207b56291bf391c5da7ade3
         array (
             0 => __DIR__ . '/..' . '/oro/doctrine-extensions/src/Oro/DBAL',
         ),
+        'OpenApi\\' =>
+        array (
+            0 => __DIR__ . '/..' . '/zircote/swagger-php/src',
+        ),
         'OTPHP\\' =>
         array (
             0 => __DIR__ . '/..' . '/spomky-labs/otphp/src',
@@ -802,6 +842,10 @@ class ComposerStaticInitb6f039734207b56291bf391c5da7ade3
         array (
             0 => __DIR__ . '/..' . '/nette/schema/src',
             1 => __DIR__ . '/..' . '/nette/utils/src',
+        ),
+        'Nelmio\\ApiDocBundle\\' =>
+        array (
+            0 => __DIR__ . '/..' . '/nelmio/api-doc-bundle/src',
         ),
         'Monolog\\' =>
         array (

@@ -16,14 +16,18 @@
 {%- endblock -%}
 
 {%- block body -%}
-    {%- include 'front/'~websiteTemplate~'/blocks/title-header/default.html.twig' with {
-        pageTitle: "Connectez-vous"|trans|raw,
-        thumbConfiguration: thumbConfigurationHeader
-    } -%}
-    <div class="container mt-5 mb-5">
-        <div class="row d-flex justify-content-center">
-            <div class="col-lg-4">
-                {%- include 'front/'~websiteTemplate~'/actions/security/front/login-form.html.twig' -%}
+    <div id="content-security-front" class="template-page">
+        {%- include 'front/'~websiteTemplate~'/blocks/title-header/default.html.twig' with {
+            pageTitle: "Connectez-vous"|trans|raw,
+            thumbConfiguration: thumbConfigurationHeader
+        } -%}
+        <div class="layout-zone bg-lighten">
+            <div class="container py-lg">
+                <div class="row d-flex justify-content-center">
+                    <div class="col-lg-4">
+                        {%- include 'front/'~websiteTemplate~'/actions/security/front/login-form.html.twig' -%}
+                    </div>
+                </div>
             </div>
         </div>
     </div>

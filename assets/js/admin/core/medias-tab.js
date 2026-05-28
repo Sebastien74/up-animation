@@ -54,11 +54,9 @@ export default function (Routing, el) {
                         new ajaxPost();
                     }).catch(error => console.error(error.message));
 
-                    if (typeof bootstrap !== 'undefined') {
-                        document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(t => {
-                            new bootstrap.Tooltip(t);
-                        });
-                    }
+                    import('../plugins/tooltips').then(({default: tooltipsInit}) => {
+                        tooltipsInit();
+                    }).catch(error => console.error(error.message));
 
                     const newRect = el.getBoundingClientRect();
                     window.scrollTo({

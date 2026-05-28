@@ -1,4 +1,12 @@
 {
+    "2026-05-27 16:53:23": {
+        "type": "email",
+        "message": "Impossible to invoke a method (\"getSchemeAndHttpHost\") on a null variable in \"front\/default\/actions\/security\/email\/password-request.html.twig\" at line 5. in App\\Service\\Core\\MailerService at line 5"
+    },
+    "2026-05-27 16:53:22": {
+        "type": "email",
+        "message": "Impossible to access an attribute (\"locale\") on a null variable in \"front\/default\/actions\/security\/email\/confirmation-registration.html.twig\" at line 5. in App\\Service\\Core\\MailerService at line 5"
+    },
     "2026-05-19 15:54:31": {
         "type": "email",
         "message": "Connection could not be established with host \"localhost:1025\": stream_socket_client(): Unable to connect to localhost:1025 (Aucune connexion n’a pu être établie car l’ordinateur cible l’a expressément refusée) in App\\Service\\Core\\MailerService at line 154"

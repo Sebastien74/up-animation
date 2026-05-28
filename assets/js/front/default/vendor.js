@@ -93,7 +93,8 @@ lazyLoadComponent('font', () => import(/* webpackPreload: true */'./components/f
 lazyLoadComponent('#webmaster-box', () => import(/* webpackPreload: true */'../../vendor/components/webmaster'), (Webmaster, el) => new Webmaster(el));
 lazyLoadComponent('#scroll-top-btn', () => import(/* webpackPreload: true */'./components/scroll'), (Scroll) => new Scroll(), true);
 lazyLoadComponent('.scroll-link', () => import(/* webpackPreload: true */'./components/scroll'), (Scroll) => new Scroll());
-lazyLoadComponent('.newsletter-form-container', () => import(/* webpackPreload: true */'./components/form/newsletter'), (Newsletters) => new Newsletters(), true);
+lazyLoadComponent('.newsletter-form-container:not(.newsletter-modal *)', () => import(/* webpackPreload: true */'./components/form/newsletter'), (Newsletters) => new Newsletters(), true);
+lazyLoadComponent('.newsletter-modal[data-newsletter-modal-delay]', () => import(/* webpackPreload: true */'./components/form/newsletter'), (Newsletters) => new Newsletters());
 lazyLoadComponent('.step-form-ajax', () => import(/* webpackPreload: true */'./components/form/steps-form'), (StepForm) => new StepForm(), true);
 lazyLoadComponent('[data-scroll-bar="1"]', () => import('./components/scrollbar'), (ScrollSpy, els) => new ScrollSpy(els));
 lazyLoadComponent('.fixed-element', () => import('./components/fixed-element'), (FixedNews, el) => new FixedNews(el));

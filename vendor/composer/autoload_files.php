@@ -107,6 +107,7 @@ return array(
     '98aea6e41b9cb79b379b10f37ba1f0b7' => $vendorDir . '/sabberworm/php-css-parser/src/RuleSet/RuleContainer.php',
     '37a3dc5111fe8f707ab4c132ef1dbc62' => $vendorDir . '/guzzlehttp/guzzle/src/functions_include.php',
     'a1105708a18b76903365ca1c4aa61b02' => $vendorDir . '/symfony/translation/Resources/functions.php',
+    '92c8763cd6170fce6fcfe7e26b4e8c10' => $vendorDir . '/symfony/phpunit-bridge/bootstrap.php',
     '74ed299072414d276bb7568fe71d5b0c' => $vendorDir . '/tinify/tinify/lib/Tinify.php',
     '9635627915aaea7a98d6d14d04ca5b56' => $vendorDir . '/tinify/tinify/lib/Tinify/Exception.php',
 );

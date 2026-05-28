@@ -443,6 +443,7 @@ class CoreExtension extends AbstractExtension
             new TwigFunction('profile_addresses', [CoreRuntime\SecurityRuntime::class, 'getProfileAddresses']),
             new TwigFunction('online_users', [CoreRuntime\SecurityRuntime::class, 'getOnlineUsers']),
             new TwigFunction('granted', [CoreRuntime\SecurityRuntime::class, 'granted']),
+            new TwigFunction('adminBackUser', [CoreRuntime\SecurityRuntime::class, 'adminBackUser']),
             new TwigFunction('website', [CoreRuntime\WebsiteRuntime::class, 'website']),
             new TwigFunction('websiteId', [CoreRuntime\WebsiteRuntime::class, 'websiteId']),
             new TwigFunction('domain', [CoreRuntime\WebsiteRuntime::class, 'domain']),

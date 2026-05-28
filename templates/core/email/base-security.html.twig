@@ -1,0 +1,244 @@
+{%- trans_default_domain 'email' -%}
+
+{%- set locale = locale is defined ? locale : (website.configuration.locale is defined ? website.configuration.locale : 'fr') -%}
+{%- set isText = isText is defined ? isText : false -%}
+
+{%- set host = null -%}
+{%- if schemeAndHttpHost is defined -%}
+    {%- set host = schemeAndHttpHost -%}
+{%- elseif app.request -%}
+    {%- set host = app.request.getSchemeAndHttpHost() -%}
+{%- endif -%}
+
+{# Security palette - cooler tones, $info teal accent instead of orange.
+   Mirrors assets/scss/front/default/variables.scss : $info #0081ac, $secondary #22254e. #}
+{%- set color_paper = '#EEF1F5' -%}
+{%- set color_card = '#FFFFFF' -%}
+{%- set color_ink = '#22254E' -%}
+{%- set color_ink_soft = '#4E5071' -%}
+{%- set color_accent = '#0081AC' -%}
+{%- set color_accent_dark = '#005F80' -%}
+{%- set color_muted = '#7D7B8C' -%}
+{%- set color_rule = '#D5DCE6' -%}
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="https://www.w3.org/1999/xhtml" lang="{{ locale }}">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <!--[if !mso]><!-->
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <!--<![endif]-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="color-scheme" content="light only">
+        <meta name="supported-color-schemes" content="light only">
+        <title>{%- block metaTitle -%}{{ ('Up Animations!')|trans|striptags }}{%- endblock -%}</title>
+
+        {%- if not isText -%}
+            {# Universal websafe type system - rendered identically on Outlook desktop, Gmail, Apple Mail, all webmails. #}
+
+            <style type="text/css">
+                body, table, td, p, a { -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; }
+                table, td { mso-table-lspace:0pt; mso-table-rspace:0pt; }
+                img { -ms-interpolation-mode:bicubic; border:0; height:auto; line-height:100%; outline:none; text-decoration:none; }
+                .ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClass td, .ExternalClass div { line-height:100%; }
+                a[x-apple-data-detectors] { color:inherit !important; text-decoration:none !important; }
+
+                @media screen and (max-width: 620px) {
+                    .container       { width:100% !important; }
+                    .px              { padding-left:24px !important; padding-right:24px !important; }
+                    .px-lg           { padding-left:24px !important; padding-right:24px !important; }
+                    .py-lg           { padding-top:32px !important; padding-bottom:32px !important; }
+                    .title-display   { font-size:32px !important; line-height:1.05 !important; }
+                    .kicker          { font-size:11px !important; }
+                    .cta a           { display:block !important; width:100% !important; box-sizing:border-box !important; }
+                    .stamp           { display:none !important; }
+                    .otp             { font-size:30px !important; letter-spacing:0.24em !important; }
+                }
+            </style>
+            <!--[if mso]>
+            <style type="text/css">
+                body, table, td, p, div, a { font-family:Georgia, 'Times New Roman', serif !important; }
+                .body-sans, .body-sans * { font-family:'Segoe UI', Tahoma, Arial, sans-serif !important; }
+                .mono, .mono * { font-family:Consolas, 'Lucida Console', Monaco, monospace !important; }
+            </style>
+            <xml>
+                <o:OfficeDocumentSettings>
+                    <o:AllowPNG/>
+                    <o:PixelsPerInch>96</o:PixelsPerInch>
+                </o:OfficeDocumentSettings>
+            </xml>
+            <![endif]-->
+        {%- endif -%}
+    </head>
+
+    <body style="margin:0; padding:0; background-color:{{ color_paper }}; font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;">
+
+        {%- if not isText -%}
+            <div class="preheader" style="display:none; max-width:0; max-height:0; overflow:hidden; font-size:1px; line-height:1px; color:{{ color_paper }}; opacity:0; mso-hide:all;">
+                {%- block preheader -%}{%- endblock -%}
+            </div>
+        {%- endif -%}
+
+        <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color:{{ color_paper }};">
+            <tr>
+                <td align="center" style="padding:48px 16px;">
+
+                    {# Card #}
+                    <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="600" class="container"
+                           style="width:600px; max-width:600px; background-color:{{ color_card }}; border:1px solid {{ color_rule }}; box-shadow:0 24px 70px rgba(34,37,78,0.10);">
+
+                        {# Top bar : teal ribbon - security signature #}
+                        <tr>
+                            <td style="background-color:{{ color_accent }}; height:6px; line-height:6px; font-size:6px;">&nbsp;</td>
+                        </tr>
+
+                        {# Header : logo + lock icon kicker right #}
+                        <tr>
+                            <td style="padding:28px 40px 24px 40px;" class="px-lg">
+                                <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
+                                    <tr>
+                                        <td align="left" valign="middle" style="font-family:Georgia, 'Times New Roman', Times, serif; font-weight:900; font-size:22px; letter-spacing:-0.02em; color:{{ color_ink }};">
+                                            {%- if email is defined -%}
+                                                <a href="{{ host ?: 'https://up-animations.fr' }}" target="_blank" style="display:inline-block; text-decoration:none; color:{{ color_ink }};">
+                                                    <img src="{{ email.image('@images/medias/logo-email.png') }}"
+                                                         alt="{{ ('Up Animations!')|trans|raw }}"
+                                                         width="120"
+                                                         style="display:block; border:0; outline:none; text-decoration:none; height:auto; max-width:120px;">
+                                                </a>
+                                            {%- else -%}
+                                                <span style="font-family:Georgia, 'Times New Roman', Times, serif; font-weight:900; letter-spacing:-0.02em;">Up&nbsp;Animations!</span>
+                                            {%- endif -%}
+                                        </td>
+                                        <td align="right" valign="middle" class="mono" style="font-family:Consolas, 'Lucida Console', Monaco, monospace; font-size:11px; font-weight:500; letter-spacing:0.12em; text-transform:uppercase; color:{{ color_accent }};">
+                                            {%- block headerRight -%}
+                                                {{ ('Securite')|trans|raw }}
+                                            {%- endblock -%}
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+
+                        {# Rule under header - using accent color for security signal #}
+                        <tr>
+                            <td style="padding:0 40px;" class="px-lg">
+                                <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
+                                    <tr>
+                                        <td style="border-top:1px solid {{ color_rule }}; height:1px; line-height:1px; font-size:1px;">&nbsp;</td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+
+                        {# Kicker : teal uppercase mono. Optional. #}
+                        {%- if block('kicker')|striptags|length > 0 -%}
+                            <tr>
+                                <td style="padding:32px 40px 12px 40px;" class="px-lg">
+                                    <div class="kicker mono" style="font-family:Consolas, 'Lucida Console', Monaco, monospace; font-size:12px; font-weight:600; letter-spacing:0.18em; text-transform:uppercase; color:{{ color_accent }};">
+                                        {%- block kicker -%}{%- endblock -%}
+                                    </div>
+                                </td>
+                            </tr>
+                        {%- endif -%}
+
+                        {# Title : editorial serif. Optional. #}
+                        {%- if block('title')|striptags|length > 0 -%}
+                            <tr>
+                                <td style="padding:{% if block('kicker')|striptags|length > 0 %}4px{% else %}40px{% endif %} 40px 8px 40px;" class="px-lg">
+                                    <div class="title-display" style="font-family:Georgia, 'Times New Roman', Times, serif; font-size:40px; line-height:1.06; font-weight:700; letter-spacing:-0.025em; color:{{ color_ink }};">
+                                        {%- block title -%}{%- endblock -%}
+                                    </div>
+                                </td>
+                            </tr>
+                        {%- endif -%}
+
+                        {# Body #}
+                        {%- if block('body')|striptags|length > 0 -%}
+                            <tr>
+                                <td style="padding:20px 40px 8px 40px;" class="px-lg">
+                                    <div class="body-sans" style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif; font-size:15px; line-height:1.65; font-weight:400; color:{{ color_ink_soft }};">
+                                        {%- block body -%}{%- endblock -%}
+                                    </div>
+                                </td>
+                            </tr>
+                        {%- endif -%}
+
+                        {# CTA #}
+                        {%- if block('cta')|striptags|length > 0 -%}
+                            <tr>
+                                <td style="padding:24px 40px 8px 40px;" class="px-lg cta">
+                                    {%- block cta -%}{%- endblock -%}
+                                </td>
+                            </tr>
+                        {%- endif -%}
+
+                        {# Info : teal-bordered aside #}
+                        {%- if block('info')|striptags|length > 0 -%}
+                            <tr>
+                                <td style="padding:32px 40px 8px 40px;" class="px-lg">
+                                    <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
+                                        <tr>
+                                            <td style="border-left:3px solid {{ color_accent }}; padding:4px 0 4px 16px;">
+                                                <div class="body-sans" style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif; font-size:13px; line-height:1.6; font-weight:400; color:{{ color_muted }}; font-style:italic;">
+                                                    {%- block info -%}{%- endblock -%}
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        {%- endif -%}
+
+                        {# Bottom rule #}
+                        <tr>
+                            <td style="padding:40px 40px 0 40px;" class="px-lg">
+                                <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
+                                    <tr>
+                                        <td style="border-top:1px solid {{ color_rule }}; height:1px; line-height:1px; font-size:1px;">&nbsp;</td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+
+                        {# Footer #}
+                        <tr>
+                            <td style="padding:24px 40px 28px 40px;" class="px-lg">
+                                <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
+                                    <tr>
+                                        <td align="left" valign="top" class="mono" style="font-family:Consolas, 'Lucida Console', Monaco, monospace; font-size:11px; font-weight:500; letter-spacing:0.06em; color:{{ color_muted }};">
+                                            {%- block footer -%}
+                                                &copy;&nbsp;{{ "now"|date("Y") }}&nbsp;&middot;&nbsp;{{ ('Up Animations!')|trans|raw|upper }}<br>
+                                                {%- if host -%}
+                                                    <a href="{{ host }}" style="color:{{ color_muted }}; text-decoration:none;">{{ host|replace({'https://': '', 'http://': ''}) }}</a>
+                                                {%- endif -%}
+                                            {%- endblock -%}
+                                        </td>
+                                        <td align="right" valign="top" class="mono stamp" style="font-family:Consolas, 'Lucida Console', Monaco, monospace; font-size:11px; font-weight:500; letter-spacing:0.06em; color:{{ color_accent }};">
+                                            {%- block footerRight -%}
+                                                {{ ('Securite')|trans|raw|upper }}&nbsp;/&nbsp;{{ locale|upper }}
+                                            {%- endblock -%}
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+
+                    </table>
+
+                    <div style="height:24px; line-height:24px; font-size:24px;">&nbsp;</div>
+                    <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="600" class="container" style="width:600px; max-width:600px;">
+                        <tr>
+                            <td align="center" class="mono" style="font-family:Consolas, 'Lucida Console', Monaco, monospace; font-size:10px; font-weight:400; letter-spacing:0.14em; text-transform:uppercase; color:{{ color_muted }}; padding:0 24px;">
+                                {%- block disclaimer -%}
+                                    {{ ('Email automatique - ne pas repondre. Ne partagez jamais vos identifiants.')|trans|raw }}
+                                {%- endblock -%}
+                            </td>
+                        </tr>
+                    </table>
+
+                </td>
+            </tr>
+        </table>
+
+    </body>
+</html>

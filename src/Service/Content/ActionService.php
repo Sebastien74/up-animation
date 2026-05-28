@@ -112,7 +112,7 @@ class ActionService
         $orders = explode('-', $listing->getOrderBy());
         $sort = $orders[0];
         $orderBy = strtoupper($orders[1]);
-        $qb = $this->optimizedQueryBuilder($orderBy[0], strtoupper($orderBy[1]))
+        $qb = $this->optimizedQueryBuilder($sort, $orderBy)
             ->setMaxResults(1);
         if (method_exists($listing, 'getCategories')) {
             $categoriesIds = [];

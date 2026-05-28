@@ -2,11 +2,30 @@
 
 {%- trans_default_domain 'email' -%}
 
+{%- block metaTitle -%}{{ ("Nouvel inscrit a la newsletter")|trans|striptags }}{%- endblock -%}
+
+{%- block preheader -%}
+    {{ ("Un nouveau contact a rejoint votre liste.")|trans|raw }}
+{%- endblock -%}
+
+{%- block headerRight -%}{{ ("Notification interne")|trans|raw }}{%- endblock -%}
+
+{%- block kicker -%}{{ ("Newsletter / Inscription")|trans|raw }}{%- endblock -%}
+
+{%- block title -%}{{ ("Un nouvel inscrit.")|trans|raw }}{%- endblock -%}
+
 {%- block body -%}
-    <tr>
-        <td align="center" bgcolor="#ffffff" style="padding: 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;">
-            <h2>{{ "Vous avez un nouvel inscrit à la newsletter !!" }}</h2>
-            <p><strong>{{ "Email :"|trans|raw }}</strong> {{ stringEmail }}</p>
-        </td>
-    </tr>
+    <p style="margin:0 0 14px 0;">{{ ("Une nouvelle adresse vient d etre confirmee sur votre liste de diffusion.")|trans|raw }}</p>
+    <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="margin-top:18px; border-top:1px solid #E4DCCC; border-bottom:1px solid #E4DCCC;">
+        <tr>
+            <td style="padding:14px 0;">
+                <div style="font-family:Consolas, 'Lucida Console', Monaco, monospace; font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:#7D7B8C; margin-bottom:6px;">{{ ("Email")|trans|raw }}</div>
+                <div style="font-family:Consolas, 'Lucida Console', Monaco, monospace; font-size:15px; font-weight:600; color:#22254E; word-break:break-all;">{{ stringEmail }}</div>
+            </td>
+        </tr>
+    </table>
+{%- endblock -%}
+
+{%- block info -%}
+    {{ ("Aucune action n est requise. Cette notification confirme simplement la prise en compte du nouvel inscrit.")|trans|raw }}
 {%- endblock -%}

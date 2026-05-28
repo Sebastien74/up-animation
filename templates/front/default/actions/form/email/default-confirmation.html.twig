@@ -2,10 +2,26 @@
 
 {%- trans_default_domain 'email' -%}
 
+{%- block metaTitle -%}{{ ("Confirmation de votre demande")|trans|striptags }}{%- endblock -%}
+
+{%- block preheader -%}
+    {{ ("Nous avons bien recu votre demande.")|trans|raw }}
+{%- endblock -%}
+
+{%- block headerRight -%}{{ ("Formulaire")|trans|raw }}{%- endblock -%}
+
+{%- block kicker -%}{{ ("Accuse de reception")|trans|raw }}{%- endblock -%}
+
+{%- block title -%}{{ ("Demande enregistree.")|trans|raw }}{%- endblock -%}
+
 {%- block body -%}
-    <tr>
-        <td align="center" bgcolor="#ffffff" style="padding: 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;">
-            {{ message|raw }}
-        </td>
-    </tr>
+    {%- if message is defined and message -%}
+        {{ message|raw }}
+    {%- else -%}
+        <p style="margin:0;">{{ ("Votre demande a bien ete enregistree. Nous reviendrons vers vous tres prochainement.")|trans|raw }}</p>
+    {%- endif -%}
+{%- endblock -%}
+
+{%- block info -%}
+    {{ ("Cet email confirme la bonne reception de vos informations. Aucune action supplementaire n est requise.")|trans|raw }}
 {%- endblock -%}

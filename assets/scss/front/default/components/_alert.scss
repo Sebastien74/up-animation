@@ -1,0 +1,83 @@
+@charset "UTF-8";
+
+@import "../variables";
+@import "../../../vendor/mixin/media-queries";
+
+/* -----------------------------------------------------------------
+    Module : Alerts
+    Copyright : 2026
+    Author : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+------------------------------------------------------------------ */
+
+/*! purgecss start ignore */
+
+.alert {
+
+    font-size: $alert-font-size;
+    font-weight: $alert-font-weight;
+    line-height: $alert-line-height;
+    animation: alertSlideIn .45s $transition-base-timing both;
+
+    strong,
+    b {
+        font-weight: 600;
+    }
+
+    .alert-icon {
+        width: 36px;
+        height: 36px;
+        box-shadow: 0 6px 14px -6px currentColor;
+        transition: transform $transition-fast;
+
+        i,
+        [class^="icon-"],
+        [class*=" icon-"] {
+            font-size: 15px;
+            line-height: 1;
+        }
+
+        @include mediaQuery(max-md) {
+            width: 32px;
+            height: 32px;
+
+            i,
+            [class^="icon-"],
+            [class*=" icon-"] {
+                font-size: 13px;
+            }
+        }
+    }
+
+    &:hover .alert-icon {
+        transform: scale(1.06);
+    }
+
+    p:last-child {
+        margin-bottom: 0;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        animation: none;
+
+        .alert-icon {
+            transition: none;
+        }
+
+        &:hover .alert-icon {
+            transform: none;
+        }
+    }
+}
+
+@keyframes alertSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-6px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/*! purgecss end ignore */

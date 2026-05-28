@@ -1,0 +1,11 @@
+app.swagger_ui:
+    path: /admin-%security_token%/development/mail-tests/doc
+    methods: GET
+    defaults: { _controller: nelmio_api_doc.controller.scalar, area: default }
+    schemes: ['%protocol%']
+
+app.swagger:
+    path: /admin-%security_token%/development/mail-tests/doc.json
+    methods: GET
+    defaults: { _controller: nelmio_api_doc.controller.swagger_jsonld, area: default }
+    schemes: ['%protocol%']
