@@ -198,9 +198,7 @@ final class InformationModel extends BaseModel
             $logos['social-networks'] = $networks;
         }
 
-        $fp = fopen($cacheDirname, 'w');
-        fwrite($fp, json_encode($logos, JSON_PRETTY_PRINT));
-        fclose($fp);
+        file_put_contents($cacheDirname, json_encode($logos, JSON_PRETTY_PRINT), LOCK_EX);
 
         return self::$logosCache[$cacheId] = $logos;
     }

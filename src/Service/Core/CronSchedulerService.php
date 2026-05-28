@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Service\Core;
 
 use App\Command\CronCommand;
+use App\Entity\Core\Domain;
 use App\Entity\Core\ScheduledCommand;
 use App\Entity\Core\Website;
 use Cron\CronExpression;
@@ -157,13 +158,9 @@ class CronSchedulerService
             $commandLogger->warning($cmdMessage);
             $website = $command->getWebsite();
             if ($command->isLocked() && $website instanceof Website) {
-                $domainName = null;
-                foreach ($website->getConfiguration()->getDomains() as $domain) {
-                    if ($domain->isAsDefault()) {
-                        $domainName = $domain->getName();
-                        break;
-                    }
-                }
+                $defaultDomain = $this->entityManager->getRepository(Domain::class)
+                    ->findOneBy(['configuration' => $website->getConfiguration(), 'asDefault' => true]);
+                $domainName = $defaultDomain?->getName();
                 if ($domainName) {
                     $emails = ['dev@up-animations.fr'];
                     $message = 'CRON '.$command->getAdminName().' FAILED';
