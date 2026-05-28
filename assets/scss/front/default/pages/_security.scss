@@ -84,7 +84,11 @@
 
 #form-login,
 #form-admin-switch,
-#user-front-form {
+#user-front-form,
+#user-registration-form,
+#password-request-form,
+#password-confirm-form,
+#form-2fa {
 
     .group-form {
         margin-bottom: 1.75rem !important;
@@ -198,41 +202,41 @@
 
     .form-check {
 
-        align-items: center !important;
         gap: .65rem;
-        margin-bottom: 0 !important;
-        padding-left: 0;
+        margin-bottom: .5rem;
 
         .form-check-input {
-            border: 1px solid rgba($secondary, .25) !important;
-            border-radius: 50% !important;
-            float: none;
-            height: 22px;
-            margin-left: 0;
-            margin-top: 0 !important;
-            width: 22px;
 
-            &:checked {
-                background-color: $white !important;
-                background-image: radial-gradient(circle, $primary 0 5px, transparent 6px) !important;
-                border-color: $primary !important;
-                box-shadow: none !important;
-            }
+            border-color: rgba($secondary, .35) !important;
 
             &:focus {
                 box-shadow: 0 0 0 .2rem rgba($primary, .15) !important;
             }
         }
 
+        .form-check-label,
         label {
             color: $secondary !important;
-            font-size: 14px !important;
+            font-size: 14px;
             font-weight: 500;
-            line-height: 1;
+            line-height: 1.2;
         }
     }
 
+    fieldset.form-check-inline,
+    > div.form-check-inline,
+    .form-check-inline {
+        align-items: center;
+        column-gap: 1.5rem;
+        row-gap: .4rem;
+    }
+
+    .form-group-profile_registration {
+        padding: 0 !important;
+    }
+
     #to-recover {
+
         color: $secondary !important;
         text-decoration: none;
         transition: color .2s ease;

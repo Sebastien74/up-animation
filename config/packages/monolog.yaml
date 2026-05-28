@@ -149,8 +149,8 @@ when@prod:
                 handler: symfony_mailer_critical
             symfony_mailer_critical:
                 type: symfony_mailer
-                from_email: 'dev@agence-felix.fr'
-                to_email: ['dev@agence-felix.fr']
+                from_email: 'dev@up-animations.fr'
+                to_email: ['dev@up-animations.fr']
                 subject: 'An Error Occurred! %%message%%'
                 level: critical
                 formatter:  monolog.formatter.html

@@ -5,23 +5,23 @@
 {%- block metaTitle -%}{{ ("Confirmation de votre demande")|trans|striptags }}{%- endblock -%}
 
 {%- block preheader -%}
-    {{ ("Nous avons bien recu votre demande.")|trans|raw }}
+    {{ ("Nous avons bien reçu votre demande.")|trans|raw }}
 {%- endblock -%}
 
 {%- block headerRight -%}{{ ("Formulaire")|trans|raw }}{%- endblock -%}
 
-{%- block kicker -%}{{ ("Accuse de reception")|trans|raw }}{%- endblock -%}
+{%- block kicker -%}{{ ("Accusé de réception")|trans|raw }}{%- endblock -%}
 
-{%- block title -%}{{ ("Demande enregistree.")|trans|raw }}{%- endblock -%}
+{%- block title -%}{{ ("Demande enregistrée.")|trans|raw }}{%- endblock -%}
 
 {%- block body -%}
     {%- if message is defined and message -%}
         {{ message|raw }}
     {%- else -%}
-        <p style="margin:0;">{{ ("Votre demande a bien ete enregistree. Nous reviendrons vers vous tres prochainement.")|trans|raw }}</p>
+        <p style="margin:0;">{{ ("Votre demande a bien été enregistrée. Nous reviendrons vers vous très prochainement.")|trans|raw }}</p>
     {%- endif -%}
 {%- endblock -%}
 
 {%- block info -%}
-    {{ ("Cet email confirme la bonne reception de vos informations. Aucune action supplementaire n est requise.")|trans|raw }}
+    {{ ("Cet email confirme la bonne réception de vos informations. Aucune action supplémentaire n'est requise.")|trans|raw }}
 {%- endblock -%}

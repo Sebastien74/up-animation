@@ -271,8 +271,8 @@ final class InformationModel extends BaseModel
     {
         $main = null;
         $emails = IntlModel::intls($information, 'emails', false);
-        $from = 'dev@agence-felix.fr';
-        $noReply = 'noreply@agence-felix.fr';
+        $from = 'dev@up-animations.fr';
+        $noReply = 'noreply@up-animations.fr';
         $forFront = [];
 
         foreach ($emails as $email) {

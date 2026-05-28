@@ -130,7 +130,7 @@
                 {%- if mediaRelation.intl.targetLink is defined -%}
                     <h4 class="main-subtitle collapsed" data-bs-toggle="collapse" href="#collapse-link-{{ mediaRelationId }}" role="button" aria-expanded="false" aria-controls="collapse-link-{{ mediaRelationId }}">
                         <i class="icm-link"></i>{{ "Lien"|trans|raw }}
-                        <i class="icm-chevron-down ms-auto"></i>
+                        <i class="icm-chevron-down ms-auto small"></i>
                     </h4>
                     <div id="collapse-link-{{ mediaRelationId }}" class="collapse">
                         <div class="card-body pb-2 border mb-4 radius">
@@ -215,7 +215,7 @@
 
                         <h4 class="main-subtitle" data-bs-toggle="collapse" href="#collapse-config-{{ mediaRelationId }}" role="button" aria-expanded="true" aria-controls="collapse-config-{{ mediaRelationId }}">
                             <i class="icm-cog"></i>{{ "Configuration"|trans|raw }}
-                            <i class="icm-chevron-down ms-auto"></i>
+                            <i class="icm-chevron-down ms-auto small"></i>
                         </h4>
                         <div id="collapse-config-{{ mediaRelationId }}" class="collapse show">
                             <div class="card">
@@ -234,7 +234,7 @@
                                     {%- if mediaRelation.intl.title is defined or mediaRelation.intl.introduction is defined -%}
                                         <h4 class="main-subtitle collapsed" data-bs-toggle="collapse" href="#collapse-media-content-{{ mediaRelationId }}" aria-expanded="false" aria-controls="collapse-media-content-{{ mediaRelationId }}">
                                             <i class="icm-text"></i>{{ "Contenus"|trans|raw }}
-                                            <i class="icm-chevron-down ms-auto"></i>
+                                            <i class="icm-chevron-down ms-auto small"></i>
                                         </h4>
                                         <div id="collapse-media-content-{{ mediaRelationId }}" class="collapse">
                                             <div class="row">
@@ -264,7 +264,7 @@
 
                                     <h4 class="main-subtitle collapsed" data-bs-toggle="collapse" href="#collapse-media-configuration-{{ mediaRelationId }}" aria-expanded="false" aria-controls="collapse-media-configuration-{{ mediaRelationId }}">
                                         <i class="icm-cog"></i>{{ "Configuration"|trans|raw }}
-                                        <i class="icm-chevron-down ms-auto"></i>
+                                        <i class="icm-chevron-down ms-auto small"></i>
                                     </h4>
                                     <div id="collapse-media-configuration-{{ mediaRelationId }}" class="collapse">
                                         <div class="row">
@@ -301,7 +301,7 @@
                                     {%- if mediaRelation.pictogram is defined or mediaRelation.pictogramMaxWidth is defined or mediaRelation.pictogramMaxHeight is defined -%}
                                         <h4 class="main-subtitle collapsed" data-bs-toggle="collapse" href="#collapse-media-pictogram-{{ mediaRelationId }}" aria-expanded="false" aria-controls="collapse-media-pictogram-{{ mediaRelationId }}">
                                             <i class="icm-fire"></i>{{ "Pictogramme"|trans|raw }}
-                                            <i class="icm-chevron-down ms-auto"></i>
+                                            <i class="icm-chevron-down ms-auto small"></i>
                                         </h4>
                                         <div id="collapse-media-pictogram-{{ mediaRelationId }}" class="collapse">
                                             <div class="row">

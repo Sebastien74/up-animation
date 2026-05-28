@@ -165,10 +165,10 @@ class CronSchedulerService
                     }
                 }
                 if ($domainName) {
-                    $emails = ['dev@agence-felix.fr'];
+                    $emails = ['dev@up-animations.fr'];
                     $message = 'CRON '.$command->getAdminName().' FAILED';
                     foreach ($emails as $email) {
-                        $notification = (new NotificationEmail())->from('dev@agence-felix.fr')
+                        $notification = (new NotificationEmail())->from('dev@up-animations.fr')
                             ->to($email)
                             ->subject('CRON ERROR')
                             ->markdown("<p>An error has occurred on website <a href='".$domainName."'>".$domainName.'</a></p><br><p><small>'.$message.'</small></p>')

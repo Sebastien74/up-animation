@@ -70,7 +70,7 @@
 
     &:not(.btn-circle) {
 
-        display: inline-block;
+        display: flex;
         border-radius: $btn-border-radius;
         line-height: 1rem;
         font-weight: 800;

@@ -80,6 +80,46 @@ class ConfigurationManager
     }
 
     /**
+     * Remove duplicate ConfigurationMediaRelation entries.
+     *
+     * A duplicate is any relation sharing the same (locale, categorySlug)
+     * tuple within the same configuration. The lowest id of each tuple is
+     * kept; the others are removed (orphanRemoval handles DB deletion).
+     */
+    public function removeDuplicateMediaRelations(Configuration $configuration): int
+    {
+        $groups = [];
+        foreach ($configuration->getMediaRelations() as $mediaRelation) {
+            $locale = $mediaRelation->getLocale();
+            $category = $mediaRelation->getCategorySlug();
+            if (!$locale || null === $category) {
+                continue;
+            }
+            $key = $locale.'|'.$category;
+            $groups[$key][] = $mediaRelation;
+        }
+
+        $removed = 0;
+        foreach ($groups as $relations) {
+            if (count($relations) < 2) {
+                continue;
+            }
+            usort($relations, static fn ($a, $b) => ($a->getId() ?? PHP_INT_MAX) <=> ($b->getId() ?? PHP_INT_MAX));
+            array_shift($relations);
+            foreach ($relations as $duplicate) {
+                $configuration->removeMediaRelation($duplicate);
+                ++$removed;
+            }
+        }
+
+        if ($removed > 0) {
+            $this->entityManager->flush();
+        }
+
+        return $removed;
+    }
+
+    /**
      * @preUpdate
      */
     public function preUpdate(Configuration $configuration): void
@@ -152,38 +192,55 @@ class ConfigurationManager
      */
     private function synchronizeMedias(Configuration $configuration): void
     {
-        $defaultLocalesMedias = $this->getDefaultLocaleMedias($configuration);
-        $defaultLocale = $configuration->getLocale();
-        $repository = $this->entityManager->getRepository(ConfigurationMediaRelation::class);
-        $flush = false;
+        $this->removeDuplicateMediaRelations($configuration);
         $this->setManifest($configuration);
 
-        foreach (self::ADD_CUSTOM_DEFAULT_MEDIAS as $category) {
-            $existing = false;
-            foreach ($defaultLocalesMedias as $defaultLocaleMedia) {
-                if ($defaultLocaleMedia->getCategorySlug() === $category) {
-                    $existing = true;
-                }
+        $defaultLocale = $configuration->getLocale();
+        $locales = $configuration->getAllLocales();
+        $existingByKey = $this->buildExistingMediaRelationMap($configuration);
+
+        $defaultCategoryRepresentatives = [];
+        foreach ($configuration->getMediaRelations() as $mediaRelation) {
+            if ($mediaRelation->getLocale() !== $defaultLocale) {
+                continue;
             }
-            if (!$existing) {
-                foreach ($configuration->getAllLocales() as $locale) {
-                    $this->addMedia($locale, $configuration, null, $category);
-                    $this->entityManager->persist($configuration);
-                    $this->entityManager->flush();
-                    $this->entityManager->refresh($configuration);
+            $category = $mediaRelation->getCategorySlug();
+            if (null === $category || isset($defaultCategoryRepresentatives[$category])) {
+                continue;
+            }
+            $defaultCategoryRepresentatives[$category] = $mediaRelation;
+        }
+
+        $flush = false;
+
+        foreach (self::ADD_CUSTOM_DEFAULT_MEDIAS as $category) {
+            if (isset($defaultCategoryRepresentatives[$category])) {
+                continue;
+            }
+            foreach ($locales as $locale) {
+                if (isset($existingByKey[$locale.'|'.$category])) {
+                    continue;
                 }
+                $this->addMedia($locale, $configuration, null, $category);
+                $existingByKey[$locale.'|'.$category] = true;
+                $flush = true;
             }
         }
 
-        foreach ($defaultLocalesMedias as $mediaRelation) {
-            foreach ($configuration->getAllLocales() as $locale) {
-                if ($locale !== $defaultLocale && !in_array($mediaRelation->getCategorySlug(), self::ADD_CUSTOM_DEFAULT_MEDIAS)) {
-                    $existing = $repository->findDefaultLocaleCategory($configuration->getWebsite(), $mediaRelation->getCategorySlug(), $locale);
-                    if (!$existing) {
-                        $this->addMedia($locale, $configuration, $mediaRelation);
-                        $flush = true;
-                    }
+        foreach ($defaultCategoryRepresentatives as $category => $mediaRelation) {
+            if (in_array($category, self::ADD_CUSTOM_DEFAULT_MEDIAS, true)) {
+                continue;
+            }
+            foreach ($locales as $locale) {
+                if ($locale === $defaultLocale) {
+                    continue;
                 }
+                if (isset($existingByKey[$locale.'|'.$category])) {
+                    continue;
+                }
+                $this->addMedia($locale, $configuration, $mediaRelation);
+                $existingByKey[$locale.'|'.$category] = true;
+                $flush = true;
             }
         }
 
@@ -191,6 +248,25 @@ class ConfigurationManager
             $this->entityManager->persist($configuration);
             $this->entityManager->flush();
         }
+    }
+
+    /**
+     * Build an in-memory presence map keyed by "locale|categorySlug" to avoid
+     * duplicate creation when several relations share the same tuple before flush.
+     */
+    private function buildExistingMediaRelationMap(Configuration $configuration): array
+    {
+        $map = [];
+        foreach ($configuration->getMediaRelations() as $mediaRelation) {
+            $locale = $mediaRelation->getLocale();
+            $category = $mediaRelation->getCategorySlug();
+            if (!$locale) {
+                continue;
+            }
+            $map[$locale.'|'.($category ?? '')] = true;
+        }
+
+        return $map;
     }
 
     /**
@@ -284,22 +360,6 @@ class ConfigurationManager
             $this->entityManager->persist($configuration);
             $this->entityManager->flush();
         }
-    }
-
-    /**
-     * Get default medias.
-     */
-    private function getDefaultLocaleMedias(Configuration $configuration): array
-    {
-        $medias = [];
-        $defaultLocale = $configuration->getLocale();
-        foreach ($configuration->getMediaRelations() as $mediaRelation) {
-            if ($mediaRelation->getLocale() === $defaultLocale) {
-                $medias[] = $mediaRelation;
-            }
-        }
-
-        return $medias;
     }
 
     /**

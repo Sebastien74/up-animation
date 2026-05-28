@@ -6,36 +6,37 @@
 {%- block metaRobots -%}noindex{%- endblock -%}
 
 {%- block stylesheets -%}
-    {{ encore_entry_link_tags('front-'~websiteTemplate~'-security', null, webpack) }}
+    {{ encore_entry_link_tags('front-'~websiteTemplate~'-'~templateName~'-'~frontTheme, null, webpack, {nonce: csp_nonce()}) }}
+    <link rel="modulepreload" href="{{ preload(asset('build/front/'~websiteTemplate~'/front-'~websiteTemplate~'-'~templateName~'.js', webpack), {as: 'script', importance: 'low'}) }}" as="script" fetchpriority="low" nonce="{{ csp_nonce() }}">
     {{ parent() }}
 {%- endblock -%}
 
 {%- block javascripts -%}
     {{ parent() }}
-    {{ encore_entry_script_tags('front-'~websiteTemplate~'-security', null, webpack, {defer: true}) }}
+    {{ encore_entry_script_tags('front-'~websiteTemplate~'-'~templateName, null, webpack, {defer: true, nonce: csp_nonce()}) }}
 {%- endblock -%}
 
 {%- block body -%}
     <div id="content-security-front" class="template-page">
-        <div class="layout-zone bg-lighten">
+        <div class="layout-zone">
             <div class="container py-lg">
                 <div class="row d-flex justify-content-center">
                     <div class="col-lg-4">
-                <div class=" card form-container login-card shadow-lg border-0 h-100">
-                    <div class="card-body form-ajax-container p-4 p-md-5 text-center">
-                        <div class="login-head mb-4 pb-2 text-start">
-                            <p class="login-eyebrow text-uppercase mb-2">{{ "Connexion"|trans|raw }}</p>
-                            <h3 class="login-title text-uppercase fw-800 mb-0">{{ "Erreur"|trans|raw }}</h3>
+                        <div class="bg-light card form-container login-card shadow-md border-0 h-100">
+                            <div class="card-body form-ajax-container p-4 p-md-5 text-center">
+                                <div class="login-head mb-4 pb-2 text-start">
+                                    <p class="login-eyebrow text-uppercase mb-2">{{ "Connexion"|trans|raw }}</p>
+                                    <h3 class="login-title text-uppercase fw-800 mb-0">{{ "Erreur"|trans|raw }}</h3>
+                                </div>
+                                {{ 'fal exclamation-triangle'|icon(null, 45, 'danger mb-4') }}
+                                <p class="mb-4">{{ message|raw }}</p>
+                                <a href="{{ path('security_front_login') }}" class="btn btn-primary text-uppercase w-100">
+                                    {{ 'Retourner à la page de connexion'|trans|raw }}
+                                </a>
+                            </div>
                         </div>
-                        {{ 'fal exclamation-triangle'|icon(null, 45, 'danger mb-4') }}
-                        <p class="mb-4">{{ message|raw }}</p>
-                        <a href="{{ path('security_front_login') }}" class="btn btn-primary text-uppercase w-100">
-                            {{ 'Retourner à la page de connexion'|trans|raw }}
-                        </a>
                     </div>
                 </div>
-            </div>
-        </div>
             </div>
         </div>
     </div>

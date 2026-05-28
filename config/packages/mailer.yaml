@@ -8,10 +8,10 @@ when@local:
     framework:
         mailer:
             envelope:
-                recipients: ['dev@agence-felix.fr']
+                recipients: ['dev@up-animations.fr']
 
 when@dev:
     framework:
         mailer:
             envelope:
-                recipients: ['dev@agence-felix.fr']
+                recipients: ['dev@up-animations.fr']

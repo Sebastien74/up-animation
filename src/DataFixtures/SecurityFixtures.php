@@ -106,7 +106,7 @@ class SecurityFixtures extends BaseFixtures
     {
         $users[] = [
             'markup' => '232',
-            'email' => 'support@agence-felix.fr',
+            'email' => 'support@up-animations.fr',
             'login' => 'webmaster',
             'roles' => $this->getYamlRoles(true),
             'lastname' => 'Agence Félix',
@@ -119,7 +119,7 @@ class SecurityFixtures extends BaseFixtures
 
         $users[] = [
             'markup' => '233',
-            'email' => 'customer@agence-felix.fr',
+            'email' => 'customer@up-animations.fr',
             'login' => 'customer',
             'roles' => self::CUSTOMER_ROLES,
             'lastname' => $this->translator->trans('Administrateur', [], 'security'),
@@ -132,7 +132,7 @@ class SecurityFixtures extends BaseFixtures
 
         $users[] = [
             'markup' => '234',
-            'email' => 'translator@agence-felix.fr',
+            'email' => 'translator@up-animations.fr',
             'login' => 'translator',
             'roles' => self::TRANSLATOR_ROLES,
             'lastname' => $this->translator->trans('Traducteur', [], 'security'),

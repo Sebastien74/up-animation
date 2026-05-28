@@ -83,6 +83,16 @@
             font-size: 12px;
             line-height: 1.2;
         }
+
+        .h5 {
+            margin-bottom: $space-3 !important;
+            padding-bottom: $space-2;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0;
+            line-height: 1.3;
+            border-bottom: 2px solid rgba($primary, 0.3);
+        }
     }
 }
 

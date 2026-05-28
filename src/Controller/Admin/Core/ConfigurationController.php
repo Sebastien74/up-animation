@@ -57,6 +57,7 @@ class ConfigurationController extends AdminController
         if (!$configuration) {
             throw $this->createNotFoundException($this->coreLocator->translator()->trans("Cette configuration n'existe pas !!", [], 'front'));
         }
+        $this->formManager->removeDuplicateMediaRelations($configuration);
         $this->formManager->synchronizeLocales($configuration);
         $this->template = 'admin/page/website/configuration.html.twig';
         $this->entity = $configuration;

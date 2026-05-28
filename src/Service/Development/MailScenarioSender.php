@@ -104,7 +104,7 @@ final class MailScenarioSender
 
         return match ($id) {
             'newsletter-confirmation' => [
-                'subject' => '[DEMO] Confirmez votre inscription a notre newsletter',
+                'subject' => '[DEMO] Confirmez votre inscription à notre newsletter',
                 'template' => 'front/default/actions/newsletter/email/confirmation.html.twig',
                 'arguments' => [
                     'stringEmail' => 'demo-subscriber@example.test',
@@ -114,7 +114,7 @@ final class MailScenarioSender
                 'replyTo' => 'disabled',
             ],
             'newsletter-webmaster' => [
-                'subject' => '[DEMO] Nouvel inscrit a la newsletter',
+                'subject' => '[DEMO] Nouvel inscrit à la newsletter',
                 'template' => 'front/default/actions/newsletter/email/webmaster.html.twig',
                 'arguments' => [
                     'stringEmail' => 'demo-subscriber@example.test',
@@ -135,12 +135,12 @@ final class MailScenarioSender
                 'arguments' => [
                     'fields' => [
                         'lastName'  => (object) ['label' => 'Nom',     'value' => 'Doe',                       'valueIntl' => 'Doe'],
-                        'firstName' => (object) ['label' => 'Prenom',  'value' => 'John',                      'valueIntl' => 'John'],
-                        'email'     => (object) ['label' => 'Email',   'value' => 'john.doe@example.test',     'valueIntl' => 'john.doe@example.test'],
-                        'phone'     => (object) ['label' => 'Telephone','value' => '+33 1 23 45 67 89',        'valueIntl' => '+33 1 23 45 67 89'],
-                        'company'   => (object) ['label' => 'Societe', 'value' => 'Up Animations!',            'valueIntl' => 'Up Animations!'],
-                        'subject'   => (object) ['label' => 'Sujet',   'value' => 'Demande de devis',          'valueIntl' => 'Demande de devis'],
-                        'message'   => (object) ['label' => 'Message', 'value' => 'Bonjour, je souhaite un devis pour un evenement le mois prochain.', 'valueIntl' => 'Bonjour, je souhaite un devis pour un evenement le mois prochain.'],
+                        'firstName' => (object) ['label' => 'Prénom',   'value' => 'John',                      'valueIntl' => 'John'],
+                        'email'     => (object) ['label' => 'Email',    'value' => 'john.doe@example.test',     'valueIntl' => 'john.doe@example.test'],
+                        'phone'     => (object) ['label' => 'Téléphone','value' => '+33 1 23 45 67 89',         'valueIntl' => '+33 1 23 45 67 89'],
+                        'company'   => (object) ['label' => 'Société',  'value' => 'Up Animations!',            'valueIntl' => 'Up Animations!'],
+                        'subject'   => (object) ['label' => 'Sujet',    'value' => 'Demande de devis',          'valueIntl' => 'Demande de devis'],
+                        'message'   => (object) ['label' => 'Message',  'value' => 'Bonjour, je souhaite un devis pour un événement le mois prochain.', 'valueIntl' => 'Bonjour, je souhaite un devis pour un événement le mois prochain.'],
                     ],
                     'attachments' => [],
                 ],
@@ -161,14 +161,14 @@ final class MailScenarioSender
                 ],
             ],
             'reset-password' => [
-                'subject' => '[DEMO] Reinitialisation de votre mot de passe',
+                'subject' => '[DEMO] Réinitialisation de votre mot de passe',
                 'template' => 'front/default/actions/security/email/password-request.html.twig',
                 'arguments' => [
                     'token' => 'demo-reset-token',
                 ],
             ],
             'password-expire' => [
-                'subject' => '[DEMO] Votre mot de passe arrive a expiration',
+                'subject' => '[DEMO] Votre mot de passe arrive à expiration',
                 'template' => 'front/default/actions/security/email/password-expire.html.twig',
                 'arguments' => [
                     'expire' => false,
@@ -178,7 +178,7 @@ final class MailScenarioSender
                 ],
             ],
             '2fa-code' => [
-                'subject' => '[DEMO] Votre code de verification',
+                'subject' => '[DEMO] Votre code de vérification',
                 'template' => 'front/default/actions/security/email/2fa-code.html.twig',
                 'arguments' => [
                     'code' => '123456',

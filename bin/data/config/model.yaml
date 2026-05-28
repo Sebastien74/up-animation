@@ -75,16 +75,16 @@ phones:
 emails:
     fr:
         0:
-            email: "dev@agence-felix.fr"
+            email: "dev@up-animations.fr"
             zones: ['contact', 'footer']
         1: # [ !!!! REQUIRED !!!! ]
             slug: "support"
-            email: "support@agence-felix.fr"
+            email: "support@up-animations.fr"
             zones: []
 
         2: # [ !!!! REQUIRED !!!! ]
             slug: "no-reply"
-            email: "noreply@agence-felix.fr"
+            email: "noreply@up-animations.fr"
             zones: []
 
 addresses:
@@ -115,7 +115,7 @@ legals:
         managerName: null
         managerEmail: null
         webmasterName: Agence Félix Création
-        webmasterEmail: support@agence-felix.fr
+        webmasterEmail: support@up-animations.fr
         hostName: null
         hostAddress: null
         protectionOfficerName: null

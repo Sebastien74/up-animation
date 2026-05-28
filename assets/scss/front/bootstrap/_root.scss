@@ -125,6 +125,7 @@
   @if $enable-root-shadow-vars {
     --#{$prefix}box-shadow: #{$box-shadow};
     --#{$prefix}box-shadow-sm: #{$box-shadow-sm};
+    --#{$prefix}box-shadow-md: #{$box-shadow-md};
     --#{$prefix}box-shadow-lg: #{$box-shadow-lg};
     --#{$prefix}box-shadow-inset: #{$box-shadow-inset};
   }

@@ -10,9 +10,9 @@
     {%- endif -%}
 {%- endblock -%}
 
-{%- block preheader -%}{{ ("Un nouveau compte vient d etre cree.")|trans|raw }}{%- endblock -%}
+{%- block preheader -%}{{ ("Un nouveau compte vient d'être créé.")|trans|raw }}{%- endblock -%}
 
-{%- block headerRight -%}{{ ("Notification interne")|trans|raw }}{%- endblock -%}
+{%- block headerRight -%}{{ ("Inscription")|trans|raw }}{%- endblock -%}
 
 {%- block kicker -%}{{ ("Compte / Inscription")|trans|raw }}{%- endblock -%}
 
@@ -20,12 +20,12 @@
 
 {%- block body -%}
     {%- set profile = user.profile is defined ? user.profile : null -%}
-    <p style="margin:0 0 18px 0;">{{ ("Un nouveau compte vient d etre cree sur votre site. Voici les informations transmises.")|trans|raw }}</p>
+    <p style="margin:0 0 18px 0;">{{ ("Un nouveau compte vient d'être créé sur votre site. Voici les informations transmises.")|trans|raw }}</p>
     <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="border-top:1px solid #E4DCCC;">
         {%- if profile.gender is defined and profile.gender -%}
             <tr>
                 <td style="padding:14px 0; border-bottom:1px solid #E4DCCC;">
-                    <div style="font-family:Consolas, 'Lucida Console', Monaco, monospace; font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:#7D7B8C; margin-bottom:6px;">{{ ("Civilite")|trans|raw }}</div>
+                    <div style="font-family:Consolas, 'Lucida Console', Monaco, monospace; font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:#7D7B8C; margin-bottom:6px;">{{ ("Civilité")|trans|raw }}</div>
                     <div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif; font-size:15px; font-weight:500; color:#22254E;">{% if profile.gender == 'mr' %}{{ ("Monsieur")|trans|raw }}{% elseif profile.gender == 'ms' %}{{ ("Madame")|trans|raw }}{% endif %}</div>
                 </td>
             </tr>
@@ -41,7 +41,7 @@
         {%- if user.firstName is defined and user.firstName -%}
             <tr>
                 <td style="padding:14px 0; border-bottom:1px solid #E4DCCC;">
-                    <div style="font-family:Consolas, 'Lucida Console', Monaco, monospace; font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:#7D7B8C; margin-bottom:6px;">{{ ("Prenom")|trans|raw }}</div>
+                    <div style="font-family:Consolas, 'Lucida Console', Monaco, monospace; font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:#7D7B8C; margin-bottom:6px;">{{ ("Prénom")|trans|raw }}</div>
                     <div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif; font-size:15px; font-weight:500; color:#22254E;">{{ user.firstName }}</div>
                 </td>
             </tr>
@@ -58,7 +58,7 @@
         {%- if phone.number is defined and phone.number -%}
             <tr>
                 <td style="padding:14px 0; border-bottom:1px solid #E4DCCC;">
-                    <div style="font-family:Consolas, 'Lucida Console', Monaco, monospace; font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:#7D7B8C; margin-bottom:6px;">{{ ("Telephone")|trans|raw }}</div>
+                    <div style="font-family:Consolas, 'Lucida Console', Monaco, monospace; font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:#7D7B8C; margin-bottom:6px;">{{ ("Téléphone")|trans|raw }}</div>
                     <div style="font-family:Consolas, 'Lucida Console', Monaco, monospace; font-size:15px; font-weight:500; color:#22254E;">{{ phone.number }}</div>
                 </td>
             </tr>
@@ -81,5 +81,5 @@
 {%- endblock -%}
 
 {%- block info -%}
-    {{ ("Aucune action urgente n est requise. Cette notification confirme la creation du compte.")|trans|raw }}
+    {{ ("Aucune action urgente n'est requise. Cette notification confirme la création du compte.")|trans|raw }}
 {%- endblock -%}

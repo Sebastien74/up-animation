@@ -8,14 +8,14 @@
     {{ ("Un visiteur a soumis un formulaire sur votre site.")|trans|raw }}
 {%- endblock -%}
 
-{%- block headerRight -%}{{ ("Notification interne")|trans|raw }}{%- endblock -%}
+{%- block headerRight -%}{{ ("Formulaire")|trans|raw }}{%- endblock -%}
 
-{%- block kicker -%}{{ ("Formulaire / Nouvelle entree")|trans|raw }}{%- endblock -%}
+{%- block kicker -%}{{ ("Formulaire / Nouvelle entrée")|trans|raw }}{%- endblock -%}
 
 {%- block title -%}{{ ("Nouvelle soumission.")|trans|raw }}{%- endblock -%}
 
 {%- block body -%}
-    <p style="margin:0 0 18px 0;">{{ ("Voici le detail des champs remplis par le visiteur.")|trans|raw }}</p>
+    <p style="margin:0 0 18px 0;">{{ ("Voici le détail des champs remplis par le visiteur.")|trans|raw }}</p>
     <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="border-top:1px solid #E4DCCC;">
         {%- for fieldKey, field in fields -%}
             {%- set label = field.label ? field.label : fieldKey -%}
@@ -45,7 +45,7 @@
         {%- if attachments is defined and attachments|length > 0 -%}
             <tr>
                 <td style="padding:14px 0;">
-                    <div style="font-family:Consolas, 'Lucida Console', Monaco, monospace; font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:#FF7100; margin-bottom:6px;">{{ ("Pieces jointes")|trans|raw }}</div>
+                    <div style="font-family:Consolas, 'Lucida Console', Monaco, monospace; font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:#FF7100; margin-bottom:6px;">{{ ("Pièces jointes")|trans|raw }}</div>
                     <div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif; font-size:15px; font-weight:600; color:#22254E;">{{ attachments|length }}</div>
                 </td>
             </tr>

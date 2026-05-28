@@ -60,7 +60,8 @@ when@local:
 #                direct:
 #                    url: 'mysql://%env(DB_USER_DIRECT)%:%env(DB_PASSWORD_DIRECT)%@%env(DB_HOST_DIRECT)%:%env(DB_PORT_DIRECT)%/%env(DB_NAME_DIRECT)%'
         orm:
-            auto_generate_proxy_classes: true
+            # file_not_exists: regenerate proxies only when missing, avoids Windows AV rename collisions on every request
+            auto_generate_proxy_classes: file_not_exists
             entity_managers:
                 default:
                     query_cache_driver:
@@ -80,7 +81,8 @@ when@local:
 when@dev:
     doctrine:
         orm:
-            auto_generate_proxy_classes: true
+            # file_not_exists: regenerate proxies only when missing, avoids Windows AV rename collisions on every request
+            auto_generate_proxy_classes: file_not_exists
             entity_managers:
                 default:
                     query_cache_driver:

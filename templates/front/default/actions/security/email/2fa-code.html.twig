@@ -2,20 +2,20 @@
 
 {%- trans_default_domain 'front_default' -%}
 
-{%- block metaTitle -%}{{ ("Votre code de verification")|trans|striptags }}{%- endblock -%}
+{%- block metaTitle -%}{{ ("Votre code de vérification")|trans|striptags }}{%- endblock -%}
 
 {%- block preheader -%}
     {{ ("Code unique pour finaliser votre connexion.")|trans|raw }}
 {%- endblock -%}
 
-{%- block headerRight -%}{{ ("Securite")|trans|raw }}{%- endblock -%}
+{%- block headerRight -%}{{ ("Sécurité")|trans|raw }}{%- endblock -%}
 
-{%- block kicker -%}{{ ("Securite / Authentification a deux facteurs")|trans|raw }}{%- endblock -%}
+{%- block kicker -%}{{ ("Sécurité / Authentification à deux facteurs")|trans|raw }}{%- endblock -%}
 
-{%- block title -%}{{ ("Votre code de verification.")|trans|raw }}{%- endblock -%}
+{%- block title -%}{{ ("Votre code de vérification.")|trans|raw }}{%- endblock -%}
 
 {%- block body -%}
-    <p style="margin:0 0 24px 0;">{{ ("Voici le code a usage unique a saisir pour finaliser votre connexion. Il expire apres un court delai.")|trans|raw }}</p>
+    <p style="margin:0 0 24px 0;">{{ ("Voici le code à usage unique à saisir pour finaliser votre connexion. Il expire après un court délai.")|trans|raw }}</p>
 
     {# Code stamp : large mono, framed #}
     <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
@@ -36,5 +36,5 @@
 {%- endblock -%}
 
 {%- block info -%}
-    {{ ("Si vous n etes pas a l origine de cette connexion, ignorez simplement cet email et envisagez de changer votre mot de passe.")|trans|raw }}
+    {{ ("Si vous n'êtes pas à l'origine de cette connexion, ignorez simplement cet email et envisagez de changer votre mot de passe.")|trans|raw }}
 {%- endblock -%}

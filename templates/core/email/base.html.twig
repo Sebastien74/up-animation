@@ -101,7 +101,7 @@
                                         <td align="left" valign="middle" style="font-family:Georgia, 'Times New Roman', Times, serif; font-weight:900; font-size:22px; letter-spacing:-0.02em; color:{{ color_ink }};">
                                             {%- if email is defined -%}
                                                 <a href="{{ host ?: 'https://up-animations.fr' }}" target="_blank" style="display:inline-block; text-decoration:none; color:{{ color_ink }};">
-                                                    <img src="{{ email.image('@images/medias/logo-email.png') }}"
+                                                    <img src="{{ email.image('@images/medias/email-logo.png') }}"
                                                          alt="{{ ('Up Animations!')|trans|raw }}"
                                                          width="120"
                                                          style="display:block; border:0; outline:none; text-decoration:none; height:auto; max-width:120px;">
@@ -232,7 +232,7 @@
                         <tr>
                             <td align="center" class="mono" style="font-family:Consolas, 'Lucida Console', Monaco, monospace; font-size:10px; font-weight:400; letter-spacing:0.14em; text-transform:uppercase; color:{{ color_muted }}; padding:0 24px;">
                                 {%- block disclaimer -%}
-                                    {{ ('Cet email vous est envoye depuis nos systemes automatises.')|trans|raw }}
+                                    {{ ('Cet email vous est envoyé depuis nos systèmes automatisés.')|trans|raw }}
                                 {%- endblock -%}
                             </td>
                         </tr>

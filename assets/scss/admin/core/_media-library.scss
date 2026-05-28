@@ -11,13 +11,35 @@
 #medias-library-modal {
 
     .edit-medias-btns,
-    .file-weight-chip {
+    .file-weight-chip,
+    .dd3-handle,
+    .delete-pack-control,
+    .dd3-content-right .nestable-edit-btn {
         display: none !important;
     }
 
+    .dd3-content {
+        padding-left: $space-4 !important;
+    }
+
     #search-medias-form {
-        min-width: 300px;
-        max-width: 40%;
+
+        width: 100%;
+        min-width: 0;
+        max-width: 100%;
+
+        .search-input-group {
+            width: 100%;
+            max-width: 100%;
+            border-radius: 16px !important;
+            overflow: hidden;
+        }
+
+        .input-group-text {
+            align-self: stretch;
+            height: auto !important;
+            background-color: transparent !important;
+        }
     }
 
     .media-selector {
@@ -29,15 +51,44 @@
     }
 
     #medias-results-container {
+
         justify-content: center;
+
+        > .col-lg-3 {
+
+            @include mediaQuery(min-lg) {
+                flex: 0 0 auto;
+                width: 20%;
+            }
+
+            @include mediaQuery(min-xl) {
+                width: 16.666667%;
+            }
+
+            @include mediaQuery(min-xxl) {
+                width: 12.5%;
+            }
+        }
     }
 
     .file {
 
         cursor: pointer;
+        border-radius: $radius-md;
 
         label {
             cursor: pointer;
+        }
+
+        .file-data-wrap,
+        .file-data,
+        .inner,
+        .media-thumb-img {
+            border-radius: $radius-md;
+        }
+
+        .file-data {
+            overflow: hidden;
         }
 
         &.active {
@@ -55,7 +106,7 @@
                     align-items: center;
                     justify-content: center;
                     background: rgba(0, 0, 0, .5);
-                    border-radius: $border-radius;
+                    border-radius: $radius-md;
 
                     i {
                         font-size: 35px;

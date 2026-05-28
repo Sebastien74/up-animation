@@ -158,7 +158,7 @@ class InformationFixtures
             $supportEmail = new InfoEntities\Email();
             $supportEmail->setSlug('support');
             $supportEmail->setLocale($locale);
-            $supportEmail->setEmail('support@agence-felix.fr');
+            $supportEmail->setEmail('support@up-animations.fr');
             $supportEmail->setDeletable(false);
             $information->addEmail($supportEmail);
         }
@@ -167,7 +167,7 @@ class InformationFixtures
             $noReplyEmail = new InfoEntities\Email();
             $noReplyEmail->setLocale($locale);
             $noReplyEmail->setSlug('no-reply');
-            $noReplyEmail->setEmail('no-reply@agence-felix.fr');
+            $noReplyEmail->setEmail('no-reply@up-animations.fr');
             $noReplyEmail->setDeletable(false);
             $information->addEmail($noReplyEmail);
         }

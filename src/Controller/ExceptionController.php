@@ -119,9 +119,9 @@ class ExceptionController extends BaseController
 
         if ($send && !$this->isDebug) {
             try {
-                $emails = ['dev@agence-felix.fr'];
+                $emails = ['dev@up-animations.fr'];
                 foreach ($emails as $email) {
-                    $notification = (new NotificationEmail())->from('dev@agence-felix.fr')
+                    $notification = (new NotificationEmail())->from('dev@up-animations.fr')
                         ->to($email)
                         ->subject('Javascript ERROR')
                         ->markdown("<p>An error has occurred on website <a href='".$request->getSchemeAndHttpHost()."'>".$request->getSchemeAndHttpHost().'</a></p><br><p><small>'.trim($message).'</small></p>')

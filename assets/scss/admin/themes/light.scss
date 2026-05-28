@@ -1355,6 +1355,10 @@ body {
         border-color: $theme-border-subtle !important;
     }
 
+    .card.default-media-card .h5 {
+        border-bottom-color: rgba($theme-accent, 0.3) !important;
+    }
+
     .card-hint {
         border-color: $theme-border-subtle !important;
     }
@@ -2497,8 +2501,15 @@ th.fc-col-header-cell {
 
     // Badges info dans le tree (.dd3-content .badges) : icônes héritent du
     // color: $nestable-text (= rgba white .7) gelé dans tree-sortable.scss,
-    // illisibles sur fond crème. On repasse en muted thème.
-    .dd3-content .badges .icon-info {
+    // illisibles sur fond crème. On cible directement les <i> (pas
+    // seulement .icon-info) et on couvre tous les hover de parents.
+    .dd3-content .badges i,
+    .dd-item .dd3-content .badges i,
+    .dd-item:hover .dd3-content .badges i,
+    .dd-item:hover > .dd3-content .badges i,
+    .dd3-content:hover .badges i,
+    .dd3-content .badges:hover i,
+    .dd3-content .badges i:hover {
         color: $theme-text-muted !important;
     }
 }

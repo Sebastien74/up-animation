@@ -25,7 +25,7 @@
                     {%- if field.vars.name == 'plainPassword' -%}
                         {%- include "core/password-checker.html.twig" -%}
                         <div class="form-group col-12 mt-0 mb-3 fz-small text-white-50 d-flex align-items-start text-center">
-                            <span>{{ "Le mot de passe doit comporter au moins 8 caractères, contenir au moins un chiffre, une majuscule et une minuscule."|trans|raw }}</span>
+                            {{ "Le mot de passe doit comporter au moins 8 caractères, contenir au moins un chiffre, une majuscule et une minuscule."|trans|raw }}
                         </div>
                     {%- endif -%}
                 {%- endfor -%}

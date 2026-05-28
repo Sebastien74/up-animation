@@ -6,49 +6,50 @@
 {%- block metaRobots -%}noindex{%- endblock -%}
 
 {%- block stylesheets -%}
-    {{ encore_entry_link_tags('front-'~websiteTemplate~'-security', null, webpack) }}
+    {{ encore_entry_link_tags('front-'~websiteTemplate~'-'~templateName~'-'~frontTheme, null, webpack, {nonce: csp_nonce()}) }}
+    <link rel="modulepreload" href="{{ preload(asset('build/front/'~websiteTemplate~'/front-'~websiteTemplate~'-'~templateName~'.js', webpack), {as: 'script', importance: 'low'}) }}" as="script" fetchpriority="low" nonce="{{ csp_nonce() }}">
     {{ parent() }}
 {%- endblock -%}
 
 {%- block javascripts -%}
     {{ parent() }}
-    {{ encore_entry_script_tags('front-'~websiteTemplate~'-security', null, webpack, {defer: true}) }}
+    {{ encore_entry_script_tags('front-'~websiteTemplate~'-'~templateName, null, webpack, {defer: true, nonce: csp_nonce()}) }}
 {%- endblock -%}
 
 {%- block body -%}
     <div id="content-security-front" class="template-page">
-        <div class="layout-zone bg-lighten">
+        <div class="layout-zone">
             <div class="container py-lg">
                 <div class="row d-flex justify-content-center">
                     <div class="col-lg-4">
-                <div class=" card form-container login-card shadow-lg border-0 h-100">
-                    <div class="card-body form-ajax-container p-4 p-md-5 text-center">
-                        <div class="login-head mb-4 pb-2 text-start">
-                            <p class="login-eyebrow text-uppercase mb-2">{{ "Espace personnel"|trans|raw }}</p>
-                            <h3 class="login-title text-uppercase fw-800 mb-0">
-                                {%- if 'clear' == type or 'clear-remove' == type -%}{{ "Annulation"|trans|raw }}
-                                {%- elseif 'confirm' == type -%}{{ "Modification"|trans|raw }}
-                                {%- elseif 'remove-user' == type -%}{{ "Suppression"|trans|raw }}
+                        <div class="bg-light card form-container login-card shadow-md border-0 h-100">
+                            <div class="card-body form-ajax-container p-4 p-md-5 text-center">
+                                <div class="login-head mb-4 pb-2 text-start">
+                                    <p class="login-eyebrow text-uppercase mb-2">{{ "Espace personnel"|trans|raw }}</p>
+                                    <h3 class="login-title text-uppercase fw-800 mb-0">
+                                        {%- if 'clear' == type or 'clear-remove' == type -%}{{ "Annulation"|trans|raw }}
+                                        {%- elseif 'confirm' == type -%}{{ "Modification"|trans|raw }}
+                                        {%- elseif 'remove-user' == type -%}{{ "Suppression"|trans|raw }}
+                                        {%- endif -%}
+                                    </h3>
+                                </div>
+                                <i class="icon-check-circle text-success size-xl-icon mb-4 d-inline-block"></i>
+                                {%- if 'clear' == type -%}
+                                    <p class="mb-4">{{ "Aucune modification de vos données personnelles n’a été effectuée"|trans|raw }}</p>
+                                {%- elseif 'confirm' == type -%}
+                                    <p class="mb-4">{{ "La mise à jour de vos données personnelles a été effectuée"|trans|raw }}</p>
+                                {%- elseif 'clear-remove' == type -%}
+                                    <p class="mb-4">{{ "La demande de suppression de compte a été annulée"|trans|raw }}</p>
+                                {%- elseif 'remove-user' == type -%}
+                                    <p class="mb-4">{{ "La suppression de compte a été éffectuée"|trans|raw }}</p>
                                 {%- endif -%}
-                            </h3>
+                                {%- if type != 'remove-user' -%}
+                                    <a href="{{ absolute_url(path('security_front_login')) }}" class="btn btn-primary text-uppercase w-100">{{ "Retourner dans mon espace personnel"|trans|raw }}</a>
+                                {%- endif -%}
+                            </div>
                         </div>
-                        <i class="icon-check-circle text-success size-xl-icon mb-4 d-inline-block"></i>
-                        {%- if 'clear' == type -%}
-                            <p class="mb-4">{{ "Aucune modification de vos données personnelles n’a été effectuée"|trans|raw }}</p>
-                        {%- elseif 'confirm' == type -%}
-                            <p class="mb-4">{{ "La mise à jour de vos données personnelles a été effectuée"|trans|raw }}</p>
-                        {%- elseif 'clear-remove' == type -%}
-                            <p class="mb-4">{{ "La demande de suppression de compte a été annulée"|trans|raw }}</p>
-                        {%- elseif 'remove-user' == type -%}
-                            <p class="mb-4">{{ "La suppression de compte a été éffectuée"|trans|raw }}</p>
-                        {%- endif -%}
-                        {%- if type != 'remove-user' -%}
-                            <a href="{{ absolute_url(path('security_front_login')) }}" class="btn btn-primary text-uppercase w-100">{{ "Retourner dans mon espace personnel"|trans|raw }}</a>
-                        {%- endif -%}
                     </div>
                 </div>
-            </div>
-        </div>
             </div>
         </div>
     </div>

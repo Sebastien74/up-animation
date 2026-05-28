@@ -5,21 +5,21 @@
 {%- block metaTitle -%}{{ ("Confirmez votre inscription")|trans|striptags }}{%- endblock -%}
 
 {%- block preheader -%}
-    {{ ("Un dernier geste pour rejoindre nos actualites.")|trans|raw }}
+    {{ ("Un dernier geste pour rejoindre nos actualités.")|trans|raw }}
 {%- endblock -%}
 
 {%- block headerRight -%}{{ ("Newsletter")|trans|raw }}{%- endblock -%}
 
 {%- block kicker -%}{{ ("Newsletter / Confirmation")|trans|raw }}{%- endblock -%}
 
-{%- block title -%}{{ ("Plus qu un clic.")|trans|raw }}{%- endblock -%}
+{%- block title -%}{{ ("Plus qu'un clic.")|trans|raw }}{%- endblock -%}
 
 {%- block body -%}
     {%- if message -%}
         {{ message|replace({'%confirmationLink%': absolute_url(confirmationLink)})|raw }}
     {%- else -%}
         <p style="margin:0 0 14px 0;">{{ ("Bonjour,")|trans|raw }}</p>
-        <p style="margin:0 0 14px 0;">{{ ("Vous avez demande a recevoir notre newsletter. Pour finaliser votre inscription et commencer a recevoir nos actualites, confirmez votre adresse email en cliquant sur le bouton ci-dessous.")|trans|raw }}</p>
+        <p style="margin:0 0 14px 0;">{{ ("Vous avez demandé à recevoir notre newsletter. Pour finaliser votre inscription et commencer à recevoir nos actualités, confirmez votre adresse email en cliquant sur le bouton ci-dessous.")|trans|raw }}</p>
     {%- endif -%}
 {%- endblock -%}
 
@@ -36,5 +36,5 @@
 {%- endblock -%}
 
 {%- block info -%}
-    {{ ("Ce lien est valable pendant 24 heures. Passe ce delai, vous devrez effectuer une nouvelle demande d inscription. Si vous n etes pas a l origine de cette demande, ignorez simplement cet email.")|trans|raw }}
+    {{ ("Ce lien est valable pendant 24 heures. Passé ce délai, vous devrez effectuer une nouvelle demande d'inscription. Si vous n'êtes pas à l'origine de cette demande, ignorez simplement cet email.")|trans|raw }}
 {%- endblock -%}

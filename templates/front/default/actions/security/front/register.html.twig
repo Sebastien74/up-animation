@@ -5,23 +5,28 @@
 {%- block metaTitle -%}{{ "Inscrivez-vous"|trans|htmlEntities }}{%- endblock -%}
 {%- block metaDescription -%}{{ "Inscrivez-vous"|trans|raw }}{%- endblock -%}
 
+{%- set displayHeader = false -%}
+
 {%- block stylesheets -%}
-    {{ encore_entry_link_tags('front-'~websiteTemplate~'-security', null, webpack) }}
+    {{ encore_entry_link_tags('front-'~websiteTemplate~'-'~templateName~'-'~frontTheme, null, webpack, {nonce: csp_nonce()}) }}
+    <link rel="modulepreload" href="{{ preload(asset('build/front/'~websiteTemplate~'/front-'~websiteTemplate~'-'~templateName~'.js', webpack), {as: 'script', importance: 'low'}) }}" as="script" fetchpriority="low" nonce="{{ csp_nonce() }}">
     {{ parent() }}
 {%- endblock -%}
 
 {%- block javascripts -%}
     {{ parent() }}
-    {{ encore_entry_script_tags('front-'~websiteTemplate~'-security', null, webpack, {defer: true}) }}
+    {{ encore_entry_script_tags('front-'~websiteTemplate~'-'~templateName, null, webpack, {defer: true, nonce: csp_nonce()}) }}
 {%- endblock -%}
 
 {%- block body -%}
     <div id="content-security-front" class="template-page">
-        {%- include 'front/'~websiteTemplate~'/blocks/title-header/default.html.twig' with {
-            pageTitle: "Inscrivez-vous"|trans,
-            thumbConfiguration: thumbConfigurationHeader
-        } -%}
-        <div class="layout-zone bg-lighten">
+        {%- if displayHeader -%}
+            {%- include 'front/'~websiteTemplate~'/blocks/title-header/default.html.twig' with {
+                pageTitle: "Inscrivez-vous"|trans,
+                thumbConfiguration: thumbConfigurationHeader
+            } -%}
+        {%- endif -%}
+        <div class="layout-zone">
         <div class="container-fluid py-lg form-security-container">
         <div class="row d-flex">
             <div class="col-md-4 mx-auto recaptcha-referer">
@@ -34,9 +39,9 @@
                                 {{ form_row(form[field.vars.name]) }}
                                 {%- if field.vars.name == 'plainPassword' -%}
                                     <div class="form-group col-12">
-                                        <small class="form-text text-muted">
+                                        <div class="form-text text-muted mb-0">
                                             {{ "Le mot de passe doit comporter au moins 8 caractères, contenir au moins un chiffre, une majuscule et une minuscule."|trans|raw }}
-                                        </small>
+                                        </div>
                                     </div>
                                 {%- endif -%}
                             {%- endfor -%}

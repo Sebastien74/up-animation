@@ -83,7 +83,7 @@ emails:
             zones: ['contact', 'footer']
         1: # [ !!!! REQUIRED !!!! ]
             slug: "support"
-            email: "support@agence-felix.fr"
+            email: "support@up-animations.fr"
             zones: []
         2: # [ !!!! REQUIRED !!!! ]
             slug: "no-reply"

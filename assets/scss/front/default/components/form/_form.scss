@@ -74,6 +74,10 @@
         font-size: 9px;
     }
 
+    .form-check-label {
+        font-size: 14px;
+    }
+
     form .bg-white .form-group .form-check-label {
         color: $input-label-color !important;
     }
@@ -184,9 +188,8 @@
     input[type="checkbox"], input[type="radio"] {
         box-shadow: none !important;
         border-radius: 50% !important;
-        width: 20px;
-        height: 20px;
-        margin-right: .50rem;
+        width: 16px;
+        height: 16px;
         background: url(../../../../../medias/images/front/default/checkbox.svg) no-repeat;
         background-size: cover;
         border-color: transparent;
@@ -330,58 +333,57 @@
         border-radius: $input-border-radius;
     }
 
-    fieldset > div.form-check {
-
-        padding-left: 0 !important;
-
-        &:not(.form-check-inline) {
-
-        }
-    }
-
-    .checkbox-group .form-check {
-        display: flex;
-    }
-
     .form-check {
 
-        &.form-check-inline {
-
-            display: flex;
-
-            .form-check {
-                margin-right: 1rem;
-            }
-        }
+        display: flex;
+        align-items: center;
+        gap: .5rem;
+        min-height: 0;
+        margin-bottom: .35rem;
+        margin-left: 0;
+        padding-left: 0;
 
         *:not(.form-check) {
             cursor: pointer;
         }
 
-        .form-check {
-            display: flex;
-            align-items: center;
-        }
-
-        .form-check label.radio-custom .asterisk {
+        label.radio-custom .asterisk {
             display: none !important;
         }
     }
 
-    fieldset.d-flex {
-        legend {
-            margin-right: 1.5rem;
-        }
+    .form-check-inline {
+        align-items: center;
+        column-gap: 1.25rem;
+        row-gap: .25rem;
     }
 
     .form-check-input {
 
         box-shadow: none;
-        margin-top: 0 !important;
+        flex-shrink: 0;
+        float: none;
+        margin: 0 !important;
 
         &:checked {
             background-color: $primary;
             border-color: $primary;
+        }
+    }
+
+    fieldset > div.form-check {
+        padding-left: 0;
+    }
+
+    .help-text,
+    .form-text {
+        font-size: 12px;
+        line-height: 1.2;
+    }
+
+    fieldset.d-flex {
+        legend {
+            margin-right: 1.5rem;
         }
     }
 

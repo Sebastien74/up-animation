@@ -5,17 +5,17 @@
 {%- block metaTitle -%}{{ ("Nouveau message via le formulaire de contact")|trans|striptags }}{%- endblock -%}
 
 {%- block preheader -%}
-    {{ ("Un visiteur vous a contacte via le site.")|trans|raw }}
+    {{ ("Un visiteur vous a contacté via le site.")|trans|raw }}
 {%- endblock -%}
 
-{%- block headerRight -%}{{ ("Notification interne")|trans|raw }}{%- endblock -%}
+{%- block headerRight -%}{{ ("Contact")|trans|raw }}{%- endblock -%}
 
 {%- block kicker -%}{{ ("Contact / Nouvelle demande")|trans|raw }}{%- endblock -%}
 
 {%- block title -%}{{ ("Nouveau message.")|trans|raw }}{%- endblock -%}
 
 {%- block body -%}
-    <p style="margin:0 0 18px 0;">{{ ("Un visiteur vient de soumettre le formulaire de contact. Voici le detail de sa demande.")|trans|raw }}</p>
+    <p style="margin:0 0 18px 0;">{{ ("Un visiteur vient de soumettre le formulaire de contact. Voici le détail de sa demande.")|trans|raw }}</p>
     <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="border-top:1px solid #E4DCCC;">
         {%- for fieldKey, field in fields -%}
             {%- set label = field.label ? field.label : fieldKey -%}
@@ -45,7 +45,7 @@
         {%- if attachments is defined and attachments|length > 0 -%}
             <tr>
                 <td style="padding:14px 0;">
-                    <div style="font-family:Consolas, 'Lucida Console', Monaco, monospace; font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:#FF7100; margin-bottom:6px;">{{ ("Pieces jointes")|trans|raw }}</div>
+                    <div style="font-family:Consolas, 'Lucida Console', Monaco, monospace; font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:#FF7100; margin-bottom:6px;">{{ ("Pièces jointes")|trans|raw }}</div>
                     <div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif; font-size:15px; font-weight:600; color:#22254E;">{{ attachments|length }}</div>
                 </td>
             </tr>
@@ -54,5 +54,5 @@
 {%- endblock -%}
 
 {%- block info -%}
-    {{ ("Repondez directement a cet email pour ecrire au visiteur : son adresse est positionnee en Reply-To.")|trans|raw }}
+    {{ ("Répondez directement à cet email pour écrire au visiteur : son adresse est positionnée en Reply-To.")|trans|raw }}
 {%- endblock -%}

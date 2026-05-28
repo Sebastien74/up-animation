@@ -48,7 +48,7 @@ export default function () {
         resetInputs();
     }
 
-    /** Delayed newsletter modals (1 min wait, session cookie on close, 1-year cookie on subscribe) */
+    /** Delayed newsletter modals (shown N ms after the first scroll; session cookie on close, 1-year cookie on subscription) */
     let initDelayedModals = function () {
         document.querySelectorAll('.newsletter-modal[data-newsletter-modal-delay]').forEach(function (modalEl) {
             if (modalEl.dataset.newsletterModalBound === '1') {
@@ -61,14 +61,23 @@ export default function () {
                 return;
             }
 
-            let delay = parseInt(modalEl.dataset.newsletterModalDelay, 10) || 60000;
+            let delay = parseInt(modalEl.dataset.newsletterModalDelay, 10) || 15000;
             let modal = new Modal(modalEl, {keyboard: true});
 
-            setTimeout(function () {
-                if (!cookieName || !Cookies.get(cookieName)) {
-                    modal.show();
-                }
-            }, delay);
+            let scheduleShow = function () {
+                setTimeout(function () {
+                    if (!cookieName || !Cookies.get(cookieName)) {
+                        modal.show();
+                    }
+                }, delay);
+            };
+
+            /** Handle browsers that restore a non-zero scroll position before the listener attaches */
+            if (window.scrollY > 0) {
+                scheduleShow();
+            } else {
+                window.addEventListener('scroll', scheduleShow, {once: true, passive: true});
+            }
 
             modalEl.addEventListener('hidden.bs.modal', function () {
                 if (!cookieName || subscribedModals.has(modalEl)) {

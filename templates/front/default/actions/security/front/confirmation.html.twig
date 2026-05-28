@@ -6,64 +6,65 @@
 {%- block metaRobots -%}noindex{%- endblock -%}
 
 {%- block stylesheets -%}
-    {{ encore_entry_link_tags('front-'~websiteTemplate~'-security', null, webpack) }}
+    {{ encore_entry_link_tags('front-'~websiteTemplate~'-'~templateName~'-'~frontTheme, null, webpack, {nonce: csp_nonce()}) }}
+    <link rel="modulepreload" href="{{ preload(asset('build/front/'~websiteTemplate~'/front-'~websiteTemplate~'-'~templateName~'.js', webpack), {as: 'script', importance: 'low'}) }}" as="script" fetchpriority="low" nonce="{{ csp_nonce() }}">
     {{ parent() }}
 {%- endblock -%}
 
 {%- block javascripts -%}
     {{ parent() }}
-    {{ encore_entry_script_tags('front-'~websiteTemplate~'-security', null, webpack, {defer: true}) }}
+    {{ encore_entry_script_tags('front-'~websiteTemplate~'-'~templateName, null, webpack, {defer: true, nonce: csp_nonce()}) }}
 {%- endblock -%}
 
 {%- block body -%}
     <div id="content-security-front" class="template-page">
-        <div class="layout-zone bg-lighten">
+        <div class="layout-zone">
             <div class="container py-lg">
                 <div class="row d-flex justify-content-center">
                     <div class="col-lg-4">
-                <div class=" card form-container login-card shadow-lg border-0 h-100">
-                    <div class="card-body form-ajax-container p-4 p-md-5 text-center">
-                        {%- if 'accept' == status -%}
-                            <div class="login-head mb-4 pb-2 text-start">
-                                <p class="login-eyebrow text-uppercase mb-2">{{ "Inscription"|trans|raw }}</p>
-                                <h3 class="login-title text-uppercase fw-800 mb-0">{{ "Confirmée"|trans|raw }}</h3>
+                        <div class="bg-light card form-container login-card shadow-md border-0 h-100">
+                            <div class="card-body form-ajax-container p-4 p-md-5 text-center">
+                                {%- if 'accept' == status -%}
+                                    <div class="login-head mb-4 pb-2 text-start">
+                                        <p class="login-eyebrow text-uppercase mb-2">{{ "Inscription"|trans|raw }}</p>
+                                        <h3 class="login-title text-uppercase fw-800 mb-0">{{ "Confirmée"|trans|raw }}</h3>
+                                    </div>
+                                    <i class="icon-check-circle text-success size-xl-icon mb-4 d-inline-block"></i>
+                                    <p class="mb-4">{{ "Merci ! Votre création de compte a bien été confirmée."|trans|raw }}</p>
+                                    <a href="{{ absolute_url(path('security_front_login')) }}" class="btn btn-primary text-uppercase w-100">{{ "Connectez-vous"|trans|raw }}</a>
+                                {%- elseif 'expired' == status -%}
+                                    <div class="login-head mb-4 pb-2 text-start">
+                                        <p class="login-eyebrow text-uppercase mb-2">{{ "Inscription"|trans|raw }}</p>
+                                        <h3 class="login-title text-uppercase fw-800 mb-0">{{ "Lien expiré"|trans|raw }}</h3>
+                                    </div>
+                                    <i class="icon-unlink text-danger size-xl-icon mb-4 d-inline-block"></i>
+                                    <p class="mb-2">{{ "Désolé, le lien de confirmation a expiré. Pour des raisons de sécurité, les liens de confirmation sont valables pendant 24 heures."|trans|raw }}</p>
+                                    <p class="mb-0">{{ "Vous pouvez renouveler votre inscription si vous le souhaitez."|trans|raw }}</p>
+                                {%- elseif 'decline' == status -%}
+                                    <div class="login-head mb-4 pb-2 text-start">
+                                        <p class="login-eyebrow text-uppercase mb-2">{{ "Inscription"|trans|raw }}</p>
+                                        <h3 class="login-title text-uppercase fw-800 mb-0">{{ "Annulée"|trans|raw }}</h3>
+                                    </div>
+                                    <i class="icon-times-circle text-danger size-xl-icon mb-4 d-inline-block"></i>
+                                    <p class="mb-2">{{ "Votre demande de création de compte a été annulée."|trans|raw }}</p>
+                                    <p class="mb-0">{{ "Aucune information n’a été enregistrée."|trans|raw }}</p>
+                                {%- else -%}
+                                    <div class="login-head mb-4 pb-2 text-start">
+                                        <p class="login-eyebrow text-uppercase mb-2">{{ "Inscription"|trans|raw }}</p>
+                                        <h3 class="login-title text-uppercase fw-800 mb-0">{{ "Confirmation"|trans|raw }}</h3>
+                                    </div>
+                                    <i class="icon-badge-check text-primary size-xl-icon mb-4 d-inline-block"></i>
+                                    <p class="mb-3">{{ "Vous avez demandé à créer un compte sur notre site."|trans|raw }}</p>
+                                    <p class="mb-4 fw-700">{{ "Pour confirmer votre inscription, cliquez sur le bouton ci-dessous."|trans|raw }}</p>
+                                    <a href="{{ path('security_front_confirmation', {'token': user.token, 'status': 'accept'}) }}" class="btn btn-primary text-uppercase w-100 mb-3">{{ "Confirmer mon inscription"|trans|raw }}</a>
+                                    <hr>
+                                    <p class="mb-3">{{ "Si vous n’êtes pas à l’origine de cette demande ou si vous changez d’avis, vous pouvez refuser."|trans|raw }}</p>
+                                    <a href="{{ path('security_front_confirmation', {'token': user.token, 'status': 'decline'}) }}" class="btn btn-outline-primary text-uppercase w-100">{{ "Refuser l’inscription"|trans|raw }}</a>
+                                {%- endif -%}
                             </div>
-                            <i class="icon-check-circle text-success size-xl-icon mb-4 d-inline-block"></i>
-                            <p class="mb-4">{{ "Merci ! Votre création de compte a bien été confirmée."|trans|raw }}</p>
-                            <a href="{{ absolute_url(path('security_front_login')) }}" class="btn btn-primary text-uppercase w-100">{{ "Connectez-vous"|trans|raw }}</a>
-                        {%- elseif 'expired' == status -%}
-                            <div class="login-head mb-4 pb-2 text-start">
-                                <p class="login-eyebrow text-uppercase mb-2">{{ "Inscription"|trans|raw }}</p>
-                                <h3 class="login-title text-uppercase fw-800 mb-0">{{ "Lien expiré"|trans|raw }}</h3>
-                            </div>
-                            <i class="icon-unlink text-danger size-xl-icon mb-4 d-inline-block"></i>
-                            <p class="mb-2">{{ "Désolé, le lien de confirmation a expiré. Pour des raisons de sécurité, les liens de confirmation sont valables pendant 24 heures."|trans|raw }}</p>
-                            <p class="mb-0">{{ "Vous pouvez renouveler votre inscription si vous le souhaitez."|trans|raw }}</p>
-                        {%- elseif 'decline' == status -%}
-                            <div class="login-head mb-4 pb-2 text-start">
-                                <p class="login-eyebrow text-uppercase mb-2">{{ "Inscription"|trans|raw }}</p>
-                                <h3 class="login-title text-uppercase fw-800 mb-0">{{ "Annulée"|trans|raw }}</h3>
-                            </div>
-                            <i class="icon-times-circle text-danger size-xl-icon mb-4 d-inline-block"></i>
-                            <p class="mb-2">{{ "Votre demande de création de compte a été annulée."|trans|raw }}</p>
-                            <p class="mb-0">{{ "Aucune information n’a été enregistrée."|trans|raw }}</p>
-                        {%- else -%}
-                            <div class="login-head mb-4 pb-2 text-start">
-                                <p class="login-eyebrow text-uppercase mb-2">{{ "Inscription"|trans|raw }}</p>
-                                <h3 class="login-title text-uppercase fw-800 mb-0">{{ "Confirmation"|trans|raw }}</h3>
-                            </div>
-                            <i class="icon-badge-check text-primary size-xl-icon mb-4 d-inline-block"></i>
-                            <p class="mb-3">{{ "Vous avez demandé à créer un compte sur notre site."|trans|raw }}</p>
-                            <p class="mb-4 fw-700">{{ "Pour confirmer votre inscription, cliquez sur le bouton ci-dessous."|trans|raw }}</p>
-                            <a href="{{ path('security_front_confirmation', {'token': user.token, 'status': 'accept'}) }}" class="btn btn-primary text-uppercase w-100 mb-3">{{ "Confirmer mon inscription"|trans|raw }}</a>
-                            <hr>
-                            <p class="mb-3">{{ "Si vous n’êtes pas à l’origine de cette demande ou si vous changez d’avis, vous pouvez refuser."|trans|raw }}</p>
-                            <a href="{{ path('security_front_confirmation', {'token': user.token, 'status': 'decline'}) }}" class="btn btn-outline-primary text-uppercase w-100">{{ "Refuser l’inscription"|trans|raw }}</a>
-                        {%- endif -%}
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
             </div>
         </div>
     </div>

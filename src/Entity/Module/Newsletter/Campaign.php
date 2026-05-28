@@ -48,7 +48,7 @@ class Campaign extends BaseEntity
     private array $receivingEmails = [];
 
     #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
-    private ?string $sendingEmail = 'noreply@agence-felix.fr';
+    private ?string $sendingEmail = 'noreply@up-animations.fr';
 
     #[ORM\Column(type: Types::BOOLEAN)]
     private bool $recaptcha = true;

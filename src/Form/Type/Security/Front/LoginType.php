@@ -47,9 +47,11 @@ class LoginType extends AbstractType
 
         $builder->add($loginInputName, $loginType, [
             'label' => $loginLabel,
-            'attr' => ['placeholder' => $loginPlaceholder,
+            'attr' => [
+                'placeholder' => $loginPlaceholder,
                 'autocomplete' => 'off',
-                'autofocus' => false],
+                'autofocus' => false
+            ],
             'row_attr' => ['class' => 'col-12 col-lg-12'],
             'constraints' => $constraints,
         ]);

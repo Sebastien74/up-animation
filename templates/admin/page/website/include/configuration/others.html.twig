@@ -1,6 +1,9 @@
 {%- trans_default_domain 'admin' -%}
 
 <div class="row">
+    <div class="col-12">
+        <h4 class="main-subtitle"><i class="icm-copy"></i>{{ "Pages"|trans|raw }}</h4>
+    </div>
     {{ form_row(form.pages) }}
     {%- include 'admin/core/form/prototype.html.twig' with {field: form.transitions} -%}
 </div>

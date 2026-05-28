@@ -5,25 +5,25 @@
 {%- block metaTitle -%}{{ ("Confirmation de votre demande")|trans|striptags }}{%- endblock -%}
 
 {%- block preheader -%}
-    {{ ("Nous avons bien recu votre message.")|trans|raw }}
+    {{ ("Nous avons bien reçu votre message.")|trans|raw }}
 {%- endblock -%}
 
 {%- block headerRight -%}{{ ("Contact")|trans|raw }}{%- endblock -%}
 
-{%- block kicker -%}{{ ("Contact / Accuse de reception")|trans|raw }}{%- endblock -%}
+{%- block kicker -%}{{ ("Contact / Accusé de réception")|trans|raw }}{%- endblock -%}
 
-{%- block title -%}{{ ("Message bien recu.")|trans|raw }}{%- endblock -%}
+{%- block title -%}{{ ("Message bien reçu.")|trans|raw }}{%- endblock -%}
 
 {%- block body -%}
     {%- if message is defined and message -%}
         {{ message|raw }}
     {%- else -%}
         <p style="margin:0 0 14px 0;">{{ ("Bonjour,")|trans|raw }}</p>
-        <p style="margin:0 0 14px 0;">{{ ("Nous avons bien recu votre demande et nous vous remercions de votre prise de contact.")|trans|raw }}</p>
-        <p style="margin:0;">{{ ("Notre equipe vous repondra dans les meilleurs delais.")|trans|raw }}</p>
+        <p style="margin:0 0 14px 0;">{{ ("Nous avons bien reçu votre demande et nous vous remercions de votre prise de contact.")|trans|raw }}</p>
+        <p style="margin:0;">{{ ("Notre équipe vous répondra dans les meilleurs délais.")|trans|raw }}</p>
     {%- endif -%}
 {%- endblock -%}
 
 {%- block info -%}
-    {{ ("Vous n avez rien a faire pour le moment. Vous recevrez notre reponse a l adresse depuis laquelle vous nous avez ecrit.")|trans|raw }}
+    {{ ("Vous n'avez rien à faire pour le moment. Vous recevrez notre réponse à l'adresse depuis laquelle vous nous avez écrit.")|trans|raw }}
 {%- endblock -%}

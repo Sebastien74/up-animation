@@ -5,34 +5,34 @@
 {%- block metaTitle -%}{{ "Connectez-vous"|trans|htmlEntities }}{%- endblock -%}
 
 {%- block stylesheets -%}
-    {{ encore_entry_link_tags('front-'~websiteTemplate~'-security', null, webpack) }}
+    {{ encore_entry_link_tags('front-'~websiteTemplate~'-'~templateName~'-'~frontTheme, null, webpack, {nonce: csp_nonce()}) }}
+    <link rel="modulepreload" href="{{ preload(asset('build/front/'~websiteTemplate~'/front-'~websiteTemplate~'-'~templateName~'.js', webpack), {as: 'script', importance: 'low'}) }}" as="script" fetchpriority="low" nonce="{{ csp_nonce() }}">
     {{ parent() }}
 {%- endblock -%}
 
 {%- block javascripts -%}
     {{ parent() }}
-    {{ encore_entry_script_tags('front-'~websiteTemplate~'-security', null, webpack, {defer: true}) }}
+    {{ encore_entry_script_tags('front-'~websiteTemplate~'-'~templateName, null, webpack, {defer: true, nonce: csp_nonce()}) }}
 {%- endblock -%}
 
 {%- block body -%}
     {%- if granted('ROLE_ALLOWED_TO_SWITCH') -%}
         <div id="content-security-front" class="template-page">
-            <div class="layout-zone bg-lighten">
+            <div class="layout-zone">
                 <div class="container py-lg">
                     <div class="row d-flex justify-content-center">
                         <div class="col-lg-4">
-                    <div class=" card form-container login-card shadow-lg border-0 h-100">
-                        <div class="card-body form-ajax-container p-4 p-md-5">
-                            <div class="login-head mb-4 pb-2">
-                                <p class="login-eyebrow text-uppercase mb-2">{{ "Commutation"|trans|raw }}</p>
-                                <h3 class="login-title text-uppercase fw-800 mb-0">{{ "Administrateur connecté"|trans|raw }}</h3>
+                            <div class="bg-light card form-container login-card shadow-md border-0 h-100">
+                                <div class="card-body form-ajax-container p-4 p-md-5">
+                                    <div class="login-head mb-4 pb-2">
+                                        <p class="login-eyebrow text-uppercase mb-2">{{ "Commutation"|trans|raw }}</p>
+                                        <h3 class="login-title text-uppercase fw-800 mb-0">{{ "Administrateur connecté"|trans|raw }}</h3>
+                                    </div>
+                                    {%- include 'front/'~websiteTemplate~'/include/alert.html.twig' with {alert: 'info', message: "Vous êtes déjà connecté en tant qu'administrateur. Veuillez utiliser le commutateur pour vous connecter en tant qu'un autre utilisateur."|trans} only -%}
+                                </div>
                             </div>
-                            {%- include 'front/'~websiteTemplate~'/include/alert.html.twig' with {alert: 'info', message: "Vous êtes déjà connecté en tant qu'administrateur. Veuillez utiliser le commutateur pour vous connecter en tant qu'un autre utilisateur."|trans} only -%}
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
                 </div>
             </div>
         </div>

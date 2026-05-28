@@ -140,10 +140,10 @@ class Configuration extends BaseEntity
     private ?string $charset = 'UTF-8';
 
     #[ORM\Column(type: Types::JSON, nullable: true)]
-    private array $emailsDev = ['dev@agence-felix.fr'];
+    private array $emailsDev = ['dev@up-animations.fr'];
 
     #[ORM\Column(type: Types::JSON, nullable: true)]
-    private array $emailsSupport = ['dev@agence-felix.fr', 'support@agence-felix.fr'];
+    private array $emailsSupport = ['dev@up-animations.fr', 'support@up-animations.fr'];
 
     #[ORM\Column(type: Types::JSON, nullable: true)]
     private array $ipsDev = self::IPS_DEV;

@@ -14,7 +14,6 @@ use DateTimeZone;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
@@ -53,9 +52,6 @@ class ResetPasswordManager
         $user = $this->repository->findOneBy(['email' => $email, 'website' => $website]);
 
         if (!$user) {
-            $session = new Session();
-            $session->getFlashBag()->add('error', $this->translator->trans('Aucun compte trouvé pour cet email.', [], 'security_cms'));
-
             return ['valid' => false];
         }
 

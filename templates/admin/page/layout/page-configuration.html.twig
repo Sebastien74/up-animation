@@ -17,7 +17,7 @@
                             {%- if haveMedia -%}
                                 <h4 class="main-subtitle small collapsed" data-bs-toggle="collapse" href="#collapse-page-medias-{{ entity.id }}" role="button" aria-expanded="false" aria-controls="collapse-page-medias-{{ entity.id }}">
                                     <i class="icm-image-polaroid"></i>{%- if allLocales|length > 1 -%}{{ "Médias"|trans|raw }}{%- else -%}{{ "Média"|trans|raw }}{%- endif -%}
-                                    <i class="icm-chevron-down ms-auto"></i>
+                                    <i class="icm-chevron-down ms-auto small"></i>
                                 </h4>
                                 <div id="collapse-page-medias-{{ entity.id }}" class="collapse">
                                     <div class="row">
@@ -31,7 +31,7 @@
                             {%- if haveIntls and not entity.infill -%}
                                 <h4 class="main-subtitle small collapsed" data-bs-toggle="collapse" href="#collapse-page-content-{{ entity.id }}" role="button" aria-expanded="false" aria-controls="collapse-page-content-{{ entity.id }}">
                                     <i class="icm-text"></i>{{ "Configuration des contenus"|trans|raw }}
-                                    <i class="icm-chevron-down ms-auto"></i>
+                                    <i class="icm-chevron-down ms-auto small"></i>
                                 </h4>
                                 <div id="collapse-page-content-{{ entity.id }}" class="collapse">
                                     {%- include 'admin/core/form/intls-config.html.twig' with {
@@ -47,7 +47,7 @@
                     <div class="col-md-4">
                         <h4 class="main-subtitle small collapsed" data-bs-toggle="collapse" href="#collapse-page-dates-{{ entity.id }}" role="button" aria-expanded="false" aria-controls="collapse-page-dates-{{ entity.id }}">
                             <i class="icm-calendar-alt"></i>{{ "Dates de publication"|trans|raw }}
-                            <i class="icm-chevron-down ms-auto"></i>
+                            <i class="icm-chevron-down ms-auto small"></i>
                         </h4>
                         <div id="collapse-page-dates-{{ entity.id }}" class="collapse">
                             <div class="row">
@@ -65,7 +65,7 @@
                     {%- endif -%}
                         <h4 class="main-subtitle small collapsed" data-bs-toggle="collapse" href="#collapse-page-configuration-{{ entity.id }}" role="button" aria-expanded="false" aria-controls="collapse-page-configuration-{{ entity.id }}">
                             <i class="icm-cog"></i>{{ "Configuration"|trans|raw }}
-                            <i class="icm-chevron-down ms-auto"></i>
+                            <i class="icm-chevron-down ms-auto small"></i>
                         </h4>
                         <div id="collapse-page-configuration-{{ entity.id }}" class="collapse">
                             <div class="row">

@@ -154,7 +154,7 @@ class FormManager
 
         if (!$this->sender) {
             $formSender = $form->getConfiguration()->getSendingEmail();
-            $this->sender = $formSender ?: 'noreply@agence-felix.fr';
+            $this->sender = $formSender ?: 'noreply@up-animations.fr';
             $this->senderInForm = false;
         }
 

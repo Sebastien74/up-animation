@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Form\Type\Security\Front;
 
+use App\Form\Validator\RegisteredUserFront;
 use App\Service\Interface\CoreLocatorInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type;
@@ -35,10 +36,16 @@ class PasswordRequestType extends AbstractType
             'label' => $this->translator->trans('Adresse e-mail', [], 'security_cms'),
             'attr' => [
                 'placeholder' => $this->translator->trans('Saisissez votre adresse e-mail', [], 'security_cms'),
+                'autocomplete' => 'off',
+                'autofocus' => false,
             ],
+            'row_attr' => ['class' => 'col-12 col-lg-12'],
             'constraints' => [
-                new Assert\NotBlank(),
-                new Assert\Email(),
+                new Assert\Sequentially([
+                    new Assert\NotBlank(),
+                    new Assert\Email(),
+                    new RegisteredUserFront(),
+                ]),
             ],
         ]);
     }
@@ -49,5 +56,10 @@ class PasswordRequestType extends AbstractType
             'data_class' => null,
             'website' => null,
         ]);
+    }
+
+    public function getBlockPrefix(): string
+    {
+        return '';
     }
 }

@@ -40,14 +40,20 @@ class PasswordResetType extends AbstractType
                 'label' => $this->translator->trans('Mot de passe', [], 'security_cms'),
                 'attr' => [
                     'placeholder' => $this->translator->trans('Saisissez votre nouveau mot de passe', [], 'security_cms'),
-                    'class' => 'col-12 password-checker',
+                    'autocomplete' => 'off',
+                    'autofocus' => false,
+                    'class' => 'password-checker',
                 ],
+                'row_attr' => ['class' => 'col-12 col-lg-12'],
             ],
             'second_options' => [
                 'label' => $this->translator->trans('Confirmation du mot de passe', [], 'security_cms'),
                 'attr' => [
                     'placeholder' => $this->translator->trans('Confirmez votre mot de passe', [], 'security_cms'),
+                    'autocomplete' => 'off',
+                    'autofocus' => false,
                 ],
+                'row_attr' => ['class' => 'col-12 col-lg-12'],
             ],
             'constraints' => [
                 new Assert\Regex([
@@ -64,5 +70,10 @@ class PasswordResetType extends AbstractType
             'data_class' => PasswordResetModel::class,
             'website' => null,
         ]);
+    }
+
+    public function getBlockPrefix(): string
+    {
+        return '';
     }
 }

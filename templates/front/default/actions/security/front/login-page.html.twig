@@ -5,26 +5,31 @@
 {%- block metaTitle -%}{{ "Connectez-vous"|trans|htmlEntities }}{%- endblock -%}
 {%- block metaRobots -%}noindex{%- endblock -%}
 
+{%- set displayHeader = false -%}
+
 {%- block stylesheets -%}
-    {{ encore_entry_link_tags('front-'~websiteTemplate~'-security', null, webpack) }}
+    {{ encore_entry_link_tags('front-'~websiteTemplate~'-'~templateName~'-'~frontTheme, null, webpack, {nonce: csp_nonce()}) }}
+    <link rel="modulepreload" href="{{ preload(asset('build/front/'~websiteTemplate~'/front-'~websiteTemplate~'-'~templateName~'.js', webpack), {as: 'script', importance: 'low'}) }}" as="script" fetchpriority="low" nonce="{{ csp_nonce() }}">
     {{ parent() }}
 {%- endblock -%}
 
 {%- block javascripts -%}
     {{ parent() }}
-    {{ encore_entry_script_tags('front-'~websiteTemplate~'-security', null, webpack, {defer: true}) }}
+    {{ encore_entry_script_tags('front-'~websiteTemplate~'-'~templateName, null, webpack, {defer: true, nonce: csp_nonce()}) }}
 {%- endblock -%}
 
 {%- block body -%}
     <div id="content-security-front" class="template-page">
-        {%- include 'front/'~websiteTemplate~'/blocks/title-header/default.html.twig' with {
-            pageTitle: "Connectez-vous"|trans|raw,
-            thumbConfiguration: thumbConfigurationHeader
-        } -%}
-        <div class="layout-zone bg-lighten">
+        {%- if displayHeader -%}
+            {%- include 'front/'~websiteTemplate~'/blocks/title-header/default.html.twig' with {
+                pageTitle: "Connectez-vous"|trans|raw,
+                thumbConfiguration: thumbConfigurationHeader
+            } -%}
+        {%- endif -%}
+        <div class="layout-zone">
             <div class="container py-lg">
                 <div class="row d-flex justify-content-center">
-                    <div class="col-lg-4">
+                    <div class="col-lg-4 py-5">
                         {%- include 'front/'~websiteTemplate~'/actions/security/front/login-form.html.twig' -%}
                     </div>
                 </div>

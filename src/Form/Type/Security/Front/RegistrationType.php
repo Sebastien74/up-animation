@@ -62,7 +62,8 @@ class RegistrationType extends AbstractType
                 'label' => $this->translator->trans('Nom', [], 'security_cms'),
                 'attr' => [
                     'placeholder' => $this->translator->trans('Saisissez votre nom', [], 'security_cms'),
-                    'class' => 'col-12 last_name'
+                    'autocomplete' => 'off',
+                    'autofocus' => false,
                 ],
                 'row_attr' => ['class' => 'col-12 col-lg-6'],
                 'constraints' => [
@@ -76,7 +77,8 @@ class RegistrationType extends AbstractType
                 'label' => $this->translator->trans('Prénom', [], 'security_cms'),
                 'attr' => [
                     'placeholder' => $this->translator->trans('Saisissez votre prénom', [], 'security_cms'),
-                    'class' => 'col-12 first_name'
+                    'autocomplete' => 'off',
+                    'autofocus' => false,
                 ],
                 'row_attr' => ['class' => 'col-12 col-lg-6'],
                 'constraints' => [
@@ -90,7 +92,8 @@ class RegistrationType extends AbstractType
                 'label' => $this->translator->trans("Identifiant", [], 'security_cms'),
                 'attr' => [
                     'placeholder' => $this->translator->trans('Saisissez votre identifiant', [], 'security_cms'),
-                    'class' => 'col-12 login'
+                    'autocomplete' => 'off',
+                    'autofocus' => false,
                 ],
                 'row_attr' => ['class' => 'col-12 col-lg-6'],
                 'constraints' => [
@@ -105,7 +108,8 @@ class RegistrationType extends AbstractType
                 'label' => $this->translator->trans('Adresse e-mail', [], 'security_cms'),
                 'attr' => [
                     'placeholder' => $this->translator->trans('Saisissez votre adresse e-mail', [], 'security_cms'),
-                    'class' => 'col-12 email'
+                    'autocomplete' => 'off',
+                    'autofocus' => false,
                 ],
                 'row_attr' => ['class' => 'col-12 col-lg-6'],
                 'constraints' => [
@@ -124,8 +128,9 @@ class RegistrationType extends AbstractType
                     'label' => $this->translator->trans('Mot de passe', [], 'security_cms'),
                     'attr' => [
                         'placeholder' => $this->translator->trans('Saisissez votre mot de passe', [], 'security_cms'),
-
-                        'class' => 'col-12 password-checker'
+                        'autocomplete' => 'off',
+                        'autofocus' => false,
+                        'class' => 'password-checker',
                     ],
                     'row_attr' => ['class' => 'col-12 col-lg-6'],
                     'constraints' => [
@@ -135,7 +140,9 @@ class RegistrationType extends AbstractType
                 'second_options' => [
                     'label' => $this->translator->trans('Confirmation du mot de passe', [], 'security_cms'),
                     'attr' => [
-                        'placeholder' => $this->translator->trans('Confirmez votre mot de passe', [], 'security_cms')
+                        'placeholder' => $this->translator->trans('Confirmez votre mot de passe', [], 'security_cms'),
+                        'autocomplete' => 'off',
+                        'autofocus' => false,
                     ],
                     'row_attr' => ['class' => 'col-12 col-lg-6'],
                     'constraints' => [
@@ -156,7 +163,6 @@ class RegistrationType extends AbstractType
                 'label' => $this->translator->trans("J’accepte les <a href='".$cgv."' target='_blank'>Conditions Générales de Vente</a> et les <a href='".$legalNotice."' target='_blank'>Conditions générales d'utilisation</a>", [], 'security_cms'),
                 'help' => $this->translator->trans('Vous devez prendre connaissance des mentions légales et les accepter pour créer votre compte.', [], 'security_cms'),
                 'display' => 'custom',
-
                 'row_attr' => ['class' => 'col-12 agree-terms-group'],
                 'label_attr' => [
                     'class' => 'col-12 small',
@@ -182,5 +188,10 @@ class RegistrationType extends AbstractType
             'disabled_account' => false,
             'website' => null,
         ]);
+    }
+
+    public function getBlockPrefix(): string
+    {
+        return '';
     }
 }

@@ -444,7 +444,7 @@ CREATE TABLE IF NOT EXISTS `upa_core_configuration` (
 --
 
 INSERT INTO `upa_core_configuration` (`createdAt`, `updatedAt`, `id`, `adminName`, `slug`, `computeETag`, `position`, `noSeo`, `template`, `locale`, `locales`, `onlineLocales`, `asDefault`, `fullWidth`, `onlineStatus`, `seoStatus`, `accessibilityStatus`, `mediasCategoriesStatus`, `mediasSecondary`, `duplicateMediasStatus`, `preloader`, `progressiveWebApp`, `scrollTopBtn`, `breadcrumb`, `subNavigation`, `collapsedAdminTrees`, `adminAdvertising`, `cacheExpiration`, `gdprFrequency`, `charset`, `emailsDev`, `emailsSupport`, `ipsDev`, `ipsCustomer`, `ipsBan`, `buildTheme`, `createdBy_id`, `updatedBy_id`, `darkTheme`) VALUES
-('2026-01-28 11:30:48', '2026-04-02 07:44:55', 1, NULL, NULL, '6979f9e2ee778c4ca4238a0b923820dcc509a6f75849b', 1, 0, 'default', 'fr', '[\"en\", \"es\", \"nl\"]', '[\"fr\"]', 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 120, 1095, 'UTF-8', '[\"dev@agence-felix.fr\"]', '[\"dev@agence-felix.fr\", \"support@agence-felix.fr\"]', '[\"::1\", \"127.0.0.1\", \"fe80::1\", \"194.51.155.21\", \"195.135.16.88\"]', '[]', '[]', 'diagonals', 1, 1, 0);
+('2026-01-28 11:30:48', '2026-04-02 07:44:55', 1, NULL, NULL, '6979f9e2ee778c4ca4238a0b923820dcc509a6f75849b', 1, 0, 'default', 'fr', '[\"en\", \"es\", \"nl\"]', '[\"fr\"]', 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 120, 1095, 'UTF-8', '[\"dev@up-animations.fr\"]', '[\"dev@up-animations.fr\", \"support@up-animations.fr\"]', '[\"::1\", \"127.0.0.1\", \"fe80::1\", \"194.51.155.21\", \"195.135.16.88\"]', '[]', '[]', 'diagonals', 1, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -12952,7 +12952,7 @@ CREATE TABLE IF NOT EXISTS `upa_module_form_configuration` (
 --
 
 INSERT INTO `upa_module_form_configuration` (`id`, `sendingEmail`, `receivingEmails`, `dbRegistration`, `ajax`, `thanksModal`, `thanksPage`, `attachmentsInMail`, `confirmEmail`, `uniqueContact`, `recaptcha`, `calendarsActive`, `dynamic`, `floatingLabels`, `securityKey`, `maxShipments`, `publicationStart`, `publicationEnd`, `form_id`, `stepform_id`, `pageRedirection_id`) VALUES
-(1, 'noreply@agence-felix.fr', '[\"dev@agence-felix.fr\"]', 1, 1, 0, 1, 1, 0, 0, 1, 0, 0, 1, 'wqR49qozTh', 0, NULL, NULL, 1, NULL, NULL);
+(1, 'noreply@up-animations.fr', '[\"dev@up-animations.fr\"]', 1, 1, 0, 1, 1, 0, 0, 1, 0, 0, 1, 'wqR49qozTh', 0, NULL, NULL, 1, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -15091,7 +15091,7 @@ CREATE TABLE IF NOT EXISTS `upa_module_newsletter_campaign` (
 --
 
 INSERT INTO `upa_module_newsletter_campaign` (`createdAt`, `updatedAt`, `id`, `adminName`, `slug`, `computeETag`, `position`, `noSeo`, `emailConfirmation`, `emailToWebmaster`, `receivingEmails`, `sendingEmail`, `recaptcha`, `internalRegistration`, `securityKey`, `externalFormAction`, `externalFieldEmail`, `externalFormToken`, `mailjetListName`, `mailjetListId`, `mailjetPublicKey`, `mailjetSecretKey`, `createdBy_id`, `updatedBy_id`, `website_id`) VALUES
-('2026-01-28 11:30:51', NULL, 1, 'Principale', 'main', NULL, 1, 0, 1, 0, '[]', 'noreply@agence-felix.fr', 1, 1, '3obQTVqAWc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, 1);
+('2026-01-28 11:30:51', NULL, 1, 'Principale', 'main', NULL, 1, 0, 1, 0, '[]', 'noreply@up-animations.fr', 1, 1, '3obQTVqAWc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -17078,8 +17078,8 @@ CREATE TABLE IF NOT EXISTS `upa_security_user` (
 
 INSERT INTO `upa_security_user` (`createdAt`, `updatedAt`, `login`, `email`, `lastName`, `firstName`, `password`, `isOnline`, `active`, `confirmEmail`, `agreeTerms`, `agreesTermsAt`, `token`, `tokenDate`, `tokenRequest`, `tokenRequestDate`, `tokenRemoveRequest`, `tokenRemoveRequestDate`, `locale`, `lastLogin`, `lastActivity`, `resetPassword`, `resetPasswordDate`, `secretKey`, `alerts`, `id`, `theme`, `createdBy_id`, `updatedBy_id`, `group_id`, `picture_id`, `profile_id`) VALUES
 ('2026-01-28 11:30:48', '2026-02-20 18:15:35', 'webmaster', 'fournier.sebastien@outlook.com', 'FOURNIER', 'Sébastien', '$2y$13$RsPU2NNmPqhej5/6vhMcKuHlPlvzW.5/BLTK4ZBxZmtfiBjip1VB6', 0, 1, 1, 1, '2026-01-28 11:30:48', NULL, '2026-01-28 11:30:48', 'E3edzy5jdQYRbh=ldV3pCL5UUVNydT', '2026-02-20 18:15:34', NULL, NULL, 'fr', NULL, NULL, 0, '2026-02-11 13:08:55', 'd7b9c0f913628ef2911cfdcc67274f62', '[]', 1, NULL, NULL, NULL, 1, 1, NULL),
-('2026-01-28 11:30:48', '2026-01-28 11:30:49', 'customer', 'customer@agence-felix.fr', 'Administrateur', NULL, '$2y$10$d7fMNRs1DspZZ9KYML4UQuGirin.2N1pgkxFG/tHNmP4e3pLAIlt2', 0, 1, 1, 1, '2026-01-28 11:30:48', NULL, '2026-01-28 11:30:48', NULL, NULL, NULL, NULL, 'fr', NULL, NULL, 0, '2026-01-28 11:30:48', 'dc98a893d18cb0a60afe0a2fbf2ba0e0', '[]', 2, NULL, NULL, NULL, 2, 2, NULL),
-('2026-01-28 11:30:48', NULL, 'translator', 'translator@agence-felix.fr', 'Traducteur', NULL, '$2y$10$VGz4ZdbQLjT4gKzT7U3TOeJObWMl3WUjGQZi137HpiaqRcdYwzmbG', 0, 1, 1, 1, '2026-01-28 11:30:48', NULL, '2026-01-28 11:30:48', NULL, NULL, NULL, NULL, 'fr', NULL, NULL, 0, '2026-01-28 11:30:48', '6e7348e34b32a0e8d9013921ed138148', '[]', 3, NULL, NULL, NULL, 3, 3, NULL);
+('2026-01-28 11:30:48', '2026-01-28 11:30:49', 'customer', 'customer@up-animations.fr', 'Administrateur', NULL, '$2y$10$d7fMNRs1DspZZ9KYML4UQuGirin.2N1pgkxFG/tHNmP4e3pLAIlt2', 0, 1, 1, 1, '2026-01-28 11:30:48', NULL, '2026-01-28 11:30:48', NULL, NULL, NULL, NULL, 'fr', NULL, NULL, 0, '2026-01-28 11:30:48', 'dc98a893d18cb0a60afe0a2fbf2ba0e0', '[]', 2, NULL, NULL, NULL, 2, 2, NULL),
+('2026-01-28 11:30:48', NULL, 'translator', 'translator@up-animations.fr', 'Traducteur', NULL, '$2y$10$VGz4ZdbQLjT4gKzT7U3TOeJObWMl3WUjGQZi137HpiaqRcdYwzmbG', 0, 1, 1, 1, '2026-01-28 11:30:48', NULL, '2026-01-28 11:30:48', NULL, NULL, NULL, NULL, 'fr', NULL, NULL, 0, '2026-01-28 11:30:48', '6e7348e34b32a0e8d9013921ed138148', '[]', 3, NULL, NULL, NULL, 3, 3, NULL);
 
 -- --------------------------------------------------------
 

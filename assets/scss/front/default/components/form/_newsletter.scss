@@ -16,6 +16,25 @@ $placeholder-color-news: $placeholder-color;
 
 ------------------------------------------------------------------ */
 
+.newsletter-modal-close {
+    color: $white;
+    font-size: rem(20px);
+    line-height: 1;
+    z-index: 2;
+    box-shadow: none;
+    transition: opacity $transition-fast;
+
+    &:hover,
+    &:focus,
+    &:focus-visible {
+        color: $white;
+        background-color: transparent;
+        outline: none;
+        box-shadow: none;
+        opacity: .75;
+    }
+}
+
 .newsletter-form-container {
 
     .newsletter-eyebrow {
@@ -91,11 +110,15 @@ $placeholder-color-news: $placeholder-color;
         }
 
         @include mediaQuery(min-md) {
+            flex: 1 1 auto;
+            min-width: 0;
+
             .form-control {
                 background-color: transparent;
                 border-radius: 999px 0 0 999px;
                 padding-left: 1.5rem;
                 font-size: rem(15px);
+                text-align: left;
             }
         }
     }
@@ -148,10 +171,14 @@ $placeholder-color-news: $placeholder-color;
 
     .newsletter-submit {
 
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
         gap: .65rem !important;
         min-height: 52px !important;
         height: 52px !important;
         padding: 0 1.5rem !important;
+        line-height: 1;
         border-radius: 999px !important;
         white-space: nowrap !important;
         letter-spacing: .06em !important;

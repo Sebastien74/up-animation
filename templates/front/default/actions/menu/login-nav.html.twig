@@ -10,15 +10,15 @@
     {%- if adminInSession -%}
         {%- set adminLabel = adminInSession.username ?: adminInSession.email -%}
         <a href="{{ path('security_front_forms') }}"
-           class="ms-{{ expand }}-4 mb-3 mb-{{ expand }}-0 btn btn-circle btn-primary"
+           class="ms-{{ expand }}-4 mb-3 mb-{{ expand }}-0 btn btn-circle btn-white"
            aria-label="{{ ('Connecté en admin : %name%'|trans({'%name%': adminLabel})~' - '~'Choisir un compte utilisateur'|trans)|striptags }}"
            data-bs-toggle="tooltip" data-bs-placement="bottom"
            title="{{ ('Connecté en admin : %name%'|trans({'%name%': adminLabel})~' - '~'Choisir un compte utilisateur'|trans)|striptags }}">
-            <i class="icon-user-edit" aria-hidden="true"></i>
+            <i class="icon-user" aria-hidden="true"></i>
         </a>
     {%- elseif not isUserFront(app.user) -%}
         <a href="{{ path('security_front_forms') }}"
-           class="ms-{{ expand }}-4 mb-3 mb-{{ expand }}-0 btn btn-circle"
+           class="ms-{{ expand }}-4 mb-3 mb-{{ expand }}-0 btn btn-circle btn-white"
            aria-label="{{ 'Connectez-vous'|trans|striptags }}"
            data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ 'Connectez-vous'|trans|striptags }}">
             <i class="icon-user" aria-hidden="true"></i>
