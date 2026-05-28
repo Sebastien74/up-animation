@@ -2,23 +2,23 @@
 
 /* -----------------------------------------------------------------
 
-    SIDEBAR — editorial dense. Dark surface kept across themes
+    SIDEBAR — graphite warm. Dark surface kept across themes
     (design ownership decision, cf. project_admin_light_theme).
 
-    1 ) Core
+    1 ) Core surface + atmospheric layer
     2 ) Search bar
-    3 ) Level 1 — section headers (.as-arrow.bigger)
-    4 ) Level 2 — main items (icon + label)
-    5 ) Level 3 — sub-items (rail indentation)
-    6 ) Sidebar top group
+    3 ) Level 1 — section headers
+    4 ) Level 2 — main items (glyph + label)
+    5 ) Level 3 — sub-items
+    6 ) Top section
     7 ) Left sidebar
     8 ) Right sidebar
-    9 ) Icon container (.btn-icon.small inside nav)
+    9 ) Glyph container (.btn-icon.small inside nav)
 
 ------------------------------------------------------------------ */
 
 /*-----------------------------------
-   1 ) Core
+   1 ) Core surface + atmospheric layer
 -----------------------------------*/
 
 .left-sidebar, .right-sidebar {
@@ -27,16 +27,34 @@
     height: calc(100% - 70px);
     top: 70px;
     z-index: 3000;
-    background: $dash-dark;
+    background: $dash-bg-1;
     display: flex;
     flex-direction: column;
+    box-shadow: inset -1px 0 0 rgba(255, 255, 255, 0.04);
 
     @include mediaQuery(max-sm) {
         width: 100%;
     }
 
     @include mediaQuery(min-sm) {
-        width: 280px;
+        width: 296px;
+    }
+
+    // Soft accent halo top-left to break the flat surface
+    &::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background:
+            radial-gradient(420px 220px at 0% 0%, rgba($primary, 0.06), transparent 70%),
+            linear-gradient(180deg, rgba(255, 255, 255, 0.015), transparent 30%);
+        pointer-events: none;
+        z-index: 0;
+    }
+
+    > * {
+        position: relative;
+        z-index: 1;
     }
 
     .scroll-sidebar {
@@ -44,34 +62,72 @@
         min-height: 0;
         overflow-y: auto;
         overflow-x: hidden;
-        padding: $space-5 $space-2 $space-6;
+        padding: $space-5 $space-3 $space-7;
+        scrollbar-gutter: stable;
+
+        scrollbar-width: thin;
+        scrollbar-color: rgba(255, 255, 255, 0.08) transparent;
 
         &::-webkit-scrollbar {
-            width: 6px;
+            width: 10px;
+            height: 10px;
         }
 
         &::-webkit-scrollbar-track {
             background: transparent;
+            margin: $space-3 0;
         }
 
         &::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.06);
+            background: rgba(255, 255, 255, 0.07);
+            border: 3px solid transparent;
+            background-clip: padding-box;
             border-radius: $radius-pill;
+            transition: background-color 220ms $transition-base-timing;
+        }
 
-            &:hover {
-                background: rgba(255, 255, 255, 0.14);
-            }
+        &::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.22);
+            background-clip: padding-box;
+        }
+
+        &::-webkit-scrollbar-thumb:active {
+            background: rgba(255, 255, 255, 0.34);
+            background-clip: padding-box;
+        }
+
+        &::-webkit-scrollbar-corner {
+            background: transparent;
         }
     }
 
+    &:hover .scroll-sidebar {
+        scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+    }
+
+    &:hover .scroll-sidebar::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.16);
+        background-clip: padding-box;
+    }
+
     a {
-        color: rgba(255, 255, 255, 0.68);
+        color: rgba(255, 255, 255, 0.72);
         display: inline-flex;
         align-items: center;
         position: relative;
-        transition: color .12s ease, background-color .12s ease;
+        transition:
+            color 220ms $transition-base-timing,
+            background-color 220ms $transition-base-timing,
+            transform 220ms $transition-base-timing,
+            padding-left 220ms $transition-base-timing;
         width: 100%;
         text-decoration: none;
+
+        &:focus-visible {
+            outline: 2px solid rgba($primary, 0.55);
+            outline-offset: 2px;
+            border-radius: $radius-md;
+        }
     }
 
     .as-arrow {
@@ -81,40 +137,41 @@
         &::after {
             content: '';
             position: absolute;
-            right: 10px;
+            right: 14px;
             width: 5px;
             height: 5px;
             border-width: 1px 0 0 1px;
             border-style: solid;
-            border-color: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.32);
             transform: rotate(135deg) translate(0, -50%);
             transform-origin: top;
-            transition: transform .12s ease, border-color .12s ease;
+            transition:
+                transform 260ms $transition-base-timing,
+                border-color 220ms $transition-base-timing;
         }
 
         &.active::after {
             transform: rotate(225deg) translate(0, -50%);
-            border-color: rgba(255, 255, 255, 0.75);
+            border-color: rgba(255, 255, 255, 0.85);
         }
 
         &:hover::after {
-            border-color: rgba(255, 255, 255, 0.9);
+            border-color: rgba(255, 255, 255, 0.95);
         }
 
         &:not(.bigger) {
 
             &:not(.active)::after {
-                top: 16px;
+                top: 20px;
             }
 
             &.active::after {
-                top: 15px;
+                top: 19px;
             }
         }
 
         &.bigger::after {
-            top: 13px;
-            right: 10px;
+            top: 18px;
             width: 4px;
             height: 4px;
         }
@@ -137,18 +194,8 @@
     top: 0;
     z-index: 5;
     padding: 0;
-    margin: 0 0 $space-2;
-    background: $dash-dark;
-
-    &::after {
-        content: '';
-        position: absolute;
-        left: 0;
-        right: 0;
-        bottom: -1px;
-        height: 1px;
-        background: rgba(255, 255, 255, 0.06);
-    }
+    margin: 0 0 $space-4;
+    background: linear-gradient(180deg, $dash-bg-1 0%, $dash-bg-1 80%, transparent 100%);
 }
 
 .sidebar-search-field {
@@ -160,71 +207,78 @@
         position: absolute;
         left: 14px;
         font-size: 13px;
-        color: rgba(255, 255, 255, 0.55);
+        color: rgba(255, 255, 255, 0.5);
         pointer-events: none;
-        transition: color .12s ease;
+        transition: color 220ms $transition-base-timing;
     }
 
     input {
         width: 100%;
-        height: 42px;
-        padding: 0 36px 0 38px;
-        font-size: 12.5px;
+        height: 44px;
+        padding: 0 38px 0 40px;
+        font-size: 13px;
         font-weight: 500;
-        letter-spacing: 0.01em;
+        letter-spacing: 0.005em;
         color: $white;
-        background: rgba(255, 255, 255, 0.05);
-        border: 1px solid rgba(255, 255, 255, 0.09);
-        border-radius: $radius-md;
-        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.02);
-        transition: border-color .12s ease, background-color .12s ease, box-shadow .12s ease;
+        background: rgba(255, 255, 255, 0.035);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: $radius-lg;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.025);
+        transition:
+            border-color 220ms $transition-base-timing,
+            background-color 220ms $transition-base-timing,
+            box-shadow 220ms $transition-base-timing;
 
         &::placeholder {
-            color: rgba(255, 255, 255, 0.42);
+            color: rgba(255, 255, 255, 0.38);
             font-weight: 400;
         }
 
         &:hover {
-            border-color: rgba(255, 255, 255, 0.14);
-            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 255, 255, 0.12);
+            background: rgba(255, 255, 255, 0.05);
         }
 
         &:focus {
             outline: none;
             border-color: rgba($primary, .55);
-            background: rgba(255, 255, 255, 0.07);
-            box-shadow: 0 0 0 3px rgba($primary, .12), inset 0 1px 0 rgba(255, 255, 255, 0.03);
+            background: rgba(255, 255, 255, 0.06);
+            box-shadow:
+                0 0 0 4px rgba($primary, .14),
+                inset 0 1px 0 rgba(255, 255, 255, 0.03);
         }
 
         &:focus + .sidebar-search-clear,
         &:not(:placeholder-shown) ~ .sidebar-search-clear {
-            color: rgba(255, 255, 255, 0.75);
+            color: rgba(255, 255, 255, 0.8);
         }
     }
 
     &:focus-within > i {
-        color: rgba(255, 255, 255, 0.85);
+        color: $primary;
     }
 
     .sidebar-search-clear {
         position: absolute;
-        right: 8px;
+        right: 10px;
         display: none;
-        width: 22px;
-        height: 22px;
+        width: 24px;
+        height: 24px;
         align-items: center;
         justify-content: center;
         color: rgba(255, 255, 255, 0.55);
         background: transparent;
         border: 0;
-        border-radius: $radius-xs;
+        border-radius: $radius-sm;
         cursor: pointer;
         font-size: 10px;
-        transition: color .12s ease, background-color .12s ease;
+        transition:
+            color 180ms $transition-base-timing,
+            background-color 180ms $transition-base-timing;
 
         &:hover {
             color: $white;
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.08);
         }
     }
 
@@ -233,17 +287,14 @@
     }
 }
 
-/* Translation sub-menu search — same input style, indented in the
-   collapse panel, scoped JS filter (.translation-search). */
-
 .translation-search-wrap {
     padding: 0 $space-2;
-    margin-bottom: $space-2;
+    margin-bottom: $space-3;
     list-style: none;
 
     .sidebar-search-field input {
-        height: 34px;
-        background: rgba(255, 255, 255, 0.03);
+        height: 36px;
+        background: rgba(255, 255, 255, 0.025);
     }
 }
 
@@ -253,8 +304,8 @@
 
 .translation-search-empty {
     display: none;
-    padding: $space-2 $space-3;
-    font-size: 11px;
+    padding: $space-3 $space-4;
+    font-size: 11.5px;
     color: rgba(255, 255, 255, 0.5);
     font-style: italic;
 }
@@ -265,8 +316,8 @@
 
 .sidebar-search-empty {
     display: none;
-    padding: $space-3 $space-3 $space-2;
-    font-size: 11px;
+    padding: $space-4 $space-4 $space-3;
+    font-size: 11.5px;
     color: rgba(255, 255, 255, 0.5);
     font-style: italic;
 }
@@ -275,14 +326,12 @@
     display: block;
 }
 
-// Items hidden by JS filter
 .left-sidebar li.is-hidden,
 .right-sidebar li.is-hidden {
     display: none !important;
 }
 
-// Items kept visible inside a last-level .collapse but highlighted
-// because their label matches the current search query.
+// Highlight search matches inside opened collapse
 .left-sidebar.is-filtering li.is-search-match > a,
 .right-sidebar.is-filtering li.is-search-match > a {
     color: $white !important;
@@ -301,12 +350,12 @@
 }
 
 /*-----------------------------------
-   3 ) Level 1 — section headers (.as-arrow.bigger)
-   Editorial sentence-case + accent dot marker.
+   3 ) Level 1 — section headers
+   Editorial uppercase, no marker.
 -----------------------------------*/
 
 .left-sidebar .scroll-sidebar > nav > ul > li {
-    margin-top: $space-3;
+    margin-top: $space-5;
 
     &:first-child {
         margin-top: 0;
@@ -315,86 +364,70 @@
 
 .left-sidebar .scroll-sidebar > nav > ul > li > a.as-arrow.bigger {
 
-    padding: $space-3 10px $space-2 22px;
+    padding: $space-3 $space-4 $space-2 $space-3;
     position: relative;
-    color: rgba(255, 255, 255, 0.55);
-    font-size: 12px;
+    color: rgba(255, 255, 255, 0.42);
+    font-size: 10.5px;
     font-weight: 600;
-    letter-spacing: -0.005em;
-    text-transform: none;
-    transition: color .12s ease;
-
-    &::before {
-        content: '';
-        position: absolute;
-        left: 10px;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 5px;
-        height: 5px;
-        background: rgba(255, 255, 255, 0.18);
-        border-radius: 1px;
-        transition: background .12s ease;
-    }
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    transition: color 220ms $transition-base-timing;
 
     &:hover {
-        color: rgba(255, 255, 255, 0.85);
-
-        &::before {
-            background: rgba(255, 255, 255, 0.4);
-        }
+        color: rgba(255, 255, 255, 0.78);
     }
 
     &.active {
-        color: $white;
-
-        &::before {
-            background: $primary;
-        }
+        color: $primary;
     }
 }
 
 /*-----------------------------------
-   4 ) Level 2 — main items (icon + label)
-   Dense pill — left accent rail on active.
+   4 ) Level 2 — main items (glyph + label)
+   Roomy pill — left accent rail on active.
 -----------------------------------*/
 
 .left-sidebar .scroll-sidebar > nav > ul > li > ul > li,
 .right-sidebar .scroll-sidebar > nav > ul > li {
 
     padding: 0;
-    margin-bottom: 0;
+    margin-bottom: 2px;
 
     > a {
 
         position: relative;
-        padding: 6px 8px 6px 12px;
+        padding: $space-1 $space-3;
         font-size: 13.5px;
         font-weight: 500;
         line-height: 1.25;
-        border-radius: $radius-sm;
-        color: rgba(255, 255, 255, 0.72);
-        gap: 9px;
-        min-height: 32px;
-        transition: background-color .12s ease, color .12s ease;
+        border-radius: $radius-md;
+        color: rgba(255, 255, 255, 0.74);
+        gap: $space-3;
+        min-height: 36px;
+        transition:
+            background-color 220ms $transition-base-timing,
+            color 220ms $transition-base-timing,
+            transform 220ms $transition-base-timing,
+            padding-left 220ms $transition-base-timing;
 
-        // Active left rail — visible only when active
+        // Active left rail
         &::before {
             content: '';
             position: absolute;
-            left: 0;
+            left: -$space-3;
             top: 50%;
             transform: translateY(-50%);
             width: 3px;
             height: 0;
             background: $primary;
             border-radius: 0 2px 2px 0;
-            transition: height .15s ease;
+            transition: height 280ms $transition-base-timing;
         }
 
         &:hover, &:focus {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.045);
             color: $white;
+            transform: translateX(2px);
 
             .btn-icon.small {
                 color: $white;
@@ -410,9 +443,10 @@
         }
 
         &.active {
-            background: rgba(255, 255, 255, 0.07);
-            color: $white;
-            padding-left: 14px;
+            background: rgba($primary, .14);
+            color: $primary;
+            padding-left: $space-4;
+            transform: none;
 
             &::before {
                 height: 18px;
@@ -434,24 +468,24 @@
 }
 
 /*-----------------------------------
-   5 ) Level 3 — sub-items (rail indentation)
+   5 ) Level 3 — sub-items
 -----------------------------------*/
 
 .left-sidebar .collapse .collapse,
 .right-sidebar .collapse {
 
     list-style-type: none;
-    padding: 2px 0 $space-2 0;
-    margin: $space-2 0 0 22px;
+    padding: $space-1 0 $space-2 0;
+    margin: $space-2 0 $space-2 28px;
     position: relative;
 
-    // Vertical hierarchy rail
+    // Vertical indentation rail
     &::before {
         content: '';
         position: absolute;
-        left: -8px;
-        top: 4px;
-        bottom: 6px;
+        left: -10px;
+        top: 6px;
+        bottom: 8px;
         width: 1px;
         background: rgba(255, 255, 255, 0.08);
     }
@@ -459,36 +493,41 @@
     > li {
 
         padding: 0 !important;
-        margin-bottom: 0;
+        margin-bottom: 1px;
         position: relative;
 
         > a {
 
-            padding: 5px 8px 5px 12px;
-            font-size: 12.5px;
+            padding: $space-2 $space-3;
+            font-size: 13px;
             font-weight: 400;
             line-height: 1.3;
-            min-height: 28px;
-            border-radius: $radius-xs;
-            color: rgba(255, 255, 255, 0.55);
-            transition: background-color .12s ease, color .12s ease;
+            min-height: 34px;
+            border-radius: $radius-sm;
+            color: rgba(255, 255, 255, 0.6);
+            transition:
+                background-color 200ms $transition-base-timing,
+                color 200ms $transition-base-timing,
+                transform 200ms $transition-base-timing;
 
             &:hover, &:focus {
                 background: rgba(255, 255, 255, 0.04);
                 color: $white;
+                transform: translateX(2px);
             }
 
             &.active {
-                background: rgba(255, 255, 255, 0.08);
-                color: $white;
+                background: rgba($primary, .12);
+                color: $primary;
                 font-weight: 500;
+                transform: none;
             }
         }
     }
 }
 
 /*-----------------------------------
-   6 ) Sidebar top section
+   6 ) Top section
    (Dashboard, Access front, Logout, multi-site selector)
 -----------------------------------*/
 
@@ -498,9 +537,8 @@
     display: flex;
     flex-direction: column;
     gap: $space-3;
-    padding: $space-4 $space-2;
-    background: rgba(0, 0, 0, 0.55);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding: $space-5 $space-3 $space-4;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 
     > ul {
         padding: 0;
@@ -508,7 +546,7 @@
         list-style: none;
         display: flex;
         flex-direction: column;
-        gap: 3px;
+        gap: 2px;
     }
 
     > ul > li {
@@ -518,25 +556,54 @@
             display: inline-flex;
             align-items: center;
             width: 100%;
-            padding: 6px 8px;
+            padding: $space-1 $space-3;
             font-size: 13.5px;
             font-weight: 500;
             line-height: 1.25;
-            min-height: 32px;
-            border-radius: $radius-sm;
-            color: rgba(255, 255, 255, 0.82);
-            gap: 9px;
+            min-height: 36px;
+            border-radius: $radius-md;
+            color: rgba(255, 255, 255, 0.84);
+            gap: $space-3;
             text-decoration: none;
-            transition: background-color .12s ease, color .12s ease;
+            transition:
+                background-color 220ms $transition-base-timing,
+                color 220ms $transition-base-timing,
+                transform 220ms $transition-base-timing;
 
             &:hover, &:focus {
-                background: rgba(255, 255, 255, 0.06);
+                background: rgba(255, 255, 255, 0.05);
                 color: $white;
+                transform: translateX(2px);
+
+                .btn-icon.small {
+                    color: $white;
+
+                    i {
+                        color: $white;
+                    }
+
+                    svg {
+                        fill: $white;
+                    }
+                }
             }
 
             &.active {
-                background: rgba(255, 255, 255, 0.08);
-                color: $white;
+                background: rgba($primary, .14);
+                color: $primary;
+                transform: none;
+
+                .btn-icon.small {
+                    color: $primary;
+
+                    i {
+                        color: $primary;
+                    }
+
+                    svg {
+                        fill: $primary;
+                    }
+                }
             }
         }
     }
@@ -546,7 +613,8 @@
         color: rgba(255, 255, 255, 0.5);
         font-size: 11px;
         font-weight: 500;
-        padding: $space-2 10px;
+        letter-spacing: 0.02em;
+        padding: $space-2 $space-3;
 
         i {
             color: $primary;
@@ -558,20 +626,26 @@
 
 .left-sidebar .in-build-info > a {
 
-    padding: 6px 10px;
-    margin: $space-2 0 $space-3;
-    font-size: 11.5px;
+    padding: $space-2 $space-3;
+    margin: $space-3 0 $space-4;
+    font-size: 12px;
     font-weight: 500;
     color: $warning;
     background: rgba($warning, .08);
-    border: 1px solid rgba($warning, .18);
-    border-radius: $radius-sm;
-    gap: 6px;
+    border: 1px solid rgba($warning, .2);
+    border-radius: $radius-md;
+    gap: 8px;
+    transition:
+        background-color 220ms $transition-base-timing,
+        border-color 220ms $transition-base-timing,
+        color 220ms $transition-base-timing,
+        transform 220ms $transition-base-timing;
 
     &:hover, &:focus {
         background: rgba($warning, .14);
-        border-color: rgba($warning, .3);
+        border-color: rgba($warning, .32);
         color: lighten($warning, 8%);
+        transform: translateX(2px);
     }
 
     i {
@@ -612,13 +686,14 @@
 .right-sidebar {
 
     transition: right $transition-base;
+    box-shadow: inset 1px 0 0 rgba(255, 255, 255, 0.04);
 
     @include mediaQuery(max-sm) {
         right: -100%;
     }
 
     @include mediaQuery(min-sm) {
-        right: -280px;
+        right: -296px;
     }
 
     &.open {
@@ -628,47 +703,66 @@
 }
 
 /*-----------------------------------
-   9 ) Icon container (.btn-icon.small inside nav)
-   Modernized — rounded square with subtle accent border.
+   9 ) Glyph container (.btn-icon.small inside nav)
+   Sunken tile — darker than sidebar, hairline border, accent fill on active.
 -----------------------------------*/
 
 .left-sidebar .sidebar-top-section a .btn-icon.small,
 .left-sidebar .scroll-sidebar > nav > ul > li > ul > li > a .btn-icon.small,
 .right-sidebar .scroll-sidebar > nav > ul > li > a .btn-icon.small {
 
-    width: 28px;
-    height: 28px;
-    flex: 0 0 28px;
+    width: 28px !important;
+    height: 28px !important;
+    flex: 0 0 28px !important;
     margin: 0 !important;
-    padding: 0;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    background: rgba(255, 255, 255, 0.03) !important;
-    border: 1px solid rgba(255, 255, 255, 0.06) !important;
-    border-radius: $radius-sm !important;
-    color: rgba(255, 255, 255, 0.6);
-    transition: background-color .12s ease, border-color .12s ease, color .12s ease;
+    padding: 0 !important;
+    display: grid !important;
+    place-items: center !important;
+    background: rgba(0, 0, 0, 0.32) !important;
+    border: 1px solid rgba(255, 255, 255, 0.07) !important;
+    border-radius: $radius-lg !important;
+    color: rgba(255, 255, 255, 0.7);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.02);
+    transition:
+        background-color 220ms $transition-base-timing,
+        border-color 220ms $transition-base-timing,
+        color 220ms $transition-base-timing,
+        box-shadow 220ms $transition-base-timing;
 
     i {
         font-size: 13px !important;
-        line-height: 1;
+        line-height: 1 !important;
         color: inherit;
-        transition: color .12s ease;
+        display: block !important;
+        position: static !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        width: auto !important;
+        height: auto !important;
+        transition: color 220ms $transition-base-timing;
     }
 
     svg, img {
-        width: 14px !important;
-        height: 14px !important;
-        max-width: 14px;
-        max-height: 14px;
-        fill: rgba(255, 255, 255, 0.6);
-        transition: fill .12s ease;
+        width: 16px !important;
+        height: 16px !important;
+        max-width: 16px;
+        max-height: 16px;
+        fill: rgba(255, 255, 255, 0.7) !important;
+        display: block !important;
+        place-self: center !important;
+        object-fit: contain;
+        transition: fill 220ms $transition-base-timing;
+    }
+
+    // Cascade tint to inline SVG children — paths often carry their own
+    // hardcoded fill attribute that beats `svg { fill }` inheritance.
+    svg * {
+        fill: inherit !important;
     }
 
     &.danger {
-        background: rgba($danger, .12) !important;
-        border-color: rgba($danger, .24) !important;
+        background: rgba($danger, 0.12) !important;
+        border-color: rgba($danger, 0.28) !important;
         color: $danger;
 
         i {
@@ -681,7 +775,7 @@
     }
 }
 
-// Hover state — icon container lightens, icon brighter
+// Hover — tile deepens, border lightens, glyph brightens
 .left-sidebar .sidebar-top-section a:hover .btn-icon.small,
 .left-sidebar .sidebar-top-section a:focus .btn-icon.small,
 .left-sidebar .scroll-sidebar > nav > ul > li > ul > li > a:hover .btn-icon.small,
@@ -689,8 +783,8 @@
 .right-sidebar .scroll-sidebar > nav > ul > li > a:hover .btn-icon.small,
 .right-sidebar .scroll-sidebar > nav > ul > li > a:focus .btn-icon.small {
 
-    background: rgba(255, 255, 255, 0.07) !important;
-    border-color: rgba(255, 255, 255, 0.14) !important;
+    background: rgba(0, 0, 0, 0.45) !important;
+    border-color: rgba(255, 255, 255, 0.16) !important;
     color: $white;
 
     i {
@@ -698,24 +792,33 @@
     }
 
     svg {
-        fill: $white;
+        fill: $white !important;
+    }
+
+    svg * {
+        fill: inherit !important;
     }
 }
 
-// Active state — accent fill on the badge
+// Active — accent fill + border, glyph in accent
 .left-sidebar .sidebar-top-section a.active .btn-icon.small,
 .left-sidebar .scroll-sidebar > nav > ul > li > ul > li > a.active .btn-icon.small,
 .right-sidebar .scroll-sidebar > nav > ul > li > a.active .btn-icon.small {
 
-    background: rgba($primary, .16) !important;
-    border-color: rgba($primary, .32) !important;
+    background: rgba($primary, 0.18) !important;
+    border-color: rgba($primary, 0.4) !important;
     color: $primary;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
 
     i {
         color: $primary;
     }
 
     svg {
-        fill: $primary;
+        fill: $primary !important;
+    }
+
+    svg * {
+        fill: inherit !important;
     }
 }

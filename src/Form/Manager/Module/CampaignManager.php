@@ -6,6 +6,7 @@ namespace App\Form\Manager\Module;
 
 use App\Entity\Core\Website;
 use App\Entity\Module\Newsletter\Campaign;
+use App\Entity\Module\Newsletter\Email;
 use App\Service\Interface\CoreLocatorInterface;
 use Exception;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
@@ -39,5 +40,19 @@ readonly class CampaignManager
         $campaign->setSecurityKey($this->coreLocator->alphanumericKey());
 
         $this->coreLocator->em()->persist($campaign);
+    }
+
+    /**
+     * To remove Email[] with expired token (uncompleted registration).
+     */
+    public function removeExpiredToken(): void
+    {
+        $expiredEmails = $this->coreLocator->em()->getRepository(Email::class)->findEmailsWithExpiredToken();
+        if ($expiredEmails) {
+            foreach ($expiredEmails as $email) {
+                $this->coreLocator->em()->remove($email);
+            }
+            $this->coreLocator->em()->flush();
+        }
     }
 }

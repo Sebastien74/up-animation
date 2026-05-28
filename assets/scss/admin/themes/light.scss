@@ -189,7 +189,7 @@ body {
             fill: $theme-sidebar-text !important;
         }
 
-        &.active, &:hover {
+        &:hover {
 
             color: $white !important;
 
@@ -197,45 +197,70 @@ body {
                 fill: $white !important;
             }
         }
-    }
 
-    // Sidebar active item — light theme strips the SCSS background defined in
-    // _sidebar.scss when no !important is set elsewhere. Restore the sober overlay
-    // + accent rail pattern of the dark default.
-    .left-sidebar .scroll-sidebar > nav > ul > li > ul > li > a.active {
-        background: rgba(255, 255, 255, 0.07) !important;
-        color: $white !important;
+        &.active {
 
-        &::before {
-            background: $theme-accent !important;
+            color: lighten($primary, 20%) !important;
+
+            svg {
+                fill: lighten($primary, 20%) !important;
+            }
         }
     }
 
-    // L2 active icon badge — accent (theme-aware)
+    // Sidebar accent — indigo lifted into a luminous lavender so it stays
+    // legible on the dark sidebar surface while keeping the family of the
+    // global indigo $primary (charte cohérence).
+    .left-sidebar .scroll-sidebar > nav > ul > li > ul > li > a.active,
+    .left-sidebar .sidebar-top-section > ul > li > a.active,
+    .right-sidebar .scroll-sidebar > nav > ul > li > a.active {
+        background: rgba(lighten($primary, 20%), .16) !important;
+        color: lighten($primary, 20%) !important;
+
+        &::before {
+            background: lighten($primary, 20%) !important;
+        }
+    }
+
+    .left-sidebar .collapse .collapse > li > a.active,
+    .right-sidebar .collapse > li > a.active {
+        background: rgba(lighten($primary, 20%), .14) !important;
+        color: lighten($primary, 20%) !important;
+    }
+
     .left-sidebar .scroll-sidebar > nav > ul > li > ul > li > a.active .btn-icon.small,
     .left-sidebar .sidebar-top-section a.active .btn-icon.small,
     .right-sidebar .scroll-sidebar > nav > ul > li > a.active .btn-icon.small {
-        background: rgba($theme-accent, .16) !important;
-        border-color: rgba($theme-accent, .32) !important;
-        color: $theme-accent !important;
+        background: rgba(lighten($primary, 20%), .2) !important;
+        border-color: rgba(lighten($primary, 20%), .45) !important;
+        color: lighten($primary, 20%) !important;
 
         i {
-            color: $theme-accent !important;
+            color: lighten($primary, 20%) !important;
         }
 
         svg {
-            fill: $theme-accent !important;
+            fill: lighten($primary, 20%) !important;
+        }
+
+        svg * {
+            fill: inherit !important;
         }
     }
 
-    // L1 section header active marker
-    .left-sidebar .scroll-sidebar > nav > ul > li > a.as-arrow.bigger.active::before {
-        background: $theme-accent !important;
+    .left-sidebar .scroll-sidebar > nav > ul > li > a.as-arrow.bigger.active {
+        color: lighten($primary, 20%) !important;
     }
 
-    // Sidebar search — focus border on theme accent
     .sidebar-search-field input:focus {
-        border-color: rgba($theme-accent, .5) !important;
+        border-color: rgba(lighten($primary, 20%), .55) !important;
+        box-shadow:
+            0 0 0 4px rgba(lighten($primary, 20%), .16),
+            inset 0 1px 0 rgba(255, 255, 255, 0.03) !important;
+    }
+
+    .sidebar-search-field:focus-within > i {
+        color: lighten($primary, 20%) !important;
     }
 
     .sidebar-nav ul li ul {
