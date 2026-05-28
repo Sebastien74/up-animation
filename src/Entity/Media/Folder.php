@@ -40,10 +40,10 @@ class Folder extends BaseEntity
     #[ORM\Column(type: Types::BOOLEAN)]
     private bool $deletable = true;
 
-    #[ORM\OneToMany(targetEntity: Media::class, mappedBy: 'folder')]
+    #[ORM\OneToMany(targetEntity: Media::class, mappedBy: 'folder', fetch: 'EXTRA_LAZY')]
     private ArrayCollection|PersistentCollection $medias;
 
-    #[ORM\OneToMany(targetEntity: Folder::class, mappedBy: 'parent')]
+    #[ORM\OneToMany(targetEntity: Folder::class, mappedBy: 'parent', fetch: 'EXTRA_LAZY')]
     private ArrayCollection|PersistentCollection $folders;
 
     #[ORM\ManyToOne(targetEntity: Website::class)]
