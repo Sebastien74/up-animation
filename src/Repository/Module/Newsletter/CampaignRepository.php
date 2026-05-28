@@ -8,6 +8,7 @@ use App\Entity\Core\Website;
 use App\Entity\Module\Newsletter\Campaign;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -55,5 +56,21 @@ class CampaignRepository extends ServiceEntityRepository
         return $statement->getQuery()
             ->enableResultCache(3600, 'newsletter-campaign-'.md5($website->getId().'_'.$locale.'_'.$filter))
             ->getOneOrNullResult();
+    }
+
+    /**
+     * Admin index QueryBuilder with intls preloaded for the current locale.
+     *
+     * Returned as a QueryBuilder so it can be paginated by the Knp paginator.
+     */
+    public function createAdminIndexQueryBuilder(Website $website, string $locale): QueryBuilder
+    {
+        return $this->createQueryBuilder('c')
+            ->leftJoin('c.intls', 'i', 'WITH', 'i.locale = :locale')
+            ->andWhere('c.website = :website')
+            ->setParameter('website', $website)
+            ->setParameter('locale', $locale)
+            ->addSelect('i')
+            ->orderBy('c.position', 'ASC');
     }
 }

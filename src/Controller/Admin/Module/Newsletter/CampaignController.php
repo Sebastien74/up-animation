@@ -8,6 +8,7 @@ use App\Controller\Admin\AdminController;
 use App\Entity\Module\Newsletter\Campaign;
 use App\Form\Interface\ModuleFormManagerInterface;
 use App\Form\Type\Module\Newsletter\CampaignType;
+use App\Repository\Module\Newsletter\CampaignRepository;
 use App\Service\Interface\AdminLocatorInterface;
 use App\Service\Interface\CoreLocatorInterface;
 use Knp\Component\Pager\PaginatorInterface;
@@ -38,6 +39,7 @@ class CampaignController extends AdminController
         protected ModuleFormManagerInterface $moduleFormInterface,
         protected CoreLocatorInterface $coreLocator,
         protected AdminLocatorInterface $adminLocator,
+        private readonly CampaignRepository $campaignRepository,
     ) {
         $this->formManager = $moduleFormInterface->newsletterCampaign();
         parent::__construct($coreLocator, $adminLocator);
@@ -52,6 +54,12 @@ class CampaignController extends AdminController
     public function index(Request $request, PaginatorInterface $paginator, ?string $domains = null): JsonResponse|string|Response
     {
         $this->formManager->removeExpiredToken();
+
+        $this->entities = $this->campaignRepository->createAdminIndexQueryBuilder(
+            $this->getWebsite()->entity,
+            $this->coreLocator->locale(),
+        );
+        $this->forceEntities = true;
 
         return parent::index($request, $paginator);
     }

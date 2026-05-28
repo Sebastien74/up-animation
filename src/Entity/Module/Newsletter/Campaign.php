@@ -83,7 +83,7 @@ class Campaign extends BaseEntity
     #[ORM\OneToMany(mappedBy: 'campaign', targetEntity: Email::class, cascade: ['persist'], orphanRemoval: true)]
     private ArrayCollection|PersistentCollection $emails;
 
-    #[ORM\OneToMany(mappedBy: 'campaign', targetEntity: CampaignIntl::class, cascade: ['persist', 'remove'], fetch: 'EAGER', orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'campaign', targetEntity: CampaignIntl::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     #[ORM\OrderBy(['locale' => 'ASC'])]
     #[Assert\Valid(['groups' => ['form_submission']])]
     private ArrayCollection|PersistentCollection $intls;
