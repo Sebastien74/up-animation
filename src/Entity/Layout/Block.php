@@ -127,7 +127,7 @@ class Block extends BaseConfiguration
     #[ORM\Column(type: Types::JSON, nullable: true)]
     private array $data = [];
 
-    #[ORM\OneToOne(targetEntity: FieldConfiguration::class, inversedBy: 'block', cascade: ['persist', 'remove'], fetch: 'EAGER')]
+    #[ORM\OneToOne(targetEntity: FieldConfiguration::class, inversedBy: 'block', cascade: ['persist', 'remove'])]
     private ?FieldConfiguration $fieldConfiguration = null;
 
     #[ORM\OneToMany(targetEntity: ActionIntl::class, mappedBy: 'block', cascade: ['persist'], orphanRemoval: true)]

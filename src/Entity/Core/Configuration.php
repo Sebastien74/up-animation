@@ -157,7 +157,7 @@ class Configuration extends BaseEntity
     #[ORM\Column(type: Types::STRING, length: 30, nullable: true)]
     private ?string $buildTheme = 'diagonals';
 
-    #[ORM\OneToOne(targetEntity: Website::class, mappedBy: 'configuration', fetch: 'EAGER')]
+    #[ORM\OneToOne(targetEntity: Website::class, mappedBy: 'configuration')]
     private ?Website $website = null;
 
     #[ORM\OneToMany(targetEntity: ConfigurationMediaRelation::class, mappedBy: 'configuration', cascade: ['persist'], fetch: 'EXTRA_LAZY', orphanRemoval: true)]
