@@ -281,8 +281,8 @@ class ConfigurationManager
         $filesystem = new Filesystem();
         $website = $configuration->getWebsite();
         $websiteModel = WebsiteModel::fromEntity($website, $this->coreLocator, $locale);
-        $domains = $this->entityManager->getRepository(Domain::class)->findBy(['configuration' => $configuration, 'locale' => $locale, 'asDefault' => true]);
-        $domain = !empty($domains[0]) ? $domains[0]->getName() : $this->request->getSchemeAndHttpHost();
+        $defaultDomain = $this->entityManager->getRepository(Domain::class)->findOneBy(['configuration' => $configuration, 'locale' => $locale, 'asDefault' => true]);
+        $domain = $defaultDomain?->getName() ?? $this->request->getSchemeAndHttpHost();
         $information = $website instanceof Website ? $this->i18nRuntime->intl($website->getInformation(), $locale) : null;
         $name = $information ? $information->getTitle() : null;
         $logos = $website instanceof Website ? $websiteModel->configuration->logos : [];
@@ -322,16 +322,31 @@ class ConfigurationManager
         $dirname = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $dirname);
         $filesystem->dumpFile($dirname, $response->getContent());
 
-        $mediaRelations = $this->entityManager->getRepository(MediaRelation::class)->findBy(['categorySlug' => 'webmanifest']);
+        $mediaRelations = $this->entityManager->getRepository(MediaRelation::class)
+            ->createQueryBuilder('mr')
+            ->leftJoin('mr.media', 'm')
+            ->andWhere('mr.categorySlug = :slug')
+            ->andWhere('m.website = :website')
+            ->setParameter('slug', 'webmanifest')
+            ->setParameter('website', $website)
+            ->addSelect('m')
+            ->getQuery()
+            ->getResult();
+
+        $manifestUpdated = false;
         foreach ($mediaRelations as $mediaRelation) {
             $media = $mediaRelation->getMedia();
-            if ($media instanceof Media && $media->getWebsite()->getId() === $website->getId()) {
+            if ($media instanceof Media) {
                 $media->setOriginalName('manifest.webmanifest.json');
                 $media->setName('manifest.webmanifest');
                 $media->setExtension('json');
                 $this->entityManager->persist($media);
-                $this->entityManager->flush();
+                $manifestUpdated = true;
             }
+        }
+
+        if ($manifestUpdated) {
+            $this->entityManager->flush();
         }
     }
 

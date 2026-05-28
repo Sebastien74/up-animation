@@ -233,63 +233,78 @@ class ExceptionController extends BaseController
      */
     private function getSeo(Website $website, Request $request, SeoService $seoService): bool|array
     {
+        $em = $this->coreLocator->em();
         $defaultExceptionUrl = null;
         $currentLocaleExisting = false;
         $locales = $website->getConfiguration()->getAllLocales();
-        $website = $this->coreLocator->em()->getRepository(Website::class)->find($website->getId());
-        $page = $this->coreLocator->em()->getRepository(Page::class)->findOneBy([
+        $website = $em->getRepository(Website::class)->find($website->getId());
+        $page = $em->getRepository(Page::class)->findOneBy([
             'website' => $website,
             'slug' => 'error',
         ]);
 
         $exceptionUrl = null;
+        $requestLocale = $request->getLocale();
+
+        if (!$page) {
+            return false;
+        }
+
+        $urlsByLocale = [];
+        foreach ($page->getUrls() as $url) {
+            /* @var Url $url */
+            $urlsByLocale[$url->getLocale()] = $url;
+        }
+
+        $createdBy = null;
+        $needsFlush = false;
 
         foreach ($locales as $locale) {
-            $existingUrl = false;
+            if ($locale !== $requestLocale) {
+                continue;
+            }
 
-            if ($page && $locale === $request->getLocale()) {
-                foreach ($page->getUrls() as $url) {
-                    /** @var Url $url */
-                    if ($url->getLocale() === $locale) {
-                        $existingUrl = true;
-                        $currentLocaleExisting = true;
-                    }
-                    if ($url->getLocale() === $request->getLocale()) {
-                        $exceptionUrl = $url;
-                    }
+            $existingUrl = isset($urlsByLocale[$locale]);
+            if ($existingUrl) {
+                $currentLocaleExisting = true;
+                $exceptionUrl = $urlsByLocale[$locale];
+            }
+
+            if (!$existingUrl || null === $exceptionUrl) {
+                if (!$createdBy) {
+                    /* @var User|null $createdBy */
+                    $createdBy = $em->getRepository(User::class)->findOneBy(['login' => 'webmaster']);
                 }
 
-                if (!$existingUrl || null === $exceptionUrl) {
-                    /** @var User $createdBy */
-                    $createdBy = $this->coreLocator->em()->getRepository(User::class)->findOneBy(['login' => 'webmaster']);
+                $errorUrl = new Url();
+                $errorUrl->setLocale($locale);
+                $errorUrl->setCode('error');
+                $errorUrl->setWebsite($website);
+                $errorUrl->setHideInSitemap(true);
+                $errorUrl->setAsIndex(false);
+                $errorUrl->setCreatedBy($createdBy);
+                $errorUrl->setOnline(true);
 
-                    $errorUrl = new Url();
-                    $errorUrl->setLocale($locale);
-                    $errorUrl->setCode('error');
-                    $errorUrl->setWebsite($website);
-                    $errorUrl->setHideInSitemap(true);
-                    $errorUrl->setAsIndex(false);
-                    $errorUrl->setCreatedBy($createdBy);
-                    $errorUrl->setOnline(true);
+                $seo = new Seo();
+                $seo->setUrl($errorUrl);
+                $seo->setCreatedBy($createdBy);
+                $errorUrl->setSeo($seo);
 
-                    $seo = new Seo();
-                    $seo->setUrl($errorUrl);
-                    $seo->setCreatedBy($createdBy);
-                    $errorUrl->setSeo($seo);
+                $page->addUrl($errorUrl);
+                $em->persist($page);
+                $needsFlush = true;
 
-                    $page->addUrl($errorUrl);
+                $exceptionUrl = $errorUrl;
+                $currentLocaleExisting = true;
 
-                    $this->coreLocator->em()->persist($page);
-                    $this->coreLocator->em()->flush();
-
-                    $exceptionUrl = $errorUrl;
-                    $currentLocaleExisting = true;
-
-                    if ($locale === $website->getConfiguration()->getLocale()) {
-                        $defaultExceptionUrl = $errorUrl;
-                    }
+                if ($locale === $website->getConfiguration()->getLocale()) {
+                    $defaultExceptionUrl = $errorUrl;
                 }
             }
+        }
+
+        if ($needsFlush) {
+            $em->flush();
         }
 
         if (!$currentLocaleExisting) {
