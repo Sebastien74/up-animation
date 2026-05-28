@@ -55,6 +55,7 @@ class FormManager
     private ?string $phone = null;
     private array $configurations = [];
     private array $attachments = [];
+    private array $choiceEntityLabelCache = [];
     private ?string $error = null;
 
     /**
@@ -105,7 +106,7 @@ class FormManager
     public function getContact(): mixed
     {
         $contact = null;
-        $token = !empty($_GET['token']) ? $_GET['token'] : null;
+        $token = $this->coreLocator->requestStack()->getCurrentRequest()?->query->get('token');
 
         if ($token) {
             $contact = $this->coreLocator->em()->getRepository(Form\ContactForm::class)->findOneBy(['token' => $token, 'tokenExpired' => false]);
@@ -241,10 +242,32 @@ class FormManager
      */
     private function getConfigurations(): void
     {
-        $blockRepository = $this->coreLocator->em()->getRepository(Block::class);
-        foreach ($this->fields as $keyName => $field) {
+        if (!$this->fields) {
+            return;
+        }
+
+        $idsByKey = [];
+        foreach (array_keys($this->fields) as $keyName) {
             $matches = explode('_', $keyName);
-            $this->configurations[$keyName] = $blockRepository->find(end($matches))->getFieldConfiguration();
+            $idsByKey[$keyName] = (int) end($matches);
+        }
+
+        $blocks = $this->coreLocator->em()->getRepository(Block::class)
+            ->createQueryBuilder('b')
+            ->leftJoin('b.fieldConfiguration', 'fc')
+            ->andWhere('b.id IN (:ids)')
+            ->setParameter('ids', array_values(array_unique($idsByKey)))
+            ->addSelect('fc')
+            ->getQuery()
+            ->getResult();
+
+        $blocksById = [];
+        foreach ($blocks as $block) {
+            $blocksById[$block->getId()] = $block;
+        }
+
+        foreach ($idsByKey as $keyName => $id) {
+            $this->configurations[$keyName] = isset($blocksById[$id]) ? $blocksById[$id]->getFieldConfiguration() : null;
         }
     }
 
@@ -311,20 +334,26 @@ class FormManager
             $masterFieldSlug = $masterFieldConfig ? str_replace($masterField.'-', '', $masterFieldConfig) : null;
             if ($classname && $masterField && $masterFieldSlug) {
                 $website = $block->getCol()->getZone()->getLayout()->getWebsite();
-                $referEntity = new $classname();
-                $qb = $this->coreLocator->em()->createQueryBuilder()->select('e')
-                    ->from($classname, 'e')
-                    ->leftJoin('e.'.$masterField, $masterField)
-                    ->andWhere($masterField.'.slug = :slug')
-                    ->setParameter('slug', $masterFieldSlug)
-                    ->addSelect($masterField);
-                if (method_exists($referEntity, 'getWebsite')) {
-                    $qb = $qb->andWhere('e.website = :website')
-                        ->setParameter('website', $website);
+                $cacheKey = $classname.'|'.$masterField.'|'.$masterFieldSlug.'|'.($website?->getId() ?? 0);
+                if (array_key_exists($cacheKey, $this->choiceEntityLabelCache)) {
+                    $label = $this->choiceEntityLabelCache[$cacheKey];
+                } else {
+                    $referEntity = new $classname();
+                    $qb = $this->coreLocator->em()->createQueryBuilder()->select('e')
+                        ->from($classname, 'e')
+                        ->leftJoin('e.'.$masterField, $masterField)
+                        ->andWhere($masterField.'.slug = :slug')
+                        ->setParameter('slug', $masterFieldSlug)
+                        ->addSelect($masterField);
+                    if (method_exists($referEntity, 'getWebsite')) {
+                        $qb = $qb->andWhere('e.website = :website')
+                            ->setParameter('website', $website);
+                    }
+                    $entity = $qb->setMaxResults(1)->getQuery()->getOneOrNullResult();
+                    $getter = 'get'.ucfirst($masterField);
+                    $label = is_object($entity) ? $entity->$getter()->getAdminName() : null;
+                    $this->choiceEntityLabelCache[$cacheKey] = $label;
                 }
-                $entity = $qb->setMaxResults(1)->getQuery()->getOneOrNullResult();
-                $getter = 'get'.ucfirst($masterField);
-                $label = is_object($entity) ? $entity->$getter()->getAdminName() : null;
             }
         }
 
@@ -399,7 +428,7 @@ class FormManager
         if ($registrationValid) {
             $contact = $form instanceof Form\Form ? new Form\ContactForm() : new Form\ContactStepForm();
 
-            $requestCalendar = !empty($_GET['calendar']) ? $_GET['calendar'] : null;
+            $requestCalendar = $this->coreLocator->requestStack()->getCurrentRequest()?->query->get('calendar');
             if ($requestCalendar) {
                 $contact->setCalendar($this->coreLocator->em()->getRepository(Form\Calendar::class)->find($requestCalendar));
             }
@@ -431,8 +460,8 @@ class FormManager
                     $setField = true;
                 } elseif (EntityType::class === $fieldType) {
                     $setField = true;
-                    if ($fieldValue && Form\Calendar::class === $fieldConfiguration->getClassName() && $fieldValue->getId()) {
-                        $contact->setCalendar($this->coreLocator->em()->getRepository(Form\Calendar::class)->find($fieldValue->getId()));
+                    if ($fieldValue instanceof Form\Calendar && $fieldValue->getId()) {
+                        $contact->setCalendar($fieldValue);
                     }
                     if ($fieldValue instanceof ArrayCollection) {
                         $collectionValues = '';
