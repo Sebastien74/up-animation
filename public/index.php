@@ -9,7 +9,17 @@ use Symfony\Component\Dotenv\Dotenv;
 use Symfony\Component\ErrorHandler\Debug;
 use Symfony\Component\HttpFoundation\Request;
 
-require_once dirname(__DIR__).'/vendor/autoload_runtime.php';
+try {
+    require_once dirname(__DIR__).'/vendor/autoload_runtime.php';
+} catch (\Throwable $platformException) {
+    // Composer's platform check (e.g. PHP version mismatch) throws before the
+    // framework can boot. Render a standalone, dependency-free error page.
+    if (str_contains($platformException->getMessage(), 'platform')) {
+        require dirname(__DIR__).'/config/platform_error.php';
+        exit;
+    }
+    throw $platformException;
+}
 
 /** To set under maintenance status */
 const UNDER_MAINTENANCE = false;
