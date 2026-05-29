@@ -30,40 +30,6 @@ class ScheduledCommandRepository extends ServiceEntityRepository
     }
 
     /**
-     * Find all enabled command ordered by priority.
-     *
-     * @return array<ScheduledCommand>
-     */
-    public function findEnabledCommand(): array
-    {
-        return $this->findBy(['active' => true, 'locked' => false], ['priority' => 'DESC']);
-    }
-
-    /**
-     * Find all locked commands.
-     *
-     * @return array<ScheduledCommand>
-     */
-    public function findLockedCommand(): array
-    {
-        return $this->findBy(['active' => true, 'locked' => true], ['priority' => 'DESC']);
-    }
-
-    /**
-     * Find all failed command.
-     *
-     * @return array<ScheduledCommand>
-     */
-    public function findFailedCommand(): array
-    {
-        return $this->createQueryBuilder('command')
-            ->where('command.active = true')
-            ->andWhere('command.lastReturnCode != 0')
-            ->getQuery()
-            ->getResult();
-    }
-
-    /**
      * Find locked commands whose lock is older than the timeout (stale/orphaned locks).
      *
      * @return array<ScheduledCommand>
@@ -78,27 +44,6 @@ class ScheduledCommandRepository extends ServiceEntityRepository
             ->setParameter('threshold', $threshold)
             ->getQuery()
             ->getResult();
-    }
-
-    /**
-     * @return array<ScheduledCommand>
-     */
-    public function findFailedAndTimeoutCommands(bool|int $lockTimeout = false): array
-    {
-        /** Fist, get all failed commands (return != 0) */
-        $failedCommands = $this->findFailedCommand();
-        /* Then, si a timeout value is set, get locked commands and check timeout */
-        if (false !== $lockTimeout) {
-            $lockedCommands = $this->findLockedCommand();
-            foreach ($lockedCommands as $lockedCommand) {
-                $now = time();
-                if ($lockedCommand->getLastExecution()->getTimestamp() + $lockTimeout < $now) {
-                    $failedCommands[] = $lockedCommand;
-                }
-            }
-        }
-
-        return $failedCommands;
     }
 
     /**
