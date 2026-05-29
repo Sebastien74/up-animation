@@ -10,10 +10,6 @@ use App\Service\Core\Urlizer;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Exception;
-use Psr\Cache\InvalidArgumentException;
-use Symfony\Component\Cache\Adapter\FilesystemAdapter;
-use Symfony\Component\Cache\Adapter\PhpArrayAdapter;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Attribute\Groups;
@@ -136,37 +132,14 @@ abstract class BaseSecurity extends BaseInterface implements UserInterface, Pass
     }
 
     /**
-     * @throws InvalidArgumentException
-     *
      * @see UserInterface
      */
     public function getRoles(): array
     {
-        /* @var Group $group */
-        $group = $this->group;
         $roles = [];
-
-        if ($group) {
-            $filesystem = new Filesystem();
-            $documentRoot = str_replace(['\\', '/'], DIRECTORY_SEPARATOR, $_SERVER['DOCUMENT_ROOT']);
-            $documentRoot = DIRECTORY_SEPARATOR !== substr($documentRoot, -1) ? $documentRoot.DIRECTORY_SEPARATOR : $documentRoot;
-            $dirname = str_replace(['\public\\', '/public/'], DIRECTORY_SEPARATOR, $documentRoot).'var/cache/security/roles-'.$group->getSlug().'.cache';
-            $dirname = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $dirname);
-            if ($filesystem->exists($dirname)) {
-                $cache = new PhpArrayAdapter($dirname, new FilesystemAdapter());
-                $item = $cache->getItem('group.'.$group->getSlug());
-                if ($item->isHit()) {
-                    $roles = $item->get();
-                }
-            }
-            if (empty($roles)) {
-                $cacheData = [];
-                foreach ($group->getRoles() as $role) {
-                    $roles[] = $role->getName();
-                    $cacheData['group.'.$group->getSlug()][] = $role->getName();
-                }
-                $cache = new PhpArrayAdapter($dirname, new FilesystemAdapter());
-                $cache->warmUp($cacheData);
+        if ($this->group) {
+            foreach ($this->group->getRoles() as $role) {
+                $roles[] = $role->getName();
             }
         }
 
@@ -211,13 +184,6 @@ abstract class BaseSecurity extends BaseInterface implements UserInterface, Pass
         }
 
         return null;
-    }
-
-    public function setRoles(array $roles): static
-    {
-        $this->roles = $roles;
-
-        return $this;
     }
 
     public function getLogin(): ?string

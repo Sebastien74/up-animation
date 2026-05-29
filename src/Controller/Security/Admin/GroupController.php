@@ -81,7 +81,6 @@ class GroupController extends AdminController
     {
         $this->isAllowed($request);
         $this->template = 'admin/page/security/group.html.twig';
-        $this->securityFormLocator->adminRole()->clearRolesCache();
 
         return parent::edit($request);
     }

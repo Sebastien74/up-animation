@@ -7,10 +7,8 @@ namespace App\Form\Manager\Security\Admin;
 use App\Entity\Core\Website;
 use App\Entity\Security\Role;
 use App\Service\Core\Urlizer;
-use App\Service\Interface\CoreLocatorInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\Form;
 
 /**
@@ -30,7 +28,6 @@ class RoleManager
      */
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
-        private readonly CoreLocatorInterface $coreLocator,
     ) {
     }
 
@@ -50,19 +47,6 @@ class RoleManager
     {
         $this->setName($role);
         $this->entityManager->persist($role);
-    }
-
-    /**
-     * To clear cache.
-     */
-    public function clearRolesCache(): void
-    {
-        $filesystem = new Filesystem();
-        $dirname = $this->coreLocator->projectDir().DIRECTORY_SEPARATOR.'var/cache/security';
-        $dirname = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $dirname);
-        if ($filesystem->exists($dirname)) {
-            $filesystem->remove($dirname);
-        }
     }
 
     /**
