@@ -241,3 +241,4 @@ nelmio_api_doc:
             disable_default_routes: true
             path_patterns:
                 - ^/admin-[^/]+/development/mail-tests
+                - ^/admin-[^/]+/development/command-tests

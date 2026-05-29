@@ -58,6 +58,9 @@
             <directory>tests/Security</directory>
             <directory>tests/Message</directory>
         </testsuite>
+        <testsuite name="command">
+            <directory>tests/Command</directory>
+        </testsuite>
     </testsuites>
 
     <filter>

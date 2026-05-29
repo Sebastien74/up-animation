@@ -249,11 +249,19 @@ class CronSchedulerService
         $application = new Application($this->kernel);
         $application->setAutoExit(false);
 
-        $input = new ArrayInput([
-            'command' => $scheduledCommand->getCommand(),
-            'cronLogger' => 'cron-scheduler.log',
-            'commandLogger' => $logFilename,
-        ]);
+        $commandName = (string) $scheduledCommand->getCommand();
+        $parameters = ['command' => $commandName];
+        // Legacy commands declare cronLogger/commandLogger; newer ones reject extra arguments.
+        if ($application->has($commandName)) {
+            $definition = $application->get($commandName)->getDefinition();
+            if ($definition->hasArgument('cronLogger')) {
+                $parameters['cronLogger'] = 'cron-scheduler.log';
+            }
+            if ($definition->hasArgument('commandLogger')) {
+                $parameters['commandLogger'] = $logFilename;
+            }
+        }
+        $input = new ArrayInput($parameters);
         $output = new BufferedOutput();
         $returnCode = $application->run($input, $output);
 

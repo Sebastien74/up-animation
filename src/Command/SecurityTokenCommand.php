@@ -27,6 +27,9 @@ class SecurityTokenCommand extends Command
 {
     private SymfonyStyle $io;
 
+    // 24h, matches ConfirmPasswordManager::TOKEN_LIMIT.
+    private const string TOKEN_LIFETIME = 'PT24H';
+
     /**
      * SecurityTokenCommand constructor.
      */
@@ -61,35 +64,37 @@ class SecurityTokenCommand extends Command
     }
 
     /**
-     * Check & set token.
+     * Null out request tokens whose companion date is older than the lifetime.
      *
      * @throws \Exception
      */
     private function checkTokens(string $classname, InputInterface $input): void
     {
         $users = $this->getUsers($classname);
-        $tokenProperties = ['token', 'tokenRequest', 'tokenRemoveRequest'];
+        // Token string field => its companion date field.
+        $tokenFields = [
+            'Token' => 'TokenDate',
+            'TokenRequest' => 'TokenRequestDate',
+            'TokenRemoveRequest' => 'TokenRemoveRequestDate',
+        ];
+        $now = new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris'));
 
         foreach ($users as $user) {
             /** @var User|UserFront $user */
-            $now = new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris'));
-            foreach ($tokenProperties as $property) {
-                $getter = 'get'.ucfirst($property);
-                $setter = 'set'.ucfirst($property);
-                if (method_exists($user, $getter) && method_exists($user, $setter)) {
-                    if ($user->$getter()) {
-                        $tokenDate = $user->$getter();
-                        $tokenDate = new \DateTime($tokenDate->format('Y-m-d H:i:s'), new \DateTimeZone('Europe/Paris'));
-                        $tokenDate->add(new \DateInterval('PT2H'));
-                        if ($now > $tokenDate) {
-                            $user->setToken(null);
-                            $this->entityManager->persist($user);
-                            $this->entityManager->flush();
-                        }
-                    }
+            foreach ($tokenFields as $tokenField => $dateField) {
+                $date = $user->{'get'.$dateField}();
+                if (!$user->{'get'.$tokenField}() || !$date instanceof \DateTimeInterface) {
+                    continue;
+                }
+                $expiresAt = \DateTimeImmutable::createFromInterface($date)->add(new \DateInterval(self::TOKEN_LIFETIME));
+                if ($now > $expiresAt) {
+                    $user->{'set'.$tokenField}(null);
+                    $user->{'set'.$dateField}(null);
+                    $this->entityManager->persist($user);
                 }
             }
         }
+        $this->entityManager->flush();
 
         $message = '[OK] '.$classname.' tokens successfully reset.';
         $this->io->block($message, 'OK', 'fg=black;bg=green', ' ', true);

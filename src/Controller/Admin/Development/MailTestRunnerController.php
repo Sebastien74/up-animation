@@ -25,7 +25,8 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[OA\Tag(name: 'Mail tests')]
 final class MailTestRunnerController extends AdminController
 {
-    private const string CSRF_TOKEN_ID = 'admin_mail_tests_run';
+    // Shared with CommandTestRunnerController so the Scalar UI's single token works on both.
+    private const string CSRF_TOKEN_ID = 'admin_dev_tools';
 
     public function __construct(
         CoreLocatorInterface $coreLocator,

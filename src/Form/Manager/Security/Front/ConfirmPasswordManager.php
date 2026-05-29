@@ -75,9 +75,9 @@ class ConfirmPasswordManager
         $time = new DateTimeImmutable('now', new DateTimeZone('Europe/Paris'));
         $userTokenRequest = $user->getTokenRequestDate()->format('Y-m-d H:i:s');
         $userTokenRequest = new DateTime($userTokenRequest, new DateTimeZone('Europe/Paris'));
-        $diff = $userTokenRequest->diff($time);
+        $minutes = ($time->getTimestamp() - $userTokenRequest->getTimestamp()) / 60;
 
-        return intval($diff->format('%i')) >= self::TOKEN_LIMIT;
+        return $minutes >= self::TOKEN_LIMIT;
     }
 
     /**

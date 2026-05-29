@@ -24,7 +24,7 @@ final class ScheduledCommandCatalog
     {
         return [
             new ScheduledCommandDefinition('Suppression des données RGPD', 'gdpr:remove', '00 1 * * *', 'Supprime les données personnelles tous les jours à 1H du matin'),
-            new ScheduledCommandDefinition('Suppression des tokens utilisateurs', 'security:reset:token', '* * * * *', 'Suppression des tokens de plus de 2H'),
+            new ScheduledCommandDefinition('Suppression des tokens utilisateurs', 'security:reset:token', '0 3 * * *', 'Suppression des tokens de plus de 24H, tous les jours à 3H du matin'),
             new ScheduledCommandDefinition('Alertes expiration des mots de passe utilisateurs', 'security:password:expire', '00 11 * * *', "Envoi d'emails (arrive à expiration & à expiré) tous les jours à 11H le matin"),
             new ScheduledCommandDefinition('Synchronisation des Social walls', 'app:feed:sync', '* * * * *', 'Mise à jour des social wall toutes les minutes'),
             new ScheduledCommandDefinition('Agrégation des statistiques', 'app:analytics:rollup', '15 * * * *', 'Reconstruit les buckets horaires et journaliers à partir des événements bruts', true),
