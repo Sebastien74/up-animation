@@ -7,6 +7,7 @@ namespace App\Service\Admin;
 use App\Form\Manager\Core\SearchManager;
 use App\Form\Type\Core\IndexSearchType;
 use App\Service\Interface\CoreLocatorInterface;
+use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\QueryBuilder;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 use Knp\Component\Pager\PaginatorInterface;
@@ -152,6 +153,81 @@ class IndexHelper
             $queryLimit,
             ['wrap-queries' => true]
         );
+        $this->preloadRelations();
+    }
+
+    /**
+     * Warm the lazy relations rendered by the listing template for the current page,
+     * in bounded separate queries. Collections are warmed one query each to avoid a
+     * multi-collection cartesian product on the paginated query.
+     */
+    private function preloadRelations(): void
+    {
+        $items = $this->pagination->getItems();
+        $items = is_array($items) ? array_values($items) : iterator_to_array($items, false);
+        $className = $this->repository->getClassName();
+        if (empty($items) || !($items[0] instanceof $className)) {
+            return;
+        }
+
+        $em = $this->coreLocator->em();
+        $metadata = $em->getClassMetadata($className);
+
+        if ($metadata->hasAssociation('mediaRelations')) {
+            $queryBuilder = $this->repository->createQueryBuilder('e')
+                ->leftJoin('e.mediaRelations', 'mr')->addSelect('mr')
+                ->where('e IN (:entities)')->setParameter('entities', $items);
+            $relation = $em->getClassMetadata($metadata->getAssociationMapping('mediaRelations')['targetEntity']);
+            if ($relation->hasAssociation('media')) {
+                $queryBuilder->leftJoin('mr.media', 'mrMedia')->addSelect('mrMedia');
+            }
+            if ($relation->hasAssociation('intl')) {
+                $queryBuilder->leftJoin('mr.intl', 'mrIntl')->addSelect('mrIntl');
+            }
+            $queryBuilder->getQuery()->getResult();
+        }
+
+        if ($metadata->hasAssociation('urls')) {
+            $this->repository->createQueryBuilder('e')
+                ->leftJoin('e.urls', 'warmUrls')->addSelect('warmUrls')
+                ->where('e IN (:entities)')->setParameter('entities', $items)
+                ->getQuery()->getResult();
+        }
+
+        foreach ($this->columnAssociations($metadata) as $index => $association) {
+            $alias = 'warmCol'.$index;
+            $this->repository->createQueryBuilder('e')
+                ->leftJoin('e.'.$association, $alias)->addSelect($alias)
+                ->where('e IN (:entities)')->setParameter('entities', $items)
+                ->getQuery()->getResult();
+        }
+    }
+
+    /**
+     * Distinct association heads referenced by dotted listing columns (e.g. "group.adminName").
+     *
+     * @return string[]
+     */
+    private function columnAssociations(ClassMetadata $metadata): array
+    {
+        if (!is_object($this->entityConf) || !method_exists($this->entityConf, 'getColumns')) {
+            return [];
+        }
+        $associations = [];
+        foreach ((array) $this->entityConf->getColumns() as $column) {
+            if (!str_contains((string) $column, '.')) {
+                continue;
+            }
+            $head = explode('.', (string) $column)[0];
+            if (in_array($head, $associations, true) || in_array($head, ['mediaRelations', 'urls'], true)) {
+                continue;
+            }
+            if ($metadata->hasAssociation($head)) {
+                $associations[] = $head;
+            }
+        }
+
+        return array_values($associations);
     }
 
     /**
