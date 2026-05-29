@@ -378,6 +378,7 @@ class CoreExtension extends AbstractExtension
             new TwigFunction('imgFilter', [ContentRuntime\ThumbnailRuntime::class, 'imgFilter']),
             new TwigFunction('mediaThumbs', [ContentRuntime\ThumbnailRuntime::class, 'mediaThumbs']),
             new TwigFunction('video', [ContentRuntime\VideoRuntime::class, 'video']),
+            new TwigFunction('inlineImage', [ContentRuntime\InlineImageRuntime::class, 'inlineImage']),
         ];
 
         /** Core */

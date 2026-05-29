@@ -101,7 +101,7 @@
                                         <td align="left" valign="middle" style="font-family:Georgia, 'Times New Roman', Times, serif; font-weight:900; font-size:22px; letter-spacing:-0.02em; color:{{ color_ink }};">
                                             {%- if email is defined -%}
                                                 <a href="{{ host ?: 'https://up-animations.fr' }}" target="_blank" style="display:inline-block; text-decoration:none; color:{{ color_ink }};">
-                                                    <img src="{{ email.image('@images/medias/email-logo.png') }}"
+                                                    <img src="{{ inlineImage('@images/medias/email-logo.png') }}"
                                                          alt="{{ ('Up Animations!')|trans|raw }}"
                                                          width="120"
                                                          style="display:block; border:0; outline:none; text-decoration:none; height:auto; max-width:120px;">
