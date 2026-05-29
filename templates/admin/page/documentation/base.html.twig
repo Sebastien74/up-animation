@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+{%- trans_default_domain 'admin' -%}
+{%- set theme = adminTheme() -%}
+{%- set isDarkTheme = theme == 'dark' -%}
+{%- set themeParam = isDarkTheme ? 'admin_light_theme' : 'admin_dark_theme' -%}
+{%- set themeLabel = isDarkTheme ? "Thème clair"|trans : "Thème sombre"|trans -%}
+{%- set themeIcon = isDarkTheme ? 'sun' : 'moon' -%}
+{%- set navPages = pages is defined ? pages : [] -%}
+{%- set activeSlug = page is defined and page ? page.slug : null -%}
+<html lang="{{ app.request.locale }}" data-nonce="{{ csp_nonce() }}">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="robots" content="noindex"/>
+    <title>{% block title %}{{ "Documentation"|trans|striptags }}{% endblock %} | {{ "Up Animations CMS"|trans|striptags }}</title>
+    <link rel="icon" type="image/svg+xml" href="{{ asset('build/admin/images/theme/favicons/favicon.svg', 'admin') }}"/>
+    <link rel="shortcut icon" href="{{ asset('build/admin/images/theme/favicons/favicon.ico', 'admin') }}"/>
+    {{ encore_entry_link_tags('documentation-'~theme, null, 'admin') }}
+    <link rel="preload" href="{{ asset('build/admin/admin-fonts.css', 'admin') }}" as="style" onload="this.onload=null;this.rel='stylesheet'" nonce="{{ csp_nonce() }}">
+    <noscript><link rel="stylesheet" href="{{ asset('build/admin/admin-fonts.css', 'admin') }}" nonce="{{ csp_nonce() }}"></noscript>
+</head>
+<body class="doc-body doc-theme-{{ theme }}">
+    <header class="doc-header">
+        <a class="doc-brand" href="{{ path('admin_documentation') }}">
+            <span class="doc-brand-icon"><i class="icm-book"></i></span>
+            <span class="doc-brand-text">{{ "Documentation"|trans|raw }}</span>
+        </a>
+        <div class="doc-actions">
+            <a class="doc-action" href="{{ replaceRequestParam(themeParam, '1') }}" title="{{ themeLabel|striptags }}" aria-label="{{ themeLabel|striptags }}">
+                <i class="icm-{{ themeIcon }}"></i>
+            </a>
+            <a class="doc-back" href="{{ path('admin_dashboard', {website: websiteId()}) }}">
+                <i class="icm-arrow-left"></i><span class="doc-back-label">{{ "Retour au back-office"|trans|raw }}</span>
+            </a>
+        </div>
+    </header>
+
+    <div class="doc-shell">
+        <aside class="doc-sidebar">
+            <nav class="doc-nav" aria-label="{{ "Navigation documentation"|trans }}">
+                <a class="doc-nav-link{{ activeSlug is null ? ' active' }}" href="{{ path('admin_documentation') }}">
+                    <i class="icm-home"></i><span>{{ "Accueil"|trans|raw }}</span>
+                </a>
+                {%- for navPage in navPages -%}
+                    <a class="doc-nav-link{{ navPage.slug == activeSlug ? ' active' }}" href="{{ path('admin_documentation_page', {slug: navPage.slug}) }}">
+                        <span>{{ navPage.title }}</span>
+                    </a>
+                {%- endfor -%}
+            </nav>
+        </aside>
+
+        <main class="doc-main">
+            {% block body %}{% endblock %}
+        </main>
+    </div>
+
+    {% block javascripts %}{% endblock %}
+</body>
+</html>

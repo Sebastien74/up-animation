@@ -1,0 +1,8 @@
+{%- trans_default_domain 'admin' -%}
+{%- set uri = app.request.uri -%}
+
+<li {% if '/development/documentation' in uri %} class="active" {% endif %}>
+    <a href="{{ path('admin_documentation') }}" {% if '/development/documentation' in uri %} class="active" {% endif %}>
+        <span class="btn-icon small me-3"><i class="icm-book"></i></span>{{ "Documentation"|trans|raw }}
+    </a>
+</li>

@@ -1,0 +1,42 @@
+{%- extends "admin/page/documentation/base.html.twig" -%}
+
+{%- trans_default_domain 'admin' -%}
+
+{%- block title -%}{{ "Documentation"|trans|striptags }}{%- endblock -%}
+
+{%- block body -%}
+    <div class="doc-hero">
+        <h1 class="doc-hero-title">{{ "Documentation technique"|trans|raw }}</h1>
+        <p class="doc-hero-text">{{ "Guides internes : déploiement, dépannage, services et API du projet."|trans|raw }}</p>
+    </div>
+
+    {%- if navPages is empty -%}
+        <div class="doc-empty">{{ "Aucune documentation disponible pour le moment."|trans|raw }}</div>
+    {%- else -%}
+        <div class="doc-grid">
+            {%- for page in navPages -%}
+                <a class="doc-tile" href="{{ path('admin_documentation_page', {slug: page.slug}) }}">
+                    <span class="doc-tile-icon"><i class="icm-file-alt"></i></span>
+                    <span class="doc-tile-title">{{ page.title }}</span>
+                    {%- if page.excerpt -%}
+                        <span class="doc-tile-excerpt">{{ page.excerpt }}</span>
+                    {%- endif -%}
+                </a>
+            {%- endfor -%}
+        </div>
+    {%- endif -%}
+
+    {%- if externalResources is defined and externalResources is not empty -%}
+        <div class="doc-grid">
+            {%- for resource in externalResources -%}
+                <a class="doc-tile" href="{{ path(resource.route) }}">
+                    <span class="doc-tile-icon"><i class="{{ resource.icon }}"></i></span>
+                    <span class="doc-tile-title">{{ resource.title }}</span>
+                    {%- if resource.excerpt -%}
+                        <span class="doc-tile-excerpt">{{ resource.excerpt }}</span>
+                    {%- endif -%}
+                </a>
+            {%- endfor -%}
+        </div>
+    {%- endif -%}
+{%- endblock -%}

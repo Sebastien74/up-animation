@@ -1,0 +1,18 @@
+{%- extends "admin/page/documentation/base.html.twig" -%}
+
+{%- trans_default_domain 'admin' -%}
+
+{%- block title -%}{{ page.title|striptags }}{%- endblock -%}
+
+{%- block body -%}
+    <nav class="doc-breadcrumb" aria-label="{{ "Fil d'ariane"|trans }}">
+        <a href="{{ path('admin_documentation') }}">{{ "Documentation"|trans|raw }}</a>
+        <span class="doc-breadcrumb-sep">/</span>
+        <span class="doc-breadcrumb-current">{{ page.title }}</span>
+    </nav>
+
+    <article class="doc-article">
+        <h1 class="doc-article-title">{{ page.title }}</h1>
+        <div class="doc-content">{{ page.markdown|markdown_to_html }}</div>
+    </article>
+{%- endblock -%}
