@@ -99,6 +99,37 @@ Commits concernés sur `main` :
 
 ---
 
+## 6 bis. Cron système (optionnel - précision à la minute)
+
+Le web-cron dépend du trafic (une tâche `* * * * *` ne tourne que s'il y a des visites,
+au plus 1x/min). Pour une exécution à heure stricte sur un site peu visité, ajouter un
+cron système via le panel de l'hébergeur mutualisé. Deux cas selon l'offre :
+
+- **Cron CLI** (recommandé si disponible) : exécute directement la commande, indépendant
+  du trafic, aucun `shell_exec`.
+  ```
+  * * * * * /usr/bin/php /chemin/absolu/vers/bin/console scheduler:execute >/dev/null 2>&1
+  ```
+  Adapter le chemin PHP (souvent fourni par l'hébergeur, ex: `/usr/local/bin/php8.5`).
+
+- **Cron HTTP** (si le panel ne fait que wget/curl sur une URL) : passe par `public/cron.php`,
+  qui exécute `scheduler:execute` **in-process** (pas de `shell_exec`, compatible mutualisé)
+  et est protégé par secret/IP.
+  ```
+  * * * * * curl -s "https://ton-site/cron.php?secret=LE_SECRET" >/dev/null 2>&1
+  ```
+  Pré-requis dans le `.env`/`.env.local` de l'env :
+  - `CRON_SECRET=...` (secret long et aléatoire) - passé en `?secret=` ou header `X-Cron-Secret`.
+  - `CRON_ALLOWED_IPS=...` (optionnel) - allowlist d'IP autorisées sans secret.
+  - Sans secret ni IP autorisée -> réponse `403 Forbidden`.
+
+> Coexistence sans risque avec le web-cron déclenché au trafic : les locks pessimistes
+> empêchent toute double exécution d'une même commande.
+> Note : en cron HTTP, la requête reste ouverte le temps des commandes dues ; pour des
+> commandes longues, vérifier `max_execution_time` côté hébergeur.
+
+---
+
 ## 7. Nettoyage (une fois preprod ET prod validées)
 
 - [ ] **CronLab** (service externe) : peut être retiré de la config. `public/cron.php`
