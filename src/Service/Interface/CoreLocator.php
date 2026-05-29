@@ -44,6 +44,8 @@ use Symfony\WebpackEncoreBundle\Twig\EntryFilesTwigExtension;
 class CoreLocator implements CoreLocatorInterface
 {
     private const array ALLOWED_IPS = ['176.135.112.19', '2001:861:43c3:ce70:448f:74b:e526:cdae', '2001:861:43c3:ce70:60b8:f71:1c9:4843'];
+    private const int ENTITY_WEBSITE_MAX_DEPTH = 5;
+    private const array ENTITY_WEBSITE_PARENT_GETTERS = ['getLayout', 'getZone', 'getCol', 'getBlock', 'getConfiguration'];
     private array $cache = [];
 
     /**
@@ -621,7 +623,7 @@ class CoreLocator implements CoreLocatorInterface
     /**
      * Resolve the website id an entity is attached to, or null when undeterminable.
      */
-    private function resolveEntityWebsiteId(object $entity): ?int
+    private function resolveEntityWebsiteId(object $entity, int $depth = 0): ?int
     {
         if (method_exists($entity, 'getWebsite')) {
             $website = $entity->getWebsite();
@@ -635,6 +637,19 @@ class CoreLocator implements CoreLocatorInterface
                     $urlWebsite = $url->getWebsite();
                     if (is_object($urlWebsite) && method_exists($urlWebsite, 'getId') && null !== $urlWebsite->getId()) {
                         return (int) $urlWebsite->getId();
+                    }
+                }
+            }
+        }
+
+        // Layout sub-entities (Block/Zone/Col/FieldValue/FieldConfiguration) are scoped to a
+        // website only through their parent Layout: walk up until one exposes getWebsite().
+        if ($depth < self::ENTITY_WEBSITE_MAX_DEPTH && str_contains($entity::class, '\\Entity\\Layout\\')) {
+            foreach (self::ENTITY_WEBSITE_PARENT_GETTERS as $getter) {
+                if (method_exists($entity, $getter) && is_object($parent = $entity->$getter())) {
+                    $parentWebsiteId = $this->resolveEntityWebsiteId($parent, $depth + 1);
+                    if (null !== $parentWebsiteId) {
+                        return $parentWebsiteId;
                     }
                 }
             }
