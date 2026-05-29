@@ -130,7 +130,7 @@ Scheduler et analytics :
 
 ```bash
 php bin/console scheduler:execute                                           # exécute les commandes planifiées
-php bin/console app:analytics:install-scheduler                             # installation rollup/purge
+php bin/console app:scheduler:install                                       # pose les tâches voulues sur les sites existants (--all, --website=ID, --disabled)
 php bin/console app:analytics:rollup                                        # agrégation horaire/journalière
 php bin/console app:analytics:purge                                         # suppression événements anciens
 php bin/console app:analytics:seed-fake                                     # données analytics de test

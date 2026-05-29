@@ -8,6 +8,8 @@ use App\Entity\Core\ScheduledCommand;
 use App\Entity\Core\Website;
 use App\Entity\Security\User;
 use App\Service\Core\Urlizer;
+use App\Service\Development\ScheduledCommandCatalog;
+use App\Service\Development\ScheduledCommandDefinition;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 
@@ -26,8 +28,10 @@ readonly class CommandFixtures
     /**
      * CommandFixtures constructor.
      */
-    public function __construct(private EntityManagerInterface $entityManager)
-    {
+    public function __construct(
+        private EntityManagerInterface $entityManager,
+        private ScheduledCommandCatalog $catalog,
+    ) {
     }
 
     /**
@@ -35,44 +39,27 @@ readonly class CommandFixtures
      */
     public function add(Website $website, ?User $user = null): void
     {
-        foreach ($this->getScheduledConfiguration() as $configuration) {
-            $this->addScheduledCommand($website, $configuration, $user);
+        foreach ($this->catalog->all() as $definition) {
+            $this->addScheduledCommand($website, $definition, $user);
         }
     }
 
     /**
      * Add ScheduledCommand.
      */
-    private function addScheduledCommand(Website $website, array $configuration, ?User $user = null): void
+    private function addScheduledCommand(Website $website, ScheduledCommandDefinition $definition, ?User $user = null): void
     {
         $command = new ScheduledCommand();
         $command->setWebsite($website);
         $command->setCreatedBy($user);
-        $command->setAdminName($configuration['name']);
-        $command->setCommand($configuration['command']);
-        $command->setCronExpression($configuration['expression']);
-        $command->setDescription($configuration['description']);
-        $command->setLogFile(Urlizer::urlize($configuration['command']).'.log');
-        $command->setActive(isset($configuration['active']) && $configuration['active']);
+        $command->setAdminName($definition->name);
+        $command->setCommand($definition->command);
+        $command->setCronExpression($definition->cronExpression);
+        $command->setDescription($definition->description);
+        $command->setLogFile(Urlizer::urlize($definition->command).'.log');
+        $command->setActive($definition->active);
 
         $this->entityManager->persist($command);
         $this->entityManager->flush();
-    }
-
-    /**
-     * Get Schedules configuration.
-     */
-    private function getScheduledConfiguration(): array
-    {
-        return [
-            ['name' => 'Suppression des données RGPD', 'command' => 'gdpr:remove', 'expression' => '00 1 * * *', 'description' => 'Supprime les données personnelles tous les jours à 1H du matin'],
-            ['name' => 'Suppression des tokens utilisateurs', 'command' => 'security:reset:token', 'expression' => '* * * * *', 'description' => 'Suppression des tokens de plus de 2H'],
-            ['name' => 'Alertes expiration des mots de passe utilisateurs', 'command' => 'security:password:expire', 'expression' => '00 11 * * *', 'description' => "Envoi d'emails (arrive à expiration & à expiré) tous les jours à 11H le matin"],
-            ['name' => 'Synchronisation des Social walls', 'command' => 'app:feed:sync', 'expression' => '* * * * *', 'description' => 'Mise à jour des social wall toutes les minutes'],
-            ['name' => 'Agrégation des statistiques', 'command' => 'app:analytics:rollup', 'expression' => '15 * * * *', 'description' => "Reconstruit les buckets horaires et journaliers à partir des événements bruts", 'active' => true],
-            ['name' => 'Purge des statistiques', 'command' => 'app:analytics:purge', 'expression' => '30 3 * * *', 'description' => 'Supprime les événements bruts au-delà de la fenêtre de rétention', 'active' => true],
-            ['name' => 'Refresh token Instagram', 'command' => 'app:instagram:refresh-token', 'expression' => '0 4 * * 1', 'description' => 'Renouvelle les tokens Instagram avant expiration (60 jours)', 'active' => true],
-            ['name' => 'Refresh token TikTok', 'command' => 'app:tiktok:refresh-token', 'expression' => '0 */6 * * *', 'description' => 'Renouvelle les tokens TikTok avant expiration (24 heures)', 'active' => true],
-        ];
     }
 }

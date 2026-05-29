@@ -7,6 +7,8 @@ namespace App\Command;
 use App\Entity\Core\ScheduledCommand;
 use App\Entity\Core\Website;
 use App\Service\Core\Urlizer;
+use App\Service\Development\ScheduledCommandCatalog;
+use App\Service\Development\ScheduledCommandDefinition;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -16,34 +18,26 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 /**
- * AnalyticsInstallSchedulerCommand.
+ * SchedulerInstallCommand.
  *
- * Retroactively installs the analytics rollup and purge scheduled
- * commands on every website that doesn't already have them. Safe to
- * run multiple times: each (website, command) pair is checked first.
+ * Retroactively installs the scheduled commands on every website that
+ * doesn't already have them. Definitions come from ScheduledCommandCatalog,
+ * the same source used by the fixtures for new websites. Safe to run
+ * multiple times: each (website, command) pair is checked first.
  *
  * @author Sébastien FOURNIER <fournier.sebastien@outlook.com>
  */
-#[AsCommand(name: 'app:analytics:install-scheduler', description: 'Install rollup and purge scheduled commands on every website that lacks them.')]
-final class AnalyticsInstallSchedulerCommand extends Command
+#[AsCommand(
+    name: 'app:scheduler:install',
+    description: 'Install scheduled commands on every website that lacks them.',
+    aliases: ['app:analytics:install-scheduler'],
+)]
+final class SchedulerInstallCommand extends Command
 {
-    private const array COMMANDS = [
-        [
-            'name' => 'Agrégation des statistiques',
-            'command' => 'app:analytics:rollup',
-            'expression' => '15 * * * *',
-            'description' => 'Reconstruit les buckets horaires et journaliers à partir des événements bruts',
-        ],
-        [
-            'name' => 'Purge des statistiques',
-            'command' => 'app:analytics:purge',
-            'expression' => '30 3 * * *',
-            'description' => 'Supprime les événements bruts au-delà de la fenêtre de rétention',
-        ],
-    ];
-
-    public function __construct(private readonly EntityManagerInterface $entityManager)
-    {
+    public function __construct(
+        private readonly EntityManagerInterface $entityManager,
+        private readonly ScheduledCommandCatalog $catalog,
+    ) {
         parent::__construct();
     }
 
@@ -51,6 +45,7 @@ final class AnalyticsInstallSchedulerCommand extends Command
     {
         $this
             ->addOption('website', null, InputOption::VALUE_REQUIRED, 'Restrict to a single website id')
+            ->addOption('all', null, InputOption::VALUE_NONE, 'Install every defined command, not only the active defaults')
             ->addOption('disabled', null, InputOption::VALUE_NONE, 'Create the commands as disabled (admin must enable them manually)');
     }
 
@@ -72,31 +67,25 @@ final class AnalyticsInstallSchedulerCommand extends Command
             return Command::SUCCESS;
         }
 
-        $active = !$input->getOption('disabled');
+        $definitions = $input->getOption('all') ? $this->catalog->all() : $this->catalog->defaults();
+        // --disabled forces inactive; otherwise each definition keeps its own default state.
+        $forceActive = $input->getOption('disabled') ? false : null;
+
         $created = 0;
         $skipped = 0;
 
         foreach ($websites as $website) {
-            foreach (self::COMMANDS as $configuration) {
+            foreach ($definitions as $definition) {
                 $existing = $scheduledRepository->findOneBy([
                     'website' => $website,
-                    'command' => $configuration['command'],
+                    'command' => $definition->command,
                 ]);
                 if (null !== $existing) {
                     ++$skipped;
                     continue;
                 }
 
-                $entity = (new ScheduledCommand())
-                    ->setWebsite($website)
-                    ->setAdminName($configuration['name'])
-                    ->setCommand($configuration['command'])
-                    ->setCronExpression($configuration['expression'])
-                    ->setDescription($configuration['description'])
-                    ->setLogFile(Urlizer::urlize($configuration['command']).'.log')
-                    ->setActive($active);
-
-                $this->entityManager->persist($entity);
+                $this->entityManager->persist($this->build($website, $definition, $forceActive));
                 ++$created;
             }
         }
@@ -106,5 +95,17 @@ final class AnalyticsInstallSchedulerCommand extends Command
         $io->success(sprintf('%d scheduled command(s) created, %d already present.', $created, $skipped));
 
         return Command::SUCCESS;
+    }
+
+    private function build(Website $website, ScheduledCommandDefinition $definition, ?bool $forceActive): ScheduledCommand
+    {
+        return (new ScheduledCommand())
+            ->setWebsite($website)
+            ->setAdminName($definition->name)
+            ->setCommand($definition->command)
+            ->setCronExpression($definition->cronExpression)
+            ->setDescription($definition->description)
+            ->setLogFile(Urlizer::urlize($definition->command).'.log')
+            ->setActive($forceActive ?? $definition->active);
     }
 }
