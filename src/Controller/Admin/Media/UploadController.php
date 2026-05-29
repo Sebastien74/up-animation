@@ -65,6 +65,7 @@ class UploadController extends AdminController
             if (!$entity) {
                 throw $this->createNotFoundException();
             }
+            $this->denyUnlessEntityWebsite($entity);
         }
 
         $form = $this->createForm(MediaUploadType::class, $entity, [

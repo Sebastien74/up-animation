@@ -124,7 +124,9 @@ class FolderController extends AdminController
         methods: 'GET')]
     public function move(FolderRepository $folderRepository, Media $media, ?int $folderId = null): JsonResponse
     {
+        $this->denyUnlessEntityWebsite($media);
         $folder = $folderId ? $folderRepository->find($folderId) : null;
+        $this->denyUnlessEntityWebsite($folder);
         $media->setFolder($folder);
         $this->coreLocator->em()->persist($media);
         $this->coreLocator->em()->flush();

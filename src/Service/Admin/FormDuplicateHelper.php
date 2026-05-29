@@ -8,12 +8,14 @@ use App\Entity\Core\Website;
 use App\Form\Type\Core\DefaultType;
 use App\Repository\Core\WebsiteRepository;
 use App\Service\Core\InterfaceHelper;
+use App\Service\Interface\CoreLocatorInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -47,6 +49,7 @@ class FormDuplicateHelper
         private readonly FormFactoryInterface $formFactory,
         private readonly WebsiteRepository $websiteRepository,
         private readonly TranslatorInterface $translator,
+        private readonly CoreLocatorInterface $coreLocator,
     ) {
     }
 
@@ -62,6 +65,9 @@ class FormDuplicateHelper
         $this->setInterface($classname);
         $this->setWebsite();
         $this->setEntityToDuplicate($classname);
+        if (!$this->coreLocator->isEntityWebsiteAllowed($this->entityToDuplicate)) {
+            throw new AccessDeniedHttpException('Entity does not belong to the current website.');
+        }
         $this->setEntity();
         $this->setForm($formType, $options);
         $this->submit($formManager);

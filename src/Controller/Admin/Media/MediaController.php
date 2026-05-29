@@ -204,6 +204,7 @@ class MediaController extends AdminController
     #[Route('/remove/{media}', name: 'admin_media_remove', options: ['expose' => true], methods: 'DELETE')]
     public function remove(Request $request, Media $media): JsonResponse
     {
+        $this->denyUnlessEntityWebsite($media);
         $remove = $this->mediaLocator->media()->removeMedia($media);
 
         return new JsonResponse(['success' => $remove->success, 'message' => $remove->message]);

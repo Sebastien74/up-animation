@@ -35,6 +35,7 @@ class BooleanSwitcherController extends AdminController
         $status = 'true' === $request->get('status');
         $repository = $this->coreLocator->em()->getRepository(urldecode($request->get('classname')));
         $currentEntity = $repository->find($entityId);
+        $this->denyUnlessEntityWebsite($currentEntity);
         $setter = 'set'.ucfirst($property);
         $uniqProperties = ['asDefault', 'main'];
         $interface = $this->getInterface(get_class($currentEntity));
