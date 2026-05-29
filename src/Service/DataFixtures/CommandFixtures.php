@@ -71,6 +71,8 @@ readonly class CommandFixtures
             ['name' => 'Synchronisation des Social walls', 'command' => 'social-wall:synchronization', 'expression' => '* * * * *', 'description' => 'Mise à jour des social wall toutes les minutes'],
             ['name' => 'Agrégation des statistiques', 'command' => 'app:analytics:rollup', 'expression' => '15 * * * *', 'description' => "Reconstruit les buckets horaires et journaliers à partir des événements bruts", 'active' => true],
             ['name' => 'Purge des statistiques', 'command' => 'app:analytics:purge', 'expression' => '30 3 * * *', 'description' => 'Supprime les événements bruts au-delà de la fenêtre de rétention', 'active' => true],
+            ['name' => 'Refresh token Instagram', 'command' => 'app:instagram:refresh-token', 'expression' => '0 4 * * 1', 'description' => 'Renouvelle les tokens Instagram avant expiration (60 jours)', 'active' => true],
+            ['name' => 'Refresh token TikTok', 'command' => 'app:tiktok:refresh-token', 'expression' => '0 */6 * * *', 'description' => 'Renouvelle les tokens TikTok avant expiration (24 heures)', 'active' => true],
         ];
     }
 }

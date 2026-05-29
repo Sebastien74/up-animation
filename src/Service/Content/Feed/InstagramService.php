@@ -103,7 +103,8 @@ class InstagramService
                 'response' => $response->getContent(false),
             ]);
         } catch (Throwable $exception) {
-            $this->logger->error('Instagram token refresh error: '.$exception->getMessage());
+            // The access token travels in the request URL, so the exception message may embed it: log the class only.
+            $this->logger->error('Instagram token refresh error.', ['exception' => $exception::class]);
         }
 
         return null;
@@ -196,7 +197,8 @@ class InstagramService
                 'response' => $response->getContent(false),
             ]);
         } catch (Throwable $exception) {
-            $this->logger->error('Instagram token exchange error: '.$exception->getMessage());
+            // The access token travels in the request URL, so the exception message may embed it: log the class only.
+            $this->logger->error('Instagram token exchange error.', ['exception' => $exception::class]);
         }
 
         return null;

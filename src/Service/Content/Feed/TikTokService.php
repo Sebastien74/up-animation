@@ -100,11 +100,25 @@ class TikTokService
                 ],
             ]);
 
-            if ($response->getStatusCode() === 200) {
-                return $this->parseTokenResponse($response->toArray());
+            $statusCode = $response->getStatusCode();
+            if ($statusCode === 200) {
+                $result = $this->parseTokenResponse($response->toArray());
+                if ($result === null) {
+                    // Never log the code/secret/tokens, only the error envelope returned by TikTok.
+                    $this->logger->error('TikTok token exchange: 200 response without access_token.', [
+                        'response' => $this->redactTokenResponse($response->getContent(false)),
+                    ]);
+                }
+
+                return $result;
             }
-        } catch (Throwable) {
-            return null;
+
+            $this->logger->error('TikTok token exchange failed.', [
+                'status' => $statusCode,
+                'response' => $this->redactTokenResponse($response->getContent(false)),
+            ]);
+        } catch (Throwable $exception) {
+            $this->logger->error('TikTok token exchange error: '.$exception->getMessage());
         }
 
         return null;
@@ -139,7 +153,7 @@ class TikTokService
                 if ($result === null) {
                     // Never log the tokens, only the error envelope returned by TikTok.
                     $this->logger->error('TikTok token refresh: 200 response without access_token.', [
-                        'response' => $response->getContent(false),
+                        'response' => $this->redactTokenResponse($response->getContent(false)),
                     ]);
                 }
 
@@ -148,7 +162,7 @@ class TikTokService
 
             $this->logger->error('TikTok token refresh failed.', [
                 'status' => $statusCode,
-                'response' => $response->getContent(false),
+                'response' => $this->redactTokenResponse($response->getContent(false)),
             ]);
         } catch (Throwable $exception) {
             $this->logger->error('TikTok token refresh error: '.$exception->getMessage());
@@ -179,5 +193,27 @@ class TikTokService
             'expires_in' => (int) ($data['expires_in'] ?? 0),
             'refresh_expires_in' => (int) ($data['refresh_expires_in'] ?? 0),
         ];
+    }
+
+    /**
+     * Strip secret fields from a token response body so it is safe to log.
+     *
+     * @return array<string, mixed> Redacted payload, or a raw placeholder when the body is not JSON
+     */
+    private function redactTokenResponse(string $body): array
+    {
+        $data = json_decode($body, true);
+        if (!is_array($data)) {
+            return ['raw' => '[unparseable response body]'];
+        }
+
+        foreach (['access_token', 'refresh_token', 'open_id'] as $key) {
+            unset($data[$key]);
+            if (isset($data['data']) && is_array($data['data'])) {
+                unset($data['data'][$key]);
+            }
+        }
+
+        return $data;
     }
 }
