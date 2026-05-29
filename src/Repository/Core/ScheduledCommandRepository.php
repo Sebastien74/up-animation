@@ -36,7 +36,7 @@ class ScheduledCommandRepository extends ServiceEntityRepository
      */
     public function findEnabledCommand(): array
     {
-        return $this->findBy(['disabled' => false, 'locked' => false], ['priority' => 'DESC']);
+        return $this->findBy(['active' => true, 'locked' => false], ['priority' => 'DESC']);
     }
 
     /**
@@ -46,7 +46,7 @@ class ScheduledCommandRepository extends ServiceEntityRepository
      */
     public function findLockedCommand(): array
     {
-        return $this->findBy(['disabled' => false, 'locked' => true], ['priority' => 'DESC']);
+        return $this->findBy(['active' => true, 'locked' => true], ['priority' => 'DESC']);
     }
 
     /**
@@ -57,8 +57,25 @@ class ScheduledCommandRepository extends ServiceEntityRepository
     public function findFailedCommand(): array
     {
         return $this->createQueryBuilder('command')
-            ->where('command.disabled = false')
+            ->where('command.active = true')
             ->andWhere('command.lastReturnCode != 0')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * Find locked commands whose lock is older than the timeout (stale/orphaned locks).
+     *
+     * @return array<ScheduledCommand>
+     */
+    public function findStaleLockedCommands(int $lockTimeout): array
+    {
+        $threshold = new \DateTimeImmutable(sprintf('-%d seconds', $lockTimeout), new \DateTimeZone('Europe/Paris'));
+
+        return $this->createQueryBuilder('command')
+            ->where('command.locked = true')
+            ->andWhere('command.lastExecution < :threshold')
+            ->setParameter('threshold', $threshold)
             ->getQuery()
             ->getResult();
     }

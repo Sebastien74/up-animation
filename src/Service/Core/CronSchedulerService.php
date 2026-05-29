@@ -32,6 +32,11 @@ use Symfony\Component\Mailer\MailerInterface;
  */
 class CronSchedulerService
 {
+    /**
+     * Seconds after which a locked command is considered orphaned and its lock released.
+     */
+    private const LOCK_TIMEOUT = 3600;
+
     private string $logPath;
     private Logger $logger;
 
@@ -61,6 +66,8 @@ class CronSchedulerService
     {
         $this->logger->info('[START] '.CronCommand::class);
         $this->logger->info('[START] '.CronSchedulerService::class);
+
+        $this->releaseStaleLocks();
 
         $noneExecution = true;
         $commands = $this->entityManager->getRepository(ScheduledCommand::class)->findAll();
@@ -103,6 +110,26 @@ class CronSchedulerService
         }
 
         $this->logger->info('[CLOSE] '.CronCommand::class.' executed.');
+    }
+
+    /**
+     * Release orphaned locks left by commands that crashed mid-run without resetting locked=false.
+     */
+    private function releaseStaleLocks(): void
+    {
+        $staleCommands = $this->entityManager->getRepository(ScheduledCommand::class)
+            ->findStaleLockedCommands(self::LOCK_TIMEOUT);
+
+        if ([] === $staleCommands) {
+            return;
+        }
+
+        foreach ($staleCommands as $command) {
+            $command->setLocked(false);
+            $this->logger->warning('[UNLOCK] '.$command->getCommand().' stale lock released (older than '.self::LOCK_TIMEOUT.'s)');
+        }
+
+        $this->entityManager->flush();
     }
 
     /**
