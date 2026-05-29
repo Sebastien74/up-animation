@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace App\Controller\Front\Action\Feed;
 
 use App\Controller\Front\ActionController;
+use App\Entity\Api\FeedPost;
+use App\Repository\Api\FeedPostRepository;
 use App\Service\Content\ActionService;
-use App\Service\Content\Feed\YouTubeService;
+use App\Service\Content\Feed\FeedAutoSyncService;
 use App\Service\Interface\CoreLocatorInterface;
 use App\Service\Interface\FrontLocatorInterface;
 use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
@@ -16,12 +18,14 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * YouTubeController.
  *
- * Front YouTube feed renders.
+ * Renders the YouTube feed from the locally-persisted FeedPost entries.
+ * The live YouTube Data API is only hit by the app:feed:sync command.
  */
 class YouTubeController extends ActionController
 {
     public function __construct(
-        private readonly YouTubeService $youtubeService,
+        private readonly FeedPostRepository $feedPostRepository,
+        private readonly FeedAutoSyncService $feedAutoSyncService,
         #[AutowireLocator(ActionService::class, indexAttribute: 'key')] ServiceLocator $actionLocator,
         FrontLocatorInterface $frontLocator,
         CoreLocatorInterface $coreLocator
@@ -36,18 +40,22 @@ class YouTubeController extends ActionController
     {
         $website = $this->getWebsite();
         $googleModel = $website->api?->google;
+        $limit = $googleModel?->youtubeNbrItems ?: 10;
 
-        if (!$googleModel || !$googleModel->youtubeApiKey || !$googleModel->youtubeChannelId) {
+        if ($googleModel?->youtubeApiKey && $googleModel?->youtubeChannelId) {
+            $this->feedAutoSyncService->scheduleIfStale(FeedPost::PROVIDER_YOUTUBE);
+        }
+
+        $posts = $this->feedPostRepository->findActiveByProvider(FeedPost::PROVIDER_YOUTUBE, $limit);
+        if ($posts === []) {
             return new Response();
         }
 
-        $videos = $this->youtubeService->getVideos($googleModel);
-        
         $template = $website->configuration->template;
 
         return $this->render('front/' . $template . '/actions/feed/youtube/html.twig', [
             'google' => $googleModel,
-            'videos' => $videos,
+            'feed' => $posts,
         ]);
     }
 }

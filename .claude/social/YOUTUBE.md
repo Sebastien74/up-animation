@@ -45,9 +45,34 @@ Pour appeler le flux dans un template Twig :
 
 ## 6. Architecture & rafraîchissement
 
-Contrairement à Instagram et TikTok, **YouTube n'est pas branché sur le pipeline `app:feed:sync` / `FeedPost`**. Les vidéos sont récupérées **en direct à chaque rendu** par `YouTubeService::getVideos()`, avec une mise en cache applicative de **1 heure** (`YouTubeService::CACHE_EXPIRE = 3600`). Conséquences :
+YouTube est désormais branché sur le **pipeline `app:feed:sync` / `FeedPost`**, comme Instagram et TikTok. Le rendu front **ne fait plus aucun appel à l'API** : les vidéos et leur miniature sont persistées en base (`api_feed_post`, `provider=youtube`) et sur disque (`/public/feed/medias/youtube/{externalId}/`). Comme TikTok, l'API ne fournit pas la vidéo brute : la miniature locale est cliquable et ouvre la lecture sur YouTube via le permalien.
 
-- Aucune tâche planifiée n'est nécessaire ni applicable : le cache 1 h gère seul la fraîcheur, le scheduler `core_scheduled_command` ne concerne pas ce provider.
-- La clé API YouTube Data n'expire pas (pas de flux OAuth ni de token à rafraîchir), contrairement aux tokens IG/TikTok.
-- Attention au **quota journalier** de la YouTube Data API v3 : le cache 1 h limite les appels, ne pas le réduire sans vérifier la consommation de quota.
-- Pour purger le cache manuellement : `php bin/console cache:clear`.
+### 6.1 Flux
+
+```
+[sync] → app:feed:sync --provider=youtube
+            └── YouTubeFeedFetcher → YouTubeService::getVideos() → YouTube Data API v3
+                  └── FeedSyncService : upsert FeedPost + téléchargement miniature + soft-delete des absents
+
+[visiteur] → render(controller('…YouTubeController::index'))
+              └── FeedPostRepository::findActiveByProvider('youtube', nbrItems) → DB
+```
+
+### 6.2 Déclencheurs de sync
+
+Identiques aux autres providers (cf. INSTAGRAM.md § 7.3) : auto-sync au chargement (verrou 12 h, `kernel.terminate`), bouton dashboard, CLI `app:feed:sync --provider=youtube`, ou tâche planifiée `app:feed:sync`.
+
+> La clé API YouTube Data n'expire pas (pas de flux OAuth ni de token à rafraîchir) : aucune commande de refresh nécessaire.
+>
+> **Quota** : chaque sync consomme ~100 unités (endpoint `search`). Le verrou 12 h plafonne à ~2 syncs/jour/provider, donc l'impact quota reste faible. Ne pas contourner ce verrou par un cron trop fréquent.
+
+### 6.3 Récapitulatif des fichiers
+
+| Élément              | Emplacement                                                 |
+|----------------------|-------------------------------------------------------------|
+| Fetcher (sync only)  | `src/Service/Content/Feed/YouTubeFeedFetcher.php`           |
+| Service API live     | `src/Service/Content/Feed/YouTubeService.php`               |
+| Controller rendu     | `src/Controller/Front/Action/Feed/YouTubeController.php`    |
+| Template             | `templates/front/default/actions/feed/youtube/html.twig`    |
+| Stockage médias      | `/public/feed/medias/youtube/{externalId}/` (gitignored)    |
+| Provider constant    | `FeedPost::PROVIDER_YOUTUBE`                                 |

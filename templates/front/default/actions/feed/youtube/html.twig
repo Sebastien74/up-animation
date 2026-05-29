@@ -1,34 +1,31 @@
-{% if videos is not empty %}
+{% if feed is not empty %}
     <div class="youtube-feed">
         <div class="row g-4">
-            {% for item in videos %}
-                {% set videoId = item.id.videoId %}
-                {% set snippet = item.snippet %}
-                {% set ytBase = 'https://i.ytimg.com/vi/' ~ videoId %}
+            {% for post in feed %}
                 <div class="col-12 col-md-6 col-lg-4">
                     <div class="youtube-item card h-100 shadow-sm border-0 bg-transparent">
                         <div class="position-relative overflow-hidden rounded shadow-sm mb-3">
-                            <a href="https://www.youtube.com/watch?v={{ videoId }}" target="_blank" rel="noopener" class="d-block">
-                                <img src="{{ ytBase }}/hqdefault.jpg"
-                                     srcset="{{ ytBase }}/mqdefault.jpg 320w,
-                                             {{ ytBase }}/hqdefault.jpg 480w,
-                                             {{ ytBase }}/sddefault.jpg 640w,
-                                             {{ ytBase }}/maxresdefault.jpg 1280w"
-                                     sizes="(min-width: 992px) 380px, (min-width: 768px) 50vw, 100vw"
-                                     width="380" height="214"
-                                     alt="{{ snippet.title }}"
-                                     class="img-fluid w-100"
-                                     loading="lazy" decoding="async" referrerpolicy="no-referrer">
+                            <a href="{{ post.permalink }}" target="_blank" rel="noopener" class="d-block">
+                                {% if post.thumbnailLocalPath %}
+                                    <img src="{{ asset(post.thumbnailLocalPath) | imagine_filter('feed_thumb_480') }}"
+                                         srcset="{{ asset(post.thumbnailLocalPath) | imagine_filter('feed_thumb_320') }} 320w,
+                                                 {{ asset(post.thumbnailLocalPath) | imagine_filter('feed_thumb_480') }} 480w,
+                                                 {{ asset(post.thumbnailLocalPath) | imagine_filter('feed_thumb_640') }} 640w"
+                                         sizes="(min-width: 992px) 380px, (min-width: 768px) 50vw, 100vw"
+                                         width="380" height="214"
+                                         alt="{{ post.caption|default('YouTube')|u.truncate(120, '…') }}"
+                                         class="img-fluid w-100" loading="lazy" decoding="async">
+                                {% endif %}
                                 <div class="play-button position-absolute top-50 start-50 translate-middle">
                                     <i class="fab fa-youtube text-danger fa-4x opacity-75"></i>
                                 </div>
                             </a>
                         </div>
                         <div class="youtube-content">
-                            <p class="text-muted small mb-1">{{ snippet.publishedAt|date('d/m/Y') }}</p>
+                            <p class="text-muted small mb-1">{{ post.publishedAt|date('d/m/Y') }}</p>
                             <h5 class="h6 card-title mb-2">
-                                <a href="https://www.youtube.com/watch?v={{ videoId }}" target="_blank" rel="noopener" class="text-dark text-decoration-none">
-                                    {{ snippet.title|slice(0, 70) }}{{ snippet.title|length > 70 ? '...' : '' }}
+                                <a href="{{ post.permalink }}" target="_blank" rel="noopener" class="text-dark text-decoration-none">
+                                    {{ post.caption|default('')|u.truncate(70, '…') }}
                                 </a>
                             </h5>
                         </div>

@@ -1,31 +1,37 @@
 {% if feed is not empty %}
     <div class="facebook-feed">
         <div class="row g-4">
-            {% for item in feed %}
+            {% for post in feed %}
                 <div class="col-12 col-md-6 col-lg-4">
                     <div class="facebook-item card h-100 shadow-sm border-0">
-                        {% if item.full_picture %}
-                            <a href="{{ item.permalink_url }}" target="_blank" rel="noopener" class="d-block overflow-hidden rounded-top">
-                                <img src="{{ item.full_picture }}"
-                                     alt="{{ item.message|default('Facebook Post')|slice(0, 50) }}..."
-                                     class="card-img-top img-fluid"
+                        {% if post.mediaLocalPath %}
+                            <a href="{{ post.permalink }}" target="_blank" rel="noopener" class="d-block overflow-hidden rounded-top position-relative">
+                                <img src="{{ asset(post.mediaLocalPath) | imagine_filter('feed_thumb_480') }}"
+                                     srcset="{{ asset(post.mediaLocalPath) | imagine_filter('feed_thumb_320') }} 320w,
+                                             {{ asset(post.mediaLocalPath) | imagine_filter('feed_thumb_480') }} 480w,
+                                             {{ asset(post.mediaLocalPath) | imagine_filter('feed_thumb_640') }} 640w"
+                                     sizes="(min-width: 992px) 380px, (min-width: 768px) 50vw, 100vw"
                                      width="380" height="214"
-                                     loading="lazy" decoding="async" referrerpolicy="no-referrer-when-downgrade">
+                                     alt="{{ post.caption|default('Facebook')|u.truncate(120, '…') }}"
+                                     class="card-img-top img-fluid" loading="lazy" decoding="async">
+                                {% if post.mediaType == 'VIDEO' %}
+                                    <div class="play-button position-absolute top-50 start-50 translate-middle">
+                                        <i class="fab fa-facebook text-white fa-3x opacity-75"></i>
+                                    </div>
+                                {% endif %}
                             </a>
                         {% endif %}
                         <div class="card-body">
                             <p class="card-text text-muted small mb-2">
                                 <i class="fab fa-facebook text-primary me-1"></i>
-                                {{ item.created_time|date('d/m/Y H:i') }}
+                                {{ post.publishedAt|date('d/m/Y H:i') }}
                             </p>
-                            {% if item.message %}
-                                <p class="card-text">
-                                    {{ item.message|nl2br|slice(0, 150) }}{{ item.message|length > 150 ? '...' : '' }}
-                                </p>
+                            {% if post.caption %}
+                                <p class="card-text">{{ post.caption|nl2br|u.truncate(150, '…') }}</p>
                             {% endif %}
                         </div>
                         <div class="card-footer bg-transparent border-0 pt-0 pb-3">
-                            <a href="{{ item.permalink_url }}" target="_blank" rel="noopener" class="btn btn-outline-primary btn-sm rounded-pill px-3">
+                            <a href="{{ post.permalink }}" target="_blank" rel="noopener" class="btn btn-outline-primary btn-sm rounded-pill px-3">
                                 Voir sur Facebook
                             </a>
                         </div>
@@ -47,6 +53,12 @@
         .facebook-item .card-text {
             font-size: 0.95rem;
             line-height: 1.5;
+        }
+        .facebook-item .play-button {
+            transition: transform 0.3s ease;
+        }
+        .facebook-item:hover .play-button {
+            transform: translate(-50%, -50%) scale(1.15);
         }
     </style>
 {% endif %}

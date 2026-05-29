@@ -70,10 +70,36 @@ Pour appeler le feed dans un template Twig :
 
 ## 7. Architecture & rafraîchissement
 
-Contrairement à Instagram et TikTok, **Facebook n'est pas branché sur le pipeline `app:feed:sync` / `FeedPost`**. Le feed est récupéré **en direct à chaque rendu** par `FacebookService::getFeed()`, avec une mise en cache applicative de **1 heure** (`FacebookService::CACHE_EXPIRE = 3600`). Conséquences :
+Facebook est désormais branché sur le **pipeline `app:feed:sync` / `FeedPost`**, comme Instagram et TikTok. Le rendu front **ne fait plus aucun appel à l'API** : les posts et leur image (`full_picture`, présente même pour les vidéos) sont persistés en base (`api_feed_post`, `provider=facebook`) et sur disque (`/public/feed/medias/facebook/{externalId}/`). Si le token expire ou que l'API tombe, le feed reste **inchangé** côté visiteur.
 
-- Aucune tâche planifiée n'est nécessaire ni applicable : le cache 1 h gère seul la fraîcheur, le scheduler `core_scheduled_command` ne concerne pas ce provider.
-- Si l'API Facebook tombe ou que le token expire, le feed disparaît à l'expiration du cache (pas de persistance locale, contrairement à IG/TikTok).
-- Pour purger le cache manuellement : `php bin/console cache:clear`.
+### 7.1 Flux
 
-> Évolution possible (non implémentée) : pour aligner Facebook sur le comportement résilient d'Instagram (médias persistés en base + en local, affichage garanti même API down), il faudrait écrire un `FacebookFeedFetcher implements FeedFetcherInterface` sur le modèle de `InstagramFeedFetcher`. Ce n'est **pas** un simple ajustement de doc : cela suppose du code (fetcher, mapping `FeedPostDto`, téléchargement médias). À arbitrer selon le besoin réel.
+```
+[sync] → app:feed:sync --provider=facebook
+            └── FacebookFeedFetcher → FacebookService::getFeed() → Graph API
+                  └── FeedSyncService : upsert FeedPost + téléchargement image + soft-delete des absents
+
+[visiteur] → render(controller('…FacebookController::index'))
+              └── FeedPostRepository::findActiveByProvider('facebook', nbrItems) → DB
+```
+
+### 7.2 Déclencheurs de sync
+
+Identiques aux autres providers (cf. INSTAGRAM.md § 7.3) :
+1. **Auto-sync** au chargement d'une page (verrou cache 12 h, exécuté en `kernel.terminate`).
+2. **Bouton "Synchroniser maintenant"** du dashboard admin.
+3. **CLI** : `php bin/console app:feed:sync --provider=facebook`.
+4. **Tâche planifiée** : enregistrer `app:feed:sync` dans le planificateur intégré (sync tous providers).
+
+> Le token de page Facebook n'expire pas (token de page longue durée). Aucune commande de refresh n'est donc nécessaire, contrairement à IG/TikTok.
+
+### 7.3 Récapitulatif des fichiers
+
+| Élément              | Emplacement                                                  |
+|----------------------|--------------------------------------------------------------|
+| Fetcher (sync only)  | `src/Service/Content/Feed/FacebookFeedFetcher.php`           |
+| Service API live     | `src/Service/Content/Feed/FacebookService.php`               |
+| Controller rendu     | `src/Controller/Front/Action/Feed/FacebookController.php`    |
+| Template             | `templates/front/default/actions/feed/facebook/html.twig`    |
+| Stockage médias      | `/public/feed/medias/facebook/{externalId}/` (gitignored)    |
+| Provider constant    | `FeedPost::PROVIDER_FACEBOOK`                                 |

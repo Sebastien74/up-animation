@@ -27,6 +27,8 @@ class FeedPost
 {
     public const string PROVIDER_INSTAGRAM = 'instagram';
     public const string PROVIDER_TIKTOK = 'tiktok';
+    public const string PROVIDER_FACEBOOK = 'facebook';
+    public const string PROVIDER_YOUTUBE = 'youtube';
 
     public const string MEDIA_TYPE_IMAGE = 'IMAGE';
     public const string MEDIA_TYPE_VIDEO = 'VIDEO';
@@ -39,7 +41,7 @@ class FeedPost
 
     #[ORM\Column(type: Types::STRING, length: 32)]
     #[Assert\NotBlank]
-    #[Assert\Choice(choices: [self::PROVIDER_INSTAGRAM, self::PROVIDER_TIKTOK])]
+    #[Assert\Choice(choices: [self::PROVIDER_INSTAGRAM, self::PROVIDER_TIKTOK, self::PROVIDER_FACEBOOK, self::PROVIDER_YOUTUBE])]
     private string $provider;
 
     #[ORM\Column(type: Types::STRING, length: 255)]

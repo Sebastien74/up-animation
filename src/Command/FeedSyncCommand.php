@@ -17,8 +17,8 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 /**
  * FeedSyncCommand.
  *
- * Synchronizes social feeds (Instagram, TikTok) into the local DB
- * and downloads their medias under /public/feed/medias.
+ * Synchronizes social feeds (Instagram, TikTok, Facebook, YouTube) into the
+ * local DB and downloads their medias under /public/feed/medias.
  *
  * Cron-able. Recommended frequency: every hour.
  *
@@ -26,7 +26,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  */
 #[AsCommand(
     name: 'app:feed:sync',
-    description: 'Sync social feeds (Instagram, TikTok) to DB and /public/feed/medias'
+    description: 'Sync social feeds (Instagram, TikTok, Facebook, YouTube) to DB and /public/feed/medias'
 )]
 class FeedSyncCommand extends Command
 {
@@ -42,7 +42,7 @@ class FeedSyncCommand extends Command
                 'provider',
                 null,
                 InputOption::VALUE_REQUIRED,
-                'Provider to sync (instagram|tiktok|all)',
+                'Provider to sync (instagram|tiktok|facebook|youtube|all)',
                 'all'
             )
             ->addOption(

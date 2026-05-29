@@ -68,7 +68,7 @@ readonly class CommandFixtures
             ['name' => 'Suppression des données RGPD', 'command' => 'gdpr:remove', 'expression' => '00 1 * * *', 'description' => 'Supprime les données personnelles tous les jours à 1H du matin'],
             ['name' => 'Suppression des tokens utilisateurs', 'command' => 'security:reset:token', 'expression' => '* * * * *', 'description' => 'Suppression des tokens de plus de 2H'],
             ['name' => 'Alertes expiration des mots de passe utilisateurs', 'command' => 'security:password:expire', 'expression' => '00 11 * * *', 'description' => "Envoi d'emails (arrive à expiration & à expiré) tous les jours à 11H le matin"],
-            ['name' => 'Synchronisation des Social walls', 'command' => 'social-wall:synchronization', 'expression' => '* * * * *', 'description' => 'Mise à jour des social wall toutes les minutes'],
+            ['name' => 'Synchronisation des Social walls', 'command' => 'app:feed:sync', 'expression' => '* * * * *', 'description' => 'Mise à jour des social wall toutes les minutes'],
             ['name' => 'Agrégation des statistiques', 'command' => 'app:analytics:rollup', 'expression' => '15 * * * *', 'description' => "Reconstruit les buckets horaires et journaliers à partir des événements bruts", 'active' => true],
             ['name' => 'Purge des statistiques', 'command' => 'app:analytics:purge', 'expression' => '30 3 * * *', 'description' => 'Supprime les événements bruts au-delà de la fenêtre de rétention', 'active' => true],
             ['name' => 'Refresh token Instagram', 'command' => 'app:instagram:refresh-token', 'expression' => '0 4 * * 1', 'description' => 'Renouvelle les tokens Instagram avant expiration (60 jours)', 'active' => true],
