@@ -165,8 +165,6 @@ body {
 
     .sidebar-nav, #sidebarnav, .left-sidebar {
 
-        background: $theme-sidebar-bg !important;
-
         .btn-icon {
             i {
                 color: $theme-sidebar-icons;
@@ -1388,6 +1386,18 @@ body {
         border-color: $theme-border-subtle !important;
     }
 
+    /*--- Feature panel (global component) ---*/
+
+    // Same rationale as .card above: $crumb-surface has no light value, so the
+    // panel surface is invisible on cream. Force the surface here. Text, borders
+    // and the accent bar already resolve correctly (crumb-* / $primary are
+    // light-mapped), only the background needs forcing.
+
+    .feature-panel {
+        background: $theme-card-bg !important;
+        border-color: $theme-border-subtle !important;
+    }
+
     /*--- Main subtitle (section heading inside cards) ---*/
 
     .main-subtitle {
@@ -1999,6 +2009,48 @@ body {
         }
     }
 
+    .scheduler-detail {
+        border-color: $theme-border-subtle !important;
+        color: $theme-text-muted !important;
+
+        &:hover,
+        &:focus-visible {
+            color: $theme-text !important;
+            border-color: $theme-border-alt !important;
+            background: $theme-surface !important;
+        }
+    }
+
+    .scheduler-log-meta,
+    .scheduler-log-empty,
+    .scheduler-log-error,
+    .scheduler-log-loading {
+        color: $theme-text-muted !important;
+    }
+
+    .scheduler-log-cmd {
+        color: $theme-text !important;
+    }
+
+    .scheduler-log-code {
+
+        &.code-ok {
+            color: $success !important;
+            background: rgba($success, .12) !important;
+        }
+
+        &.code-fail {
+            color: $danger !important;
+            background: rgba($danger, .12) !important;
+        }
+    }
+
+    .scheduler-log-output {
+        color: $theme-text !important;
+        background: $theme-bg-alt !important;
+        border-color: $theme-border-subtle !important;
+    }
+
     /*--- Attention (SEO + 404) ---*/
 
     .attention-card {
@@ -2357,27 +2409,53 @@ body {
     }
 }
 
-#files-sizes-ifo-list {
+#project-info-page {
 
-    > li {
+    .size-item {
         background: $theme-card-bg !important;
         border-color: $theme-border !important;
 
-        &:hover {
-            border-color: $theme-border-alt !important;
-        }
+        @include mediaQuery(min-lg) {
 
-        > i {
-            color: $theme-accent !important;
-        }
-
-        ul {
-            border-left-color: $theme-border !important;
-
-            li {
-                color: $theme-text-muted !important;
+            &:hover {
+                border-color: $theme-border-alt !important;
             }
         }
+    }
+
+    .size-head i {
+        color: $theme-accent !important;
+    }
+
+    .size-name,
+    .size-bytes {
+        color: $theme-text !important;
+    }
+
+    .size-pct,
+    .size-sub-name,
+    .size-sub-bytes {
+        color: $theme-text-muted !important;
+    }
+
+    .size-track {
+        background: rgba($theme-accent, .08) !important;
+    }
+
+    .size-fill {
+        background: $theme-accent !important;
+    }
+
+    .size-subs {
+        border-top-color: $theme-border !important;
+    }
+
+    .size-sub-track {
+        background: rgba($theme-accent, .06) !important;
+    }
+
+    .size-sub-fill {
+        background: rgba($theme-accent, .45) !important;
     }
 }
 

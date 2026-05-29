@@ -163,6 +163,13 @@ class ToolController extends AdminController
             }
         }
 
+        // Heaviest folders first, for a readable size breakdown
+        arsort($directoriesSizes);
+        foreach ($subDirectoriesSizes as &$subSizes) {
+            arsort($subSizes);
+        }
+        unset($subSizes);
+
         parent::breadcrumb($request, []);
 
         return $this->adminRender('admin/page/development/project-info.html.twig', array_merge($this->arguments, [

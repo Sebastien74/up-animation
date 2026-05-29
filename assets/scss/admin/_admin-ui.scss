@@ -199,10 +199,12 @@
         background: $warning;
     }
 
-    /* Layout 2-colonnes (opt-in via .panel-split) — chiffre à gauche, contenu à droite */
+    /* Layout 2-colonnes (opt-in via .panel-split) — chiffre à gauche, contenu à droite.
+       Left track grows with the number (large counts stay on one line, no overlap)
+       while keeping a comfortable minimum for small values. */
     &.panel-split {
         display: grid;
-        grid-template-columns: 280px 1fr;
+        grid-template-columns: minmax(240px, auto) 1fr;
         gap: $space-7;
         align-items: stretch;
     }
@@ -239,12 +241,13 @@
     }
 
     .panel-number {
-        font-size: 120px;
+        font-size: 88px;
         font-weight: 200;
         line-height: .9;
         letter-spacing: -0.05em;
         color: $crumb-text;
         font-variant-numeric: tabular-nums;
+        white-space: nowrap;
     }
 
     .panel-unit {
@@ -460,12 +463,12 @@
         padding: $space-6;
 
         &.panel-split {
-            grid-template-columns: 220px 1fr;
+            grid-template-columns: minmax(200px, auto) 1fr;
             gap: $space-5;
         }
 
         .panel-number {
-            font-size: 96px;
+            font-size: 72px;
         }
 
         .panel-headline {
@@ -517,7 +520,7 @@
         }
 
         .panel-number {
-            font-size: 80px;
+            font-size: 64px;
         }
 
         .panel-headline {

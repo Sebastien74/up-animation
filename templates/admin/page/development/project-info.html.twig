@@ -16,7 +16,7 @@
 
 {%- block body -%}
 
-    <div class="reveal-stagger">
+    <div id="project-info-page" class="reveal-stagger">
 
         <section class="feature-panel panel-split mb-4 reveal">
             <div class="panel-left">
@@ -28,7 +28,7 @@
                 <h2 class="panel-headline">{{ "Poids du projet."|trans|raw }}</h2>
                 <p class="panel-desc">
                     {{ "Total occupé sur le disque :"|trans|raw }} <strong>{{ totalSize|formatBytes() }}</strong>.
-                    {{ "Détail par dossier ci-dessous."|trans|raw }}
+                    {{ "Réparti sur"|trans|raw }} {{ directoriesSizes|length }}&nbsp;{{ directoriesSizes|length > 1 ? "dossiers de premier niveau"|trans|raw : "dossier de premier niveau"|trans|raw }}.
                 </p>
             </div>
         </section>
@@ -39,15 +39,35 @@
             <span class="label-aside">{{ directoriesSizes|length }}&nbsp;{{ directoriesSizes|length > 1 ? "dossiers"|trans|raw : "dossier"|trans|raw }}</span>
         </div>
 
-        <ul id="files-sizes-ifo-list" class="reveal">
+        <ul class="size-breakdown reveal">
             {%- for directory, size in directoriesSizes -%}
-                <li class="mt-3">
-                    <i class="icm-folder-open"></i>{{ directory }} : {{ size|formatBytes() }}
+                {%- set pct = totalSize > 0 ? (size / totalSize * 100) : 0 -%}
+                <li class="size-item">
+                    <div class="size-row">
+                        <span class="size-head">
+                            <i class="icm-folder-open" aria-hidden="true"></i>
+                            <span class="size-name">{{ directory }}</span>
+                        </span>
+                        <span class="size-meta">
+                            <span class="size-bytes">{{ size|formatBytes() }}</span>
+                            <span class="size-pct">{{ pct|number_format(1, ',', ' ') }}&nbsp;%</span>
+                        </span>
+                    </div>
+                    <div class="size-track" role="presentation">
+                        <span class="size-fill" style="width: {{ pct|round(2) }}%;"></span>
+                    </div>
                     {%- if subDirectoriesSizes[directory] is defined -%}
-                        <ul>
+                        <ul class="size-subs">
                             {%- for subDirectory, subSize in subDirectoriesSizes[directory] -%}
-                                <li>
-                                    <i class="icm-folder"></i>{{ directory~'/'~subDirectory }} : {{ subSize|formatBytes() }}
+                                {%- set subPct = size > 0 ? (subSize / size * 100) : 0 -%}
+                                <li class="size-sub">
+                                    <span class="size-sub-name">
+                                        <i class="icm-folder" aria-hidden="true"></i>{{ subDirectory }}
+                                    </span>
+                                    <span class="size-sub-bytes">{{ subSize|formatBytes() }}</span>
+                                    <span class="size-sub-track" role="presentation">
+                                        <span class="size-sub-fill" style="width: {{ subPct|round(2) }}%;"></span>
+                                    </span>
                                 </li>
                             {%- endfor -%}
                         </ul>

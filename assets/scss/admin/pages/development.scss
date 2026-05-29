@@ -405,46 +405,181 @@
 }
 
 /*-----------------------------------
-   4 ) Project info (folder tree)
+   4 ) Project info (size breakdown)
 -----------------------------------*/
 
-#files-sizes-ifo-list {
+#project-info-page {
 
-    list-style-type: none;
-    padding-left: 0;
-
-    ul {
-        list-style-type: none;
-        padding-left: $space-6;
-        margin-top: $space-2;
-        border-left: 1px dashed $crumb-border;
+    .size-breakdown {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: $space-3;
     }
 
-    > li {
-        padding: $space-3 $space-4;
+    .size-item {
+        padding: $space-4 $space-5;
         background: $crumb-surface;
         border: 1px solid $crumb-border;
-        border-radius: $radius-md;
+        border-radius: $radius-lg;
         transition: border-color $transition-fast, background $transition-fast;
 
-        &:hover {
-            border-color: $crumb-border-hover;
-        }
+        @include mediaQuery(min-lg) {
 
-        > i {
-            margin-right: $space-2;
-            color: $primary;
-        }
-
-        ul li {
-            font-size: 12px;
-            padding: 4px 0;
-            color: $crumb-muted;
-
-            i {
-                margin-right: $space-2;
-                opacity: .7;
+            &:hover {
+                border-color: $crumb-border-hover;
             }
+        }
+    }
+
+    .size-row {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: $space-4;
+        margin-bottom: $space-3;
+    }
+
+    .size-head {
+        display: inline-flex;
+        align-items: center;
+        gap: $space-2;
+        min-width: 0;
+
+        i {
+            font-size: 13px;
+            color: $primary;
+            flex-shrink: 0;
+        }
+    }
+
+    .size-name {
+        font-family: $font-family-monospace;
+        font-size: 13px;
+        font-weight: 500;
+        color: $crumb-text;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .size-meta {
+        display: inline-flex;
+        align-items: baseline;
+        gap: $space-3;
+        flex-shrink: 0;
+        font-variant-numeric: tabular-nums;
+    }
+
+    .size-bytes {
+        font-size: 13px;
+        font-weight: 500;
+        color: $crumb-text;
+    }
+
+    .size-pct {
+        font-size: 11px;
+        font-weight: 600;
+        color: $crumb-muted;
+        min-width: 52px;
+        text-align: right;
+    }
+
+    .size-track {
+        position: relative;
+        height: 6px;
+        border-radius: $radius-pill;
+        background: rgba($primary, .08);
+        overflow: hidden;
+    }
+
+    .size-fill {
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        border-radius: $radius-pill;
+        background: $primary;
+        transform-origin: left center;
+        animation: sizeBarGrow .8s $transition-base-timing both;
+    }
+
+    .size-subs {
+        list-style: none;
+        margin: $space-4 0 0;
+        padding: $space-4 0 0;
+        border-top: 1px dashed $crumb-border;
+        display: flex;
+        flex-direction: column;
+        gap: $space-3;
+    }
+
+    .size-sub {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        align-items: center;
+        gap: $space-1 $space-4;
+    }
+
+    .size-sub-name {
+        display: inline-flex;
+        align-items: center;
+        gap: $space-2;
+        min-width: 0;
+        font-family: $font-family-monospace;
+        font-size: 11px;
+        color: $crumb-muted;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+
+        i {
+            font-size: 10px;
+            opacity: .7;
+            flex-shrink: 0;
+        }
+    }
+
+    .size-sub-bytes {
+        font-size: 11px;
+        color: $crumb-muted;
+        font-variant-numeric: tabular-nums;
+        text-align: right;
+    }
+
+    .size-sub-track {
+        grid-column: 1 / -1;
+        height: 3px;
+        border-radius: $radius-pill;
+        background: rgba($primary, .06);
+        overflow: hidden;
+    }
+
+    .size-sub-fill {
+        display: block;
+        height: 100%;
+        border-radius: $radius-pill;
+        background: rgba($primary, .45);
+        transform-origin: left center;
+        animation: sizeBarGrow .8s $transition-base-timing both;
+    }
+}
+
+@keyframes sizeBarGrow {
+    from { transform: scaleX(0); }
+    to { transform: scaleX(1); }
+}
+
+/* Reduced motion : bars appear at final width, no growth */
+@media (prefers-reduced-motion: reduce) {
+
+    #project-info-page {
+
+        .size-fill,
+        .size-sub-fill {
+            animation: none;
         }
     }
 }
