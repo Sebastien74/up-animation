@@ -90,8 +90,6 @@ class ContactDeleteService
             ->setParameter('createdAt', $datetime->format('Y-m-d').' 00:00:00')
             ->getQuery()->getResult();
 
-//        dd($contacts);
-
         foreach ($contacts as $contact) {
             $this->deleteAttachments($contact);
             $this->entityManager->remove($contact);

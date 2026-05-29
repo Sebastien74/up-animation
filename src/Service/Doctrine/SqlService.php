@@ -7,6 +7,7 @@ namespace App\Service\Doctrine;
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
+use Psr\Log\LoggerInterface;
 
 /**
  * SqlService.
@@ -31,6 +32,7 @@ class SqlService implements SqlServiceInterface
         private readonly EntityManagerInterface $entityManager,
         private readonly ManagerRegistry $doctrine,
         private readonly string $prefix,
+        private readonly LoggerInterface $logger,
     ) {
         $this->connection = $this->entityManager->getConnection();
         $this->dbPrefix = $this->prefix;
@@ -76,7 +78,9 @@ class SqlService implements SqlServiceInterface
 
             return !empty($result[0]) ? $result[0] : [];
         } catch (\Exception $exception) {
-            return ['exception' => $exception->getMessage()];
+            $this->logger->error('SqlService query failed: '.$exception->getMessage());
+
+            return [];
         }
     }
 
@@ -100,7 +104,9 @@ class SqlService implements SqlServiceInterface
 
             return $this->connection->executeQuery($sql)->fetchAllAssociative();
         } catch (\Exception $exception) {
-            return ['exception' => $exception->getMessage()];
+            $this->logger->error('SqlService query failed: '.$exception->getMessage());
+
+            return [];
         }
     }
 
@@ -131,7 +137,9 @@ class SqlService implements SqlServiceInterface
 
             return $this->connection->executeQuery($sql, ['value' => $value])->fetchAllAssociative();
         } catch (\Exception $exception) {
-            return ['exception' => $exception->getMessage()];
+            $this->logger->error('SqlService query failed: '.$exception->getMessage());
+
+            return [];
         }
     }
 
@@ -146,7 +154,9 @@ class SqlService implements SqlServiceInterface
             $matches = explode('_', $firstTable);
             return $matches[0];
         } catch (\Exception $exception) {
-            return ['exception' => $exception->getMessage()];
+            $this->logger->error('SqlService query failed: '.$exception->getMessage());
+
+            return [];
         }
     }
 
@@ -163,7 +173,9 @@ class SqlService implements SqlServiceInterface
                 }
             }
         } catch (\Exception $exception) {
-            return ['exception' => $exception->getMessage()];
+            $this->logger->error('SqlService query failed: '.$exception->getMessage());
+
+            return [];
         }
 
         return null;

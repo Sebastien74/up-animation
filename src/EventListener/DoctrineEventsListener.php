@@ -238,7 +238,7 @@ class DoctrineEventsListener
         if (is_object($entity) && !$entity->getId()) {
             return true;
         }
-        if (is_object($entity) && in_array(get_class($entity), self::DISABLED_ENTITIES) && empty($_POST)) {
+        if (is_object($entity) && in_array(get_class($entity), self::DISABLED_ENTITIES) && (!$this->request || 0 === $this->request->request->count())) {
             return true;
         }
         foreach (debug_backtrace() as $backtrace) {

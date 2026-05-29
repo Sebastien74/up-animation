@@ -6,7 +6,7 @@ namespace App\Controller\Front\Action\Feed;
 
 use App\Controller\Front\ActionController;
 use App\Service\Content\ActionService;
-use App\Service\Content\GoogleReviewService;
+use App\Service\Content\Feed\GoogleReviewService;
 use App\Service\Interface\CoreLocatorInterface;
 use App\Service\Interface\FrontLocatorInterface;
 use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;

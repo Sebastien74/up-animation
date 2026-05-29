@@ -158,6 +158,7 @@ class LogController extends AdminController
                 try {
                     $filesystem->remove($file->getRealPath());
                 } catch (\Exception $exception) {
+                    $this->coreLocator->jsonLog('Log file removal failed: '.$exception->getMessage(), 'warning', 'log');
                 }
             }
         }

@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Service\Content;
+namespace App\Service\Content\Feed;
 
 use App\Model\Api\InstagramModel;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Throwable;
@@ -25,7 +26,8 @@ class InstagramService
 
     public function __construct(
         private readonly HttpClientInterface $httpClient,
-        private readonly UrlGeneratorInterface $urlGenerator
+        private readonly UrlGeneratorInterface $urlGenerator,
+        private readonly LoggerInterface $logger
     ) {
     }
 
@@ -61,10 +63,14 @@ class InstagramService
     }
 
     /**
-     * Refresh access token.
-     * Note: Long-lived tokens are valid for 60 days and can be refreshed after 24 hours.
+     * Refresh a long-lived access token.
+     *
+     * Long-lived tokens are valid for 60 days and can only be refreshed once they
+     * are at least 24 h old (Meta rejects a refresh on a token younger than that).
+     *
+     * @return array{access_token: string, expires_in: int}|null Fresh token and its lifetime in seconds, null on failure
      */
-    public function refreshToken(string $accessToken): ?string
+    public function refreshToken(string $accessToken): ?array
     {
         try {
             $response = $this->httpClient->request('GET', self::REFRESH_TOKEN_URL, [
@@ -73,12 +79,31 @@ class InstagramService
                     'access_token' => $accessToken,
                 ],
             ]);
-            if ($response->getStatusCode() === 200) {
+            $statusCode = $response->getStatusCode();
+            if ($statusCode === 200) {
                 $data = $response->toArray();
-                return $data['access_token'] ?? null;
+                $token = $data['access_token'] ?? null;
+                if (!is_string($token) || $token === '') {
+                    // Never log the token itself, only the error envelope returned by Meta.
+                    $this->logger->error('Instagram token refresh: 200 response without access_token.', [
+                        'response' => $response->getContent(false),
+                    ]);
+
+                    return null;
+                }
+
+                return [
+                    'access_token' => $token,
+                    'expires_in' => (int) ($data['expires_in'] ?? 0),
+                ];
             }
-        } catch (Throwable) {
-            return null;
+
+            $this->logger->error('Instagram token refresh failed.', [
+                'status' => $statusCode,
+                'response' => $response->getContent(false),
+            ]);
+        } catch (Throwable $exception) {
+            $this->logger->error('Instagram token refresh error: '.$exception->getMessage());
         }
 
         return null;
@@ -120,12 +145,14 @@ class InstagramService
                 ],
             ]);
 
+            $statusCode = $response->getStatusCode();
+            if ($statusCode !== 200) {
+                // Never log the code/secret, only the error envelope returned by Meta.
+                $this->logger->error('Instagram short-lived token exchange failed.', [
+                    'status' => $statusCode,
+                    'response' => $response->getContent(false),
+                ]);
 
-            if ($response->getStatusCode() !== 200) {
-                // Return original response content for debugging if needed (via toArray(false))
-                $errorData = $response->toArray(false);
-                // In a production environment, you should use a LoggerInterface to log $errorData
-                // For example: $this->logger->error('Instagram API Auth Error: ', $errorData);
                 return null;
             }
 
@@ -133,6 +160,10 @@ class InstagramService
             $shortLivedToken = $data['access_token'] ?? null;
 
             if (!$shortLivedToken) {
+                $this->logger->error('Instagram short-lived token exchange: 200 response without access_token.', [
+                    'response' => $response->getContent(false),
+                ]);
+
                 return null;
             }
 
@@ -145,12 +176,27 @@ class InstagramService
                 ],
             ]);
 
-            if ($response->getStatusCode() === 200) {
+            $statusCode = $response->getStatusCode();
+            if ($statusCode === 200) {
                 $data = $response->toArray();
-                return $data['access_token'] ?? null;
+                $token = $data['access_token'] ?? null;
+                if (!is_string($token) || $token === '') {
+                    $this->logger->error('Instagram long-lived token exchange: 200 response without access_token.', [
+                        'response' => $response->getContent(false),
+                    ]);
+
+                    return null;
+                }
+
+                return $token;
             }
-        } catch (Throwable) {
-            return null;
+
+            $this->logger->error('Instagram long-lived token exchange failed.', [
+                'status' => $statusCode,
+                'response' => $response->getContent(false),
+            ]);
+        } catch (Throwable $exception) {
+            $this->logger->error('Instagram token exchange error: '.$exception->getMessage());
         }
 
         return null;

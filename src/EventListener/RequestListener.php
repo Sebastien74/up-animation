@@ -257,7 +257,7 @@ class RequestListener
         }
 
         $entityLocale = $this->request->query->get('entitylocale') ? $this->request->query->get('entitylocale') : $this->request->attributes->get('entitylocale');
-        if (!$_FILES && $entityLocale) {
+        if (!$this->request->files->count() && $entityLocale) {
             $this->session->set('currentEntityLocale', $entityLocale);
         }
     }

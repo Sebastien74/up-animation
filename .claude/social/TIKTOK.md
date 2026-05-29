@@ -162,7 +162,7 @@ Propriétés FeedPost utiles côté Twig :
 
 ### 5.3 Synchronisation — déclencheurs
 
-Trois manières de déclencher un sync :
+Quatre manières de déclencher un sync :
 
 1. **Auto-sync au chargement d'une page** (par défaut). Quand `TikTokController::index` est rendu, `FeedAutoSyncService::scheduleIfStale('tiktok')` est appelé :
    - si le verrou cache `feed_sync_lock_tiktok` est encore actif (TTL 12 h), rien ne se passe ;
@@ -175,6 +175,17 @@ Trois manières de déclencher un sync :
    php bin/console app:feed:sync                  # tous les providers
    php bin/console app:feed:sync --force          # re-télécharger les cover images déjà présentes
    ```
+4. **Tâche planifiée via le planificateur intégré** (méthode simple, recommandée si l'auto-sync ne suffit pas). Le projet embarque un scheduler maison (`scheduler:execute` -> `CronSchedulerService`, table `core_scheduled_command`) piloté depuis l'admin **Développement -> Tâches planifiées** (`admin_command_index`, `ROLE_INTERNAL` requis). On enregistre la commande une seule fois en base, sans toucher au crontab système par provider :
+   - **Commande** : `app:feed:sync`
+   - **Arguments** : laisser vide
+   - **Expression cron** : `0 * * * *` (toutes les heures ; ajuster selon le rythme de publication)
+   - **Actif** : oui
+   
+   > Le planificateur **ne transmet ni le champ `arguments` ni d'options** à la commande (il n'injecte que `cronLogger`/`commandLogger`). Impossible donc de cibler `--provider=tiktok` via une `ScheduledCommand` : la tâche tourne avec le défaut `--provider=all` et synchronise **tous** les providers du pipeline (Instagram + TikTok). Pour cibler un seul provider, utiliser la CLI manuelle (point 3) ou un crontab système avec la commande complète.
+
+   Déclenchement : le planificateur est **web-natif**, aucun crontab système requis (heartbeat sur `kernel.terminate` via `CronHeartbeatService`, throttlé à 1 run / 60 s). Détails dans le `CLAUDE.md`, section « Tâches planifiées (Cron natif) ».
+
+   Particularité TikTok : le `access_token` ne vit que 24 h. Le sync planifié n'a d'intérêt durable que **couplé au refresh** (commande `app:tiktok:refresh-token`, cf. § 6.3) ; sans lui le token expire et l'API renvoie `401`. Planifier les deux : `app:feed:sync` et `app:tiktok:refresh-token`.
 
 > Le verrou cache 12 h vit dans le cache applicatif standard. Pour le purger sans passer par le bouton admin : `bin/console cache:clear` (le verrou est perdu, prochain page-load déclenche un sync).
 
@@ -212,13 +223,15 @@ Le rendu par défaut s'appuie sur **Bootstrap Grid** (`row g-3`, `col-12 col-md-
 | Entité posts persistés    | `src/Entity/Api/FeedPost.php` (table `api_feed_post`)       |
 | Repo posts persistés      | `src/Repository/Api/FeedPostRepository.php`                 |
 | Model config              | `src/Model/Api/TikTokModel.php`                             |
-| Service API live          | `src/Service/Content/TikTokService.php`                     |
+| Service API live          | `src/Service/Content/Feed/TikTokService.php`                |
 | Fetcher (sync only)       | `src/Service/Content/Feed/TikTokFeedFetcher.php`            |
 | Orchestrateur sync        | `src/Service/Content/Feed/FeedSyncService.php`              |
 | Auto-sync paresseuse      | `src/Service/Content/Feed/FeedAutoSyncService.php`          |
 | Listener kernel.terminate | `src/EventSubscriber/FeedAutoSyncTerminateSubscriber.php`   |
 | Téléchargement médias     | `src/Service/Content/Feed/FeedMediaDownloader.php`          |
 | Commande de sync          | `src/Command/FeedSyncCommand.php` (`app:feed:sync`)         |
+| Commande refresh token    | `src/Command/TikTokRefreshTokenCommand.php` (`app:tiktok:refresh-token`) |
+| Service refresh token     | `src/Service/Content/Feed/TikTokTokenRefresher.php`        |
 | Sync admin (bouton)       | `src/Controller/Admin/Core/FeedSyncController.php`          |
 | Controller rendu          | `src/Controller/Front/Action/Feed/TikTokController.php`     |
 | Controller OAuth callback | `src/Controller/Front/Action/Feed/TikTokAuthController.php` |
@@ -257,28 +270,24 @@ Le rendu par défaut s'appuie sur **Bootstrap Grid** (`row g-3`, `col-12 col-md-
 
 ### 6.2 État actuel du code
 
-⚠️ **Le service Symfony actuel ne gère pas le refresh.**
+Le refresh **est géré**. À la connexion OAuth, `TikTokService::getAccessToken()` renvoie et persiste désormais l'ensemble du jeu de tokens : `access_token`, `refresh_token`, et les expirations calculées (`tokenExpiresAt` à +24 h, `refreshTokenExpiresAt` à +365 j). L'entité `TikTok` (`src/Entity/Api/TikTok.php`) porte ces trois nouvelles colonnes.
 
-`TikTokService::getAccessToken()` ne persiste que le champ `access_token` reçu lors de l'échange du `code` OAuth. Le `refresh_token` retourné par TikTok dans la même réponse est **ignoré** et l'entité `TikTok` (`src/Entity/Api/TikTok.php`) ne possède pas de colonne dédiée.
+Sans renouvellement, le `access_token` expire **24 h** après la connexion : `getFeed()` reçoit alors un `401`, retourne `[]`, et le feed disparaît. C'est ce que la commande de refresh ci-dessous empêche.
 
-Conséquence : **24 h après la connexion**, le `access_token` expire, `TikTokService::getFeed()` reçoit un `401` de TikTok et retourne `[]`, le contrôleur retourne une `Response` vide → le feed disparaît silencieusement.
+### 6.3 Commande de refresh
 
-### 6.3 Adaptations à prévoir
+Automatisé par la commande **`app:tiktok:refresh-token`** (`App\Command\TikTokRefreshTokenCommand`, logique dans `App\Service\Content\Feed\TikTokTokenRefresher`). Pour chaque entité `TikTok` porteuse d'un `refresh_token`, elle appelle `TikTokService::refreshToken()` lorsque le `access_token` arrive à expiration (fenêtre de 12 h avant échéance). TikTok **fait tourner le `refresh_token` à chaque appel** : la commande persiste le nouveau `refresh_token`, le nouvel `access_token` et recalcule les deux expirations.
 
-Pour pérenniser le feed sans intervention manuelle :
+```bash
+php bin/console app:tiktok:refresh-token          # refresh des tokens proches de l'expiration
+php bin/console app:tiktok:refresh-token --force  # force le refresh de tous les tokens (ops/debug)
+```
 
-1. Étendre l'entité `TikTok` (`api_tiktok`) avec deux colonnes :
-   - `refresh_token` (`VARCHAR 255`, nullable)
-   - `expires_at` (`DATETIME`, nullable)
-2. Modifier `TikTokService::getAccessToken()` pour retourner et persister `refresh_token`, `expires_in` et calculer `expires_at`.
-3. Implémenter `TikTokService::refreshToken(string $refreshToken)` :
-   ```text
-   POST https://open.tiktokapis.com/v2/oauth/token/
-   Content-Type: application/x-www-form-urlencoded
-   client_key=<key>&client_secret=<secret>&grant_type=refresh_token&refresh_token=<token>
-   ```
-   Réponse : nouvel `access_token` + nouveau `refresh_token`. Persister les deux.
-4. Créer une commande Symfony `app:tiktok:refresh-tokens` planifiée en cron (toutes les heures), qui appelle `refreshToken()` pour toutes les entités `TikTok` dont `expires_at < NOW() + INTERVAL 2 HOUR`.
+**Planification (important)** : le `access_token` ne vit que **24 h**. Enregistrer une `ScheduledCommand` (admin **Développement -> Tâches planifiées**) avec la commande `app:tiktok:refresh-token` et une expression cron rapprochée, p. ex. **toutes les 6 h** `0 */6 * * *`.
+
+> ⚠️ Le planificateur est web-natif (déclenché par le trafic, throttlé à 1 run / 60 s). Sur un site **peu visité**, une cadence de 6 h peut ne pas être honorée à temps et le token de 24 h peut expirer entre deux passages. Pour un site à faible trafic, fiabiliser avec un crontab système réel ou `public/cron.php` appelant `scheduler:execute`. Le `refresh_token` (365 j rotatif) ne meurt que si aucun refresh n'aboutit pendant un an → dans ce cas, relancer le flux OAuth dans l'admin.
+
+> Limite : un compte connecté **avant** l'ajout de ces colonnes n'a pas de `refresh_token` stocké ; la commande le comptabilise en échec et il faut le reconnecter une fois via OAuth (la nouvelle connexion amorce alors `refresh_token` + expirations).
 
 Ces points sont à reporter dans `TODO.md` pour suivi.
 

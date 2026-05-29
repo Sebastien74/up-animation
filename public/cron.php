@@ -2,10 +2,13 @@
 
 use Monolog\Handler\RotatingFileHandler;
 use Monolog\Logger;
+use Symfony\Component\Dotenv\Dotenv;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\PhpExecutableFinder;
 
-require dirname(__DIR__) . '/config/bootstrap.php';
+require dirname(__DIR__) . '/vendor/autoload.php';
+
+(new Dotenv())->bootEnv(dirname(__DIR__) . '/.env');
 
 $cronSecret = (string) ($_ENV['CRON_SECRET'] ?? '');
 $cronAllowedIps = array_filter(array_map('trim', explode(',', (string) ($_ENV['CRON_ALLOWED_IPS'] ?? '127.0.0.1,::1'))));
@@ -50,7 +53,7 @@ class CronScheduler
     public function __construct(Logger $logger, bool $asynchronous = false)
     {
         $this->dirname = dirname(__DIR__);
-        $this->environment = $_ENV['APP_ENV_NAME'];
+        $this->environment = (string) ($_ENV['APP_ENV'] ?? 'prod');
         $this->asynchronous = $asynchronous;
 
         $this->logger = $logger;
@@ -60,7 +63,7 @@ class CronScheduler
     }
 
     /**
-     * Run command : Procedural PHP execution
+     * Run command: Procedural PHP execution
      *
      * @throws Exception
      */
@@ -138,18 +141,14 @@ $logger->pushHandler(new RotatingFileHandler(dirname(__DIR__) . '/var/log/cron-s
 
 $scheduler = new CronScheduler($logger, $asynchronous);
 
+header('Content-Type: application/json');
+
 try {
     $scheduler->executeProcedural();
-    echo json_encode([
-        'result' => 'Cron successfully executed.'
-    ], true);
-} catch (Exception $exception) {
+    echo json_encode(['result' => 'Cron successfully executed.']);
+} catch (\Throwable $exception) {
     $logger->critical($exception->getMessage());
-    echo json_encode([
-        'result' => $exception->getMessage()
-    ], true);
+    echo json_encode(['result' => $exception->getMessage()]);
 }
-
-header('Content-Type: application/json');
 
 exit();

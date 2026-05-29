@@ -29,6 +29,9 @@ class Instagram
     #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
     private ?string $accessToken = null;
 
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
+    private ?\DateTimeImmutable $tokenExpiresAt = null;
+
     #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
     private ?string $appId = null;
 
@@ -56,6 +59,18 @@ class Instagram
     public function setAccessToken(?string $accessToken): static
     {
         $this->accessToken = $accessToken;
+
+        return $this;
+    }
+
+    public function getTokenExpiresAt(): ?\DateTimeImmutable
+    {
+        return $this->tokenExpiresAt;
+    }
+
+    public function setTokenExpiresAt(?\DateTimeImmutable $tokenExpiresAt): static
+    {
+        $this->tokenExpiresAt = $tokenExpiresAt;
 
         return $this;
     }

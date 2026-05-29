@@ -258,6 +258,7 @@ class AdminController extends BaseController
         if (!$entity) {
             throw $this->createNotFoundException(sprintf("Aucune entité pour l'ID %s", $request->get($interface['name'])));
         }
+        $this->denyUnlessEntityWebsite($entity);
         if (empty($this->arguments['breadcrumb'])) {
             $this->breadcrumb($request);
         }
@@ -368,6 +369,7 @@ class AdminController extends BaseController
         if ($request->get('ajax')) {
             $interface = $this->getInterface($this->class);
             $entity = !empty($interface['name']) ? $this->coreLocator->em()->getRepository($this->class)->find($request->get($interface['name'])) : null;
+            $this->denyUnlessEntityWebsite($entity);
             if (is_object($entity) && $request->get('position') && method_exists($entity, 'setPosition')) {
                 $entity->setPosition(intval($request->get('position')));
                 $this->coreLocator->em()->persist($entity);
@@ -378,6 +380,7 @@ class AdminController extends BaseController
         } else {
             $service = $this->adminLocator->positionService();
             $service->setVars($this->class, $request);
+            $this->denyUnlessEntityWebsite($service->getEntity());
 
             $form = $this->createForm(PositionType::class, $service->getEntity(), [
                 'data_class' => get_class($service->getEntity()),
@@ -411,6 +414,10 @@ class AdminController extends BaseController
      */
     protected function delete(Request $request)
     {
+        if ($request->query->get('ajax')
+            && !$this->isCsrfTokenValid('delete_index', (string) $request->headers->get('X-CSRF-Token'))) {
+            return new JsonResponse(['success' => false, 'alert' => 'error', 'message' => 'Invalid CSRF token.'], Response::HTTP_FORBIDDEN);
+        }
         if (!in_array('ROLE_DELETE', $this->getUser()->getRoles())) {
             $this->denyAccessUnlessGranted('ROLE_DELETE');
         }
@@ -482,6 +489,10 @@ class AdminController extends BaseController
 
         if ($entity && $entity->getId() && !$entity instanceof ViewModel) {
             $entity = $this->coreLocator->emQuery()->findFullEntity($entity->getId(), get_class($entity)) ?: $entity;
+        }
+
+        if ($entity && method_exists($entity, 'getId') && $entity->getId()) {
+            $this->denyUnlessEntityWebsite($entity);
         }
 
         if ($entity && $entity->getId()) {

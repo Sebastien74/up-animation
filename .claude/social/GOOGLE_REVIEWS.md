@@ -38,3 +38,12 @@ Le flux sera accessible via le contrôleur :
 Vous pouvez l'appeler dans vos pages via une action de bloc ou directement dans un template Twig si le système le permet.
 
 > **Note :** L'API Places de Google ne permet de récupérer nativement que les **5 avis les plus pertinents ou récents**. Les données sont mises en cache pendant 24 heures pour optimiser les performances et limiter les appels API.
+
+## 5. Architecture & rafraîchissement
+
+Contrairement à Instagram et TikTok, **Google Reviews n'est pas branché sur le pipeline `app:feed:sync` / `FeedPost`**. Les avis sont récupérés **en direct à chaque rendu** par `GoogleReviewService::getReviews()`, avec une mise en cache applicative de **24 heures** (`GoogleReviewService::CACHE_EXPIRE = 86400`). Conséquences :
+
+- Aucune tâche planifiée n'est nécessaire ni applicable : le cache 24 h gère seul la fraîcheur, le scheduler `core_scheduled_command` ne concerne pas ce provider.
+- La clé Google Maps / Places n'expire pas (pas de flux OAuth ni de token à rafraîchir).
+- L'API Places étant **facturée à l'appel**, le cache 24 h est volontairement long : ne pas le réduire sans vérifier l'impact sur la facturation Google Cloud.
+- Pour purger le cache manuellement : `php bin/console cache:clear`.

@@ -6,7 +6,7 @@ namespace App\Service\Content\Feed;
 
 use App\Entity\Api\FeedPost;
 use App\Repository\Core\WebsiteRepository;
-use App\Service\Content\InstagramService;
+use App\Service\Content\Feed\InstagramService;
 use DateTimeImmutable;
 
 /**

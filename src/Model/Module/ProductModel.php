@@ -221,7 +221,6 @@ final class ProductModel extends BaseModel
      */
     private static function getValues(Catalog\Product $product, Catalog\Catalog $catalog, array $multiFeaturesValues = [], array $defaultUniqFeatures = [], array $options = []): array
     {
-//        dd('FAIRE UN CACHE GROUP BY');
 
         $website = self::$coreLocator->website() ? self::$coreLocator->website() : WebsiteModel::fromEntity($product->getWebsite(), self::$coreLocator);
 

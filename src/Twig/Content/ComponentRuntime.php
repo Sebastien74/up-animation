@@ -73,7 +73,7 @@ class ComponentRuntime implements RuntimeExtensionInterface
                                     $col->addBlock($block);
                                 }
                             } catch (LoaderError|SyntaxError|RuntimeError $exception) {
-//                                dd($exception);
+                                $this->coreLocator->jsonLog('Component block render failed: '.$exception->getMessage(), 'error', 'component');
                             }
                         }
                     }
@@ -91,7 +91,7 @@ class ComponentRuntime implements RuntimeExtensionInterface
                 'zone' => $zone,
             ]);
         } catch (LoaderError|RuntimeError|SyntaxError $exception) {
-//            dd($exception);
+            $this->coreLocator->jsonLog('Component zone render failed: '.$exception->getMessage(), 'error', 'component');
         }
     }
 

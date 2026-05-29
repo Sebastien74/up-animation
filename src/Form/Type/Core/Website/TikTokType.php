@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Form\Type\Core\Website;
 
 use App\Entity\Api\TikTok;
-use App\Service\Content\TikTokService;
+use App\Service\Content\Feed\TikTokService;
 use App\Service\Interface\CoreLocatorInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type;

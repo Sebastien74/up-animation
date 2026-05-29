@@ -709,6 +709,186 @@
     }
 
     /*-----------------------------------
+       8 bis ) Scheduled tasks
+    -----------------------------------*/
+
+    .dashboard-scheduler {
+        margin-bottom: $space-8;
+    }
+
+    .scheduler-panel {
+        background: $crumb-surface;
+        border: 1px solid $crumb-border;
+        border-radius: $radius-md;
+        overflow: hidden;
+    }
+
+    .scheduler-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 1px;
+        background: $crumb-border;
+    }
+
+    .scheduler-row {
+        display: grid;
+        grid-template-columns: 8px minmax(0, 1fr) 116px 120px 132px minmax(150px, auto);
+        gap: $space-4;
+        align-items: center;
+        padding: $space-3 $space-4;
+        background: $crumb-surface;
+        transition: background $transition-fast;
+
+        @include mediaQuery(min-lg) {
+
+            &:hover {
+                background: $btn-surface-hover;
+            }
+        }
+    }
+
+    .scheduler-head {
+        padding-top: $space-2;
+        padding-bottom: $space-2;
+        background: $body-bg;
+
+        @include mediaQuery(min-lg) {
+
+            &:hover {
+                background: $body-bg;
+            }
+        }
+    }
+
+    .scheduler-col-head {
+        font-size: 9px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: .08em;
+        color: $crumb-muted;
+    }
+
+    .scheduler-col-end {
+        text-align: right;
+    }
+
+    .scheduler-state {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: $crumb-border-hover;
+    }
+
+    .scheduler-row.is-ok .scheduler-state {
+        background: $success;
+    }
+
+    .scheduler-row.is-failed .scheduler-state {
+        background: $danger;
+    }
+
+    .scheduler-row.is-pending .scheduler-state {
+        background: $warning;
+    }
+
+    .scheduler-row.is-disabled .scheduler-state {
+        background: $crumb-border-hover;
+    }
+
+    .scheduler-row.is-locked .scheduler-state {
+        background: $danger;
+    }
+
+    .scheduler-main {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        min-width: 0;
+    }
+
+    .scheduler-name {
+        font-size: 13px;
+        font-weight: 500;
+        color: $crumb-text;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .scheduler-cmd {
+        font-family: $font-family-monospace;
+        font-size: 11px;
+        color: $crumb-muted;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .scheduler-cron {
+        font-family: $font-family-monospace;
+        font-size: 11px;
+        color: $crumb-muted;
+        font-variant-numeric: tabular-nums;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .scheduler-cell {
+        font-size: 11px;
+        color: $crumb-text;
+        font-variant-numeric: tabular-nums;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .scheduler-status {
+        display: inline-flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 6px;
+        flex-wrap: wrap;
+    }
+
+    .scheduler-badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 3px 9px;
+        font-size: 10px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: .06em;
+        border-radius: $radius-pill;
+        white-space: nowrap;
+        color: $crumb-muted;
+        background: $body-bg;
+
+        &.badge-ok {
+            color: $success;
+            background: rgba($success, .12);
+        }
+
+        &.badge-failed {
+            color: $danger;
+            background: rgba($danger, .12);
+        }
+
+        &.badge-pending {
+            color: $warning;
+            background: rgba($warning, .12);
+        }
+
+        &.badge-lock {
+            color: $info;
+            background: rgba($info, .12);
+        }
+    }
+
+    /*-----------------------------------
        9 ) Attention (SEO + 404 alerts)
     -----------------------------------*/
 
@@ -1788,6 +1968,32 @@
 
         .attention-count {
             font-size: 22px;
+        }
+
+        .scheduler-head {
+            display: none;
+        }
+
+        .scheduler-row {
+            grid-template-columns: 8px minmax(0, 1fr) auto;
+            gap: $space-2 $space-3;
+            align-items: start;
+        }
+
+        .scheduler-cron {
+            grid-column: 2;
+        }
+
+        .scheduler-cell {
+            grid-column: 2;
+            white-space: normal;
+        }
+
+        .scheduler-status {
+            grid-column: 3;
+            grid-row: 1;
+            justify-content: flex-end;
+            align-self: start;
         }
 
         .tools-row {

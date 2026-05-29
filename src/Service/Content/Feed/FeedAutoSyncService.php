@@ -46,7 +46,7 @@ final class FeedAutoSyncService
     public function scheduleIfStale(string $provider): bool
     {
         try {
-            $item = $this->cache->getItem(self::CACHE_KEY_PREFIX . $provider);
+            $item = $this->cache->getItem(self::CACHE_KEY_PREFIX.$provider);
         } catch (InvalidArgumentException) {
             return false;
         }
@@ -97,7 +97,7 @@ final class FeedAutoSyncService
     public function clearLock(string $provider): void
     {
         try {
-            $this->cache->deleteItem(self::CACHE_KEY_PREFIX . $provider);
+            $this->cache->deleteItem(self::CACHE_KEY_PREFIX.$provider);
         } catch (InvalidArgumentException) {
             // ignore
         }
@@ -111,7 +111,7 @@ final class FeedAutoSyncService
     public function markSynced(string $provider): void
     {
         try {
-            $item = $this->cache->getItem(self::CACHE_KEY_PREFIX . $provider);
+            $item = $this->cache->getItem(self::CACHE_KEY_PREFIX.$provider);
         } catch (InvalidArgumentException) {
             return;
         }

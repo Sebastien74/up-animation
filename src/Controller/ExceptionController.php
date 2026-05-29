@@ -321,8 +321,8 @@ class ExceptionController extends BaseController
      */
     private function checkIP(array $IPS = []): bool
     {
-        return (isset($_SERVER['HTTP_X_FORWARDED_FOR']) && in_array($_SERVER['HTTP_X_FORWARDED_FOR'], $IPS, true))
-            || (isset($_SERVER['HTTP_X_REAL_IP']) && in_array($_SERVER['HTTP_X_REAL_IP'], $IPS, true))
-            || in_array(@$_SERVER['REMOTE_ADDR'], $IPS, true);
+        $clientIp = $this->coreLocator->requestStack()->getMainRequest()?->getClientIp();
+
+        return null !== $clientIp && \Symfony\Component\HttpFoundation\IpUtils::checkIp($clientIp, $IPS);
     }
 }

@@ -67,3 +67,13 @@ Pour appeler le feed dans un template Twig :
 ```twig
 {{ render(controller('App\\Controller\\Front\\Action\\Feed\\FacebookController::index')) }}
 ```
+
+## 7. Architecture & rafraîchissement
+
+Contrairement à Instagram et TikTok, **Facebook n'est pas branché sur le pipeline `app:feed:sync` / `FeedPost`**. Le feed est récupéré **en direct à chaque rendu** par `FacebookService::getFeed()`, avec une mise en cache applicative de **1 heure** (`FacebookService::CACHE_EXPIRE = 3600`). Conséquences :
+
+- Aucune tâche planifiée n'est nécessaire ni applicable : le cache 1 h gère seul la fraîcheur, le scheduler `core_scheduled_command` ne concerne pas ce provider.
+- Si l'API Facebook tombe ou que le token expire, le feed disparaît à l'expiration du cache (pas de persistance locale, contrairement à IG/TikTok).
+- Pour purger le cache manuellement : `php bin/console cache:clear`.
+
+> Évolution possible (non implémentée) : pour aligner Facebook sur le comportement résilient d'Instagram (médias persistés en base + en local, affichage garanti même API down), il faudrait écrire un `FacebookFeedFetcher implements FeedFetcherInterface` sur le modèle de `InstagramFeedFetcher`. Ce n'est **pas** un simple ajustement de doc : cela suppose du code (fetcher, mapping `FeedPostDto`, téléchargement médias). À arbitrer selon le besoin réel.

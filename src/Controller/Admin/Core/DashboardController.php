@@ -11,6 +11,7 @@ use App\Entity\Seo\NotFoundUrl;
 use App\Entity\Seo\Url;
 use App\Repository\Analytics\AnalyticsDailyRepository;
 use App\Repository\Core\MailLogRepository;
+use App\Service\Core\ScheduledCommandReportService;
 use App\Service\Core\SlowRequestStatsService;
 use Doctrine\DBAL\Exception as DBALException;
 use Knp\Component\Pager\PaginatorInterface;
@@ -40,6 +41,7 @@ class DashboardController extends AdminController
         SlowRequestStatsService $slowRequestStats,
         MailLogRepository $mailLogRepository,
         AnalyticsDailyRepository $analyticsDailyRepository,
+        ScheduledCommandReportService $scheduledCommandReport,
     ): Response {
         $website = $this->getWebsite();
         $notFoundsLimit = 50;
@@ -91,6 +93,7 @@ class DashboardController extends AdminController
             'performanceStats' => $performanceStats,
             'mailStats' => $mailStats,
             'analyticsStats' => $analyticsStats,
+            'scheduledTasks' => $scheduledCommandReport->getReport($website->entity),
         ]);
     }
 }

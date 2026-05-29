@@ -550,6 +550,53 @@
             </section>
         {%- endif -%}
 
+        {#-- 7 bis — Scheduled tasks report --#}
+        {%- if scheduledTasks is defined and scheduledTasks is not empty -%}
+            <section class="dashboard-scheduler reveal">
+                <header class="zone-head">
+                    <h2 class="zone-title">{{ "Tâches planifiées"|trans|raw }}</h2>
+                    <span class="zone-aside">{{ "Exécution au fil du trafic"|trans|raw }}</span>
+                </header>
+
+                <div class="scheduler-panel">
+                    <ul class="scheduler-list reset">
+                        <li class="scheduler-row scheduler-head">
+                            <span class="scheduler-state" aria-hidden="true"></span>
+                            <span class="scheduler-col-head">{{ "Tâche"|trans|raw }}</span>
+                            <span class="scheduler-col-head">{{ "Planification"|trans|raw }}</span>
+                            <span class="scheduler-col-head">{{ "Dernière"|trans|raw }}</span>
+                            <span class="scheduler-col-head">{{ "Prochaine"|trans|raw }}</span>
+                            <span class="scheduler-col-head scheduler-col-end">{{ "Statut"|trans|raw }}</span>
+                        </li>
+                        {%- for task in scheduledTasks -%}
+                            {%- set statusLabels = {
+                                'ok': "À jour"|trans,
+                                'failed': "En échec"|trans,
+                                'pending': "En attente"|trans,
+                                'disabled': "Désactivée"|trans,
+                            } -%}
+                            <li class="scheduler-row is-{{ task.status }}{{ task.locked ? ' is-locked' : '' }}">
+                                <span class="scheduler-state" aria-hidden="true"></span>
+                                <span class="scheduler-main">
+                                    <span class="scheduler-name">{{ task.name ?? task.command }}</span>
+                                    <span class="scheduler-cmd">{{ task.command }}</span>
+                                </span>
+                                <span class="scheduler-cron" title="{{ task.cronExpression }}">{{ task.cronExpression }}</span>
+                                <span class="scheduler-cell">{{ task.lastExecution ? task.lastExecution|date('d/m/Y H:i', false) : "jamais"|trans }}</span>
+                                <span class="scheduler-cell">{{ task.nextRun ? task.nextRun|date('d/m/Y H:i', false) : '-' }}</span>
+                                <span class="scheduler-status">
+                                    {%- if task.locked -%}
+                                        <span class="scheduler-badge badge-lock">{{ "Verrouillée"|trans|raw }}</span>
+                                    {%- endif -%}
+                                    <span class="scheduler-badge badge-{{ task.status }}">{{ statusLabels[task.status] ?? task.status }}</span>
+                                </span>
+                            </li>
+                        {%- endfor -%}
+                    </ul>
+                </div>
+            </section>
+        {%- endif -%}
+
         {#-- 8 — Tools (feeds sync, discreet bottom row) --#}
         {%- if hasFeeds -%}
             <section class="dashboard-tools reveal">

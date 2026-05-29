@@ -6,7 +6,7 @@ namespace App\Controller\Front\Action\Feed;
 
 use App\Entity\Api\TikTok;
 use App\Repository\Core\WebsiteRepository;
-use App\Service\Content\TikTokService;
+use App\Service\Content\Feed\TikTokService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -58,10 +58,14 @@ class TikTokAuthController extends AbstractController
             return $this->redirectToRoute('admin_website_index');
         }
 
-        $accessToken = $tiktokService->getAccessToken($appId, $appSecret, $code);
+        $token = $tiktokService->getAccessToken($appId, $appSecret, $code);
 
-        if ($accessToken) {
-            $tiktok->setAccessToken($accessToken);
+        if ($token) {
+            $tiktok->setAccessToken($token['access_token']);
+            $tiktok->setRefreshToken($token['refresh_token']);
+            // TikTok access tokens last 24 h, refresh tokens 365 days; store both expiries for the refresh command.
+            $tiktok->setTokenExpiresAt($token['expires_in'] > 0 ? new \DateTimeImmutable('+'.$token['expires_in'].' seconds') : null);
+            $tiktok->setRefreshTokenExpiresAt($token['refresh_expires_in'] > 0 ? new \DateTimeImmutable('+'.$token['refresh_expires_in'].' seconds') : null);
             $entityManager->flush();
             $this->addFlash('success', 'TikTok connecté avec succès !');
         } else {

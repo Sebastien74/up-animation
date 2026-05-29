@@ -60,7 +60,7 @@ class ScheduledCommand extends BaseEntity
     private int $priority = 0;
 
     /**
-     * If true, command will be executed next time regardless cron expression.
+     * If true, the command will be executed next time regardless of cron expression.
      */
     #[ORM\Column(type: Types::BOOLEAN)]
     private bool $executeImmediately = false;

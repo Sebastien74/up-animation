@@ -9,6 +9,8 @@
 
 parameters:
     .container.dumper.inline_factories: true
+    # Default when the env var is unset (.env is gitignored): web-cron enabled.
+    env(SCHEDULER_WEB_CRON_ENABLED): 'true'
 
 services:
 
@@ -92,6 +94,11 @@ services:
             $logDir: '%kernel.logs_dir%'
             $cache: '@cache.app'
         lazy: true
+
+    App\Service\Core\CronHeartbeatService:
+        arguments:
+            $schedulerLogger: '@monolog.logger.scheduler'
+            $enabled: '%env(bool:SCHEDULER_WEB_CRON_ENABLED)%'
 
     #####################################
     #         Translation               #

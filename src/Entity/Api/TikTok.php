@@ -27,6 +27,15 @@ class TikTok
     private ?string $accessToken = null;
 
     #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
+    private ?string $refreshToken = null;
+
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
+    private ?\DateTimeImmutable $tokenExpiresAt = null;
+
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
+    private ?\DateTimeImmutable $refreshTokenExpiresAt = null;
+
+    #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
     private ?string $appId = null;
 
     #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
@@ -53,6 +62,42 @@ class TikTok
     public function setAccessToken(?string $accessToken): static
     {
         $this->accessToken = $accessToken;
+
+        return $this;
+    }
+
+    public function getRefreshToken(): ?string
+    {
+        return $this->refreshToken;
+    }
+
+    public function setRefreshToken(?string $refreshToken): static
+    {
+        $this->refreshToken = $refreshToken;
+
+        return $this;
+    }
+
+    public function getTokenExpiresAt(): ?\DateTimeImmutable
+    {
+        return $this->tokenExpiresAt;
+    }
+
+    public function setTokenExpiresAt(?\DateTimeImmutable $tokenExpiresAt): static
+    {
+        $this->tokenExpiresAt = $tokenExpiresAt;
+
+        return $this;
+    }
+
+    public function getRefreshTokenExpiresAt(): ?\DateTimeImmutable
+    {
+        return $this->refreshTokenExpiresAt;
+    }
+
+    public function setRefreshTokenExpiresAt(?\DateTimeImmutable $refreshTokenExpiresAt): static
+    {
+        $this->refreshTokenExpiresAt = $refreshTokenExpiresAt;
 
         return $this;
     }

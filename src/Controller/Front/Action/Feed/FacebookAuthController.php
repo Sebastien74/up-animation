@@ -6,7 +6,7 @@ namespace App\Controller\Front\Action\Feed;
 
 use App\Entity\Api\Facebook;
 use App\Repository\Core\WebsiteRepository;
-use App\Service\Content\FacebookService;
+use App\Service\Content\Feed\FacebookService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;

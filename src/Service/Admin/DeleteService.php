@@ -14,6 +14,7 @@ use Knp\Bundle\PaginatorBundle\Pagination\SlidingPagination;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
  * DeleteService.
@@ -51,6 +52,10 @@ class DeleteService
         $interface = $this->coreLocator->interfaceHelper()->generate($classname);
         $repository = $this->coreLocator->em()->getRepository($classname);
         $entityToDelete = $repository->find($this->coreLocator->request()->get($interface['name']));
+
+        if ($entityToDelete && !$this->coreLocator->isEntityWebsiteAllowed($entityToDelete)) {
+            throw new AccessDeniedHttpException('Entity does not belong to the current website.');
+        }
 
         if ($entityToDelete instanceof Media && $entityToDelete->getScreen()) {
             $this->resetMedia($entityToDelete);

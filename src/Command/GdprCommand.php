@@ -56,7 +56,7 @@ class GdprCommand extends Command
             $commandName = !empty($command->getCommand()) ? $command->getCommand() : null;
             $message = $commandName ? 'Command : '.$commandName.' ' : 'Command ';
             try {
-                $this->gdprService->removeData($command->getWebsite(), $input, $command);
+                $this->gdprService->removeData($command->getWebsite(), $input, $commandName);
                 $this->cronSchedulerService->logger($message.'successfully executed.');
             } catch (\Exception $exception) {
                 $this->cronSchedulerService->logger($message.$exception->getMessage().' - '.$exception->getTraceAsString(), null, false);

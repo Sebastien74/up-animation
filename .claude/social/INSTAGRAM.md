@@ -152,7 +152,7 @@ Propriétés FeedPost utiles côté Twig :
 
 ### 7.3 Synchronisation — déclencheurs
 
-Trois manières de déclencher un sync :
+Quatre manières de déclencher un sync :
 
 1. **Auto-sync au chargement d'une page** (par défaut). Quand `InstagramController::index` est rendu, `FeedAutoSyncService::scheduleIfStale('instagram')` est appelé :
    - si le verrou cache `feed_sync_lock_instagram` est encore actif (TTL 12 h), rien ne se passe ;
@@ -165,6 +165,15 @@ Trois manières de déclencher un sync :
    php bin/console app:feed:sync                     # tous les providers
    php bin/console app:feed:sync --force             # re-télécharger les médias déjà présents
    ```
+4. **Tâche planifiée via le planificateur intégré** (méthode simple, recommandée si l'auto-sync ne suffit pas). Le projet embarque un scheduler maison (`scheduler:execute` -> `CronSchedulerService`, table `core_scheduled_command`) piloté depuis l'admin **Développement -> Tâches planifiées** (`admin_command_index`, `ROLE_INTERNAL` requis). Plutôt que d'ajouter une ligne au crontab système, on enregistre la commande une seule fois en base :
+   - **Commande** : `app:feed:sync`
+   - **Arguments** : laisser vide
+   - **Expression cron** : `0 * * * *` (toutes les heures ; ajuster selon le rythme de publication)
+   - **Actif** : oui
+   
+   > Le planificateur **ne transmet ni le champ `arguments` ni d'options** à la commande (il n'injecte que `cronLogger`/`commandLogger`). Impossible donc de cibler `--provider=instagram` via une `ScheduledCommand` : la tâche tourne avec le défaut `--provider=all` et synchronise **tous** les providers du pipeline `app:feed:sync` (Instagram + TikTok). Pour cibler un seul provider, utiliser la CLI manuelle (point 3) ou un crontab système avec la commande complète.
+
+   Déclenchement : le planificateur est **web-natif**, aucun crontab système requis. À chaque requête, `ScheduledCommandTerminateSubscriber` (sur `kernel.terminate`) délègue à `CronHeartbeatService`, throttlé à 1 run / 60 s, qui exécute `scheduler:execute` in-process (compatible hébergement mutualisé). Les `ScheduledCommand` dues sont alors lancées ; sur un site peu visité, la cadence suit le trafic. Coupure via `SCHEDULER_WEB_CRON_ENABLED=false`. Un crontab système ou `public/cron.php` ne sont que des filets externes optionnels. Détails dans le `CLAUDE.md`, section « Tâches planifiées (Cron natif) ».
 
 > Le verrou cache 12 h vit dans le cache applicatif standard. Pour le purger sans passer par le bouton admin : `bin/console cache:clear` (le verrou est perdu, prochain page-load déclenche un sync).
 
@@ -175,10 +184,21 @@ Trois manières de déclencher un sync :
 | Élément | Comportement |
 |---------|--------------|
 | Token longue durée | Validité **60 jours** à compter de l'émission. |
-| Refresh | `InstagramService::refreshToken()` appelle `GET /refresh_access_token?grant_type=ig_refresh_token`. Possible après **24 h** de vie du token. |
+| Refresh | Commande `app:instagram:refresh-token` → `InstagramService::refreshToken()` → `GET /refresh_access_token?grant_type=ig_refresh_token`. Possible après **24 h** de vie du token, à planifier en hebdomadaire (cf. ci-dessous). |
 | Si le token expire | Le feed continue de s'afficher côté visiteur (DB inchangée), mais `app:feed:sync` cessera de récupérer de nouveaux posts → relancer le flux OAuth dans l'admin. |
 
-> Aucun cron de refresh automatique n'est branché à ce jour. Prévoir une commande planifiée qui appelle `InstagramService::refreshToken()` toutes les ~50 jours, sinon le feed s'éteint côté synchro (l'affichage continue mais ne se met plus à jour).
+> **Synchro du feed** : automatisable immédiatement via le planificateur intégré (cf. § 7.3, point 4). Enregistrer `app:feed:sync --provider=instagram` comme tâche planifiée suffit à maintenir le feed à jour tant que le token est valide.
+>
+> **Refresh du token** : automatisé par la commande **`app:instagram:refresh-token`** (`App\Command\InstagramRefreshTokenCommand`, logique dans `App\Service\Content\Feed\InstagramTokenRefresher`). Elle parcourt chaque entité `Instagram` porteuse d'un token et renouvelle, via `InstagramService::refreshToken()`, ceux qui arrivent à expiration (fenêtre de 10 jours avant échéance, ou token dont `tokenExpiresAt` est inconnu). Chaque refresh réussi remet le compteur à 60 jours et met à jour `Instagram::tokenExpiresAt`.
+>
+> Planification recommandée : enregistrer une `ScheduledCommand` (admin **Développement -> Tâches planifiées**) avec la commande `app:instagram:refresh-token` et une expression cron hebdomadaire `0 4 * * 1`. Une cadence hebdomadaire suffit largement : la fenêtre utile de refresh est d'environ 50 jours.
+>
+> ```bash
+> php bin/console app:instagram:refresh-token          # refresh des tokens proches de l'expiration
+> php bin/console app:instagram:refresh-token --force  # force le refresh de tous les tokens (ops/debug)
+> ```
+>
+> Limite : si un token a déjà expiré (plus de 60 jours sans refresh) ou date de moins de 24 h, Meta refuse le renouvellement. La commande comptabilise alors l'échec (log critique du planificateur) et il faut relancer le flux OAuth dans l'admin. La connexion OAuth initiale amorce `tokenExpiresAt` à +60 jours.
 
 ---
 
@@ -195,10 +215,11 @@ Scopes supplémentaires si besoins étendus (à ajouter dans `InstagramService::
 
 ## 10. Sécurité — point d'attention
 
-`src/Model/Api/InstagramModel.php::modelCache()` contient des valeurs `appId` et `appSecret` **codées en dur**. Ce sont des identifiants applicatifs Meta qui ne doivent **jamais** vivre dans le code versionné :
+`appId` et `appSecret` sont lus depuis la base (table `api_instagram`) via `InstagramModel` ; aucun identifiant n'est codé en dur dans le code. Points de vigilance :
 
-- Si ce sont les vraies clés de production : **les révoquer immédiatement** dans la console Meta puis régénérer.
-- Réinjecter via la configuration en base (table `api_instagram`) ou via `.env.local` + paramètre Symfony.
+- Ces secrets sont stockés en clair dans `api_instagram` (VARCHAR 255, pas de chiffrement applicatif) : durcir l'accès admin et ne jamais diffuser de dump SQL sans nettoyer ces colonnes.
+- `accessToken` / `tokenExpiresAt` ne doivent pas apparaître dans les logs (vérifier que `HttpClient` ne logge pas les payloads et qu'aucun niveau `debug` n'est actif en production).
+- Ne jamais committer de fixtures contenant de vraies clés. En cas de fuite d'un App Secret : le régénérer dans la console Meta, puis le re-saisir en admin.
 
 ---
 
@@ -238,13 +259,15 @@ Scopes supplémentaires si besoins étendus (à ajouter dans `InstagramService::
 | Entité posts persistés    | `src/Entity/Api/FeedPost.php` (table `api_feed_post`)        |
 | Repo posts persistés      | `src/Repository/Api/FeedPostRepository.php`                  |
 | Model config              | `src/Model/Api/InstagramModel.php`                           |
-| Service API live          | `src/Service/Content/InstagramService.php`                   |
+| Service API live          | `src/Service/Content/Feed/InstagramService.php`              |
 | Fetcher (sync only)       | `src/Service/Content/Feed/InstagramFeedFetcher.php`          |
 | Orchestrateur sync        | `src/Service/Content/Feed/FeedSyncService.php`               |
 | Auto-sync paresseuse      | `src/Service/Content/Feed/FeedAutoSyncService.php`           |
 | Listener kernel.terminate | `src/EventSubscriber/FeedAutoSyncTerminateSubscriber.php`    |
 | Téléchargement médias     | `src/Service/Content/Feed/FeedMediaDownloader.php`           |
 | Commande de sync          | `src/Command/FeedSyncCommand.php` (`app:feed:sync`)          |
+| Commande refresh token    | `src/Command/InstagramRefreshTokenCommand.php` (`app:instagram:refresh-token`) |
+| Service refresh token     | `src/Service/Content/Feed/InstagramTokenRefresher.php`      |
 | Sync admin (bouton)       | `src/Controller/Admin/Core/FeedSyncController.php`           |
 | Controller rendu          | `src/Controller/Front/Action/Feed/InstagramController.php`   |
 | Controller OAuth callback | `src/Controller/Front/Action/Feed/InstagramAuthController.php` |

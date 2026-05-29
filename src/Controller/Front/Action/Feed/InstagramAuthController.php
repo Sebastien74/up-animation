@@ -6,7 +6,7 @@ namespace App\Controller\Front\Action\Feed;
 
 use App\Entity\Api\Instagram;
 use App\Repository\Core\WebsiteRepository;
-use App\Service\Content\InstagramService;
+use App\Service\Content\Feed\InstagramService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -63,6 +63,8 @@ class InstagramAuthController extends AbstractController
 
         if ($longLivedToken) {
             $instagram->setAccessToken($longLivedToken);
+            // Long-lived tokens are valid for 60 days; seed the expiry so the refresh command knows when to renew.
+            $instagram->setTokenExpiresAt(new \DateTimeImmutable('+60 days'));
             $entityManager->flush();
             $this->addFlash('success', 'Instagram connecté avec succès !');
         } else {

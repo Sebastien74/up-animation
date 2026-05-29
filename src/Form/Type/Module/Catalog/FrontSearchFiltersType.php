@@ -51,7 +51,7 @@ class FrontSearchFiltersType extends AbstractType
     {
         $request = $this->coreLocator->currentRequest();
         $formName = $builder->getForm()->getName();
-        $this->filters = $request->get($formName) ? $request->get($formName) : $_GET;
+        $this->filters = $request->get($formName) ? $request->get($formName) : $request->query->all();
         if (isset($this->filters['ajax'])) {
             unset($this->filters['ajax']);
         }

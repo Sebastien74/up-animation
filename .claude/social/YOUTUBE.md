@@ -42,3 +42,12 @@ Pour appeler le flux dans un template Twig :
 ```twig
 {{ render(controller('App\\Controller\\Front\\Action\\Feed\\YouTubeController::index')) }}
 ```
+
+## 6. Architecture & rafraîchissement
+
+Contrairement à Instagram et TikTok, **YouTube n'est pas branché sur le pipeline `app:feed:sync` / `FeedPost`**. Les vidéos sont récupérées **en direct à chaque rendu** par `YouTubeService::getVideos()`, avec une mise en cache applicative de **1 heure** (`YouTubeService::CACHE_EXPIRE = 3600`). Conséquences :
+
+- Aucune tâche planifiée n'est nécessaire ni applicable : le cache 1 h gère seul la fraîcheur, le scheduler `core_scheduled_command` ne concerne pas ce provider.
+- La clé API YouTube Data n'expire pas (pas de flux OAuth ni de token à rafraîchir), contrairement aux tokens IG/TikTok.
+- Attention au **quota journalier** de la YouTube Data API v3 : le cache 1 h limite les appels, ne pas le réduire sans vérifier la consommation de quota.
+- Pour purger le cache manuellement : `php bin/console cache:clear`.

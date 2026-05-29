@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Repository\Core;
 
 use App\Entity\Core\ScheduledCommand;
+use App\Entity\Core\Website;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\LockMode;
 use Doctrine\ORM\NonUniqueResultException;
@@ -81,6 +82,31 @@ class ScheduledCommandRepository extends ServiceEntityRepository
         }
 
         return $failedCommands;
+    }
+
+    /**
+     * Lightweight projection for the dashboard report (no entity hydration).
+     *
+     * @return array<int, array{name: ?string, command: string, cronExpression: string, active: bool, locked: bool, lastExecution: ?\DateTimeInterface, lastReturnCode: ?int}>
+     */
+    public function findReportRows(Website $website): array
+    {
+        return $this->createQueryBuilder('sc')
+            ->select(
+                'sc.adminName AS name',
+                'sc.command AS command',
+                'sc.cronExpression AS cronExpression',
+                'sc.active AS active',
+                'sc.locked AS locked',
+                'sc.lastExecution AS lastExecution',
+                'sc.lastReturnCode AS lastReturnCode',
+            )
+            ->where('sc.website = :website')
+            ->setParameter('website', $website)
+            ->orderBy('sc.priority', 'DESC')
+            ->addOrderBy('sc.adminName', 'ASC')
+            ->getQuery()
+            ->getArrayResult();
     }
 
     /**

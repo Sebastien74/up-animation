@@ -7,6 +7,7 @@ namespace App\Form\Manager\Security\Admin;
 use App\Entity\Core\Website;
 use App\Entity\Security\Role;
 use App\Service\Core\Urlizer;
+use App\Service\Interface\CoreLocatorInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\Filesystem\Filesystem;
@@ -27,8 +28,10 @@ class RoleManager
     /**
      * RoleManager constructor.
      */
-    public function __construct(private readonly EntityManagerInterface $entityManager)
-    {
+    public function __construct(
+        private readonly EntityManagerInterface $entityManager,
+        private readonly CoreLocatorInterface $coreLocator,
+    ) {
     }
 
     /**
@@ -55,9 +58,7 @@ class RoleManager
     public function clearRolesCache(): void
     {
         $filesystem = new Filesystem();
-        $documentRoot = str_replace(['\\', '/'], DIRECTORY_SEPARATOR, $_SERVER['DOCUMENT_ROOT']);
-        $documentRoot = DIRECTORY_SEPARATOR !== substr($documentRoot, -1) ? $documentRoot.DIRECTORY_SEPARATOR : $documentRoot;
-        $dirname = str_replace(['\public\\', '/public/'], DIRECTORY_SEPARATOR, $documentRoot).'var/cache/security';
+        $dirname = $this->coreLocator->projectDir().DIRECTORY_SEPARATOR.'var/cache/security';
         $dirname = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $dirname);
         if ($filesystem->exists($dirname)) {
             $filesystem->remove($dirname);

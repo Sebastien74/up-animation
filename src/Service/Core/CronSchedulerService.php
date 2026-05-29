@@ -165,13 +165,19 @@ class CronSchedulerService
                     $emails = ['dev@up-animations.fr'];
                     $message = 'CRON '.$command->getAdminName().' FAILED';
                     foreach ($emails as $email) {
-                        $notification = (new NotificationEmail())->from('dev@up-animations.fr')
-                            ->to($email)
-                            ->subject('CRON ERROR')
-                            ->markdown("<p>An error has occurred on website <a href='".$domainName."'>".$domainName.'</a></p><br><p><small>'.$message.'</small></p>')
-                            ->action('Aller sur le site', $domainName)
-                            ->importance(NotificationEmail::IMPORTANCE_URGENT);
-                        $this->mailer->send($notification);
+                        // A mailer/transport misconfiguration must never abort the scheduler run.
+                        try {
+                            $notification = (new NotificationEmail())->from('dev@up-animations.fr')
+                                ->to($email)
+                                ->subject('CRON ERROR')
+                                ->markdown("<p>An error has occurred on website <a href='".$domainName."'>".$domainName.'</a></p><br><p><small>'.$message.'</small></p>')
+                                ->action('Aller sur le site', $domainName)
+                                ->importance(NotificationEmail::IMPORTANCE_URGENT);
+                            $this->mailer->send($notification);
+                        } catch (\Throwable $exception) {
+                            $this->logger->error('[ALERT] notification failed for '.$command->getCommand().' ('.$exception->getMessage().')');
+                            $commandLogger->error('[ALERT] notification failed ('.$exception->getMessage().')');
+                        }
                     }
                 }
             }
@@ -195,7 +201,7 @@ class CronSchedulerService
         try {
             $notLockedCommand = $this->entityManager->getRepository(ScheduledCommand::class)->getNotLockedCommand($scheduledCommand);
             if (null === $notLockedCommand) {
-                throw new \Exception();
+                throw new \RuntimeException(sprintf('ScheduledCommand "%s" is already locked or unavailable.', (string) $scheduledCommand->getCommand()));
             }
             $scheduledCommand = $notLockedCommand;
             $scheduledCommand->setLastExecution(new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')));
@@ -222,21 +228,26 @@ class CronSchedulerService
             'commandLogger' => $logFilename,
         ]);
         $output = new BufferedOutput();
-        $application->run($input, $output);
+        $returnCode = $application->run($input, $output);
 
         if (!$scheduledCommand->isExecuteImmediately()) {
             $scheduledCommand->setLastExecution(new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')));
         }
 
+        $scheduledCommand->setLastReturnCode($returnCode);
         $scheduledCommand->setExecuteImmediately(false);
         $scheduledCommand->setLocked(false);
         $this->entityManager->persist($scheduledCommand);
         $this->entityManager->flush();
         $this->entityManager->refresh($scheduledCommand);
 
-        $this->logger->info('[SUCCESS] '.$scheduledCommand->getCommand());
-        $commandLogger->info('[SUCCESS] '.$scheduledCommand->getCommand());
+        $status = 0 === $returnCode ? '[SUCCESS]' : '[FAILED]';
+        $this->logger->info($status.' '.$scheduledCommand->getCommand().' (code '.$returnCode.')');
+        $commandLogger->info($status.' '.$scheduledCommand->getCommand().' (code '.$returnCode.')');
 
-        trim($output->fetch()).' - ';
+        $commandOutput = trim($output->fetch());
+        if ('' !== $commandOutput) {
+            $commandLogger->info($commandOutput);
+        }
     }
 }

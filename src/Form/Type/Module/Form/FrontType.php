@@ -562,11 +562,11 @@ class FrontType extends AbstractType
                 ], 'validators');
             }
             $mimeTypes = $this->getMimeTypes($fileTypes);
-            if ($fileTypes && !empty($mimeTypes['mimeTypes']) && !empty($mimeTypes['accept'])) {
+            if (!empty($mimeTypes['accept'])) {
                 $this->options['attr']['accept'] = $mimeTypes['accept'];
-                if (!$this->options['multiple']) {
-                    $constraints['mimeTypes'] = $mimeTypes['mimeTypes'];
-                }
+            }
+            if (!empty($mimeTypes['mimeTypes'])) {
+                $constraints['mimeTypes'] = $mimeTypes['mimeTypes'];
             }
             if ($constraints) {
                 if ($configuration->isMultiple()) {
@@ -812,6 +812,10 @@ class FrontType extends AbstractType
             '.mp4' => 'video/mp4',
             '.mp3' => 'audio/mpeg',
         ];
+
+        if (empty($fileTypes)) {
+            $fileTypes = array_keys($allMimeTypes);
+        }
 
         $accept = '';
         $mimeTypes = [];

@@ -169,7 +169,9 @@ class IndexHelper
                 $queryBuilder->andWhere('u.website = :website')
                     ->setParameter('website', $this->coreLocator->website()->entity);
             }
-            $this->archivedCount = count($queryBuilder->getQuery()->getResult());
+            $this->archivedCount = (int) $queryBuilder->select('COUNT(DISTINCT e.id)')
+                ->getQuery()
+                ->getSingleScalarResult();
         }
     }
 
@@ -195,6 +197,9 @@ class IndexHelper
                     ->andWhere('u.archived = :archived')
                     ->setParameter('archived', false)
                     ->orderBy('e.'.$this->entityConf->orderBy, $this->entityConf->orderSort);
+                if ($this->coreLocator->em()->getClassMetadata($this->repository->getClassName())->hasAssociation('intls')) {
+                    $queryBuilder->leftJoin('e.intls', 'i')->addSelect('i');
+                }
                 foreach ($params as $name => $param) {
                     $queryBuilder->andWhere('e.'.$name.' = :'.$name);
                     $queryBuilder->setParameter($name, $param);

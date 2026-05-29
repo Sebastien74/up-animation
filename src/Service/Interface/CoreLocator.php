@@ -592,10 +592,55 @@ class CoreLocator implements CoreLocatorInterface
     {
         $websiteIps = $website ? $website->configuration->ipsDev : (new Configuration())->getIpsDev();
         $allowedIps = array_unique(array_merge(self::ALLOWED_IPS, $websiteIps));
+        $clientIp = $this->requestStack->getMainRequest()?->getClientIp();
 
-        return (isset($_SERVER['HTTP_X_FORWARDED_FOR']) && in_array($_SERVER['HTTP_X_FORWARDED_FOR'], $allowedIps, true))
-            || (isset($_SERVER['HTTP_X_REAL_IP']) && in_array($_SERVER['HTTP_X_REAL_IP'], $allowedIps, true))
-            || in_array(@$_SERVER['REMOTE_ADDR'], $allowedIps, true);
+        return null !== $clientIp && HttpFoundation\IpUtils::checkIp($clientIp, $allowedIps);
+    }
+
+    /**
+     * Check that an entity belongs to the website of the current route.
+     */
+    public function isEntityWebsiteAllowed(mixed $entity): bool
+    {
+        if (!is_object($entity)) {
+            return true;
+        }
+        $user = $this->user();
+        if ($user instanceof UserInterface && in_array('ROLE_INTERNAL', $user->getRoles(), true)) {
+            return true;
+        }
+        $entityWebsiteId = $this->resolveEntityWebsiteId($entity);
+        if (null === $entityWebsiteId) {
+            return true;
+        }
+        $routeWebsiteId = $this->website()?->id;
+
+        return null === $routeWebsiteId || (int) $entityWebsiteId === (int) $routeWebsiteId;
+    }
+
+    /**
+     * Resolve the website id an entity is attached to, or null when undeterminable.
+     */
+    private function resolveEntityWebsiteId(object $entity): ?int
+    {
+        if (method_exists($entity, 'getWebsite')) {
+            $website = $entity->getWebsite();
+            if (is_object($website) && method_exists($website, 'getId') && null !== $website->getId()) {
+                return (int) $website->getId();
+            }
+        }
+        if (method_exists($entity, 'getUrls')) {
+            foreach ($entity->getUrls() as $url) {
+                if (is_object($url) && method_exists($url, 'getWebsite')) {
+                    $urlWebsite = $url->getWebsite();
+                    if (is_object($urlWebsite) && method_exists($urlWebsite, 'getId') && null !== $urlWebsite->getId()) {
+                        return (int) $urlWebsite->getId();
+                    }
+                }
+            }
+        }
+
+        return null;
     }
 
     /**

@@ -92,6 +92,8 @@ interface CoreLocatorInterface
 
     public function checkIP(?WebsiteModel $website = null): bool;
 
+    public function isEntityWebsiteAllowed(mixed $entity): bool;
+
     public function fileExist(?string $path = null, string $dir = '/templates/'): bool;
 
     public function routeExist(?string $routeName): bool;

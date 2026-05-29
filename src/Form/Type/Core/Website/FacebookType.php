@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Form\Type\Core\Website;
 
 use App\Entity\Api\Facebook;
-use App\Service\Content\FacebookService;
+use App\Service\Content\Feed\FacebookService;
 use App\Service\Interface\CoreLocatorInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type;

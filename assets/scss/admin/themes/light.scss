@@ -1907,6 +1907,98 @@ body {
         color: $theme-text-muted !important;
     }
 
+    /*--- Scheduled tasks ---*/
+
+    .scheduler-panel {
+        background: $theme-card-bg !important;
+        border-color: $theme-border-subtle !important;
+    }
+
+    .scheduler-list {
+        background: $theme-border-subtle !important;
+    }
+
+    .scheduler-row {
+        background: $theme-card-bg !important;
+
+        @include mediaQuery(min-lg) {
+
+            &:hover {
+                background: $theme-surface !important;
+            }
+        }
+    }
+
+    .scheduler-head {
+        background: $theme-bg-alt !important;
+
+        @include mediaQuery(min-lg) {
+
+            &:hover {
+                background: $theme-bg-alt !important;
+            }
+        }
+    }
+
+    .scheduler-col-head {
+        color: $theme-text-muted !important;
+    }
+
+    .scheduler-state {
+        background: $theme-border-alt !important;
+    }
+
+    .scheduler-row.is-ok .scheduler-state {
+        background: $success !important;
+    }
+
+    .scheduler-row.is-failed .scheduler-state {
+        background: $danger !important;
+    }
+
+    .scheduler-row.is-pending .scheduler-state {
+        background: $warning !important;
+    }
+
+    .scheduler-row.is-locked .scheduler-state {
+        background: $danger !important;
+    }
+
+    .scheduler-name,
+    .scheduler-cell {
+        color: $theme-text !important;
+    }
+
+    .scheduler-cmd,
+    .scheduler-cron {
+        color: $theme-text-muted !important;
+    }
+
+    .scheduler-badge {
+        color: $theme-text-muted !important;
+        background: $theme-surface !important;
+
+        &.badge-ok {
+            color: $success !important;
+            background: rgba($success, .12) !important;
+        }
+
+        &.badge-failed {
+            color: $danger !important;
+            background: rgba($danger, .12) !important;
+        }
+
+        &.badge-pending {
+            color: $warning !important;
+            background: rgba($warning, .12) !important;
+        }
+
+        &.badge-lock {
+            color: $info !important;
+            background: rgba($info, .12) !important;
+        }
+    }
+
     /*--- Attention (SEO + 404) ---*/
 
     .attention-card {

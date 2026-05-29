@@ -39,19 +39,19 @@ final readonly class FeedMediaDownloader
      */
     public function download(string $url, string $provider, string $externalId, string $kind, bool $force = false): ?string
     {
-        $publicDir = $this->parameterBag->get('kernel.project_dir') . '/public';
+        $publicDir = $this->parameterBag->get('kernel.project_dir').'/public';
         $safeExternalId = $this->sanitize($externalId);
-        $relativeDir = self::BASE_RELATIVE . '/' . $provider . '/' . $safeExternalId;
-        $absoluteDir = $publicDir . '/' . $relativeDir;
+        $relativeDir = self::BASE_RELATIVE.'/'.$provider.'/'.$safeExternalId;
+        $absoluteDir = $publicDir.'/'.$relativeDir;
 
         if (!is_dir($absoluteDir) && !mkdir($absoluteDir, 0755, true) && !is_dir($absoluteDir)) {
             return null;
         }
 
         if (!$force) {
-            $existing = glob($absoluteDir . '/' . $kind . '.*');
+            $existing = glob($absoluteDir.'/'.$kind.'.*');
             if (!empty($existing)) {
-                return $relativeDir . '/' . basename($existing[0]);
+                return $relativeDir.'/'.basename($existing[0]);
             }
         }
 
@@ -63,12 +63,12 @@ final readonly class FeedMediaDownloader
 
             $contentType = $response->getHeaders(false)['content-type'][0] ?? '';
             $extension = $this->extensionFromContentType($contentType) ?? $this->extensionFromUrl($url);
-            $filename = $kind . '.' . $extension;
-            $absolutePath = $absoluteDir . '/' . $filename;
+            $filename = $kind.'.'.$extension;
+            $absolutePath = $absoluteDir.'/'.$filename;
 
             file_put_contents($absolutePath, $response->getContent());
 
-            return $relativeDir . '/' . $filename;
+            return $relativeDir.'/'.$filename;
         } catch (Throwable) {
             return null;
         }

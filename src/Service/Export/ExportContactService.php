@@ -54,10 +54,7 @@ class ExportContactService
         $spreadsheet = new Spreadsheet();
         $this->alphas = range('A', 'Z');
 
-        try {
-            $this->sheet = $spreadsheet->getActiveSheet();
-        } catch (\Exception $e) {
-        }
+        $this->sheet = $spreadsheet->getActiveSheet();
 
         if (($i = array_search('createdAt', $exportFields, true)) !== false) {
             array_splice($exportFields, $i, 1);
@@ -75,6 +72,9 @@ class ExportContactService
         try {
             $writer->save($tempFile);
         } catch (\PhpOffice\PhpSpreadsheet\Writer\Exception $e) {
+            $this->coreLocator->jsonLog('Contacts export XLSX write failed: '.$e->getMessage(), 'critical', 'export');
+
+            throw new \RuntimeException('Unable to generate contacts export file.', 0, $e);
         }
 
         return [

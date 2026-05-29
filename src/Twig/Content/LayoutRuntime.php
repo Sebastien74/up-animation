@@ -153,7 +153,7 @@ class LayoutRuntime implements RuntimeExtensionInterface
         $template = $entityTemplate && $this->templateExists($entityTemplate) ? $entityTemplate : 'front/'.$websiteTemplate.'/blocks/'.$blockTemplate.'/'.$block->getTemplate().'.html.twig';
         $template = !$this->templateExists($template) ? 'front/'.$websiteTemplate.'/actions/vendor/include/'.$blockTemplate.'.html.twig' : $template;
         if (!$this->templateExists($template)) {
-            throw new Exception('Template '.$template." doesn't exist !!");
+            throw new \RuntimeException('Template '.$template." doesn't exist !!");
         }
 
         /** Get Block Transition[] */

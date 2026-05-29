@@ -143,7 +143,8 @@ export default function () {
                         fetch(url, {
                             method: "DELETE",
                             headers: {
-                                'X-Requested-With': 'XMLHttpRequest'
+                                'X-Requested-With': 'XMLHttpRequest',
+                                'X-CSRF-Token': trans.getAttribute('data-csrf-delete') || ''
                             }
                         })
                             .then(response => response.json())

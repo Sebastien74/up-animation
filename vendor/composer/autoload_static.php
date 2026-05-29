@@ -107,10 +107,14 @@ class ComposerStaticInitb6f039734207b56291bf391c5da7ade3
         '0174385c3be07e86008907d06ee66531' => __DIR__ . '/..' . '/sabberworm/php-css-parser/src/Rule/Rule.php',
         '98aea6e41b9cb79b379b10f37ba1f0b7' => __DIR__ . '/..' . '/sabberworm/php-css-parser/src/RuleSet/RuleContainer.php',
         '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
+        'c899bf3d7cf083b79d5e2b2575ed07d5' => __DIR__ . '/..' . '/lorenzo/pinky/src/pinky.php',
         'a1105708a18b76903365ca1c4aa61b02' => __DIR__ . '/..' . '/symfony/translation/Resources/functions.php',
         '92c8763cd6170fce6fcfe7e26b4e8c10' => __DIR__ . '/..' . '/symfony/phpunit-bridge/bootstrap.php',
         '74ed299072414d276bb7568fe71d5b0c' => __DIR__ . '/..' . '/tinify/tinify/lib/Tinify.php',
         '9635627915aaea7a98d6d14d04ca5b56' => __DIR__ . '/..' . '/tinify/tinify/lib/Tinify/Exception.php',
+        '4368e4d537f3da342a5a97079f340105' => __DIR__ . '/..' . '/twig/cssinliner-extra/Resources/functions.php',
+        '74822293d43d44050420b39b515da804' => __DIR__ . '/..' . '/twig/inky-extra/Resources/functions.php',
+        'f278094c42a52b6bff77f375d59c1278' => __DIR__ . '/..' . '/twig/markdown-extra/Resources/functions.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -133,10 +137,14 @@ class ComposerStaticInitb6f039734207b56291bf391c5da7ade3
         'T' =>
         array (
             'Twig\\Extra\\TwigExtraBundle\\' => 27,
+            'Twig\\Extra\\Markdown\\' => 20,
             'Twig\\Extra\\Intl\\' => 16,
+            'Twig\\Extra\\Inky\\' => 16,
+            'Twig\\Extra\\CssInliner\\' => 22,
             'Twig\\Extra\\Cache\\' => 17,
             'Twig\\' => 5,
             'Tinify\\' => 7,
+            'TijsVerkoyen\\CssToInlineStyles\\' => 31,
         ),
         'S' =>
         array (
@@ -378,9 +386,21 @@ class ComposerStaticInitb6f039734207b56291bf391c5da7ade3
         array (
             0 => __DIR__ . '/..' . '/twig/extra-bundle',
         ),
+        'Twig\\Extra\\Markdown\\' =>
+        array (
+            0 => __DIR__ . '/..' . '/twig/markdown-extra',
+        ),
         'Twig\\Extra\\Intl\\' =>
         array (
             0 => __DIR__ . '/..' . '/twig/intl-extra',
+        ),
+        'Twig\\Extra\\Inky\\' =>
+        array (
+            0 => __DIR__ . '/..' . '/twig/inky-extra',
+        ),
+        'Twig\\Extra\\CssInliner\\' =>
+        array (
+            0 => __DIR__ . '/..' . '/twig/cssinliner-extra',
         ),
         'Twig\\Extra\\Cache\\' =>
         array (
@@ -393,6 +413,10 @@ class ComposerStaticInitb6f039734207b56291bf391c5da7ade3
         'Tinify\\' =>
         array (
             0 => __DIR__ . '/..' . '/tinify/tinify/lib/Tinify',
+        ),
+        'TijsVerkoyen\\CssToInlineStyles\\' =>
+        array (
+            0 => __DIR__ . '/..' . '/tijsverkoyen/css-to-inline-styles/src',
         ),
         'Symfony\\WebpackEncoreBundle\\' =>
         array (

@@ -445,8 +445,8 @@ readonly class AppRuntime implements RuntimeExtensionInterface
     public function masterRequestGet(string $attribute): mixed
     {
         $response = $this->coreLocator->request()->get($attribute);
-        if (!$response && !empty($_GET[$attribute])) {
-            $response = $_GET[$attribute];
+        if (!$response) {
+            $response = $this->coreLocator->requestStack()->getMainRequest()?->query->get($attribute);
         }
 
         return $response;

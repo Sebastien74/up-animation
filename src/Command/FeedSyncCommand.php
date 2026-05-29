@@ -8,6 +8,7 @@ use App\Service\Content\Feed\FeedSyncService;
 use InvalidArgumentException;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -49,7 +50,10 @@ class FeedSyncCommand extends Command
                 null,
                 InputOption::VALUE_NONE,
                 'Force re-download of already cached media files'
-            );
+            )
+            // Optional positional args injected by CronSchedulerService when run as a ScheduledCommand.
+            ->addArgument('cronLogger', InputArgument::OPTIONAL, 'Cron scheduler Logger')
+            ->addArgument('commandLogger', InputArgument::OPTIONAL, 'Command Logger');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

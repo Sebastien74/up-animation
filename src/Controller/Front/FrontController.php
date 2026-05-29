@@ -77,7 +77,7 @@ class FrontController extends CacheController
             parse_str($decodedString, $parameters);
         }
 
-        $allParameters = array_merge($request->attributes->get('_route_params', []), $request->query->all(), $parameters, $_GET);
+        $allParameters = array_merge($request->attributes->get('_route_params', []), $parameters, $request->query->all());
 
         foreach ($allParameters as $key => $value) {
             if (is_string($value)) {

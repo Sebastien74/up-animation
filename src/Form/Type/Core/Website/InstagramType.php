@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Form\Type\Core\Website;
 
 use App\Entity\Api\Instagram;
-use App\Service\Content\InstagramService;
+use App\Service\Content\Feed\InstagramService;
 use App\Service\Interface\CoreLocatorInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type;

@@ -559,8 +559,8 @@ class FormManager
             $publicDirname = '/public/uploads/emails/'.$formType.'/'.$form->getId().'/contacts/'.$contact->getId();
             $fileDirname = $this->coreLocator->projectDir().$publicDirname;
             $fileDirname = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $fileDirname);
-            $extension = $fieldValue->getClientOriginalExtension();
-            $filename = Urlizer::urlize(str_replace('.'.$extension, '', $fieldValue->getClientOriginalName())).'.'.$extension;
+            $extension = $fieldValue->guessExtension() ?: $fieldValue->getClientOriginalExtension();
+            $filename = Urlizer::urlize(pathinfo($fieldValue->getClientOriginalName(), PATHINFO_FILENAME)).'.'.$extension;
             $fieldValue->move($fileDirname, $filename);
             $this->attachments[] = $fileDirname.'/'.$filename;
             $value = new Form\ContactValue();

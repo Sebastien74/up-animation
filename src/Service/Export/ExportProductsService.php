@@ -60,6 +60,9 @@ class ExportProductsService
         try {
             $writer->save($tempFile);
         } catch (\PhpOffice\PhpSpreadsheet\Writer\Exception $e) {
+            $this->coreLocator->jsonLog('Products export XLSX write failed: '.$e->getMessage(), 'critical', 'export');
+
+            throw new \RuntimeException('Unable to generate products export file.', 0, $e);
         }
 
         return [

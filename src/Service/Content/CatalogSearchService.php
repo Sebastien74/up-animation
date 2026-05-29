@@ -51,7 +51,7 @@ class CatalogSearchService implements CatalogSearchServiceInterface
     {
         $this->productRepository = $this->coreLocator->em()->getRepository(Product::class);
         if ($this->coreLocator->request()) {
-            $this->filters = $this->coreLocator->request()->get('products') ? $this->coreLocator->request()->get('products') : $_GET;
+            $this->filters = $this->coreLocator->request()->get('products') ? $this->coreLocator->request()->get('products') : $this->coreLocator->request()->query->all();
             $this->filterText = !empty($this->filters['text']) ? $this->filters['text'] : '';
             $excludedPatterns = ['utm_', 'ajax', 'fbclid', 'text', 'page', 'website'];
             foreach ($this->filters as $key => $value) {
@@ -104,15 +104,6 @@ class CatalogSearchService implements CatalogSearchServiceInterface
         //        $this->cache['products-categories'] = !empty($this->cacheAll['products-categories']) ? $this->cacheAll['products-categories'] : [];
         $searchResults = $this->getSearch($data);
         //        $searchResults = $listing->isCombineFieldsText() ? $this->getByText($listing, $searchResults) : $searchResults;
-
-//        $catalogs = [];
-//        if ($this->listing->getSearchCatalogs() && $this->listing->getCatalogs()->isEmpty()) {
-//            dd($this->listing);
-//        } else {
-//            foreach ($this->listing->getCatalogs() as $result) {
-//
-//            }
-//        }
 
         return [
             'initial' => $this->updateFields ? $this->cache : $this->cacheAll,

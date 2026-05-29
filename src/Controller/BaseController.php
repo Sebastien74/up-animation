@@ -68,6 +68,16 @@ abstract class BaseController extends AbstractController
     }
 
     /**
+     * Deny access when the entity does not belong to the current route website.
+     */
+    protected function denyUnlessEntityWebsite(mixed $entity): void
+    {
+        if ($entity && !$this->coreLocator->isEntityWebsiteAllowed($entity)) {
+            throw $this->createAccessDeniedException('Entity does not belong to the current website.');
+        }
+    }
+
+    /**
      * Get Entity Interface.
      */
     protected function getInterface(string $classname, array $options = []): bool|array

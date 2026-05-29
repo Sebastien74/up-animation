@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Service\Content;
+namespace App\Service\Content\Feed;
 
 use App\Model\Api\FacebookModel;
 use Psr\Cache\InvalidArgumentException;

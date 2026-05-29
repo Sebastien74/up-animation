@@ -6,6 +6,7 @@ namespace App\Form\Validator;
 
 use App\Entity\Seo as SeoEntities;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -22,14 +23,16 @@ class UniqOldRedirectionValidator extends ConstraintValidator
 {
     private TranslatorInterface $translator;
     private EntityManagerInterface $entityManager;
+    private RequestStack $requestStack;
 
     /**
      * UniqUrlValidator constructor.
      */
-    public function __construct(TranslatorInterface $translator, EntityManagerInterface $entityManager)
+    public function __construct(TranslatorInterface $translator, EntityManagerInterface $entityManager, RequestStack $requestStack)
     {
         $this->translator = $translator;
         $this->entityManager = $entityManager;
+        $this->requestStack = $requestStack;
     }
 
     /**
@@ -42,7 +45,9 @@ class UniqOldRedirectionValidator extends ConstraintValidator
         $website = $form->getConfig()->getOption('website');
 
         $redirection = $form->getData() instanceof SeoEntities\Redirection ? $form->getData() : null;
-        $redirections = !empty($_POST['website_redirection']['redirections']) ? $_POST['website_redirection']['redirections'] : null;
+        $request = $this->requestStack->getCurrentRequest();
+        $post = $request ? $request->request->all() : [];
+        $redirections = !empty($post['website_redirection']['redirections']) ? $post['website_redirection']['redirections'] : null;
         if (!$redirection && $redirections) {
             $matches = explode('.children[', $this->context->getPropertyPath());
             $key = !empty($matches[1]) && str_contains($matches[1], ']') ? str_replace(']', '', $matches[1]) : null;
