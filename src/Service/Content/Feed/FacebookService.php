@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Service\Content\Feed;
 
 use App\Model\Api\FacebookModel;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Throwable;
@@ -23,7 +24,8 @@ class FacebookService
 
     public function __construct(
         private readonly HttpClientInterface $httpClient,
-        private readonly UrlGeneratorInterface $urlGenerator
+        private readonly UrlGeneratorInterface $urlGenerator,
+        private readonly LoggerInterface $logger
     ) {
     }
 
@@ -93,14 +95,25 @@ class FacebookService
                 ],
             ]);
 
-            if ($response->getStatusCode() !== 200) {
+            $statusCode = $response->getStatusCode();
+            if ($statusCode !== 200) {
+                $this->logger->error('Facebook user token exchange failed.', [
+                    'status' => $statusCode,
+                    'response' => $response->getContent(false),
+                ]);
+
                 return null;
             }
 
             $data = $response->toArray();
             $userToken = $data['access_token'] ?? null;
 
-            if (!$userToken) {
+            if (!is_string($userToken) || $userToken === '') {
+                // 200 without a user token: log the error envelope, which holds no token.
+                $this->logger->error('Facebook user token exchange: 200 response without access_token.', [
+                    'response' => $response->getContent(false),
+                ]);
+
                 return null;
             }
 
@@ -113,12 +126,29 @@ class FacebookService
                 ],
             ]);
 
-            if ($response->getStatusCode() === 200) {
-                $data = $response->toArray();
-                return $data['access_token'] ?? null;
+            $statusCode = $response->getStatusCode();
+            if ($statusCode !== 200) {
+                $this->logger->error('Facebook page token exchange failed.', [
+                    'status' => $statusCode,
+                    'response' => $response->getContent(false),
+                ]);
+
+                return null;
             }
-        } catch (Throwable) {
-            return null;
+
+            $data = $response->toArray();
+            $pageToken = $data['access_token'] ?? null;
+
+            if (!is_string($pageToken) || $pageToken === '') {
+                $this->logger->error('Facebook page token exchange: 200 response without access_token.');
+
+                return null;
+            }
+
+            return $pageToken;
+        } catch (Throwable $exception) {
+            // The secret and code travel in the request URL, so the exception message may embed them: log the class only.
+            $this->logger->error('Facebook page token exchange error.', ['exception' => $exception::class]);
         }
 
         return null;
