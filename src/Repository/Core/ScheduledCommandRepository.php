@@ -49,12 +49,13 @@ class ScheduledCommandRepository extends ServiceEntityRepository
     /**
      * Lightweight projection for the dashboard report (no entity hydration).
      *
-     * @return array<int, array{name: ?string, command: string, cronExpression: string, active: bool, locked: bool, lastExecution: ?\DateTimeInterface, lastReturnCode: ?int}>
+     * @return array<int, array{id: int, name: ?string, command: string, cronExpression: string, active: bool, locked: bool, lastExecution: ?\DateTimeInterface, lastReturnCode: ?int, logFile: ?string}>
      */
     public function findReportRows(Website $website): array
     {
         return $this->createQueryBuilder('sc')
             ->select(
+                'sc.id AS id',
                 'sc.adminName AS name',
                 'sc.command AS command',
                 'sc.cronExpression AS cronExpression',
@@ -62,6 +63,7 @@ class ScheduledCommandRepository extends ServiceEntityRepository
                 'sc.locked AS locked',
                 'sc.lastExecution AS lastExecution',
                 'sc.lastReturnCode AS lastReturnCode',
+                'sc.logFile AS logFile',
             )
             ->where('sc.website = :website')
             ->setParameter('website', $website)

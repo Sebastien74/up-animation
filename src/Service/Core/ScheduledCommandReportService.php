@@ -23,21 +23,27 @@ final readonly class ScheduledCommandReportService
     }
 
     /**
-     * @return array<int, array{name: ?string, command: string, cronExpression: string, status: string, locked: bool, lastExecution: ?\DateTimeInterface, nextRun: ?\DateTimeImmutable}>
+     * @return array<int, array{id: int, name: ?string, command: string, cronExpression: string, status: string, locked: bool, lastExecution: ?\DateTimeInterface, lastReturnCode: ?int, nextRun: ?\DateTimeImmutable, detailable: bool}>
      */
     public function getReport(Website $website): array
     {
         $report = [];
 
         foreach ($this->repository->findReportRows($website) as $row) {
+            $status = $this->resolveStatus($row);
+            $locked = (bool) $row['locked'];
             $report[] = [
+                'id' => (int) $row['id'],
                 'name' => $row['name'],
                 'command' => $row['command'],
                 'cronExpression' => $row['cronExpression'],
-                'status' => $this->resolveStatus($row),
-                'locked' => (bool) $row['locked'],
+                'status' => $status,
+                'locked' => $locked,
                 'lastExecution' => $row['lastExecution'],
+                'lastReturnCode' => $row['lastReturnCode'],
                 'nextRun' => $this->resolveNextRun($row),
+                // A task is worth inspecting when it failed or is stuck locked.
+                'detailable' => 'failed' === $status || $locked,
             ];
         }
 
