@@ -625,6 +625,10 @@ class CoreLocator implements CoreLocatorInterface
      */
     private function resolveEntityWebsiteId(object $entity, int $depth = 0): ?int
     {
+        // A Website entity is its own scope: it has no parent website to resolve.
+        if ($entity instanceof Website) {
+            return null !== $entity->getId() ? (int) $entity->getId() : null;
+        }
         if (method_exists($entity, 'getWebsite')) {
             $website = $entity->getWebsite();
             if (is_object($website) && method_exists($website, 'getId') && null !== $website->getId()) {
