@@ -101,6 +101,7 @@ class BlockController extends AdminController
         Layout\BlockType $blockType,
         ?Layout\Action $action = null
     ): RedirectResponse {
+        $this->denyUnlessEntityWebsite($col);
 
         $slugBlock = $blockType->getSlug();
         $website = $this->getWebsite();
@@ -188,6 +189,7 @@ class BlockController extends AdminController
         if (!$block) {
             throw $this->createNotFoundException($this->coreLocator->translator()->trans("Ce bloc n\'existe pas !!", [], 'front'));
         }
+        $this->denyUnlessEntityWebsite($block);
 
         $layout = $block->getCol()->getZone()->getLayout();
         $blockTypeSlug = $block->getBlockType()->getSlug();
@@ -260,6 +262,8 @@ class BlockController extends AdminController
             $matches = explode(',', urldecode($matchesId[1]));
             $block = $blockRepository->find($matchesId[0]);
             $col = $colRepository->find($matches[0]);
+            $this->denyUnlessEntityWebsite($block);
+            $this->denyUnlessEntityWebsite($col);
             $layout = $col->getZone()->getLayout();
             $block->setPosition(intval($matches[1]));
             $block->setCol($col);
@@ -278,6 +282,7 @@ class BlockController extends AdminController
     #[Route('/size/{block}/{size}', name: 'admin_block_size', options: ['expose' => true], methods: 'GET')]
     public function size(Layout\Block $block, int $size): JsonResponse
     {
+        $this->denyUnlessEntityWebsite($block);
         $block->setSize($size);
         $this->coreLocator->em()->persist($block);
         $this->coreLocator->em()->flush();
@@ -291,6 +296,8 @@ class BlockController extends AdminController
     #[Route('/add/modal/{col}/{configuration}/{entityId}', name: 'admin_block_modal', options: ['expose' => true], methods: 'GET')]
     public function modal(Layout\Col $col, Layout\LayoutConfiguration $configuration, int $entityId): JsonResponse
     {
+        $this->denyUnlessEntityWebsite($col);
+
         return new JsonResponse(['html' => $this->renderView('admin/core/layout/new-block.html.twig', [
             'col' => $col,
             'blockTypeAction' => $this->coreLocator->em()->getRepository(Layout\BlockType::class)->findOneBy(['slug' => 'core-action']),

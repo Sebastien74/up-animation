@@ -58,6 +58,7 @@ class ColController extends AdminController
     #[Route('/new/{zone}', name: 'admin_col_new', methods: 'GET|POST')]
     public function add(Request $request, Zone $zone)
     {
+        $this->denyUnlessEntityWebsite($zone);
         $col = new Col();
         $form = $this->createForm(FormType\ColSizeType::class, $col);
         $form->handleRequest($request);
@@ -108,6 +109,7 @@ class ColController extends AdminController
     #[Route('/size/{col}/{size}', name: 'admin_col_size', options: ['expose' => true], methods: 'GET')]
     public function size(Col $col, int $size): JsonResponse
     {
+        $this->denyUnlessEntityWebsite($col);
         $col->setSize($size);
         $this->coreLocator->em()->persist($col);
         $this->coreLocator->em()->flush();
@@ -123,6 +125,7 @@ class ColController extends AdminController
     #[Route('/standardize-elements/{col}', name: 'admin_blocks_standardize', options: ['expose' => true], methods: 'GET')]
     public function standardizeElements(Request $request, Col $col): JsonResponse
     {
+        $this->denyUnlessEntityWebsite($col);
         $col->setStandardizeElements($request->query->getBoolean('standardize'));
         $this->coreLocator->em()->persist($col);
         $this->coreLocator->em()->flush();
@@ -141,6 +144,7 @@ class ColController extends AdminController
         foreach ($colsData as $colData) {
             $matches = explode('=', $colData);
             $col = $colRepository->find($matches[0]);
+            $this->denyUnlessEntityWebsite($col);
             $col->setPosition(intval($matches[1]));
             $this->coreLocator->em()->persist($col);
         }
