@@ -215,6 +215,15 @@
                         </a>
                     </li>
                 {%- endif -%}
+                {%- if isInternal -%}
+                    <li>
+                        <a href="{{ path('admin_documentation') }}" class="quick-tile">
+                            <span class="quick-icon"><i class="icm-book"></i></span>
+                            <span class="quick-title">{{ "Documentation"|trans|raw }}</span>
+                            <span class="quick-desc">{{ "Guides internes"|trans|raw }}</span>
+                        </a>
+                    </li>
+                {%- endif -%}
             </ul>
         </section>
 
@@ -589,12 +598,33 @@
                                         <span class="scheduler-badge badge-lock">{{ "Verrouillée"|trans|raw }}</span>
                                     {%- endif -%}
                                     <span class="scheduler-badge badge-{{ task.status }}">{{ statusLabels[task.status] ?? task.status }}</span>
+                                    {%- if task.detailable -%}
+                                        <button type="button"
+                                                class="scheduler-detail"
+                                                data-log-url="{{ path('admin_scheduled_command_log', {id: task.id}) }}"
+                                                data-task-name="{{ task.name ?? task.command }}"
+                                                title="{{ "Voir le détail de l'échec"|trans }}">
+                                            {{ "Détail"|trans|raw }}
+                                        </button>
+                                    {%- endif -%}
                                 </span>
                             </li>
                         {%- endfor -%}
                     </ul>
                 </div>
             </section>
+
+            <div class="modal fade scheduler-log-modal" id="schedulerLogModal" tabindex="-1" aria-labelledby="schedulerLogModalTitle" aria-hidden="true">
+                <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="schedulerLogModalTitle">{{ "Détail de la tâche"|trans|raw }}</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{ "Fermer"|trans }}"></button>
+                        </div>
+                        <div class="modal-body" id="schedulerLogModalBody"></div>
+                    </div>
+                </div>
+            </div>
         {%- endif -%}
 
         {#-- 8 — Tools (feeds sync, discreet bottom row) --#}

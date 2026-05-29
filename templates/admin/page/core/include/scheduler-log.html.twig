@@ -1,0 +1,21 @@
+<div class="scheduler-log">
+    <div class="scheduler-log-meta">
+        <span class="scheduler-log-cmd">{{ command.command }}{{ command.arguments ? ' ' ~ command.arguments }}</span>
+        {%- if command.lastReturnCode is not null -%}
+            <span class="scheduler-log-code code-{{ command.lastReturnCode == 0 ? 'ok' : 'fail' }}">
+                {{ "Code de sortie"|trans|raw }} : {{ command.lastReturnCode }}
+            </span>
+        {%- endif -%}
+        {%- if command.locked -%}
+            <span class="scheduler-log-code code-fail">{{ "Verrouillée"|trans|raw }}</span>
+        {%- endif -%}
+        <span class="scheduler-log-date">
+            {{ command.lastExecution ? command.lastExecution|date('d/m/Y H:i', false) : "jamais exécutée"|trans }}
+        </span>
+    </div>
+    {%- if logLines is empty -%}
+        <p class="scheduler-log-empty">{{ "Aucune entrée de journal disponible pour cette tâche."|trans|raw }}</p>
+    {%- else -%}
+        <pre class="scheduler-log-output">{% for line in logLines %}{{ line }}{{ not loop.last ? "\n" }}{% endfor %}</pre>
+    {%- endif -%}
+</div>

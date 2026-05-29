@@ -6,11 +6,14 @@ namespace App\Controller\Admin\Core;
 
 use App\Controller\Admin\AdminController;
 use App\Entity\Core\Domain;
+use App\Entity\Core\ScheduledCommand;
 use App\Entity\Module\Search\SearchValue;
 use App\Entity\Seo\NotFoundUrl;
 use App\Entity\Seo\Url;
 use App\Repository\Analytics\AnalyticsDailyRepository;
 use App\Repository\Core\MailLogRepository;
+use App\Repository\Core\ScheduledCommandRepository;
+use App\Service\Core\ScheduledCommandLogReader;
 use App\Service\Core\ScheduledCommandReportService;
 use App\Service\Core\SlowRequestStatsService;
 use Doctrine\DBAL\Exception as DBALException;
@@ -94,6 +97,29 @@ class DashboardController extends AdminController
             'mailStats' => $mailStats,
             'analyticsStats' => $analyticsStats,
             'scheduledTasks' => $scheduledCommandReport->getReport($website->entity),
+        ]);
+    }
+
+    /**
+     * Scheduled command log tail (failure / lock inspection from the dashboard).
+     */
+    #[Route('/dashboard/scheduled-command/{id}/log', name: 'admin_scheduled_command_log', requirements: ['id' => '\d+'], methods: 'GET')]
+    public function scheduledCommandLog(
+        int $id,
+        ScheduledCommandRepository $scheduledCommandRepository,
+        ScheduledCommandLogReader $logReader,
+    ): Response {
+        $command = $scheduledCommandRepository->find($id);
+        if (!$command instanceof ScheduledCommand) {
+            throw $this->createNotFoundException();
+        }
+
+        // Prevent inspecting a command that belongs to another website.
+        $this->denyUnlessEntityWebsite($command);
+
+        return $this->render('admin/page/core/include/scheduler-log.html.twig', [
+            'command' => $command,
+            'logLines' => $logReader->tail($command->getLogFile()),
         ]);
     }
 }
