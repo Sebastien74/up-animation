@@ -166,7 +166,7 @@
                         <a href="{{ path('admin_page_tree', {website: websiteId}) }}" class="quick-tile">
                             <span class="quick-icon"><i class="icm-file-alt"></i></span>
                             <span class="quick-title">{{ "Pages"|trans|raw }}</span>
-                            <span class="quick-desc">{{ "Arborescence"|trans|raw }}</span>
+                            <span class="quick-desc">{{ "Gérer l'arborescence du site"|trans|raw }}</span>
                         </a>
                     </li>
                 {%- endif -%}
@@ -175,7 +175,7 @@
                         <a href="{{ path('admin_medias_library', {website: websiteId}) }}" class="quick-tile">
                             <span class="quick-icon"><i class="icm-images"></i></span>
                             <span class="quick-title">{{ "Médias"|trans|raw }}</span>
-                            <span class="quick-desc">{{ "Bibliothèque"|trans|raw }}</span>
+                            <span class="quick-desc">{{ "Bibliothèque d'images et fichiers"|trans|raw }}</span>
                         </a>
                     </li>
                 {%- endif -%}
@@ -184,7 +184,7 @@
                         <a href="{{ path('admin_newscast_index', {website: websiteId}) }}" class="quick-tile">
                             <span class="quick-icon"><i class="icm-newspaper"></i></span>
                             <span class="quick-title">{{ "Actualités"|trans|raw }}</span>
-                            <span class="quick-desc">{{ "Publications"|trans|raw }}</span>
+                            <span class="quick-desc">{{ "Articles et publications"|trans|raw }}</span>
                         </a>
                     </li>
                 {%- endif -%}
@@ -193,7 +193,7 @@
                         <a href="{{ path('admin_catalog_index', {website: websiteId}) }}" class="quick-tile">
                             <span class="quick-icon"><i class="icm-store"></i></span>
                             <span class="quick-title">{{ "Catalogue"|trans|raw }}</span>
-                            <span class="quick-desc">{{ "Produits"|trans|raw }}</span>
+                            <span class="quick-desc">{{ "Produits et catégories"|trans|raw }}</span>
                         </a>
                     </li>
                 {%- endif -%}
@@ -202,7 +202,7 @@
                         <a href="{{ path('admin_form_index', {website: websiteId}) }}" class="quick-tile">
                             <span class="quick-icon"><i class="icm-paper-plane"></i></span>
                             <span class="quick-title">{{ "Formulaires"|trans|raw }}</span>
-                            <span class="quick-desc">{{ "Soumissions"|trans|raw }}</span>
+                            <span class="quick-desc">{{ "Réponses et soumissions reçues"|trans|raw }}</span>
                         </a>
                     </li>
                 {%- endif -%}
@@ -211,7 +211,7 @@
                         <a href="{{ path('admin_slider_index', {website: websiteId}) }}" class="quick-tile">
                             <span class="quick-icon"><i class="icm-sliders-h"></i></span>
                             <span class="quick-title">{{ "Sliders"|trans|raw }}</span>
-                            <span class="quick-desc">{{ "Carrousels"|trans|raw }}</span>
+                            <span class="quick-desc">{{ "Gestion des carrousels"|trans|raw }}</span>
                         </a>
                     </li>
                 {%- endif -%}
@@ -220,7 +220,14 @@
                         <a href="{{ path('admin_documentation') }}" class="quick-tile">
                             <span class="quick-icon"><i class="icm-book"></i></span>
                             <span class="quick-title">{{ "Documentation"|trans|raw }}</span>
-                            <span class="quick-desc">{{ "Guides internes"|trans|raw }}</span>
+                            <span class="quick-desc">{{ "Guides techniques internes"|trans|raw }}</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ path('app.swagger_ui') }}" class="quick-tile" target="_blank" rel="noopener">
+                            <span class="quick-icon"><i class="icm-code"></i></span>
+                            <span class="quick-title">{{ "Swagger"|trans|raw }}</span>
+                            <span class="quick-desc">{{ "Documentation de l'API REST"|trans|raw }}</span>
                         </a>
                     </li>
                 {%- endif -%}
