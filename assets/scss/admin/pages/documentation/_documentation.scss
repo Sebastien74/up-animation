@@ -1,8 +1,15 @@
 @import "../../../vendor/mixin/media-queries";
 @import "../../variables";
 
-$doc-header-height: 64px !default;
-$doc-sidebar-width: 280px !default;
+// Typography matching the DevDocs reference: Inter for UI, JetBrains Mono for code.
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+$doc-font-sans: 'Inter', #{$font-family};
+$doc-font-mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+
+$doc-sidebar-width: 288px !default;
+$doc-toc-width: 232px !default;
+$doc-content-max: 1100px !default;
 
 * {
     box-sizing: border-box;
@@ -11,219 +18,428 @@ $doc-sidebar-width: 280px !default;
 .doc-body {
     margin: 0;
     min-height: 100vh;
-    font-family: $font-family;
+    font-family: $doc-font-sans;
     font-size: $font-size-base;
-    line-height: 1.6;
+    line-height: 1.7;
     background: $doc-bg;
+    background-image:
+        radial-gradient(65% 55% at 100% -8%, $doc-glow 0%, transparent 55%),
+        radial-gradient(45% 40% at 0% 0%, $doc-glow 0%, transparent 50%);
+    background-attachment: fixed;
     color: $doc-text;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
 }
 
-.doc-header {
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    height: $doc-header-height;
-    padding: 0 $space-6;
-    background: $doc-surface;
-    border-bottom: 1px solid $doc-border;
-}
-
-.doc-brand {
-    display: inline-flex;
-    align-items: center;
-    gap: $space-3;
-    font-size: $h4-font-size;
-    font-weight: 600;
-    text-decoration: none;
-}
-
-.doc-brand-icon {
-    display: inline-flex;
-    color: $doc-accent;
-    font-size: 1.25em;
-}
-
-.doc-actions {
-    display: inline-flex;
-    align-items: center;
-    gap: $space-2;
-}
-
-.doc-action,
-.doc-back {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    height: $control-height-sm;
-    border: 1px solid $doc-border;
-    border-radius: $radius-sm;
-    color: $doc-muted;
-    text-decoration: none;
-    transition: $transition-fast;
-
-    &:hover {
-        background: $doc-surface-2;
-        color: $doc-text;
-        border-color: $doc-accent;
-    }
-}
-
-.doc-action {
-    width: $control-height-sm;
-}
-
-.doc-back {
-    gap: $space-2;
-    padding: 0 $space-3;
-    font-size: $font-size-base;
-
-    i {
-        font-size: .9em;
-    }
-
-    @include mediaQuery(max-sm) {
-        width: $control-height-sm;
-        padding: 0;
-    }
-}
-
-.doc-back-label {
-    @include mediaQuery(max-sm) {
-        display: none;
-    }
-}
+// ---------------------------------------------------------------------------
+// Shell: fixed full-height sidebar + offset main column
+// ---------------------------------------------------------------------------
 
 .doc-shell {
-    display: flex;
-    align-items: flex-start;
-    min-height: calc(100vh - #{$doc-header-height});
+    min-height: 100vh;
 }
 
 .doc-sidebar {
-    position: sticky;
-    top: $doc-header-height;
-    flex: 0 0 $doc-sidebar-width;
-    align-self: stretch;
-    max-height: calc(100vh - #{$doc-header-height});
-    padding: $space-5 $space-4;
-    overflow-y: auto;
-    background: $doc-surface;
+    position: fixed;
+    inset: 0 auto 0 0;
+    z-index: 20;
+    display: flex;
+    flex-direction: column;
+    width: $doc-sidebar-width;
+    padding: $space-6 $space-4;
+    background: $doc-bg;
     border-right: 1px solid $doc-border;
 
     @include mediaQuery(max-md) {
         position: static;
-        flex-basis: auto;
         width: 100%;
-        max-height: none;
         border-right: 0;
         border-bottom: 1px solid $doc-border;
     }
 }
 
+.doc-main {
+    margin-left: $doc-sidebar-width;
+    min-height: 100vh;
+    padding: $space-8;
+
+    @include mediaQuery(max-md) {
+        margin-left: 0;
+        padding: $space-5 $space-4;
+    }
+}
+
+// ---------------------------------------------------------------------------
+// Brand
+// ---------------------------------------------------------------------------
+
+.doc-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: $space-3;
+    margin-bottom: $space-5;
+    padding: 0 $space-2;
+    font-size: $h4-font-size;
+    font-weight: 700;
+    letter-spacing: -.02em;
+    text-decoration: none;
+    color: $doc-text;
+}
+
+.doc-brand-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: $radius-md;
+    background: $doc-tile-grad;
+    color: $doc-tile-fg;
+    font-size: 1rem;
+    box-shadow: 0 6px 16px -8px $doc-accent-2;
+}
+
+// ---------------------------------------------------------------------------
+// Sidebar search launcher (opens the Ctrl/Cmd+K palette)
+// ---------------------------------------------------------------------------
+
+.doc-search {
+    display: flex;
+    align-items: center;
+    gap: $space-2;
+    width: 100%;
+    height: $control-height-md;
+    margin-bottom: $space-6;
+    padding: 0 $space-1 0 $space-3;
+    font: inherit;
+    font-size: .8125rem;
+    color: $doc-muted;
+    background: $doc-surface;
+    border: 1px solid $doc-border;
+    border-radius: $radius-md;
+    cursor: pointer;
+    transition: $transition-fast;
+
+    span { flex: 1 1 auto; text-align: left; }
+
+    &:hover {
+        color: $doc-text;
+        border-color: $doc-accent;
+        box-shadow: 0 0 0 3px $doc-accent-soft;
+
+        .doc-search-icon { color: $doc-accent; }
+    }
+}
+
+.doc-search-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    width: 28px;
+    height: 28px;
+    border-radius: $radius-sm;
+    background: $doc-surface-2;
+    color: $doc-muted;
+    font-size: .9em;
+    transition: $transition-fast;
+}
+
+// ---------------------------------------------------------------------------
+// Sidebar navigation
+// ---------------------------------------------------------------------------
+
 .doc-nav {
     display: flex;
+    flex: 1 1 auto;
     flex-direction: column;
-    gap: $space-1;
+    gap: 2px;
+    overflow-y: auto;
+}
+
+.doc-nav-label {
+    margin: 0 0 $space-3;
+    padding: 0 $space-3;
+    font-size: .6875rem;
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: $doc-muted;
 }
 
 .doc-nav-link {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: $space-3;
+    min-width: 0;
+    padding: $space-2 $space-3;
+    border-radius: $radius-md;
+    color: $doc-nav-text;
+    text-decoration: none;
+    transition: $transition-fast;
+
+    span {
+        flex: 1 1 auto;
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    &:hover {
+        background: $doc-surface-2;
+        color: $doc-text;
+
+        .doc-nav-chevron { opacity: .9; transform: translateX(2px); }
+    }
+
+    &.active {
+        background: $doc-accent-soft;
+        color: $doc-accent;
+        font-weight: 600;
+
+        .doc-nav-icon { color: $doc-accent; }
+    }
+}
+
+.doc-nav-icon {
+    flex: 0 0 auto;
+    font-size: 1em;
+    opacity: .9;
+}
+
+.doc-nav-chevron {
+    flex: 0 0 auto;
+    font-size: .7em;
+    opacity: .35;
+    transition: $transition-fast;
+}
+
+// ---------------------------------------------------------------------------
+// Sidebar footer (theme toggle + return to back-office)
+// ---------------------------------------------------------------------------
+
+.doc-side-foot {
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin-top: $space-4;
+    padding-top: $space-4;
+    border-top: 1px solid $doc-border;
+}
+
+.doc-side-action {
     display: flex;
     align-items: center;
     gap: $space-3;
     padding: $space-2 $space-3;
-    border-left: 2px solid transparent;
-    border-radius: $radius-sm;
-    color: $doc-muted;
+    border-radius: $radius-md;
+    color: $doc-nav-text;
     text-decoration: none;
     transition: $transition-fast;
+
+    i { flex: 0 0 auto; font-size: 1em; opacity: .9; }
+    span { flex: 1 1 auto; }
 
     &:hover {
         background: $doc-surface-2;
         color: $doc-text;
     }
+}
+
+// Segmented light/dark switcher for the portal theme.
+.doc-theme-switch {
+    display: flex;
+    gap: $space-1;
+    margin-top: $space-2;
+    padding: $space-1;
+    background: $doc-surface;
+    border: 1px solid $doc-border;
+    border-radius: $radius-md;
+}
+
+.doc-theme-opt {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: $space-2;
+    flex: 1 1 0;
+    padding: $space-2;
+    font: inherit;
+    font-size: .75rem;
+    font-weight: 600;
+    color: $doc-nav-text;
+    background: transparent;
+    border: 0;
+    border-radius: $radius-sm;
+    cursor: pointer;
+    transition: $transition-fast;
+
+    i { font-size: .95em; }
+
+    &:hover { color: $doc-text; }
 
     &.active {
-        background: $doc-surface-2;
-        border-left-color: $doc-accent;
         color: $doc-text;
-        font-weight: 500;
+        background: $doc-surface-2;
+        box-shadow: $doc-shadow-sm;
     }
 }
 
-.doc-main {
-    flex: 1 1 auto;
-    min-width: 0;
-    padding: $space-7 $space-8;
-
-    @include mediaQuery(max-md) {
-        padding: $space-5 $space-4;
-    }
-}
+// ---------------------------------------------------------------------------
+// Dashboard: hero + tiles
+// ---------------------------------------------------------------------------
 
 .doc-hero {
-    margin-bottom: $space-7;
+    max-width: $doc-content-max;
+    margin-bottom: $space-8;
+}
+
+.doc-hero-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    margin-bottom: $space-5;
+    border-radius: $radius-lg;
+    background: $doc-tile-grad;
+    color: $doc-tile-fg;
+    font-size: 1.5rem;
+    box-shadow: 0 16px 34px -16px $doc-accent-2;
 }
 
 .doc-hero-title {
-    margin: 0 0 $space-2;
-    font-size: $h1-font-size;
-    font-weight: 600;
+    margin: 0 0 $space-3;
+    font-size: clamp(1.9rem, 4vw, 2.6rem);
+    font-weight: 700;
+    letter-spacing: -.03em;
+    line-height: 1.08;
+    color: $doc-text;
 }
 
 .doc-hero-text {
     margin: 0;
+    max-width: 64ch;
+    color: $doc-muted;
+    font-size: 1.05rem;
+}
+
+.doc-grid-label {
+    max-width: $doc-content-max;
+    margin: 0 0 $space-4;
+    font-size: .6875rem;
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
     color: $doc-muted;
 }
 
 .doc-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: $space-5;
+    max-width: $doc-content-max;
+    margin-bottom: $space-8;
+
+    &:last-child { margin-bottom: 0; }
+
+    @include mediaQuery(max-md) {
+        grid-template-columns: 1fr;
+    }
 }
 
 .doc-tile {
     display: flex;
     flex-direction: column;
-    gap: $space-2;
-    padding: $space-5;
+    gap: $space-4;
+    padding: $space-6 $space-6 $space-5;
     border: 1px solid $doc-border;
     border-radius: $radius-lg;
     background: $doc-surface;
     color: inherit;
     text-decoration: none;
-    transition: $transition-base;
+    box-shadow: $doc-shadow-sm;
+    transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
 
     &:hover {
+        transform: translateY(-4px);
         border-color: $doc-accent;
-        transform: translateY(-2px);
         box-shadow: $doc-shadow;
+
+        .doc-tile-more { color: $doc-accent; }
+        .doc-tile-more::after { transform: translateX(4px); }
     }
 }
 
+.doc-tile-head {
+    display: flex;
+    align-items: center;
+    gap: $space-4;
+}
+
 .doc-tile-icon {
-    color: $doc-accent;
-    font-size: 1.5rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    width: 46px;
+    height: 46px;
+    border-radius: $radius-md;
+    background: $doc-tile-grad;
+    color: $doc-tile-fg;
+    font-size: 1.25rem;
+    box-shadow: 0 10px 22px -12px $doc-accent-2;
 }
 
 .doc-tile-title {
     font-size: $h4-font-size;
     font-weight: 600;
+    line-height: 1.3;
+    color: $doc-text;
 }
 
 .doc-tile-excerpt {
     color: $doc-muted;
     font-size: .8125rem;
+    line-height: 1.6;
+}
+
+.doc-tile-more {
+    display: inline-flex;
+    align-items: center;
+    margin-top: auto;
+    color: $doc-muted;
+    font-size: .8125rem;
+    font-weight: 600;
+    transition: $transition-fast;
+
+    &::after {
+        content: "\2192";
+        margin-left: $space-2;
+        transition: $transition-fast;
+    }
 }
 
 .doc-empty {
-    padding: $space-6;
-    border: 1px solid $doc-border;
+    padding: $space-7;
+    border: 1px dashed $doc-border;
     border-radius: $radius-lg;
     background: $doc-surface;
     color: $doc-muted;
+    text-align: center;
+}
+
+// ---------------------------------------------------------------------------
+// Article page (content + "on this page" TOC)
+// ---------------------------------------------------------------------------
+
+.doc-page {
+    display: flex;
+    align-items: flex-start;
+    gap: $space-8;
 }
 
 .doc-breadcrumb {
@@ -231,114 +447,449 @@ $doc-sidebar-width: 280px !default;
     align-items: center;
     gap: $space-2;
     margin-bottom: $space-5;
+    font-size: .8125rem;
     color: $doc-muted;
 
     a {
         text-decoration: none;
+        transition: $transition-fast;
 
-        &:hover {
-            color: $doc-text;
-        }
+        &:hover { color: $doc-accent; }
     }
 }
 
-.doc-breadcrumb-current {
-    color: $doc-text;
-}
+.doc-breadcrumb-sep { opacity: .45; }
+.doc-breadcrumb-current { color: $doc-text; }
 
 .doc-article {
-    max-width: 860px;
+    flex: 1 1 auto;
+    min-width: 0;
+    max-width: 880px;
 }
 
 .doc-article-title {
     margin: 0 0 $space-6;
+    padding-bottom: $space-4;
     font-size: $h1-font-size;
-    font-weight: 600;
+    font-weight: 700;
+    letter-spacing: -.025em;
+    line-height: 1.15;
+    border-bottom: 1px solid $doc-border;
 }
 
-// Rendered markdown typography.
+.doc-toc {
+    position: sticky;
+    top: $space-7;
+    flex: 0 0 $doc-toc-width;
+    max-height: calc(100vh - #{$space-8});
+    overflow-y: auto;
+    padding-left: $space-4;
+
+    @include mediaQuery(max-md) {
+        display: none;
+    }
+}
+
+.doc-toc-title {
+    margin: 0 0 $space-3;
+    font-size: .6875rem;
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: $doc-muted;
+}
+
+.doc-toc-nav {
+    display: flex;
+    flex-direction: column;
+    border-left: 1px solid $doc-border;
+}
+
+.doc-toc-link {
+    padding: $space-1 $space-3;
+    margin-left: -1px;
+    border-left: 2px solid transparent;
+    color: $doc-muted;
+    text-decoration: none;
+    font-size: .8125rem;
+    line-height: 1.45;
+    transition: $transition-fast;
+
+    &:hover { color: $doc-text; }
+
+    &.active {
+        color: $doc-accent;
+        border-left-color: $doc-accent;
+        font-weight: 600;
+    }
+}
+
+.doc-toc-h3 {
+    padding-left: $space-5;
+    font-size: .78rem;
+}
+
+// ---------------------------------------------------------------------------
+// Rendered markdown typography
+// ---------------------------------------------------------------------------
+
 .doc-content {
     h1, h2, h3, h4, h5 {
-        margin: $space-6 0 $space-3;
+        position: relative;
+        margin: $space-7 0 $space-3;
         font-weight: 600;
         line-height: 1.3;
+        letter-spacing: -.01em;
+        scroll-margin-top: $space-6;
     }
 
-    h2 { font-size: $h2-font-size; }
+    h2 {
+        display: flex;
+        align-items: center;
+        gap: $space-3;
+        padding-bottom: $space-2;
+        font-size: $h2-font-size;
+        border-bottom: 1px solid $doc-border;
+
+        &::before {
+            content: "";
+            flex: 0 0 auto;
+            width: 4px;
+            height: 1.05em;
+            border-radius: $radius-xs;
+            background: linear-gradient(180deg, $doc-accent, $doc-accent-2);
+        }
+    }
+
     h3 { font-size: $h3-font-size; }
     h4 { font-size: $h4-font-size; }
 
-    > :first-child {
-        margin-top: 0;
+    .doc-anchor {
+        margin-left: $space-2;
+        color: $doc-muted;
+        font-weight: 400;
+        text-decoration: none;
+        opacity: 0;
+        transition: $transition-fast;
     }
 
-    p, ul, ol, table, pre, blockquote {
+    h2:hover .doc-anchor,
+    h3:hover .doc-anchor { opacity: .55; }
+
+    .doc-anchor:hover {
+        opacity: 1;
+        color: $doc-accent;
+    }
+
+    > :first-child { margin-top: 0; }
+
+    p, ul, ol, table, blockquote, .doc-codeblock {
         margin: 0 0 $space-4;
     }
 
-    ul, ol {
-        padding-left: $space-5;
+    // Comfortable measure for prose; tables, code and diagrams use full width.
+    > p,
+    > ul,
+    > ol,
+    > blockquote {
+        max-width: 760px;
     }
 
-    li + li {
-        margin-top: $space-1;
-    }
+    ul, ol { padding-left: $space-5; }
+    li + li { margin-top: $space-1; }
+    li::marker { color: $doc-accent; }
 
     a {
         color: $doc-accent;
         text-decoration: underline;
+        text-underline-offset: 3px;
+        text-decoration-thickness: 1px;
+        transition: $transition-fast;
+
+        &:hover { opacity: .75; }
     }
 
     hr {
-        margin: $space-6 0;
+        margin: $space-7 0;
         border: 0;
         border-top: 1px solid $doc-border;
     }
 
     code {
         padding: .15em .4em;
-        font-size: .875em;
-        background: $doc-code-bg;
+        font-size: .85em;
+        background: $doc-accent-soft;
+        color: $doc-accent;
         border-radius: $radius-xs;
     }
 
     pre {
-        padding: $space-4;
+        margin: 0;
+        padding: $space-5;
         overflow: auto;
         background: $doc-code-bg;
         border: 1px solid $doc-border;
-        border-radius: $radius-sm;
+        border-radius: $radius-md;
 
         code {
             padding: 0;
             background: transparent;
+            color: inherit;
         }
     }
 
     blockquote {
         margin-left: 0;
-        padding: $space-2 $space-4;
+        padding: $space-3 $space-5;
         border-left: 3px solid $doc-accent;
-        color: $doc-muted;
+        border-radius: $radius-sm;
+        background: $doc-accent-soft;
+        color: $doc-text;
+
+        > :last-child { margin-bottom: 0; }
     }
 
     table {
         width: 100%;
-        border-collapse: collapse;
+        border-collapse: separate;
+        border-spacing: 0;
+        overflow: hidden;
+        border: 1px solid $doc-border;
+        border-radius: $radius-md;
+        font-size: .9375rem;
 
         th, td {
             padding: $space-2 $space-3;
-            border: 1px solid $doc-border;
+            border-bottom: 1px solid $doc-border;
             text-align: left;
         }
 
         th {
             background: $doc-surface-2;
+            font-weight: 600;
         }
+
+        tbody tr:last-child td { border-bottom: 0; }
+        tbody tr:nth-of-type(even) { background: $doc-code-bg; }
+        tbody tr { transition: background .15s ease; }
+        tbody tr:hover { background: $doc-accent-soft; }
     }
 
     img {
         max-width: 100%;
         height: auto;
+    }
+
+    // Code block wrapper with a copy button.
+    .doc-codeblock {
+        position: relative;
+
+        &:hover .doc-copy { opacity: 1; }
+    }
+
+    .doc-copy {
+        position: absolute;
+        top: $space-2;
+        right: $space-2;
+        padding: 3px $space-2;
+        font: inherit;
+        font-size: .72rem;
+        color: $doc-muted;
+        background: $doc-surface;
+        border: 1px solid $doc-border;
+        border-radius: $radius-xs;
+        cursor: pointer;
+        opacity: 0;
+        transition: $transition-fast;
+
+        &:hover {
+            color: $doc-accent;
+            border-color: $doc-accent;
+        }
+
+        &.is-done {
+            color: $doc-accent;
+            border-color: $doc-accent;
+        }
+    }
+
+    // Mermaid diagrams replace the rendered ```mermaid code blocks.
+    .mermaid-diagram {
+        margin: $space-2 0 $space-6;
+        padding: $space-6;
+        overflow-x: auto;
+        text-align: center;
+        background: $doc-surface-2;
+        border: 1px solid $doc-border;
+        border-radius: $radius-lg;
+        box-shadow: $doc-shadow;
+
+        svg {
+            width: 100%;
+            height: auto;
+            vertical-align: middle;
+        }
+    }
+
+    .mermaid-error {
+        border-color: $doc-accent;
+    }
+}
+
+// ---------------------------------------------------------------------------
+// Monospace accents
+// ---------------------------------------------------------------------------
+
+.doc-content code,
+.doc-content pre,
+.doc-codeblock .doc-copy,
+.doc-cmdk-esc {
+    font-family: $doc-font-mono;
+}
+
+// ---------------------------------------------------------------------------
+// Command palette (Ctrl/Cmd+K)
+// ---------------------------------------------------------------------------
+
+%doc-kbd {
+    padding: 1px 6px;
+    font-family: $doc-font-mono;
+    font-size: .7rem;
+    line-height: 1.6;
+    color: $doc-muted;
+    background: $doc-bg;
+    border: 1px solid $doc-border;
+    border-radius: $radius-xs;
+}
+
+.doc-body.doc-cmdk-open {
+    overflow: hidden;
+}
+
+.doc-cmdk {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 12vh $space-4 $space-4;
+
+    &[hidden] { display: none; }
+}
+
+.doc-cmdk-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, .55);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+
+.doc-cmdk-panel {
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+    overflow: hidden;
+    background: $doc-surface;
+    border: 1px solid $doc-border;
+    border-radius: $radius-lg;
+    box-shadow: $doc-shadow;
+    animation: docCmdkIn .18s ease;
+}
+
+@keyframes docCmdkIn {
+    from { opacity: 0; transform: translateY(-10px) scale(.98); }
+    to { opacity: 1; transform: none; }
+}
+
+.doc-cmdk-head {
+    display: flex;
+    align-items: center;
+    gap: $space-3;
+    padding: $space-4;
+    border-bottom: 1px solid $doc-border;
+
+    > i { color: $doc-accent; font-size: 1.15em; }
+}
+
+.doc-cmdk-input {
+    flex: 1 1 auto;
+    min-width: 0;
+    font: inherit;
+    font-size: 1rem;
+    color: $doc-text;
+    background: transparent;
+    border: 0;
+    outline: none;
+
+    &::placeholder { color: $doc-muted; }
+}
+
+.doc-cmdk-esc { @extend %doc-kbd; }
+
+.doc-cmdk-list {
+    max-height: 52vh;
+    margin: 0;
+    padding: $space-2;
+    overflow-y: auto;
+    list-style: none;
+}
+
+.doc-cmdk-item {
+    display: flex;
+    align-items: center;
+    gap: $space-3;
+    padding: $space-2 $space-3;
+    border-radius: $radius-md;
+    color: $doc-text;
+    cursor: pointer;
+
+    i {
+        color: $doc-muted;
+        font-size: .95em;
+    }
+
+    &.active {
+        background: $doc-accent-soft;
+        color: $doc-accent;
+
+        i { color: $doc-accent; }
+    }
+}
+
+.doc-cmdk-empty {
+    margin: 0;
+    padding: $space-5;
+    text-align: center;
+    color: $doc-muted;
+}
+
+// ---------------------------------------------------------------------------
+// Accessibility: visible focus + reduced motion
+// ---------------------------------------------------------------------------
+
+.doc-nav-link:focus-visible,
+.doc-side-action:focus-visible,
+.doc-theme-opt:focus-visible,
+.doc-search:focus-visible,
+.doc-tile:focus-visible,
+.doc-toc-link:focus-visible,
+.doc-brand:focus-visible,
+.doc-content a:focus-visible,
+.doc-codeblock .doc-copy:focus-visible {
+    outline: 2px solid $doc-accent;
+    outline-offset: 2px;
+    border-radius: $radius-xs;
+}
+
+// Honor user motion preferences (justified raw media query: a11y override).
+@media (prefers-reduced-motion: reduce) {
+    .doc-body *,
+    .doc-body *::before,
+    .doc-body *::after {
+        animation-duration: .001ms !important;
+        transition-duration: .001ms !important;
+        scroll-behavior: auto !important;
     }
 }

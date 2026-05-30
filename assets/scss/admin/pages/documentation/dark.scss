@@ -1,13 +1,19 @@
-@charset "UTF-8";
-
-$doc-bg: #0e1219;
-$doc-surface: #14161e;
-$doc-surface-2: #1b1f2b;
-$doc-text: rgba(255, 255, 255, .92);
-$doc-muted: rgba(255, 255, 255, .58);
-$doc-border: rgba(255, 255, 255, .10);
-$doc-accent: #8b6fd6;
-$doc-code-bg: rgba(255, 255, 255, .06);
-$doc-shadow: 0 18px 45px rgba(0, 0, 0, .55);
+$doc-bg: #0a0e1c;
+$doc-surface: #10152b;
+$doc-surface-2: #182142;
+$doc-text: #eef1f8;
+$doc-muted: #8b94ac;
+$doc-nav-text: #c4cbde;
+$doc-border: #1f2848;
+$doc-accent: #7d97ff;
+$doc-accent-2: #4f46e5;
+$doc-accent-soft: rgba(125, 151, 255, .14);
+$doc-glow: rgba(79, 70, 229, .18);
+$doc-glass: rgba(10, 14, 28, .72);
+$doc-code-bg: #0c1226;
+$doc-tile-grad: linear-gradient(140deg, #7b93ff 0%, #4f5ef0 100%);
+$doc-tile-fg: #ffffff;
+$doc-shadow: 0 24px 50px -24px rgba(0, 0, 0, .85);
+$doc-shadow-sm: 0 1px 2px rgba(0, 0, 0, .45);
 
 @import 'documentation';

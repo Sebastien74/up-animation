@@ -1,12 +1,10 @@
 <!DOCTYPE html>
 {%- trans_default_domain 'admin' -%}
-{%- set theme = adminTheme() -%}
-{%- set isDarkTheme = theme == 'dark' -%}
-{%- set themeParam = isDarkTheme ? 'admin_light_theme' : 'admin_dark_theme' -%}
-{%- set themeLabel = isDarkTheme ? "Thème clair"|trans : "Thème sombre"|trans -%}
-{%- set themeIcon = isDarkTheme ? 'sun' : 'moon' -%}
+{# Standalone portal theme, independent of the admin theme; defaults to dark. #}
+{%- set theme = app.request.cookies.get('doc_theme', 'dark') == 'light' ? 'light' : 'dark' -%}
 {%- set navPages = pages is defined ? pages : [] -%}
 {%- set activeSlug = page is defined and page ? page.slug : null -%}
+{%- set docNavIcons = ['compass', 'shield-check', 'credit-card', 'cog', 'terminal', 'sitemap', 'database', 'server', 'stream', 'rocket'] -%}
 <html lang="{{ app.request.locale }}" data-nonce="{{ csp_nonce() }}">
 <head>
     <meta charset="utf-8"/>
@@ -21,33 +19,48 @@
     <noscript><link rel="stylesheet" href="{{ asset('build/admin/admin-fonts.css', 'admin') }}" nonce="{{ csp_nonce() }}"></noscript>
 </head>
 <body class="doc-body doc-theme-{{ theme }}">
-    <header class="doc-header">
-        <a class="doc-brand" href="{{ path('admin_documentation') }}">
-            <span class="doc-brand-icon"><i class="icm-book"></i></span>
-            <span class="doc-brand-text">{{ "Documentation"|trans|raw }}</span>
-        </a>
-        <div class="doc-actions">
-            <a class="doc-action" href="{{ replaceRequestParam(themeParam, '1') }}" title="{{ themeLabel|striptags }}" aria-label="{{ themeLabel|striptags }}">
-                <i class="icm-{{ themeIcon }}"></i>
-            </a>
-            <a class="doc-back" href="{{ path('admin_dashboard', {website: websiteId()}) }}">
-                <i class="icm-arrow-left"></i><span class="doc-back-label">{{ "Retour au back-office"|trans|raw }}</span>
-            </a>
-        </div>
-    </header>
-
     <div class="doc-shell">
         <aside class="doc-sidebar">
+            <a class="doc-brand" href="{{ path('admin_documentation') }}">
+                <span class="doc-brand-icon"><i class="icm-book-open"></i></span>
+                <span class="doc-brand-text">{{ "Documentation"|trans|raw }}</span>
+            </a>
+
+            <button type="button" class="doc-search" data-doc-cmdk-open aria-label="{{ "Rechercher"|trans|striptags }}">
+                <span>{{ "Rechercher…"|trans|raw }}</span>
+                <i class="icm-search doc-search-icon" aria-hidden="true"></i>
+            </button>
+
             <nav class="doc-nav" aria-label="{{ "Navigation documentation"|trans }}">
+                <p class="doc-nav-label">{{ "Sommaire"|trans|raw }}</p>
                 <a class="doc-nav-link{{ activeSlug is null ? ' active' }}" href="{{ path('admin_documentation') }}">
-                    <i class="icm-home"></i><span>{{ "Accueil"|trans|raw }}</span>
+                    <i class="icm-home doc-nav-icon" aria-hidden="true"></i>
+                    <span>{{ "Accueil"|trans|raw }}</span>
+                    <i class="icm-chevron-right doc-nav-chevron" aria-hidden="true"></i>
                 </a>
                 {%- for navPage in navPages -%}
                     <a class="doc-nav-link{{ navPage.slug == activeSlug ? ' active' }}" href="{{ path('admin_documentation_page', {slug: navPage.slug}) }}">
+                        <i class="icm-{{ docNavIcons[loop.index0 % docNavIcons|length] }} doc-nav-icon" aria-hidden="true"></i>
                         <span>{{ navPage.title }}</span>
+                        <i class="icm-chevron-right doc-nav-chevron" aria-hidden="true"></i>
                     </a>
                 {%- endfor -%}
             </nav>
+
+            <div class="doc-side-foot">
+                <a class="doc-side-action" href="{{ path('admin_dashboard', {website: websiteId()}) }}">
+                    <i class="icm-arrow-left" aria-hidden="true"></i>
+                    <span>{{ "Retour au back-office"|trans|raw }}</span>
+                </a>
+                <div class="doc-theme-switch" role="group" aria-label="{{ "Thème"|trans|striptags }}">
+                    <button type="button" class="doc-theme-opt{{ theme == 'dark' ? ' active' }}" data-doc-theme="dark" aria-pressed="{{ theme == 'dark' ? 'true' : 'false' }}">
+                        <i class="icm-moon" aria-hidden="true"></i><span>{{ "Sombre"|trans|raw }}</span>
+                    </button>
+                    <button type="button" class="doc-theme-opt{{ theme == 'light' ? ' active' }}" data-doc-theme="light" aria-pressed="{{ theme == 'light' ? 'true' : 'false' }}">
+                        <i class="icm-sun" aria-hidden="true"></i><span>{{ "Clair"|trans|raw }}</span>
+                    </button>
+                </div>
+            </div>
         </aside>
 
         <main class="doc-main">
@@ -55,6 +68,21 @@
         </main>
     </div>
 
-    {% block javascripts %}{% endblock %}
+    <div class="doc-cmdk" data-doc-cmdk hidden>
+        <div class="doc-cmdk-backdrop" data-doc-cmdk-close></div>
+        <div class="doc-cmdk-panel" role="dialog" aria-modal="true" aria-label="{{ "Rechercher"|trans|striptags }}">
+            <div class="doc-cmdk-head">
+                <i class="icm-search" aria-hidden="true"></i>
+                <input type="search" class="doc-cmdk-input" data-doc-cmdk-input autocomplete="off"
+                       placeholder="{{ "Rechercher une page…"|trans|striptags }}"
+                       aria-label="{{ "Rechercher une page"|trans|striptags }}">
+                <kbd class="doc-cmdk-esc">Esc</kbd>
+            </div>
+            <ul class="doc-cmdk-list" data-doc-cmdk-list></ul>
+            <p class="doc-cmdk-empty" data-doc-cmdk-empty hidden>{{ "Aucun résultat"|trans|raw }}</p>
+        </div>
+    </div>
+
+    {% block javascripts %}{{ encore_entry_script_tags('documentation', null, 'admin') }}{% endblock %}
 </body>
 </html>

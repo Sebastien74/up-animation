@@ -87,6 +87,7 @@
         "magnific-popup": "^1.2.0",
         "masonry-layout": "^4.2.2",
         "mc-datepicker": "^0.6.5",
+        "mermaid": "^11.15.0",
         "modernizr": "^3.13.1",
         "modernizr-loader": "^1.0.1",
         "moment": "^2.30.1",

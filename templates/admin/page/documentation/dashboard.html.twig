@@ -2,10 +2,13 @@
 
 {%- trans_default_domain 'admin' -%}
 
+{%- set docNavIcons = ['compass', 'shield-check', 'credit-card', 'cog', 'terminal', 'sitemap', 'database', 'server', 'stream', 'rocket'] -%}
+
 {%- block title -%}{{ "Documentation"|trans|striptags }}{%- endblock -%}
 
 {%- block body -%}
     <div class="doc-hero">
+        <span class="doc-hero-badge"><i class="icm-book-open" aria-hidden="true"></i></span>
         <h1 class="doc-hero-title">{{ "Documentation technique"|trans|raw }}</h1>
         <p class="doc-hero-text">{{ "Guides internes : déploiement, dépannage, services et API du projet."|trans|raw }}</p>
     </div>
@@ -16,25 +19,32 @@
         <div class="doc-grid">
             {%- for page in navPages -%}
                 <a class="doc-tile" href="{{ path('admin_documentation_page', {slug: page.slug}) }}">
-                    <span class="doc-tile-icon"><i class="icm-file-alt"></i></span>
-                    <span class="doc-tile-title">{{ page.title }}</span>
+                    <span class="doc-tile-head">
+                        <span class="doc-tile-icon"><i class="icm-{{ docNavIcons[loop.index0 % docNavIcons|length] }}" aria-hidden="true"></i></span>
+                        <span class="doc-tile-title">{{ page.title }}</span>
+                    </span>
                     {%- if page.excerpt -%}
                         <span class="doc-tile-excerpt">{{ page.excerpt }}</span>
                     {%- endif -%}
+                    <span class="doc-tile-more">{{ "Parcourir"|trans|raw }}</span>
                 </a>
             {%- endfor -%}
         </div>
     {%- endif -%}
 
     {%- if externalResources is defined and externalResources is not empty -%}
+        <p class="doc-grid-label">{{ "Outils & API"|trans|raw }}</p>
         <div class="doc-grid">
             {%- for resource in externalResources -%}
                 <a class="doc-tile" href="{{ path(resource.route) }}">
-                    <span class="doc-tile-icon"><i class="{{ resource.icon }}"></i></span>
-                    <span class="doc-tile-title">{{ resource.title }}</span>
+                    <span class="doc-tile-head">
+                        <span class="doc-tile-icon"><i class="{{ resource.icon }}" aria-hidden="true"></i></span>
+                        <span class="doc-tile-title">{{ resource.title }}</span>
+                    </span>
                     {%- if resource.excerpt -%}
                         <span class="doc-tile-excerpt">{{ resource.excerpt }}</span>
                     {%- endif -%}
+                    <span class="doc-tile-more">{{ "Parcourir"|trans|raw }}</span>
                 </a>
             {%- endfor -%}
         </div>

@@ -5,14 +5,22 @@
 {%- block title -%}{{ page.title|striptags }}{%- endblock -%}
 
 {%- block body -%}
-    <nav class="doc-breadcrumb" aria-label="{{ "Fil d'ariane"|trans }}">
-        <a href="{{ path('admin_documentation') }}">{{ "Documentation"|trans|raw }}</a>
-        <span class="doc-breadcrumb-sep">/</span>
-        <span class="doc-breadcrumb-current">{{ page.title }}</span>
-    </nav>
+    <div class="doc-page">
+        <article class="doc-article">
+            <nav class="doc-breadcrumb" aria-label="{{ "Fil d'ariane"|trans }}">
+                <a href="{{ path('admin_documentation') }}">{{ "Documentation"|trans|raw }}</a>
+                <span class="doc-breadcrumb-sep">/</span>
+                <span class="doc-breadcrumb-current">{{ page.title }}</span>
+            </nav>
 
-    <article class="doc-article">
-        <h1 class="doc-article-title">{{ page.title }}</h1>
-        <div class="doc-content">{{ page.markdown|markdown_to_html }}</div>
-    </article>
+            <h1 class="doc-article-title">{{ page.title }}</h1>
+
+            <div class="doc-content" data-doc-content>{{ page.markdown|markdown_to_html }}</div>
+        </article>
+
+        <aside class="doc-toc" data-doc-toc hidden>
+            <p class="doc-toc-title">{{ "Sur cette page"|trans|raw }}</p>
+            <nav class="doc-toc-nav" aria-label="{{ "Sur cette page"|trans|striptags }}"></nav>
+        </aside>
+    </div>
 {%- endblock -%}
