@@ -410,7 +410,7 @@ class ActionController extends FrontController
         if (method_exists($teaser, 'getCategories')) {
             foreach ($teaser->getCategories() as $category) {
                 if (!empty($renderCategories[$category->getId()])) {
-                    $categories[$category->getPosition()] = EntityModel::fromEntity($category, $this->coreLocator, ['disabledMedias' => true, 'disabledLayout', true])->response;
+                    $categories[$category->getPosition()] = EntityModel::fromEntity($category, $this->coreLocator, ['disabledMedias' => true, 'disabledLayout' => true])->response;
                 }
             }
         }
