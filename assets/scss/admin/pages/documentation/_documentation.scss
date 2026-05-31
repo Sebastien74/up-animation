@@ -11,7 +11,8 @@ $doc-sidebar-width: 288px !default;
 $doc-toc-width: 232px !default;
 $doc-content-max: 1100px !default;
 
-* {
+.doc-body,
+.doc-body * {
     box-sizing: border-box;
 }
 
@@ -809,8 +810,12 @@ $doc-content-max: 1100px !default;
     gap: $space-3;
     padding: $space-4;
     border-bottom: 1px solid $doc-border;
+    transition: border-color .15s ease;
 
     > i { color: $doc-accent; font-size: 1.15em; }
+
+    // Visible focus cue: the bare input drops its outline, so surface focus here.
+    &:focus-within { border-bottom-color: $doc-accent; }
 }
 
 .doc-cmdk-input {
@@ -883,7 +888,7 @@ $doc-content-max: 1100px !default;
     border-radius: $radius-xs;
 }
 
-// Honor user motion preferences (justified raw media query: a11y override).
+// override forcé : prefers-reduced-motion neutralise toutes les animations (a11y).
 @media (prefers-reduced-motion: reduce) {
     .doc-body *,
     .doc-body *::before,
