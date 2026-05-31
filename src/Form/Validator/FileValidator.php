@@ -7,6 +7,7 @@ namespace App\Form\Validator;
 use Symfony\Component\HttpFoundation\File\File as FileObject;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\Constraints\File as FileConstraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Exception\UnexpectedValueException;
@@ -126,7 +127,7 @@ class FileValidator extends ConstraintValidator
             if (!is_file($path)) {
                 $this->context->buildViolation($constraint->notFoundMessage)
                     ->setParameter('{{ file }}', $this->formatValue($path))
-                    ->setCode(File::NOT_FOUND_ERROR)
+                    ->setCode(FileConstraint::NOT_FOUND_ERROR)
                     ->addViolation();
 
                 return;
@@ -135,7 +136,7 @@ class FileValidator extends ConstraintValidator
             if (!is_readable($path)) {
                 $this->context->buildViolation($constraint->notReadableMessage)
                     ->setParameter('{{ file }}', $this->formatValue($path))
-                    ->setCode(File::NOT_READABLE_ERROR)
+                    ->setCode(FileConstraint::NOT_READABLE_ERROR)
                     ->addViolation();
 
                 return;
@@ -148,7 +149,7 @@ class FileValidator extends ConstraintValidator
                 $this->context->buildViolation($constraint->disallowEmptyMessage)
                     ->setParameter('{{ file }}', $this->formatValue($path))
                     ->setParameter('{{ name }}', $this->formatValue($basename))
-                    ->setCode(File::EMPTY_ERROR)
+                    ->setCode(FileConstraint::EMPTY_ERROR)
                     ->addViolation();
 
                 return;
@@ -165,7 +166,7 @@ class FileValidator extends ConstraintValidator
                         ->setParameter('{{ limit }}', $limitAsString)
                         ->setParameter('{{ suffix }}', $suffix)
                         ->setParameter('{{ name }}', $this->formatValue($basename))
-                        ->setCode(File::TOO_LARGE_ERROR)
+                        ->setCode(FileConstraint::TOO_LARGE_ERROR)
                         ->addViolation();
 
                     return;
@@ -197,15 +198,15 @@ class FileValidator extends ConstraintValidator
                     ->setParameter('{{ type }}', $this->formatValue($mime))
                     ->setParameter('{{ types }}', $this->formatValues($mimeTypes))
                     ->setParameter('{{ name }}', $this->formatValue($basename))
-                    ->setCode(File::INVALID_MIME_TYPE_ERROR)
+                    ->setCode(FileConstraint::INVALID_MIME_TYPE_ERROR)
                     ->addViolation();
             }
         }
     }
 
-    private static function moreDecimalsThan($double, $numberOfDecimals): bool
+    private static function moreDecimalsThan(string $double): bool
     {
-        return strlen((string)$double) > strlen((string)round($double, $numberOfDecimals));
+        return strlen($double) > strlen((string)round((float)$double, 2));
     }
 
     /**
@@ -226,7 +227,7 @@ class FileValidator extends ConstraintValidator
 
         // Restrict the limit to 2 decimals (without rounding! we
         // need the precise value)
-        while (self::moreDecimalsThan($limitAsString, 2)) {
+        while (self::moreDecimalsThan($limitAsString)) {
             $coef /= $coefFactor;
             $limitAsString = (string)($limit / $coef);
         }
