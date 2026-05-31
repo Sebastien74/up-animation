@@ -414,9 +414,12 @@ class AdminController extends BaseController
      */
     protected function delete(Request $request)
     {
-        if ($request->query->get('ajax')
-            && !$this->isCsrfTokenValid('delete_index', (string) $request->headers->get('X-CSRF-Token'))) {
-            return new JsonResponse(['success' => false, 'alert' => 'error', 'message' => 'Invalid CSRF token.'], Response::HTTP_FORBIDDEN);
+        $submittedToken = (string) ($request->headers->get('X-CSRF-Token') ?: $request->request->get('_token'));
+        if (!$this->isCsrfTokenValid('delete_index', $submittedToken)) {
+            if ($request->query->get('ajax')) {
+                return new JsonResponse(['success' => false, 'alert' => 'error', 'message' => 'Invalid CSRF token.'], Response::HTTP_FORBIDDEN);
+            }
+            return new Response('Invalid CSRF token.', Response::HTTP_FORBIDDEN);
         }
         if (!in_array('ROLE_DELETE', $this->getUser()->getRoles())) {
             $this->denyAccessUnlessGranted('ROLE_DELETE');
