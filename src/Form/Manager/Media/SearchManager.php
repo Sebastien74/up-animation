@@ -8,6 +8,7 @@ use App\Entity\Core\Website;
 use App\Entity\Media\Media;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -32,6 +33,7 @@ class SearchManager
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
         private readonly TokenStorageInterface  $tokenStorage,
+        private readonly LoggerInterface        $logger,
     )
     {
         $user = !empty($tokenStorage->getToken()) ? $this->tokenStorage->getToken()->getUser() : null;
@@ -75,6 +77,7 @@ class SearchManager
                     ->getQuery()
                     ->getResult();
             } catch (Exception $exception) {
+                $this->logger->warning('Media search query failed', ['exception' => $exception]);
             }
         } else {
             $result = $statement
