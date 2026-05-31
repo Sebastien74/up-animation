@@ -29,6 +29,21 @@ class FeatureValueRepository extends ServiceEntityRepository
     }
 
     /**
+     * Prime the EAGER collections (intls, mediaRelations) for the whole website.
+     *
+     * One batch query per collection warms the UnitOfWork so the per-value EAGER SELECTs of
+     * the getValues warmup do not fire.
+     */
+    public function primeWebsiteEager(Website $website): void
+    {
+        $id = $website->getId();
+        $this->createQueryBuilder('v')->leftJoin('v.intls', 'vi')->addSelect('vi')
+            ->andWhere('v.website = :w')->setParameter('w', $id)->getQuery()->getResult();
+        $this->createQueryBuilder('v')->leftJoin('v.mediaRelations', 'vmr')->addSelect('vmr')
+            ->andWhere('v.website = :w')->setParameter('w', $id)->getQuery()->getResult();
+    }
+
+    /**
      * Find one by Feature, Value slugs and WebsiteModel.
      *
      * @throws NonUniqueResultException

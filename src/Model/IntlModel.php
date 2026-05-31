@@ -367,6 +367,7 @@ final class IntlModel extends BaseModel
                 'disabledLayout' => true,
                 'disabledMedias' => true,
                 'disabledCategories' => true,
+                'disabledSubCategories' => true,
                 'disabledInfo' => true,
                 'disabledCategory' => true
             ]) : ViewModel::fromEntity($entity, self::$coreLocator);

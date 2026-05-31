@@ -86,7 +86,7 @@ final class ProductModel extends BaseModel
 
         $values['defaults'] = [];
         $values = !$disabledValues ? self::getValues($product, $catalogDb, $multiFeaturesValues, $defaultUniqFeatures, $options) : $values;
-        $subCategories = $onlyForUrl ? [] : self::getSubCategories($product, $options, $defaultUniqSubCategories);
+        $subCategories = $onlyForUrl || !empty($options['disabledSubCategories']) ? [] : self::getSubCategories($product, $options, $defaultUniqSubCategories);
 
         $disabledProducts = isset($options['disabledProducts']) && $options['disabledProducts'];
         $products = [];
@@ -253,6 +253,8 @@ final class ProductModel extends BaseModel
 
         if (!isset(self::$cache['featuresValues'])) {
             self::$cache['featuresValues'] = [];
+            self::$coreLocator->em()->getRepository(Catalog\Feature::class)->primeWebsiteEager($website->entity);
+            self::$coreLocator->em()->getRepository(Catalog\FeatureValue::class)->primeWebsiteEager($website->entity);
             $features = self::$coreLocator->em()->getRepository(Catalog\Feature::class)->findAllByWebsiteIterate($website);
             foreach ($features as $feature) {
                 self::$cache['features'][$feature->getId()] = self::$cache['features'][$feature->getId()] ?? EntityModel::fromEntity($feature, self::$coreLocator)->response;

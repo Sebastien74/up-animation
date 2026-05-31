@@ -29,6 +29,23 @@ class FeatureRepository extends ServiceEntityRepository
     }
 
     /**
+     * Prime the EAGER collections (intls, mediaRelations) and the values collection.
+     *
+     * Loaded per feature via separate SELECTs otherwise (EAGER not fetch-joinable through the
+     * iterate warmup); one batch query per single collection warms the UnitOfWork instead.
+     */
+    public function primeWebsiteEager(Website $website): void
+    {
+        $id = $website->getId();
+        $this->createQueryBuilder('f')->leftJoin('f.intls', 'fi')->addSelect('fi')
+            ->andWhere('f.website = :w')->setParameter('w', $id)->getQuery()->getResult();
+        $this->createQueryBuilder('f')->leftJoin('f.mediaRelations', 'fmr')->addSelect('fmr')
+            ->andWhere('f.website = :w')->setParameter('w', $id)->getQuery()->getResult();
+        $this->createQueryBuilder('f')->leftJoin('f.values', 'fv')->addSelect('fv')
+            ->andWhere('f.website = :w')->setParameter('w', $id)->getQuery()->getResult();
+    }
+
+    /**
      * Find by Website iterate.
      */
     public function findAllByWebsiteIterate(WebsiteModel $websiteModel): \Generator
