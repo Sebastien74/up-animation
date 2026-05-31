@@ -143,6 +143,7 @@ final class ConfigurationModel extends BaseModel
                 $pageIds[] = $page->getId();
             }
 
+            // Array hydration: must not load managed Page entities into the UoW (a reused partial page blanks title-driven blocks on first load).
             $dbPages = self::$coreLocator->em()->getRepository(Page::class)
                 ->createQueryBuilder('p')
                 ->innerJoin('p.urls', 'u')
@@ -150,17 +151,17 @@ final class ConfigurationModel extends BaseModel
                 ->setParameter('pageIds', $pageIds)
                 ->addSelect('u')
                 ->getQuery()
-                ->getResult();
+                ->getArrayResult();
 
             $cacheData = [];
             foreach ($dbPages as $page) {
-                $slug = $page->getSlug();
-                foreach ($page->getUrls() as $url) {
-                    if ($url->isOnline()) {
-                        $cacheData[$configuration->getId()][$url->getLocale()][$slug]['code'] = $url->getCode();
-                        $cacheData[$configuration->getId()][$url->getLocale()][$slug]['path'] = $page->isAsIndex()
+                $slug = $page['slug'];
+                foreach ($page['urls'] as $url) {
+                    if ($url['online']) {
+                        $cacheData[$configuration->getId()][$url['locale']][$slug]['code'] = $url['code'];
+                        $cacheData[$configuration->getId()][$url['locale']][$slug]['path'] = $page['asIndex']
                             ? rtrim(self::$coreLocator->router()->generate('front_index', [], 0), '/')
-                            : self::$coreLocator->router()->generate('front_index', ['url' => $url->getCode()], 0);
+                            : self::$coreLocator->router()->generate('front_index', ['url' => $url['code']], 0);
                     }
                 }
             }
