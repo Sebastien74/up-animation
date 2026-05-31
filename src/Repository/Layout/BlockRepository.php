@@ -230,6 +230,139 @@ class BlockRepository extends ServiceEntityRepository
         return $this->cache['block_type'][$cacheKey] = $result;
     }
 
+    /**
+     * Batch variant of findByBlockTypeAndLocaleLayout, keyed by layout id.
+     *
+     * @param int[] $layoutIds
+     *
+     * @return array<int, Block|null>
+     */
+    public function findByBlockTypeAndLayouts(array $layoutIds, string $blockType, string $locale, array $options = []): array
+    {
+        if (!$layoutIds) {
+            return [];
+        }
+        $asThumb = $options['asThumb'] ?? false;
+        $haveContent = $options['haveContent'] ?? false;
+
+        $statement = $this->createQueryBuilder('b')
+            ->leftJoin('b.blockType', 'bt')
+            ->leftJoin('b.intls', 'i')
+            ->leftJoin('b.col', 'c')
+            ->leftJoin('c.zone', 'z')
+            ->leftJoin('z.layout', 'l')
+            ->andWhere('bt.slug = :slug')
+            ->andWhere('i.locale = :locale')
+            ->andWhere('l.id IN (:layoutIds)')
+            ->setParameter('slug', $blockType)
+            ->setParameter('locale', $locale)
+            ->setParameter('layoutIds', $layoutIds)
+            ->addSelect('bt')
+            ->addSelect('i')
+            ->addSelect('c')
+            ->addSelect('z')
+            ->addSelect('l')
+            ->addOrderBy('b.position', 'ASC')
+            ->addOrderBy('z.position', 'ASC');
+
+        if ($haveContent && ('title' === $blockType || 'title-header' === $blockType)) {
+            $statement->andWhere('i.title IS NOT NULL');
+        } elseif ($haveContent) {
+            $statement->andWhere('i.body IS NOT NULL OR i.introduction IS NOT NULL');
+        }
+
+        $cacheKey = implode(',', $layoutIds).'-'.$blockType.'-'.$locale.'-'.($asThumb ? 'thumb' : 'no_thumb').'-'.($haveContent ? 'content' : 'no_content');
+        $blocks = $statement->getQuery()
+            ->enableResultCache(3600, 'block_type_batch_'.md5($cacheKey))
+            ->getResult();
+
+        $byLayout = [];
+        foreach ($blocks as $block) {
+            $layoutId = $block->getCol()?->getZone()?->getLayout()?->getId();
+            if (null !== $layoutId) {
+                $byLayout[$layoutId][] = $block;
+            }
+        }
+
+        $result = [];
+        foreach ($layoutIds as $layoutId) {
+            $layoutBlocks = $byLayout[$layoutId] ?? [];
+            $selected = $layoutBlocks[0] ?? null;
+            if ($asThumb) {
+                foreach ($layoutBlocks as $block) {
+                    if ($block->isUseForThumb()) {
+                        $selected = $block;
+                        break;
+                    }
+                }
+            }
+            $result[$layoutId] = $selected;
+        }
+
+        return $result;
+    }
+
+    /**
+     * Batch variant of findTitleByForceAndLocaleLayout ($all = false), keyed by layout id.
+     *
+     * @param int[] $layoutIds
+     *
+     * @return array<int, string|null>
+     */
+    public function findTitleByForceAndLayouts(array $layoutIds, string $locale, int $titleForce): array
+    {
+        if (!$layoutIds) {
+            return [];
+        }
+        $cacheKey = implode(',', $layoutIds).'-'.$locale.'-'.$titleForce;
+        $blocks = $this->createQueryBuilder('b')
+            ->leftJoin('b.intls', 'i')
+            ->leftJoin('b.col', 'c')
+            ->leftJoin('c.zone', 'z')
+            ->leftJoin('z.layout', 'l')
+            ->andWhere('i.titleForce = :titleForce')
+            ->andWhere('i.title IS NOT NULL')
+            ->andWhere('i.locale = :locale')
+            ->andWhere('l.id IN (:layoutIds)')
+            ->setParameter('titleForce', $titleForce)
+            ->setParameter('locale', $locale)
+            ->setParameter('layoutIds', $layoutIds)
+            ->addSelect('i')
+            ->addSelect('c')
+            ->addSelect('z')
+            ->addSelect('l')
+            ->addOrderBy('b.position', 'ASC')
+            ->addOrderBy('z.position', 'ASC')
+            ->getQuery()
+            ->enableResultCache(3600, 'block_title_layout_batch_'.md5($cacheKey))
+            ->getResult();
+
+        $byLayout = [];
+        foreach ($blocks as $block) {
+            $layoutId = $block->getCol()?->getZone()?->getLayout()?->getId();
+            if (null !== $layoutId && !isset($byLayout[$layoutId])) {
+                $byLayout[$layoutId] = $block;
+            }
+        }
+
+        $result = [];
+        foreach ($layoutIds as $layoutId) {
+            $block = $byLayout[$layoutId] ?? null;
+            $title = null;
+            if ($block) {
+                foreach ($block->getIntls() as $intl) {
+                    if ($locale === $intl->getLocale()) {
+                        $title = $intl->getTitle();
+                        break;
+                    }
+                }
+            }
+            $result[$layoutId] = $title;
+        }
+
+        return $result;
+    }
+
 //    /**
 //     * Find block text by locale & Page.
 //     *

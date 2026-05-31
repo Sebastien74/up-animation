@@ -574,7 +574,8 @@ class LayoutRuntime implements RuntimeExtensionInterface
         $layoutId = is_object($layout) ? $layout->getId() : $layout['id'];
         $cacheKey = $layoutId.'-'.$locale.'-'.($all ? 'all' : 'one');
 
-        if (isset($this->cache['main_title'][$cacheKey])) {
+        // array_key_exists, not isset: a cached null must short-circuit too.
+        if (array_key_exists($cacheKey, $this->cache['main_title'] ?? [])) {
             return $this->cache['main_title'][$cacheKey];
         }
 
@@ -594,6 +595,56 @@ class LayoutRuntime implements RuntimeExtensionInterface
         }
 
         return $this->cache['main_title'][$cacheKey] = $title;
+    }
+
+    /**
+     * Batch-warm the mainLayoutTitle() cache so per-layout calls become cache hits.
+     *
+     * @throws NonUniqueResultException|MappingException|QueryException|InvalidArgumentException
+     */
+    public function preloadMainLayoutTitles(array $layouts, ?string $locale = null): void
+    {
+        $locale = $locale ?: $this->coreLocator->request()->getLocale();
+
+        $pending = [];
+        foreach ($layouts as $layout) {
+            $layoutId = is_object($layout) ? $layout->getId() : ($layout['id'] ?? null);
+            if (null === $layoutId || array_key_exists($layoutId.'-'.$locale.'-one', $this->cache['main_title'] ?? [])) {
+                continue;
+            }
+            $pending[$layoutId] = $layout;
+        }
+        if (count($pending) < 2) {
+            return;
+        }
+
+        $repository = $this->coreLocator->em()->getRepository(Layout\Block::class);
+        $ids = array_keys($pending);
+
+        $titles = [];
+        $blocks = $repository->findByBlockTypeAndLayouts($ids, 'title', $locale, ['asThumb' => true, 'haveContent' => true]);
+        foreach ($ids as $layoutId) {
+            $block = $blocks[$layoutId] ?? null;
+            $intl = $block ? ViewModel::fromEntity($block, $this->coreLocator, ['disabledMedias' => true])->intl : null;
+            $titles[$layoutId] = $intl && $intl->title ? $intl->title : null;
+        }
+
+        foreach ([1, 2] as $force) {
+            $missing = array_keys(array_filter($titles, static fn ($title) => !$title));
+            if (!$missing) {
+                break;
+            }
+            $forced = $repository->findTitleByForceAndLayouts($missing, $locale, $force);
+            foreach ($missing as $layoutId) {
+                if (!empty($forced[$layoutId])) {
+                    $titles[$layoutId] = $forced[$layoutId];
+                }
+            }
+        }
+
+        foreach ($ids as $layoutId) {
+            $this->cache['main_title'][$layoutId.'-'.$locale.'-one'] = $titles[$layoutId] ?? null;
+        }
     }
 
     /**

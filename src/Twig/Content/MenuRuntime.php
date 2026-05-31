@@ -56,6 +56,13 @@ class MenuRuntime implements RuntimeExtensionInterface
             if (!$subNavigation && $page->getParent() instanceof Page) {
                 $subNavigation = $this->coreLocator->em()->getRepository(Page::class)->findOnlineAndLocaleByParent($page->getParent(), $locale, self::SAME_LEVEL);
             }
+            $layouts = [];
+            foreach ($subNavigation as $subNavigationItem) {
+                if ($subNavigationItem->getLayout()) {
+                    $layouts[] = $subNavigationItem->getLayout();
+                }
+            }
+            $this->layoutRuntime->preloadMainLayoutTitles($layouts);
             foreach ($subNavigation as $subNavigationItem) {
                 $title = $this->layoutRuntime->mainLayoutTitle($subNavigationItem->getLayout());
                 $model = ViewModel::fromEntity($subNavigationItem, $this->coreLocator, ['disabledIntl' => true, 'disabledMedias' => true]);
