@@ -23,6 +23,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @author Sébastien FOURNIER <fournier.sebastien@outlook.com>
  */
 #[ORM\Table(name: 'module_newscast')]
+#[ORM\Index(name: 'idx_newscast_website_publication', columns: ['website_id', 'publicationStart'])]
 #[ORM\Entity(repositoryClass: NewscastRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 #[ORM\AssociationOverrides([

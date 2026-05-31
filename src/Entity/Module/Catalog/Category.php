@@ -21,6 +21,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 #[ORM\Table(name: 'module_catalog_category')]
 #[ORM\Index(columns: ['slug'], flags: ['fulltext'])]
+#[ORM\Index(name: 'idx_category_website_position', columns: ['website_id', 'position'])]
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 class Category extends BaseEntity

@@ -23,6 +23,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @author Sébastien FOURNIER <fournier.sebastien@outlook.com>
  */
 #[ORM\Table(name: 'module_catalog_product')]
+#[ORM\Index(name: 'idx_product_website_position', columns: ['website_id', 'position'])]
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 #[ORM\AssociationOverrides([
