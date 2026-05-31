@@ -1,4 +1,13 @@
-.masked-wrap-primary, .masked-wrap-secondary {
+.masked-wrap-first,
+.masked-wrap-second,
+.masked-wrap-third,
+.masked-wrap-fourth,
+.masked-wrap-fifth,
+.masked-wrap-sixth,
+.masked-wrap-seventh,
+.masked-wrap-eighth,
+.masked-wrap-ninth,
+.masked-wrap-tenth {
     .img-loader-wrap,
     picture {
         width: 100%;
@@ -14,12 +23,52 @@
     }
 }
 
-.masked-wrap-primary {
+.masked-wrap-first {
     aspect-ratio: 1380.2 / 1089.58;
-    mask: url(../../../../medias/images/front/default/blob.svg) no-repeat center / 100% 100%;
+    mask: url(../../../../medias/images/front/default/blob-first.svg) no-repeat center / 100% 100%;
 }
 
-.masked-wrap-secondary {
+.masked-wrap-second {
     aspect-ratio: 5788.02 / 5361.34;
-    mask: url(../../../../medias/images/front/default/blob-secondary.svg) no-repeat center / 100% 100%;
+    mask: url(../../../../medias/images/front/default/blob-second.svg) no-repeat center / 100% 100%;
+}
+
+.masked-wrap-third {
+    aspect-ratio: 773 / 892;
+    mask: url(../../../../medias/images/front/default/blob-third.svg) no-repeat center / 100% 100%;
+}
+
+.masked-wrap-fourth {
+    aspect-ratio: 842 / 874;
+    mask: url(../../../../medias/images/front/default/blob-fourth.svg) no-repeat center / 100% 100%;
+}
+
+.masked-wrap-fifth {
+    aspect-ratio: 1050 / 885;
+    mask: url(../../../../medias/images/front/default/blob-fifth.svg) no-repeat center / 100% 100%;
+}
+
+.masked-wrap-sixth {
+    aspect-ratio: 777 / 1018;
+    mask: url(../../../../medias/images/front/default/blob-sixth.svg) no-repeat center / 100% 100%;
+}
+
+.masked-wrap-seventh {
+    aspect-ratio: 1000 / 1000;
+    mask: url(../../../../medias/images/front/default/blob-seventh.svg) no-repeat center / 100% 100%;
+}
+
+.masked-wrap-eighth {
+    aspect-ratio: 926 / 1001;
+    mask: url(../../../../medias/images/front/default/blob-eighth.svg) no-repeat center / 100% 100%;
+}
+
+.masked-wrap-ninth {
+    aspect-ratio: 1100 / 950;
+    mask: url(../../../../medias/images/front/default/blob-ninth.svg) no-repeat center / 100% 100%;
+}
+
+.masked-wrap-tenth {
+    aspect-ratio: 1000 / 1000;
+    mask: url(../../../../medias/images/front/default/blob-tenth.svg) no-repeat center / 100% 100%;
 }

@@ -118,7 +118,7 @@
 
 {%- elseif blockType == 'layout-media-secondary' and entity.mainMedia -%}
 
-    <div class="masked-wrap-secondary">
+    <div class="masked-wrap-second">
         {{ entity.mainMedia|file({}, {screensSizes: {
             mobile: {width: 639, height: 590},
             tablet: {width: 639, height: 590},
@@ -212,7 +212,7 @@
 
     {%- set mainMedia = entity.asAgency ? entity.mediasWithoutMain|first : entity.mainMedia -%}
     {%- if mainMedia -%}
-        <div class="masked-wrap masked-wrap-secondary image-wrap">{{ mainMedia|file(thumbSizes, {screensSizes: screensSizes}) }}</div>
+        <div class="masked-wrap masked-wrap-second image-wrap">{{ mainMedia|file(thumbSizes, {screensSizes: screensSizes}) }}</div>
     {%- endif -%}
 
 {%- elseif blockType == 'layout-catalog-lots-table' -%}

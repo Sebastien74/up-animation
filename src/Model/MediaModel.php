@@ -73,6 +73,7 @@ final class MediaModel extends BaseModel
         public readonly ?string $pictogram = null,
         public readonly ?int $pictogramMaxWidth = null,
         public readonly ?int $pictogramMaxHeight = null,
+        public readonly ?string $shape = null,
     ) {
     }
 
@@ -160,6 +161,7 @@ final class MediaModel extends BaseModel
             pictogram: $pictogram,
             pictogramMaxWidth: self::getContent('pictogramMaxWidth', $mediaRelation),
             pictogramMaxHeight: self::getContent('pictogramMaxHeight', $mediaRelation),
+            shape: self::getContent('shape', $mediaRelation),
         );
 
         if ($entity) {
