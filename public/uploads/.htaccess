@@ -1,6 +1,10 @@
 ErrorDocument 403 /denied.php
 
-<FilesMatch "\\.(php|txt|js)$">
-    Order Deny,Allow
-    Deny from all
+# Deny direct access to anything executable, whatever the PHP handler.
+# Require all denied runs in the authorization phase, before mod_php/PHP-FPM,
+# so it returns 403 regardless of how PHP is wired on the host. We avoid
+# php_flag/php_admin_flag on purpose: they are not allowed (or 500) under
+# restrictive AllowOverride on shared hosting, and this deny is enough.
+<FilesMatch "(?i)\.(php|phtml|phps|pht|php[0-9]|phar|cgi|pl|py|pyc|asp|aspx|sh|bash|exe|com|inc|htaccess)$">
+    Require all denied
 </FilesMatch>
