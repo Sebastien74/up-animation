@@ -40,8 +40,6 @@ class FormManager
      */
     public function prePersist(Form $form, Website $website): void
     {
-//        dd('générer un mail de confirmation automatique si pas existant.');
-
         $this->website = $website;
 
         if (!$form->getStepform()) {
