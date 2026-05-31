@@ -90,7 +90,11 @@ export default function (e, el) {
             }
 
             fetch(url, {
-                method: "DELETE"
+                method: "DELETE",
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-Token': trans.getAttribute('data-csrf-delete') || ''
+                }
             })
                 .then(response => {
                     if (!response.ok) {
