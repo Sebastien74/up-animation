@@ -1,11 +1,12 @@
 # Performance - Correctif N+1 du catalogue (home)
 
-Réduction du nombre de requêtes Doctrine sur la home front, de **235 à 79**
-(-66 %, temps DB ~243 ms -> ~155 ms), sans aucun changement de rendu.
+Réduction du nombre de requêtes Doctrine sur la home front, de **235 à 73**
+(-69 %, temps DB ~243 ms -> ~150 ms), sans aucun changement de rendu.
 
 Commits sur `main` :
 - `a7bf2842` - `onlyForUrl` honoré + amorçage des entités rendues (235 -> ~97)
 - `f763c08e` - menu : `disabledSubCategories` + amorçage EAGER features/values (97 -> 79)
+- layout : fetch-join de `b.actionIntls` (locale courante) dans le rendu des blocs (79 -> 73)
 
 > Périmètre : la **home** (`front_index`), qui assemble des blocs de layout. Le N+1
 > venait surtout du **menu de navigation** et de la **résolution de liens**, pas des
@@ -59,6 +60,16 @@ l'UnitOfWork, les accès `LAZY`/`EAGER` ultérieurs ne requêtent plus.
 - `FeatureRepository::primeWebsiteEager()` et `FeatureValueRepository::primeWebsiteEager()` :
   préchargent les collections `EAGER` (intls, mediaRelations) du site entier, appelés une fois
   dans le warmup de `getValues()`. `toIterable()` réutilise ensuite les entités amorcées.
+
+### 3. Layout : fetch-join des `actionIntls` des blocs
+
+La fonction Twig `intlAction(block)` (i18n) itère `block.actionIntls` pour trouver la traduction
+de la locale courante. Les blocs de la home étaient chargés sans cette collection
+(`PageRepository::optimizedQueryBuilder`), d'où un `SELECT` par bloc. Ajout de
+`leftJoin('b.actionIntls', 'bai', 'WITH', 'bai.locale = :locale')` + `addSelect`, en miroir du
+join `b.intls` déjà présent (hydratation partielle locale, sans produit cartésien notable).
+Bénéficie à toutes les pages front. Résultat caché 1 h (`findIndex`), donc penser au
+`cache:clear` pour valider.
 
 ---
 
