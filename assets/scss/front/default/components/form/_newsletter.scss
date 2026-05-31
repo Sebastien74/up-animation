@@ -207,3 +207,16 @@ $placeholder-color-news: $placeholder-color;
         }
     }
 }
+
+.newsletter-modal {
+
+    // Suppress Bootstrap's dark default glyph so the white icon-times shows through
+    .newsletter-modal-close {
+        opacity: 1;
+        background-image: none !important;
+
+        i {
+            color: $white;
+        }
+    }
+}
