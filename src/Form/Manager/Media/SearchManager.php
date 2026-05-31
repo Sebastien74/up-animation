@@ -75,7 +75,6 @@ class SearchManager
                     ->getQuery()
                     ->getResult();
             } catch (Exception $exception) {
-                //                dd($exception);
             }
         } else {
             $result = $statement

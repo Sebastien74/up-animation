@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Service\Development\Import;
 
 use App\Entity\Core\Website;
