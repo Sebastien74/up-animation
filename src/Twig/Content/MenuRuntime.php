@@ -47,7 +47,7 @@ class MenuRuntime implements RuntimeExtensionInterface
             $seo = $this->coreLocator->seoService()->execute($model->urlEntity, null, $this->coreLocator->locale(), true);
             $response['currentPage'] = array_merge((array) $model, [
                 'level' => $page->getLevel(),
-                'title' => !empty($seo['titleH1']) ? $seo['titleH1'] : $seo['title'],
+                'title' => is_array($seo) && !empty($seo['titleH1']) ? $seo['titleH1'] : ($seo['title'] ?? null),
                 'active' => $this->coreLocator->request()->getUri() === $model->url,
             ]);
             $locale = !$locale ? $this->coreLocator->request()->getLocale() : $locale;
@@ -68,7 +68,7 @@ class MenuRuntime implements RuntimeExtensionInterface
                 // seoService only feeds the title fallback: skip it when the layout title is set.
                 if (!$title) {
                     $seo = $this->coreLocator->seoService()->execute($model->urlEntity, null, $this->coreLocator->locale(), true);
-                    $title = !empty($seo['titleH1']) ? $seo['titleH1'] : $seo['title'];
+                    $title = is_array($seo) && !empty($seo['titleH1']) ? $seo['titleH1'] : ($seo['title'] ?? null);
                 }
                 $matches = $this->coreLocator->request()->getUri() ? explode('?', $this->coreLocator->request()->getUri()) : [];
                 $uri = !empty($matches[0]) ? $matches[0] : null;
