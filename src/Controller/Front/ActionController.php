@@ -282,6 +282,18 @@ class ActionController extends FrontController
     }
 
     /**
+     * Warm lazy collections for the entities about to be rendered.
+     *
+     * No-op by default; overridden per module (e.g. catalog products) to batch-load relations
+     * accessed during model building and avoid one SELECT per entity (N+1).
+     *
+     * @param array<object> $entities
+     */
+    protected function primeRenderEntities(array $entities, string $locale): void
+    {
+    }
+
+    /**
      * To get Teaser render.
      *
      * @throws ContainerExceptionInterface|InvalidArgumentException|MappingException|NonUniqueResultException|NotFoundExceptionInterface|ReflectionException|QueryException|Exception
@@ -302,6 +314,20 @@ class ActionController extends FrontController
         $locale = $request->getLocale();
         $listingService = $this->coreLocator->listingService();
         $entities = $listingService->findTeaserEntities($teaser, $locale, $this->classname, $this->website, false, $this->joins);
+
+        $flatEntities = [];
+        foreach ($entities as $entitiesGroup) {
+            if (is_iterable($entitiesGroup)) {
+                foreach ($entitiesGroup as $entity) {
+                    if (is_object($entity)) {
+                        $flatEntities[] = $entity;
+                    }
+                }
+            } elseif (is_object($entitiesGroup)) {
+                $flatEntities[] = $entitiesGroup;
+            }
+        }
+        $this->primeRenderEntities($flatEntities, $locale);
 
         /** To order past events in the bottom of an array */
         $orderBy = explode('-', $teaser->getOrderBy());

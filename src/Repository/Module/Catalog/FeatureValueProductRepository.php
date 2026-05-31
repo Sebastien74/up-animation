@@ -64,6 +64,9 @@ class FeatureValueProductRepository extends ServiceEntityRepository
     /**
      * Find by Product ids.
      *
+     * Also fetch-joins the related FeatureValue and its EAGER collections (intls,
+     * mediaRelations) so accessing them later does not fire one SELECT per FeatureValue.
+     *
      * @throws NonUniqueResultException
      */
     public function findByProductIds(array $products = []): array
@@ -73,10 +76,16 @@ class FeatureValueProductRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('fv')
             ->leftJoin('fv.product', 'p')
             ->leftJoin('fv.feature', 'f')
+            ->leftJoin('fv.value', 'vv')
+            ->leftJoin('vv.intls', 'vvi')
+            ->leftJoin('vv.mediaRelations', 'vvmr')
             ->andWhere('p.id IN (:ids)')
             ->setParameter('ids', $ids)
             ->addSelect('p')
             ->addSelect('f')
+            ->addSelect('vv')
+            ->addSelect('vvi')
+            ->addSelect('vvmr')
             ->getQuery()
             ->getResult();
     }

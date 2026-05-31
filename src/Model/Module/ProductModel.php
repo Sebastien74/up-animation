@@ -37,12 +37,33 @@ final class ProductModel extends BaseModel
      */
     public static function fromEntity(Catalog\Product $product, CoreLocatorInterface $coreLocator, array $options = []): object
     {
+        $onlyForUrl = !empty($options['onlyForUrl']);
+        if ($onlyForUrl) {
+            // Mirror CatalogModel: skip everything irrelevant to a link, but keep info
+            // (city/zipcode) and intl, which menu/footer renders of these models still use.
+            $options = array_merge([
+                'disabledValues' => true,
+                'disabledProducts' => true,
+                'disabledLayout' => true,
+                'disabledMedias' => true,
+                'disabledCategories' => true,
+                'disabledCategory' => true,
+                'disabledSubCategories' => true,
+                'disabledAgency' => true,
+            ], $options);
+        }
+
         $website = self::$coreLocator->website();
         $catalogDb = self::getContent('catalog', $product);
-        self::$cache['allProducts'] = array_key_exists('allProducts', self::$cache) ? self::$cache['allProducts']
-            : self::$coreLocator->em()->getRepository(Catalog\Product::class)->findOnlineByCatalogs($website->entity, self::$coreLocator->locale(), [$catalogDb]);
-        self::$cache['allValues'] = array_key_exists('allValues', self::$cache) ? self::$cache['allValues']
-            : self::$coreLocator->em()->getRepository(Catalog\FeatureValueProduct::class)->findByProductIds(self::$cache['allProducts']);
+
+        // Resolving a product link only needs the ViewModel (url, intl): skip the catalog-wide
+        // batch loads and the per-product collections that would otherwise trigger an N+1.
+        if (!$onlyForUrl) {
+            self::$cache['allProducts'] = array_key_exists('allProducts', self::$cache) ? self::$cache['allProducts']
+                : self::$coreLocator->em()->getRepository(Catalog\Product::class)->findOnlineByCatalogs($website->entity, self::$coreLocator->locale(), [$catalogDb]);
+            self::$cache['allValues'] = array_key_exists('allValues', self::$cache) ? self::$cache['allValues']
+                : self::$coreLocator->em()->getRepository(Catalog\FeatureValueProduct::class)->findByProductIds(self::$cache['allProducts']);
+        }
 
         $disabledLayout = isset($options['disabledLayout']) && $options['disabledLayout'];
         $disabledAgency = isset($options['disabledAgency']) && $options['disabledAgency'];
@@ -65,7 +86,7 @@ final class ProductModel extends BaseModel
 
         $values['defaults'] = [];
         $values = !$disabledValues ? self::getValues($product, $catalogDb, $multiFeaturesValues, $defaultUniqFeatures, $options) : $values;
-        $subCategories = self::getSubCategories($product, $options, $defaultUniqSubCategories);
+        $subCategories = $onlyForUrl ? [] : self::getSubCategories($product, $options, $defaultUniqSubCategories);
 
         $disabledProducts = isset($options['disabledProducts']) && $options['disabledProducts'];
         $products = [];
@@ -80,7 +101,7 @@ final class ProductModel extends BaseModel
         $mainPages = $website->configuration->pages;
         $contactPageUrl = !empty($mainPages['contact']) && $mainPages['contact']->code ? $mainPages['contact']->code : false;
         $contactPageParams = $contactPageUrl ? ['url' => $contactPageUrl, 'agence' => $model->slug] : [];
-        $displayCity = (array_key_exists('displayCity', $options) && $options['displayCity']) || self::$coreLocator->request()->attributes->get('agency');
+        $displayCity = !$onlyForUrl && ((array_key_exists('displayCity', $options) && $options['displayCity']) || self::$coreLocator->request()->attributes->get('agency'));
         $agencyQuery = self::$coreLocator->request()->attributes->get('agency') ? self::$coreLocator->request()->attributes->get('agency') : self::$coreLocator->request()->attributes->get('url');
         $agencyDb = $displayCity && $agencyQuery ? self::$coreLocator->em()->getRepository(Catalog\Product::class)->findByUrlAndLocale($agencyQuery, $website->entity, self::$coreLocator->locale())
             : false;

@@ -11,6 +11,7 @@ use App\Entity\Module\Catalog\FeatureValue;
 use App\Entity\Module\Catalog\Listing;
 use App\Entity\Module\Catalog\Product;
 use App\Entity\Module\Catalog\SubCategory;
+use App\Entity\Media\Media;
 use App\Model\Module\ProductModel;
 use App\Service\Interface\CoreLocatorInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -110,6 +111,100 @@ class ProductRepository extends ServiceEntityRepository
             ->setParameter('ids', $ids)
             ->getQuery()
             ->$method();
+    }
+
+    /**
+     * Prime the values collection.
+     *
+     * Hydrates Product.values (+ value, feature) for the whole set in one query so later
+     * $product->getValues() iterations hit the already-initialized collection instead of
+     * firing one SELECT per product (EXTRA_LAZY).
+     *
+     * @param array<Product> $products
+     */
+    public function primeValues(array $products): void
+    {
+        if (!$products) {
+            return;
+        }
+
+        $this->createQueryBuilder('p')
+            ->leftJoin('p.values', 'v')
+            ->leftJoin('v.value', 'vv')
+            ->leftJoin('v.feature', 'vf')
+            ->andWhere('p IN (:products)')
+            ->setParameter('products', $products)
+            ->addSelect('v')
+            ->addSelect('vv')
+            ->addSelect('vf')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * Prime every lazy collection accessed while building product view models.
+     *
+     * Products rendered on listing/teaser pages are loaded without their relations, so each
+     * ProductModel::fromEntity() triggers one SELECT per collection per product (N+1). One
+     * batch query per single collection (WHERE p IN (:ids)) warms the UnitOfWork without the
+     * cartesian product a single multi-collection JOIN would cause.
+     *
+     * @param array<Product> $products
+     */
+    public function primeForRendering(array $products, string $locale): void
+    {
+        if (!$products) {
+            return;
+        }
+
+        // FeatureValueProduct values (+ FeatureValue + Feature)
+        $this->createQueryBuilder('p')
+            ->leftJoin('p.values', 'v')->addSelect('v')
+            ->leftJoin('v.value', 'vv')->addSelect('vv')
+            ->leftJoin('v.feature', 'vf')->addSelect('vf')
+            ->andWhere('p IN (:products)')->setParameter('products', $products)
+            ->getQuery()->getResult();
+
+        // SubCategories (+ parent Category accessed in the model)
+        $this->createQueryBuilder('p')
+            ->leftJoin('p.subCategories', 'sc')->addSelect('sc')
+            ->leftJoin('sc.catalogcategory', 'scc')->addSelect('scc')
+            ->andWhere('p IN (:products)')->setParameter('products', $products)
+            ->getQuery()->getResult();
+
+        // Translations, current locale only
+        $this->createQueryBuilder('p')
+            ->leftJoin('p.intls', 'i')->addSelect('i')
+            ->andWhere('p IN (:products)')->setParameter('products', $products)
+            ->andWhere('i.locale = :locale OR i.locale IS NULL')->setParameter('locale', $locale)
+            ->getQuery()->getResult();
+
+        // Urls
+        $this->createQueryBuilder('p')
+            ->leftJoin('p.urls', 'u')->addSelect('u')
+            ->andWhere('p IN (:products)')->setParameter('products', $products)
+            ->getQuery()->getResult();
+
+        // Media relations (+ Media)
+        $this->createQueryBuilder('p')
+            ->leftJoin('p.mediaRelations', 'mr')->addSelect('mr')
+            ->leftJoin('mr.media', 'm')->addSelect('m')
+            ->andWhere('p IN (:products)')->setParameter('products', $products)
+            ->getQuery()->getResult();
+
+        // Media EAGER collections (thumbs + intls), batched once for the whole media set
+        $medias = [];
+        foreach ($products as $product) {
+            foreach ($product->getMediaRelations() as $mediaRelation) {
+                $media = $mediaRelation->getMedia();
+                if ($media) {
+                    $medias[$media->getId()] = $media;
+                }
+            }
+        }
+        if ($medias) {
+            $this->getEntityManager()->getRepository(Media::class)->primeThumbsAndIntls(array_values($medias));
+        }
     }
 
     /**

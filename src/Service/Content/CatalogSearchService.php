@@ -99,6 +99,7 @@ class CatalogSearchService implements CatalogSearchServiceInterface
         }
 
         $this->products = $this->coreLocator->em()->getRepository(Product::class)->findByIds($this->website, $this->locale, $this->products, $this->listing);
+        $this->primeRelations($this->products);
 //        $this->coreLocator->em()->clear();
         $this->cache['categories'] = !empty($this->cacheAll['categories']) ? $this->cacheAll['categories'] : [];
         //        $this->cache['products-categories'] = !empty($this->cacheAll['products-categories']) ? $this->cacheAll['products-categories'] : [];
@@ -116,6 +117,23 @@ class CatalogSearchService implements CatalogSearchServiceInterface
             'categories' => $categories,
             'subcategories' => $subCategories,
         ];
+    }
+
+    /**
+     * Warm the UnitOfWork for collections accessed while building product models.
+     *
+     * Avoids one SELECT per product (Product.values, EXTRA_LAZY) and per media
+     * (Media.thumbs / Media.intls, EAGER but not fetch-joined) further down the path.
+     *
+     * @param array<Product> $products
+     */
+    private function primeRelations(array $products): void
+    {
+        if (!$products) {
+            return;
+        }
+
+        $this->productRepository->primeForRendering($products, $this->locale);
     }
 
     /**

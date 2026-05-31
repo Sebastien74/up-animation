@@ -180,6 +180,17 @@ class CatalogController extends ActionController
     }
 
     /**
+     * Warm product relations for the teaser/listing render to avoid N+1.
+     */
+    protected function primeRenderEntities(array $entities, string $locale): void
+    {
+        $products = array_values(array_filter($entities, static fn ($entity) => $entity instanceof Catalog\Product));
+        if ($products) {
+            $this->coreLocator->em()->getRepository(Catalog\Product::class)->primeForRendering($products, $locale);
+        }
+    }
+
+    /**
      * Preview.
      *
      * @throws ContainerExceptionInterface|NotFoundExceptionInterface|MappingException|NonUniqueResultException|InvalidArgumentException

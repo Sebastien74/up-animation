@@ -28,6 +28,39 @@ class MediaRepository extends ServiceEntityRepository
     }
 
     /**
+     * Prime the EAGER collections (thumbs + intls).
+     *
+     * Both associations are mapped EAGER but are never fetch-joined when medias are loaded
+     * through product/media-relation joins, so Doctrine resolves them with one extra SELECT
+     * per media. Loading them in two batch queries warms the UnitOfWork instead. Split in two
+     * (rather than a single join) to avoid the thumbs x intls cartesian product.
+     *
+     * @param array<Media> $medias
+     */
+    public function primeThumbsAndIntls(array $medias): void
+    {
+        if (!$medias) {
+            return;
+        }
+
+        $this->createQueryBuilder('m')
+            ->leftJoin('m.thumbs', 't')
+            ->andWhere('m IN (:medias)')
+            ->setParameter('medias', $medias)
+            ->addSelect('t')
+            ->getQuery()
+            ->getResult();
+
+        $this->createQueryBuilder('m')
+            ->leftJoin('m.intls', 'mi')
+            ->andWhere('m IN (:medias)')
+            ->setParameter('medias', $medias)
+            ->addSelect('mi')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
      * Find too heavy files.
      *
      * @return array<Media>
