@@ -59,18 +59,19 @@ class FileSizeValidator extends ConstraintValidator
                     $isImage = @is_array($sizes);
                     $width = !empty($sizes[0]) ? $sizes[0] : null;
                     $height = !empty($sizes[1]) ? $sizes[1] : null;
+                    $name = $file->getClientOriginalName();
                     if (self::CHECK_WIDTH && $isImage && $width > $maxWidth) {
                         $violation = true;
-                        $message .= $this->translator->trans('Le fichier '.$file->getClientOriginalName().' est trop large ('.$width.'px). Sa largeur ne doit pas dépasser '.$maxWidth.'px.', [], 'validators_cms').'<br/>';
+                        $message .= $this->translator->trans('Le fichier %name% est trop large (%width%px). Sa largeur ne doit pas dépasser %maxWidth%px.', ['%name%' => $name, '%width%' => $width, '%maxWidth%' => $maxWidth], 'validators_cms').'<br/>';
                     }
                     if (self::CHECK_HEIGHT && $isImage && $height > $maxHeight) {
                         $violation = true;
-                        $message .= $this->translator->trans('Le fichier '.$file->getClientOriginalName().' est trop haut ('.$height.'px). Sa hauteur ne doit pas dépasser '.$maxHeight.'px.', [], 'validators_cms').'<br/>';
+                        $message .= $this->translator->trans('Le fichier %name% est trop haut (%height%px). Sa hauteur ne doit pas dépasser %maxHeight%px.', ['%name%' => $name, '%height%' => $height, '%maxHeight%' => $maxHeight], 'validators_cms').'<br/>';
                     }
                     if (self::CHECK_WEIGHT && $isImage && $file->getSize() > $maxSize) {
                         $violation = true;
                         $fileSizeBytes = $this->fileRuntime->formatBytes($file->getSize());
-                        $message .= $this->translator->trans('Le fichier '.$file->getClientOriginalName().' est trop volumineux ('.$fileSizeBytes.'). Sa taille ne doit pas dépasser '.$maxSizeBytes, [], 'validators_cms').'.<br/>';
+                        $message .= $this->translator->trans('Le fichier %name% est trop volumineux (%size%). Sa taille ne doit pas dépasser %maxSize%.', ['%name%' => $name, '%size%' => $fileSizeBytes, '%maxSize%' => $maxSizeBytes], 'validators_cms').'<br/>';
                     }
                 }
             }
