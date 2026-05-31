@@ -3,6 +3,11 @@
 {%- set title = pageTitle is defined ? pageTitle : (intl.title is defined ? intl.title : null) -%}
 {%- set city = city is defined ? city : null -%}
 {%- set disableImage = disableImage is defined ? disableImage : false -%}
+{%- set people = people is defined ? people : false -%}
+{%- set duration = duration is defined ? duration : false -%}
+{%- set age = age is defined ? age : false -%}
+{%- set environment = environment is defined ? environment : false -%}
+{%- set haveFeatures = people or duration or age or environment -%}
 
 {%- if title -%}
     {%- set animActive = false -%}
@@ -19,11 +24,6 @@
     {%- set bodyTitle = bodyTitle is defined ? bodyTitle : null -%}
     {%- set body = body is defined ? body : (intl.body is defined ? intl.body : null) -%}
     {%- set page = parentPage is defined and parentPage ? parentPage : (page is defined and page ? page : (seo.entity is defined ? seo.entity : null)) -%}
-    {%- set people = people is defined ? people : false -%}
-    {%- set duration = duration is defined ? duration : false -%}
-    {%- set age = age is defined ? age : false -%}
-    {%- set environment = environment is defined ? environment : false -%}
-    {%- set haveFetaures = people or duration or age or environment -%}
     {%- set isIndexPage = page and currentEntity.asIndex is not defined or page and currentEntity.asIndex is defined and not currentEntity.asIndex -%}
     {%- set currentEntity = seo.entity is defined ? (seo.entity is defined ? seo.entity : null) -%}
     {%- set contactUrl = contactUrl is defined ? contactUrl : null -%}
@@ -38,7 +38,7 @@
     {%- set displayBreadcrumb = (isIndexPage and configuration.breadcrumb and not isIndex) or (forceBreadcrumb is defined and forceBreadcrumb) -%}
     {%- set styleClass = styleClass is defined and styleClass ? styleClass : '' -%}
     {%- set styleClass = large and styleClass ? styleClass~' align-items-start as-large' : (large ? 'align-items-start as-large' : 'align-items-end') -%}
-    {%- set styleClass = haveFetaures ? styleClass~' have-features' : styleClass -%}
+    {%- set styleClass = haveFeatures ? styleClass~' have-features' : styleClass -%}
     <div class="title-header-block container position-relative{% if large %} as-large{% endif %}{% if backgroundColor %} {{ backgroundColor }}{% endif %}{% if styleClass %} {{ styleClass }}{% endif %}">
         <div class="row m-0">
             <div class="col-lg-6 col-xl-7 pe-xl-5 d-flex title-content position-relative">
@@ -127,7 +127,7 @@
     {%- endif -%}
 {%- endif -%}
 
-{%- if haveFetaures -%}
+{%- if haveFeatures -%}
     <div class="title-header-features container">
         <div class="row mx-0">
             <div class="col-lg-6 col-xl-7 pe-xl-5">
