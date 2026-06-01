@@ -154,10 +154,16 @@
                                                         {%- set cacheableFragmentActions = [
                                                             'App\\Controller\\Front\\Action\\SliderController::view',
                                                             'App\\Controller\\Front\\Action\\CatalogController::teaser',
+                                                            'App\\Controller\\Front\\Action\\CatalogController::teaserCategories',
                                                             'App\\Controller\\Front\\Action\\NewscastController::teaser',
                                                             'App\\Controller\\Front\\Action\\GalleryController::teaser',
                                                             'App\\Controller\\Front\\Action\\PortfolioController::teaser',
-                                                            'App\\Controller\\Front\\Action\\FaqController::teaser'
+                                                            'App\\Controller\\Front\\Action\\FaqController::teaser',
+                                                            'App\\Controller\\Front\\Action\\FaqController::view',
+                                                            'App\\Controller\\Front\\Action\\TimelineController::view',
+                                                            'App\\Controller\\Front\\Action\\TableController::view',
+                                                            'App\\Controller\\Front\\Action\\InformationController::view',
+                                                            'App\\Controller\\Front\\Action\\MapController::view'
                                                         ] -%}
                                                         {%- set fragmentCacheable = (action.controller ~ '::' ~ action.action) in cacheableFragmentActions and not granted('ROLE_ADMIN') and (preview ?? false) == false and app.request.query.all is empty -%}
                                                         {%- if fragmentCacheable -%}
