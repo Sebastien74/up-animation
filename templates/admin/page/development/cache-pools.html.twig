@@ -1,0 +1,72 @@
+{%- extends "admin/base.html.twig" -%}
+
+{%- trans_default_domain 'admin' -%}
+
+{%- set pageTitle = "Pools de cache"|trans -%}
+
+{%- block title -%}{{ pageTitle|htmlEntities }}{%- endblock -%}
+{%- block pageTitle -%}{{ pageTitle }}{%- endblock -%}
+
+{%- block stylesheets -%}
+    {{ parent() }}
+    {{ encore_entry_link_tags('admin-development', null, 'admin') }}
+{%- endblock -%}
+
+{%- block javascripts -%}
+    {{ parent() }}
+{%- endblock -%}
+
+{%- block body -%}
+
+    <div id="cache-pools-page" class="reveal-stagger pt-2 pb-5">
+
+        <section class="feature-panel panel-split mb-4 reveal">
+            <div class="panel-left">
+                <span class="panel-tag">{{ "Cache disque"|trans|raw }}</span>
+                <span class="panel-number">{{ usage.fileCount|number_format(0, ',', ' ') }}</span>
+                <span class="panel-unit">{{ usage.fileCount > 1 ? "fichiers"|trans|raw : "fichier"|trans|raw }}</span>
+            </div>
+            <div class="panel-body">
+                <h2 class="panel-headline">{{ "Pools de cache."|trans|raw }}</h2>
+                <p class="panel-desc">
+                    {{ "Total occupé sur le disque :"|trans|raw }} <strong>{{ usage.sizeBytes|formatBytes() }}</strong>.
+                    {{ "Videz un pool individuellement ou la totalité des caches Symfony."|trans|raw }}
+                </p>
+                <form method="post" action="{{ path('cache_pool_clear') }}" class="mt-3">
+                    <input type="hidden" name="_token" value="{{ csrf_token('admin_cache_pool_clear') }}">
+                    <input type="hidden" name="pool" value="__all__">
+                    <button type="submit" class="btn-app d-inline-flex align-items-center gap-2">
+                        <i class="icm-trash"></i><span>{{ "Tout vider"|trans|raw }}</span>
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <div class="section-label mb-3 reveal">
+            <span class="label-line" aria-hidden="true"></span>
+            <span class="label-text">{{ "Pools disponibles"|trans|raw }}</span>
+            <span class="label-aside">{{ pools|length }}</span>
+        </div>
+
+        <ul class="pools-list reveal">
+            {%- for pool in pools -%}
+                <li class="pool-item">
+                    <span class="pool-main">
+                        <span class="pool-icon" aria-hidden="true"><i class="icm-database"></i></span>
+                        <span class="pool-text">
+                            <span class="pool-name">{{ pool.label|trans|raw }}</span>
+                            <span class="pool-id">{{ pool.name }}</span>
+                        </span>
+                    </span>
+                    <form method="post" action="{{ path('cache_pool_clear') }}" class="pool-action">
+                        <input type="hidden" name="_token" value="{{ csrf_token('admin_cache_pool_clear') }}">
+                        <input type="hidden" name="pool" value="{{ pool.name }}">
+                        <button type="submit" class="btn-app small">{{ "Vider"|trans|raw }}</button>
+                    </form>
+                </li>
+            {%- endfor -%}
+        </ul>
+
+    </div>
+
+{%- endblock -%}

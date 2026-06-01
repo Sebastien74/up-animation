@@ -2007,6 +2007,11 @@ body {
             color: $info !important;
             background: rgba($info, .12) !important;
         }
+
+        &.badge-disabled {
+            color: $theme-text-muted !important;
+            background: rgba($theme-text-muted, .12) !important;
+        }
     }
 
     .scheduler-detail {
@@ -2456,6 +2461,34 @@ body {
 
     .size-sub-fill {
         background: rgba($theme-accent, .45) !important;
+    }
+}
+
+#cache-pools-page {
+
+    .pool-item {
+        background: $theme-card-bg !important;
+        border-color: $theme-border !important;
+
+        @include mediaQuery(min-lg) {
+
+            &:hover {
+                border-color: $theme-border-alt !important;
+            }
+        }
+    }
+
+    .pool-icon {
+        background: rgba($theme-accent, .12) !important;
+        color: $theme-accent !important;
+    }
+
+    .pool-name {
+        color: $theme-text !important;
+    }
+
+    .pool-id {
+        color: $theme-text-muted !important;
     }
 }
 

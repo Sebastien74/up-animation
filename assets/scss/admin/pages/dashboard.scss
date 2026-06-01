@@ -351,6 +351,16 @@
         line-height: 1.3;
     }
 
+    .hero-date-row {
+        display: inline-flex;
+        align-items: center;
+        gap: $space-3;
+    }
+
+    .hero-cache-form {
+        margin-bottom: 0;
+    }
+
     /*-----------------------------------
        7 ) Activity (charts side by side)
     -----------------------------------*/
@@ -885,6 +895,11 @@
         &.badge-lock {
             color: $info;
             background: rgba($info, .12);
+        }
+
+        &.badge-disabled {
+            color: $crumb-muted;
+            background: rgba($crumb-muted, .12);
         }
     }
 

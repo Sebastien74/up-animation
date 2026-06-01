@@ -168,7 +168,8 @@
                                                         {%- set fragmentCacheable = (action.controller ~ '::' ~ action.action) in cacheableFragmentActions and not granted('ROLE_ADMIN') and (preview ?? false) == false and app.request.query.all is empty -%}
                                                         {%- if fragmentCacheable -%}
                                                             {%- set fragmentVersion = website.entity.cacheClearDate ? website.entity.cacheClearDate.timestamp : 'na' -%}
-                                                            {% cache 'frag-' ~ action.action ~ '-' ~ block.id ~ '-' ~ app.request.locale ~ '-' ~ (seo.url.id ?? 'na') ~ '-' ~ fragmentVersion ttl(3600) %}
+                                                            {%- set blockVersion = block.updatedAt ? block.updatedAt.timestamp : 'na' -%}
+                                                            {% cache 'frag-' ~ action.action ~ '-' ~ block.id ~ '-' ~ app.request.locale ~ '-' ~ (seo.url.id ?? 'na') ~ '-' ~ fragmentVersion ~ '-' ~ blockVersion ttl(3600) %}
                                                                 {{ render_esi(controller( action.controller~'::'~action.action, {block: block.id, url: seo.url.id ?? null, filter: actionFilter, isIndex: isIndex, pageBg: pageBg} )) }}
                                                             {% endcache %}
                                                         {%- else -%}

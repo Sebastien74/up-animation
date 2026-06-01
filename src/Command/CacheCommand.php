@@ -57,4 +57,27 @@ class CacheCommand extends BaseCommand
             '--env' => $this->kernel->getEnvironment(),
         ]);
     }
+
+    /**
+     * Execute cache:pool:clear for a single pool.
+     */
+    public function clearPool(string $pool): string
+    {
+        return $this->execute([
+            'command' => 'cache:pool:clear',
+            'pools' => [$pool],
+        ]);
+    }
+
+    /**
+     * Execute cache:pool:clear --all.
+     */
+    public function clearAllPools(): string
+    {
+        return $this->execute([
+            'command' => 'cache:pool:clear',
+            'pools' => [],
+            '--all' => true,
+        ]);
+    }
 }

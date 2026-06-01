@@ -16,12 +16,15 @@ use App\Repository\Core\ScheduledCommandRepository;
 use App\Service\Core\ScheduledCommandLogReader;
 use App\Service\Core\ScheduledCommandReportService;
 use App\Service\Core\SlowRequestStatsService;
+use App\Service\Core\WebsiteCacheInvalidator;
 use Doctrine\DBAL\Exception as DBALException;
 use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * DashboardController.
@@ -98,6 +101,28 @@ class DashboardController extends AdminController
             'analyticsStats' => $analyticsStats,
             'scheduledTasks' => $scheduledCommandReport->getReport($website->entity),
         ]);
+    }
+
+    /**
+     * Invalidate the current website rendered cache (bumps cacheClearDate + clears cache.app).
+     */
+    #[Route('/dashboard/cache/invalidate/{website}', name: 'admin_website_cache_invalidate', defaults: ['website' => null], methods: 'POST')]
+    public function invalidateCache(
+        Request $request,
+        WebsiteCacheInvalidator $websiteCacheInvalidator,
+        TranslatorInterface $translator,
+    ): RedirectResponse {
+        $website = $this->getWebsite();
+
+        if (!$this->isCsrfTokenValid('admin_website_cache_invalidate', (string) $request->request->get('_token'))) {
+            $this->addFlash('error', $translator->trans('Token CSRF invalide.', [], 'admin'));
+            return $this->redirectToRoute('admin_dashboard', ['website' => $website->id]);
+        }
+
+        $websiteCacheInvalidator->invalidate($website->entity);
+        $this->addFlash('success', $translator->trans('Le cache du site a été invalidé.', [], 'admin'));
+
+        return $this->redirectToRoute('admin_dashboard', ['website' => $website->id]);
     }
 
     /**

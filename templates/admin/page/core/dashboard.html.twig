@@ -45,7 +45,15 @@
                     {{ greetingKey|trans }}{% if userFirstName %}, <span class="hero-name">{{ userFirstName }}</span>{% endif %}<span class="hero-mark">.</span>
                 </h1>
                 <div class="hero-meta">
-                    <span class="hero-date">{{ today|format_datetime(pattern='cccc d MMMM yyyy', locale=userLocale)|capitalize }}</span>
+                    <span class="hero-date-row">
+                        <span class="hero-date">{{ today|format_datetime(pattern='cccc d MMMM yyyy', locale=userLocale)|capitalize }}</span>
+                        <form method="post" action="{{ path('admin_website_cache_invalidate', {website: websiteId()}) }}" class="hero-cache-form">
+                            <input type="hidden" name="_token" value="{{ csrf_token('admin_website_cache_invalidate') }}">
+                            <button type="submit" class="btn-app small d-inline-flex align-items-center gap-2">
+                                <i class="icm-sync"></i><span>{{ "Vider le cache"|trans|raw }}</span>
+                            </button>
+                        </form>
+                    </span>
                     {%- if app.user.lastLogin is defined and app.user.lastLogin -%}
                         <span class="hero-last-login">
                             <i class="icm-clock"></i>
@@ -228,6 +236,13 @@
                             <span class="quick-icon"><i class="icm-code"></i></span>
                             <span class="quick-title">{{ "Swagger"|trans|raw }}</span>
                             <span class="quick-desc">{{ "Documentation de l'API REST"|trans|raw }}</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ path('cache_pools_index') }}" class="quick-tile">
+                            <span class="quick-icon"><i class="icm-crosshairs"></i></span>
+                            <span class="quick-title">{{ "Pools de cache"|trans|raw }}</span>
+                            <span class="quick-desc">{{ "Lister les caches du site"|trans|raw }}</span>
                         </a>
                     </li>
                 {%- endif -%}

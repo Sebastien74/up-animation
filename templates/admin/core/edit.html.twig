@@ -29,6 +29,20 @@
     {%- if granted('ROLE_LAYOUT_'~interface.name|upper) -%}
         <div id="layout-grid" class="mb-4">
             {%- set layout = entity.layout is defined and entity.layout ? entity.layout : null -%}
+            {%- if layout and layout.zones is not empty and interface.classname is defined and entity.id is defined and entity.id -%}
+                <div class="d-flex justify-content-end mb-3">
+                    <form method="post" action="{{ path('admin_entity_cache_invalidate') }}">
+                        <input type="hidden" name="_token" value="{{ csrf_token('admin_entity_cache_invalidate') }}">
+                        <input type="hidden" name="class" value="{{ interface.classname }}">
+                        <input type="hidden" name="id" value="{{ entity.id }}">
+                        <button type="submit" class="btn-app small d-inline-flex align-items-center gap-2"
+                                data-bs-toggle="tooltip"
+                                title="{{ "Régénère le cache public de cette fiche lors des prochaines visites"|trans|striptags }}">
+                            <i class="icm-sync"></i><span>{{ "Invalider le cache de cette fiche"|trans|raw }}</span>
+                        </button>
+                    </form>
+                </div>
+            {%- endif -%}
             {%- include 'admin/core/layout/zones.html.twig' -%}
         </div>
     {%- endif -%}
