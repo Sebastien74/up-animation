@@ -20,6 +20,7 @@ final readonly class ScheduledCommandDefinition
         public string $cronExpression,
         public string $description,
         public bool $active = false,
+        public bool $installByDefault = false,
     ) {
     }
 }

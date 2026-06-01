@@ -55,21 +55,20 @@ Commits concernés sur `main` :
 
 ## 4. Installer les tâches planifiées sur les sites existants
 
-- [ ] **Sites existants** (n'ont pas les tâches IG/TikTok ni la rotation cache en base) :
+- [ ] **Sites existants** (n'ont pas les tâches IG/TikTok ni les tâches cache en base) :
       `php bin/console app:scheduler:install --env=prod`
-      Pose les **5 voulues** actives (`app:analytics:rollup`, `app:analytics:purge`,
-      `cache:pool:prune`, `app:instagram:refresh-token`, `app:tiktok:refresh-token`) sur
-      **tous** les sites. Idempotent (skip ce qui existe déjà).
+      Pose les **6 livrées par défaut** : 5 actives (`app:analytics:rollup`,
+      `app:analytics:purge`, `cache:pool:prune`, `app:instagram:refresh-token`,
+      `app:tiktok:refresh-token`) **plus** `app:cache:reclaim` posée **inactive**
+      (grand ménage hebdomadaire, opt-in - cf. section 5). Sur **tous** les sites,
+      idempotent (skip ce qui existe déjà).
 - [ ] Variantes utiles :
   - Un seul site : `app:scheduler:install --website=ID --env=prod`
   - Toutes les définitions (10, avec leur état d'origine) : `--all`
   - Créées inactives (activation manuelle en admin ensuite) : `--disabled`
-- [ ] **`app:cache:reclaim` (grand ménage hebdomadaire)** : inactive par défaut, donc
-      **absente** de l'install standard. Pour qu'elle **existe en base et soit activable
-      en admin** sur un site existant, l'installer une fois avec `--all` (elle est posée
-      **inactive**, son état d'origine) : `app:scheduler:install --all --env=prod`
-      (ou `--website=ID --all`). Ne l'activer ensuite en admin que si la pression disque
-      le justifie (vague de cache-miss assumée, cf. section 5).
+- [ ] **`app:cache:reclaim` est donc déjà activable en admin** sans `--all` : l'install
+      standard la provisionne (inactive). Ne l'activer que si la pression disque le
+      justifie (vague de cache-miss assumée, cf. section 5).
 - [ ] **Nouveaux sites** : rien à faire, les fixtures (`CommandFixtures` via
       `ScheduledCommandCatalog`) posent **toutes** les définitions, dont `app:cache:reclaim`
       (inactive) ; les 5 voulues sont déjà actives.
