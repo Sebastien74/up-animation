@@ -128,6 +128,59 @@ ces blocs (sliders, teasers, menu).
 > `develop`** + profiler dev, pas du SQL (la DB est à ~17-27 ms). Mettre `xdebug.mode=off` hors
 > session de debug pour un local représentatif.
 
+### 6. Quels blocs sont cachables (référence)
+
+**Point clé d'architecture** : sur les ~40 types de `BlockType` (`BlockTypeFixtures`), **un seul
+passe par `render_esi(controller(...))` : `core-action`** (slug `core-action`, catégorie `core`).
+Tous les autres (`title`, `text`, `media`, `link`, `card`, `video`, `collapse`, `modal`, `alert`,
+`icon`, `counter`, `social-networks`, `zones-navigation`, les `layout-*` et les `form-*`) sont
+rendus **inline** via `renderBlock(_context)` : ils n'émettent pas de sous-requête, ils sont déjà
+dans la requête page (et son result-cache `findIndex` 1 h). **Le `{% cache %}` de la phase 5 ne les
+concerne donc pas** : il ne sert qu'à éviter la sous-requête HTTP des blocs `core-action`.
+
+Pour un bloc `core-action`, la sûreté dépend de **l'action** (`Action.controller::action`) qu'il
+invoque, pas du type de bloc. Classement des actions front :
+
+**CACHABLES sans réserve** (affichage statique, public, déterministe, ni CSRF, ni nonce, ni état
+utilisateur, ni dépendance à la query) :
+- `SliderController::view`
+- `CatalogController::teaser`, `CatalogController::teaserCategories`
+- `NewscastController::teaser`
+- `GalleryController::teaser`
+- `PortfolioController::teaser`
+- `FaqController::view`, `FaqController::teaser`
+- `TimelineController::view`
+- `TableController::view`
+- `InformationController::view`
+- `MapController::view` (markers statiques via `data-*`, pas de script inline nonce'd)
+
+**CACHABLES sous condition** :
+- `TabController::view` : OK **sauf si un onglet contient un formulaire** (alors CSRF figé).
+- `AgendaController::view` : contenu **temporel** (filtre « à partir de maintenant ») -> n'ajouter
+  qu'avec un TTL court, sinon des évènements passés restent affichés jusqu'à expiration.
+
+**JAMAIS CACHABLES** :
+- Formulaires (jeton CSRF + souvent nonce CSP) : `FormController::*`, `ContactController::contact`,
+  `NewsletterController::view`, `SearchController::view`/`results`, `RecruitmentController::index`,
+  `CustomizedController::zoneContactUs`.
+- Contenu utilisateur / session : `App\Controller\Security\Front\FrontController::*` (espace
+  personnel), `CatalogController::cart`, favoris.
+- Listes paginées / filtrées (la query string `?page`/`?filters`/`?text` n'est pas dans la clé) :
+  `CatalogController::index`/`search`, `NewscastController::index`, `GalleryController::index`,
+  `PortfolioController::index`.
+
+**Pourquoi pas tout cacher (whitelist, pas blacklist)** : un bloc n'est cachable que si sa sortie
+est identique pour tous les visiteurs anonymes d'une page. Cacher un formulaire fige son **jeton
+CSRF** (soumissions cassées) ; cacher un fragment à `csp_nonce()` fige un **nonce** qui ne
+correspondra plus à l'en-tête CSP (script bloqué) ; cacher du contenu utilisateur le **divulgue**
+à un autre ; cacher une liste paginée sert la mauvaise page. Une whitelist échoue en sécurité : un
+futur type de bloc n'est pas caché tant qu'il n'a pas été vérifié. Pour ajouter une action :
+vérifier absence de CSRF, de `csp_nonce()`, d'état utilisateur et de dépendance à la query, puis
+l'inscrire dans `cacheableFragmentActions` (`templates/front/default/include/zone.html.twig`).
+
+> Note : le garde `not granted('ROLE_ADMIN')` reste indispensable quel que soit l'élargissement -
+> les fragments rendent les overlays `WebmasterEdit` dont les liens portent le `security_token`.
+
 ---
 
 ## Mesurer (méthode de diagnostic)
