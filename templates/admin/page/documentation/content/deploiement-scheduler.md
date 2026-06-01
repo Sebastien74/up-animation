@@ -72,6 +72,13 @@ Commits concernés sur `main` :
 - [ ] **Nouveaux sites** : rien à faire, les fixtures (`CommandFixtures` via
       `ScheduledCommandCatalog`) posent **toutes** les définitions, dont `app:cache:reclaim`
       (inactive) ; les 5 voulues sont déjà actives.
+- [ ] **Auto-provisionnement** : `app:scheduler:install` reste utile pour un déploiement
+      immédiat, mais n'est plus obligatoire. À chaque run du scheduler,
+      `CronSchedulerService` appelle `ScheduledCommandInstaller::installMissing()` :
+      toute commande **du catalogue absente en base** est créée automatiquement (avec son
+      état par défaut), sur tous les sites, de façon idempotente. Une nouvelle commande
+      ajoutée au catalogue atteint donc les sites existants au prochain passage du web-cron,
+      sans intervention. Création tracée dans `var/log/cron-scheduler.log` (`[INSTALL]`).
 
 ## 5. Décisions de contenu à trancher AVANT prod
 

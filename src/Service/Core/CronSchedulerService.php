@@ -8,6 +8,7 @@ use App\Command\CronCommand;
 use App\Entity\Core\Domain;
 use App\Entity\Core\ScheduledCommand;
 use App\Entity\Core\Website;
+use App\Service\Development\ScheduledCommandInstaller;
 use Cron\CronExpression;
 use Doctrine\DBAL\ConnectionException;
 use Doctrine\ORM\EntityManagerInterface;
@@ -47,6 +48,7 @@ class CronSchedulerService
         private readonly EntityManagerInterface $entityManager,
         private readonly KernelInterface $kernel,
         private readonly MailerInterface $mailer,
+        private readonly ScheduledCommandInstaller $scheduledCommandInstaller,
     ) {
         $this->logPath = $kernel->getLogDir();
         if ($this->logPath) {
@@ -67,6 +69,7 @@ class CronSchedulerService
         $this->logger->info('[START] '.CronCommand::class);
         $this->logger->info('[START] '.CronSchedulerService::class);
 
+        $this->provisionMissingCommands();
         $this->releaseStaleLocks();
 
         $noneExecution = true;
@@ -110,6 +113,25 @@ class CronSchedulerService
         }
 
         $this->logger->info('[CLOSE] '.CronCommand::class.' executed.');
+    }
+
+    /**
+     * Auto-provision any catalog command missing from the database (idempotent).
+     *
+     * A newly shipped catalog command thus reaches existing websites on the next run,
+     * without a manual app:scheduler:install.
+     */
+    private function provisionMissingCommands(): void
+    {
+        try {
+            $created = $this->scheduledCommandInstaller->installMissing();
+            if ($created > 0) {
+                $this->logger->info('[INSTALL] '.$created.' missing scheduled command(s) provisioned.');
+            }
+        } catch (\Throwable $exception) {
+            // Provisioning must never abort a scheduler run.
+            $this->logger->error('[INSTALL] provisioning failed ('.$exception->getMessage().')');
+        }
     }
 
     /**

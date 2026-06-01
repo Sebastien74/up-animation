@@ -4,11 +4,8 @@ declare(strict_types=1);
 
 namespace App\Command;
 
-use App\Entity\Core\ScheduledCommand;
 use App\Entity\Core\Website;
-use App\Service\Core\Urlizer;
-use App\Service\Development\ScheduledCommandCatalog;
-use App\Service\Development\ScheduledCommandDefinition;
+use App\Service\Development\ScheduledCommandInstaller;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -36,7 +33,7 @@ final class SchedulerInstallCommand extends Command
 {
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
-        private readonly ScheduledCommandCatalog $catalog,
+        private readonly ScheduledCommandInstaller $installer,
     ) {
         parent::__construct();
     }
@@ -53,59 +50,22 @@ final class SchedulerInstallCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
 
-        $websiteRepository = $this->entityManager->getRepository(Website::class);
-        $scheduledRepository = $this->entityManager->getRepository(ScheduledCommand::class);
-
-        $criteria = [];
+        $website = null;
         if ($websiteId = $input->getOption('website')) {
-            $criteria['id'] = (int) $websiteId;
-        }
-        $websites = $websiteRepository->findBy($criteria);
-        if ([] === $websites) {
-            $io->warning('No website matched.');
+            $website = $this->entityManager->getRepository(Website::class)->find((int) $websiteId);
+            if (null === $website) {
+                $io->warning('No website matched.');
 
-            return Command::SUCCESS;
-        }
-
-        $definitions = $input->getOption('all') ? $this->catalog->all() : $this->catalog->defaults();
-        // --disabled forces inactive; otherwise each definition keeps its own default state.
-        $forceActive = $input->getOption('disabled') ? false : null;
-
-        $created = 0;
-        $skipped = 0;
-
-        foreach ($websites as $website) {
-            foreach ($definitions as $definition) {
-                $existing = $scheduledRepository->findOneBy([
-                    'website' => $website,
-                    'command' => $definition->command,
-                ]);
-                if (null !== $existing) {
-                    ++$skipped;
-                    continue;
-                }
-
-                $this->entityManager->persist($this->build($website, $definition, $forceActive));
-                ++$created;
+                return Command::SUCCESS;
             }
         }
 
-        $this->entityManager->flush();
+        // --disabled forces inactive; otherwise each definition keeps its own default state.
+        $forceActive = $input->getOption('disabled') ? false : null;
+        $created = $this->installer->installMissing($website, (bool) $input->getOption('all'), $forceActive);
 
-        $io->success(sprintf('%d scheduled command(s) created, %d already present.', $created, $skipped));
+        $io->success(sprintf('%d scheduled command(s) created.', $created));
 
         return Command::SUCCESS;
-    }
-
-    private function build(Website $website, ScheduledCommandDefinition $definition, ?bool $forceActive): ScheduledCommand
-    {
-        return (new ScheduledCommand())
-            ->setWebsite($website)
-            ->setAdminName($definition->name)
-            ->setCommand($definition->command)
-            ->setCronExpression($definition->cronExpression)
-            ->setDescription($definition->description)
-            ->setLogFile(Urlizer::urlize($definition->command).'.log')
-            ->setActive($forceActive ?? $definition->active);
     }
 }
