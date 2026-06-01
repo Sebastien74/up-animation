@@ -11,6 +11,13 @@ export default function (sliders) {
 
     if (sliders.length > 0) {
         import('../../../../scss/vendor/components/_splide.scss');
+        // Splide overrides (.btn-vertical, .with-thumbnails...) live in _carousel.scss,
+        // otherwise only loaded by the Bootstrap carousel module.
+        if (document.documentElement.dataset.theme === 'dark') {
+            import('../../../../scss/front/default/components/_carousel-dark.scss');
+        } else {
+            import('../../../../scss/front/default/components/_carousel-light.scss');
+        }
     }
 
     import('@splidejs/splide').then(({Splide: Splide}) => {
