@@ -62,7 +62,7 @@ Commits concernés sur `main` :
       **tous** les sites. Idempotent (skip ce qui existe déjà).
 - [ ] Variantes utiles :
   - Un seul site : `app:scheduler:install --website=ID --env=prod`
-  - Toutes les définitions (9, avec leur état d'origine) : `--all`
+  - Toutes les définitions (10, avec leur état d'origine) : `--all`
   - Créées inactives (activation manuelle en admin ensuite) : `--disabled`
 - [ ] **Nouveaux sites** : rien à faire, les fixtures (`CommandFixtures` via
       `ScheduledCommandCatalog`) posent déjà les 5 voulues actives.
@@ -83,9 +83,14 @@ Commits concernés sur `main` :
       Limite : les clés **versionnées sans TTL** (fragments `{% cache %}`, result-cache
       `page-*`/`layout-*` indexés par `cacheClearDate`) ne sont pas expirées au sens TTL ;
       leur reclaim reste géré par les invalidations existantes (`WebsiteCacheInvalidator`,
-      `CachePoolManager`, bump `cacheClearDate`). Pour un grand ménage périodique de ces
-      orphelins, planifier en plus un `cache:pool:clear cache.app` hebdomadaire (assumer la
-      vague de cache-miss qui suit) - non activé par défaut.
+      `CachePoolManager`, bump `cacheClearDate`).
+- [ ] **`app:cache:reclaim`** (`0 4 * * 0`, **inactive par défaut**) : grand ménage
+      hebdomadaire qui vide `cache.app` pour récupérer ces orphelins versionnés sans TTL.
+      Vide aussi les entrées valides -> **vague de cache-miss** (rebuild paresseux du
+      result-cache et des fragments). Volontairement **inactive** : à activer en admin
+      site par site **seulement si la pression disque le justifie**. Dimanche 4H (trafic
+      le plus bas) et déclenchée sur `kernel.terminate` (après la réponse), donc la requête
+      qui déclenche le cron n'est pas ralentie. Pas d'impact perf tant qu'elle reste inactive.
 
 ---
 
