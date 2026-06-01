@@ -97,6 +97,37 @@ Le N+1 résiduel venait des collections `EAGER` de `Media` (`thumbs`, `intls`) e
 > parente la charge de toute façon ; il faut donc la fetch-joindre **à ce moment-là**, sinon
 > tout amorçage séparé ultérieur est redondant.
 
+### 5. Cache de fragments des blocs statiques (~49 -> ~20 en anonyme)
+
+Les blocs `core-action` sont rendus via `render_esi(controller(...))` dans
+`templates/front/default/include/zone.html.twig`. Sans reverse-proxy, `render_esi` rend en
+inline -> la sous-requête (et ses requêtes SQL) s'exécute à chaque affichage.
+
+`twig/cache-extra` étant installé, on enveloppe le rendu des blocs **statiques sûrs** dans
+`{% cache clé ttl(3600) %}` : sur cache-hit, la sous-requête n'est pas exécutée du tout.
+
+- **Whitelist** (statique, public, sans CSRF/état utilisateur/pagination) : `SliderController::view`,
+  et les `teaser` de Catalog / Newscast / Gallery / Portfolio / Faq. Exclus : formulaires
+  (Contact, Form, Newsletter, Search -> CSRF), contenu utilisateur (espace sécurisé, panier,
+  favoris), listes paginées/filtrées (`index`/`search` -> query string absente de la clé).
+- **Clé** : `frag-{action}-{block.id}-{locale}-{url.id}-{cacheClearDate.timestamp}`. Le timestamp
+  de `website.cacheClearDate` (bumpé par `CacheInvalidationSubscriber` à chaque modif de contenu)
+  fait office de version : toute édition invalide les fragments. TTL 1 h en filet de sécurité.
+- **Garde de requête** : pas de cache si la requête porte des query params (`?page`, filtres...),
+  pour ne pas figer une variante sous une clé statique.
+- **Garde ROLE_ADMIN (sécurité, NE PAS retirer)** : les fragments cachables rendent les overlays
+  `WebmasterEdit` (visibles seulement en `ROLE_ADMIN`), dont les liens pointent vers des routes
+  `admin-%security_token%/...` qui **contiennent le jeton secret**. Mutualiser le cache entre
+  admin et visiteur divulguerait ce jeton au public si un admin réchauffe le cache en premier.
+  Donc : **admin = rendu live (non caché)**, visiteur = cache. Comportement volontaire.
+
+Résultat : home anonyme **~49 -> ~20 requêtes**. Bénéficie aussi aux autres pages partageant
+ces blocs (sliders, teasers, menu).
+
+> Rappel timing : le wall-time élevé en local (plusieurs secondes) vient de **Xdebug en mode
+> `develop`** + profiler dev, pas du SQL (la DB est à ~17-27 ms). Mettre `xdebug.mode=off` hors
+> session de debug pour un local représentatif.
+
 ---
 
 ## Mesurer (méthode de diagnostic)

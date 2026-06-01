@@ -150,13 +150,30 @@
                                                     {%- set actionIntls = block|intlAction -%}
                                                     {%- set actionFilter = actionIntls.actionFilter ?? null -%}
                                                     {%- if action and action.controller -%}
-                                                        {{ render_esi(controller( action.controller~'::'~action.action, {
-                                                        block: block.id,
-                                                        url: seo.url.id ?? null,
-                                                        filter: actionFilter,
-                                                        isIndex: isIndex,
-                                                        pageBg: pageBg
-                                                        } )) }}
+                                                        {# Cache-safe fragments only: static, public, no CSRF/user state/pagination. #}
+                                                        {%- set cacheableFragmentActions = [
+                                                            'App\\Controller\\Front\\Action\\SliderController::view',
+                                                            'App\\Controller\\Front\\Action\\CatalogController::teaser',
+                                                            'App\\Controller\\Front\\Action\\NewscastController::teaser',
+                                                            'App\\Controller\\Front\\Action\\GalleryController::teaser',
+                                                            'App\\Controller\\Front\\Action\\PortfolioController::teaser',
+                                                            'App\\Controller\\Front\\Action\\FaqController::teaser'
+                                                        ] -%}
+                                                        {%- set fragmentCacheable = (action.controller ~ '::' ~ action.action) in cacheableFragmentActions and not granted('ROLE_ADMIN') and (preview ?? false) == false and app.request.query.all is empty -%}
+                                                        {%- if fragmentCacheable -%}
+                                                            {%- set fragmentVersion = website.entity.cacheClearDate ? website.entity.cacheClearDate.timestamp : 'na' -%}
+                                                            {% cache 'frag-' ~ action.action ~ '-' ~ block.id ~ '-' ~ app.request.locale ~ '-' ~ (seo.url.id ?? 'na') ~ '-' ~ fragmentVersion ttl(3600) %}
+                                                                {{ render_esi(controller( action.controller~'::'~action.action, {block: block.id, url: seo.url.id ?? null, filter: actionFilter, isIndex: isIndex, pageBg: pageBg} )) }}
+                                                            {% endcache %}
+                                                        {%- else -%}
+                                                            {{ render_esi(controller( action.controller~'::'~action.action, {
+                                                                block: block.id,
+                                                                url: seo.url.id ?? null,
+                                                                filter: actionFilter,
+                                                                isIndex: isIndex,
+                                                                pageBg: pageBg
+                                                            } )) }}
+                                                        {%- endif -%}
                                                     {%- endif -%}
                                                 {%- elseif asLayout is defined and asLayout and blockCategory not in mainBlockCategories and template is defined -%}
                                                     {%- include template -%}
