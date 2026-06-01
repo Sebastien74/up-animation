@@ -98,7 +98,9 @@ class CatalogController extends ActionController
         $this->setTemplate('catalog/view.html.twig');
         $this->setClassname(Catalog\Product::class);
         $this->setModel(ProductModel::class);
-        $this->setModelOptions([]);
+        // Related products are rendered from the controller's associatedEntities; the model's
+        // own products tree is unused on the view, so skip its per-product sub-model build.
+        $this->setModelOptions(['disabledProducts' => true]);
         $this->setListingClassname(Catalog\Listing::class);
         $this->setAssociatedThumbMethod('catalog');
         $this->setAssociatedEntitiesProperties(['catalog']);

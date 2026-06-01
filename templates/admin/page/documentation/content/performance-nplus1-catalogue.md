@@ -197,28 +197,40 @@ inline** par `renderBlock`. Conséquences :
   si on y colle un embed tiers à jeton/par-utilisateur (cas limite, déjà couvert tel quel par le
   result-cache aujourd'hui).
 
-### 7. Fiche produit (vue détail) : amorçage manquant sur `getView`
+### 7. Fiche produit (vue détail) : N+1 sur les produits liés (~154 -> ~83 anonyme)
 
-La home était optimisée, mais la **vue détail** (`CatalogController::view` ->
-`ActionController::getView`, ~57 requêtes anonyme) ne profitait pas du même amorçage. Cause :
-`getTeaser` appelle `primeRenderEntities()` (-> `ProductRepository::primeForRendering`), **pas
-`getView`**. La fiche subissait donc une cascade `LAZY` sur le produit courant **et** sur chaque
-produit associé (`getAssociatedEntities` reconstruit un `ProductModel` complet par produit lié).
+Mesuré au profiler (panneau `db`, **anonyme**, cache vidé) sur une fiche riche
+(`/types-d-evenements/fiche-produit/animation-anniversaire-d-entreprise`) :
+**~154 -> ~83 requêtes**, sans changement de rendu (vérifié : section produits associés intacte).
 
-Correctif (sans changement de rendu, l'amorçage ne fait que charger des collections déjà
-accédées ensuite) :
-- `ActionController::getView` : `$this->primeRenderEntities([$entity], $locale)` avant le
-  `ProductModel::fromEntity` du produit courant.
-- `ActionController::getAssociatedEntities` : `$this->primeRenderEntities($allAssociatedEntities,
-  $locale)` **avant** la boucle `fromEntity` -> les produits associés sont préchargés en **un lot**
-  (values+features, sous-catégories, intls, urls, médias+thumbs) au lieu de N x ~5 requêtes.
+> Important : profiler **en anonyme**. Connecté en admin, la même page montait à ~155 (cache de
+> fragments contourné + overlays `WebmasterEdit`) - ce n'est pas l'expérience visiteur.
 
-`primeRenderEntities` est un **no-op** hors catalogue (surcharge uniquement dans
-`CatalogController`), donc aucun effet de bord sur Newscast/Portfolio/etc.
+**Cause racine** (backtraces) : `ProductModel::fromEntity` construit un **arbre de produits liés**
+(`foreach ($product->getProducts())`, propriété `products` du modèle). Or cette propriété
+**n'est pas rendue sur la vue** (les produits associés affichés viennent de
+`ActionController::getAssociatedEntities`, pas de `entity.products`). Chaque produit lié était
+donc bâti en modèle complet (values, sous-catégories, intls, url, médias) pour rien, en `LAZY`
+par produit.
 
-> Mesure : non vérifiée en local (données multi-sites + redirections empêchaient un rendu propre
-> de la fiche). À confirmer au profiler (panneau `db`) sur une fiche qui rend : `cache:clear`,
-> 2-3 hits à chaud, comparer le nombre de requêtes avant/après.
+**Correctifs** :
+- `CatalogController::view` : `setModelOptions(['disabledProducts' => true])` -> le modèle
+  principal ne construit plus l'arbre `products` inutilisé (gros gain : supprime le N+1 par
+  produit lié).
+- `ActionController::getAssociatedEntities` : les cartes associées (rendu = titre + url +
+  vignette) sont bâties **légères** (`disabledValues`, `disabledSubCategories`, `disabledProducts`)
+  + amorçage en lot via `primeRenderEntities()` avant la boucle.
+- `ActionController::getView` : amorçage du produit courant (`primeRenderEntities([$entity])`)
+  avant `fromEntity`.
+
+`primeRenderEntities` / ces flags sont **no-op / ignorés hors catalogue** (surcharge et options
+lues uniquement par `CatalogController` / `ProductModel`), donc aucun effet de bord
+Newscast/Portfolio/etc.
+
+**Restes connus** (gain plus faible, non traités) : `upa_layout_block_intls` chargés par bloc
+(`IntlModel::intlByCollection`, ~9x, générique à toutes les pages à layout) ; un bloc
+`CustomizedController::zoneContactUs` qui bâtit lui aussi un `ProductModel` avec son arbre
+`products` (~4x). À reprendre si besoin (même levier : `disabledProducts`).
 
 ---
 

@@ -766,8 +766,16 @@ class ActionController extends FrontController
         $indexPagesCodes = $listingService->indexesPages($request->getLocale(), $this->listingClassname, $classname);
 
         $this->primeRenderEntities($allAssociatedEntities, $request->getLocale());
+        // Associated cards render title + url + thumbnail only: skip values, subcategories
+        // and the recursive associated-products build (teaser-grade, avoids per-card N+1).
         foreach ($allAssociatedEntities as $associatedEntity) {
-            $result[] = ($this->model)::fromEntity($associatedEntity, $this->coreLocator, ['entitiesIds' => $entitiesIds, 'disableMediasLayout' => true]);
+            $result[] = ($this->model)::fromEntity($associatedEntity, $this->coreLocator, [
+                'entitiesIds' => $entitiesIds,
+                'disableMediasLayout' => true,
+                'disabledValues' => true,
+                'disabledSubCategories' => true,
+                'disabledProducts' => true,
+            ]);
             $indexPages[$associatedEntity->getId()] = !empty($indexPagesCodes[$associatedEntity->getId()]) ? $indexPagesCodes[$associatedEntity->getId()] : null;
         }
 
