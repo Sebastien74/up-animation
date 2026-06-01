@@ -55,17 +55,17 @@ Commits concernés sur `main` :
 
 ## 4. Installer les tâches planifiées sur les sites existants
 
-- [ ] **Sites existants** (n'ont pas les tâches IG/TikTok en base) :
+- [ ] **Sites existants** (n'ont pas les tâches IG/TikTok ni la rotation cache en base) :
       `php bin/console app:scheduler:install --env=prod`
-      Pose les **4 voulues** actives (`app:analytics:rollup`, `app:analytics:purge`,
-      `app:instagram:refresh-token`, `app:tiktok:refresh-token`) sur **tous** les sites.
-      Idempotent (skip ce qui existe déjà).
+      Pose les **5 voulues** actives (`app:analytics:rollup`, `app:analytics:purge`,
+      `cache:pool:prune`, `app:instagram:refresh-token`, `app:tiktok:refresh-token`) sur
+      **tous** les sites. Idempotent (skip ce qui existe déjà).
 - [ ] Variantes utiles :
   - Un seul site : `app:scheduler:install --website=ID --env=prod`
-  - Toutes les définitions (8, avec leur état d'origine) : `--all`
+  - Toutes les définitions (9, avec leur état d'origine) : `--all`
   - Créées inactives (activation manuelle en admin ensuite) : `--disabled`
 - [ ] **Nouveaux sites** : rien à faire, les fixtures (`CommandFixtures` via
-      `ScheduledCommandCatalog`) posent déjà les 4 voulues actives.
+      `ScheduledCommandCatalog`) posent déjà les 5 voulues actives.
 
 ## 5. Décisions de contenu à trancher AVANT prod
 
@@ -76,6 +76,16 @@ Commits concernés sur `main` :
       du trafic).
 - [ ] `security:password:expire` et `app:feed:sync` (social wall) : inactives par défaut,
       activer en admin seulement si besoin sur l'env.
+- [ ] **`cache:pool:prune`** (`45 3 * * *`, active) : rien à trancher, **non destructive**.
+      C'est la « rotation » du cache : supprime uniquement les entrées **expirées** (TTL
+      dépassé) des pools filesystem (`cache.app`, `doctrine.result_cache_pool`, ...). Ne
+      vide jamais d'entrée valide, in-process (pas de `shell_exec`), donc sûre en mutualisé.
+      Limite : les clés **versionnées sans TTL** (fragments `{% cache %}`, result-cache
+      `page-*`/`layout-*` indexés par `cacheClearDate`) ne sont pas expirées au sens TTL ;
+      leur reclaim reste géré par les invalidations existantes (`WebsiteCacheInvalidator`,
+      `CachePoolManager`, bump `cacheClearDate`). Pour un grand ménage périodique de ces
+      orphelins, planifier en plus un `cache:pool:clear cache.app` hebdomadaire (assumer la
+      vague de cache-miss qui suit) - non activé par défaut.
 
 ---
 
