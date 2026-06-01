@@ -125,6 +125,24 @@ Commits concernés sur `main` :
 - [ ] Confirmer que `app:instagram:refresh-token` et `app:tiktok:refresh-token`
       s'exécutent sans erreur (codes retour `0` dans `lastReturnCode` au dashboard).
 
+### Rendu des nouvelles tâches cache (vérif visuelle)
+
+> Prérequis : avoir **rebuildé les assets** (`yarn build`) - le badge « Désactivée » est
+> du SCSS compilé (`admin-dashboard` + `admin-light`). Sans rebuild, le badge s'affiche
+> plat. Faire exister les lignes en base via `app:scheduler:install --env=prod`
+> (déterministe) ou en générant du trafic (auto-provision, tracé `[INSTALL]`).
+
+- [ ] **`cache:pool:prune`** dans « Tâches planifiées » : nom « Rotation du cache expiré »,
+      cron `45 3 * * *`, Prochaine cohérente (prochain 03:45), badge **En attente** tant
+      qu'elle n'a pas tourné, puis **À jour** (code retour `0`) après le premier passage.
+- [ ] **`app:cache:reclaim`** : nom « Grand ménage du cache (hebdomadaire) », cron
+      `0 4 * * 0`, Dernière = « jamais », Prochaine = **-**, badge **Désactivée**.
+- [ ] **Badge « Désactivée »** : pastille à teinte muette (pas plate), distincte de
+      ok/échec/attente. **Basculer le thème clair/sombre** et vérifier les deux rendus.
+- [ ] **Débordement** : le libellé long « Grand ménage du cache (hebdomadaire) » se tronque
+      en ellipsis, sans chevaucher la commande en dessous ni les colonnes voisines. Vérifier
+      aussi en **viewport étroit** (la grille scheduler se replie au breakpoint).
+
 ---
 
 ## 6 bis. Cron système (optionnel - précision à la minute)
