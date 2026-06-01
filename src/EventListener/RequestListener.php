@@ -17,6 +17,7 @@ use Symfony\Component\Cache\Adapter\PhpArrayAdapter;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 
@@ -73,6 +74,12 @@ class RequestListener
 
         $this->session = $this->request->getSession();
         $this->website = $this->coreLocator->website();
+
+        if ($this->request->query->has('simule_error') && ($this->coreLocator->isDebug() || $this->coreLocator->checkIP($this->website))) {
+            $this->event->setResponse($this->simulateError());
+            return;
+        }
+
         $this->coreLocator->lastRoute()->execute($event);
         $this->coreLocator->cacheService()->generateRoutes();
         
@@ -92,6 +99,22 @@ class RequestListener
         if (!$this->event->getResponse()) {
             $this->userChecker->execute($event, $this->website);
         }
+    }
+
+    /**
+     * Render the standalone branded HTTP error page (dev helper, debug/allowed IP only).
+     */
+    private function simulateError(): Response
+    {
+        $statusCode = (int) $this->request->query->get('simule_error') ?: 500;
+        $detail = $this->coreLocator->isDebug() ? sprintf('Simulated HTTP %d from %s', $statusCode, $this->request->getRequestUri()) : null;
+        $homeUrl = $this->request->getSchemeAndHttpHost();
+        $isDebug = $this->coreLocator->isDebug();
+
+        ob_start();
+        require dirname(__DIR__, 2).'/config/http_error.php';
+
+        return new Response((string) ob_get_clean(), $statusCode);
     }
 
     /**
