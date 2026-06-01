@@ -181,6 +181,22 @@ l'inscrire dans `cacheableFragmentActions` (`templates/front/default/include/zon
 > Note : le garde `not granted('ROLE_ADMIN')` reste indispensable quel que soit l'élargissement -
 > les fragments rendent les overlays `WebmasterEdit` dont les liens portent le `security_token`.
 
+#### Cas des blocs `getContentBlocks()`
+Vérifié : **aucun** template `templates/front/default/blocks/*` ne contient `render_esi`,
+`controller(`, `csrf`, `csp_nonce()`, `app.user`, `app.request.query` ni `app.session`. Tous
+ces blocs (`title-header`, `title`, `text`, `media`, `link`, `video`, `card`, `blockquote`,
+`collapse`, `modal`, `alert`, `icon`, `separator`, `widget`, `counter`, `social-networks`,
+`zones-navigation`, `file`, `share`, et le slug `action`/« Module ») sont **statiques et rendus
+inline** par `renderBlock`. Conséquences :
+- Ils n'émettent **aucune sous-requête** : ils sont déjà dans la requête page (et son result-cache
+  `findIndex` 1 h). Les cacher via `{% cache %}` n'apporterait **aucun gain de requêtes**, juste un
+  peu de temps de rendu Twig (marginal ; la lenteur locale vient de Xdebug, pas de Twig).
+- Le **seul** de cette liste concerné par le cache de fragments est `core-action` (cf. tableau
+  des actions ci-dessus).
+- Seul bémol théorique : `widget` rend du code libre saisi en admin ; déterministe par bloc, sauf
+  si on y colle un embed tiers à jeton/par-utilisateur (cas limite, déjà couvert tel quel par le
+  result-cache aujourd'hui).
+
 ---
 
 ## Mesurer (méthode de diagnostic)
