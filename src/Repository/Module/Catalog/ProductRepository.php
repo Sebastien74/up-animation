@@ -11,7 +11,6 @@ use App\Entity\Module\Catalog\FeatureValue;
 use App\Entity\Module\Catalog\Listing;
 use App\Entity\Module\Catalog\Product;
 use App\Entity\Module\Catalog\SubCategory;
-use App\Entity\Media\Media;
 use App\Model\Module\ProductModel;
 use App\Service\Interface\CoreLocatorInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -185,26 +184,15 @@ class ProductRepository extends ServiceEntityRepository
             ->andWhere('p IN (:products)')->setParameter('products', $products)
             ->getQuery()->getResult();
 
-        // Media relations (+ Media)
+        // Media relations (+ Media and its EAGER thumbs/intls). Joining both here initializes the
+        // collections on first hydration; otherwise each media fires its own SELECT (N+1).
         $this->createQueryBuilder('p')
             ->leftJoin('p.mediaRelations', 'mr')->addSelect('mr')
             ->leftJoin('mr.media', 'm')->addSelect('m')
+            ->leftJoin('m.thumbs', 'mt')->addSelect('mt')
+            ->leftJoin('m.intls', 'mi')->addSelect('mi')
             ->andWhere('p IN (:products)')->setParameter('products', $products)
             ->getQuery()->getResult();
-
-        // Media EAGER collections (thumbs + intls), batched once for the whole media set
-        $medias = [];
-        foreach ($products as $product) {
-            foreach ($product->getMediaRelations() as $mediaRelation) {
-                $media = $mediaRelation->getMedia();
-                if ($media) {
-                    $medias[$media->getId()] = $media;
-                }
-            }
-        }
-        if ($medias) {
-            $this->getEntityManager()->getRepository(Media::class)->primeThumbsAndIntls(array_values($medias));
-        }
     }
 
     /**

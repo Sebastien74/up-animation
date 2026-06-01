@@ -1,7 +1,7 @@
 # Performance - Correctif N+1 du catalogue (home)
 
-Réduction du nombre de requêtes Doctrine sur la home front, de **235 à 73**
-(-69 %, temps DB ~243 ms -> ~150 ms), sans aucun changement de rendu.
+Réduction du nombre de requêtes Doctrine sur la home front, de **235 à ~49**
+(première passe 235 -> 73, deuxième passe médias 73 -> ~49), sans aucun changement de rendu.
 
 Commits sur `main` :
 - `a7bf2842` - `onlyForUrl` honoré + amorçage des entités rendues (235 -> ~97)
@@ -71,6 +71,32 @@ join `b.intls` déjà présent (hydratation partielle locale, sans produit cart�
 Bénéficie à toutes les pages front. Résultat caché 1 h (`findIndex`), donc penser au
 `cache:clear` pour valider.
 
+### 4. Deuxième passe : médias des blocs et des teasers (73 -> ~49)
+
+Le N+1 résiduel venait des collections `EAGER` de `Media` (`thumbs`, `intls`) et des
+`mediaRelations` (`media`, `intl`, eux aussi `EAGER`), chargées **une par média**.
+
+- **`PageRepository::optimizedQueryBuilder`** : fetch-join de la chaîne média des blocs et de
+  la page (`bmr.media` + `bmr.intl` + `media.thumbs` + `media.intls`, idem `p.mediaRelations`).
+  Les côtés to-one ne multiplient pas ; seul `thumbs` ajoute des lignes (cartésien borné).
+  Bénéficie à toutes les pages CMS riches en images ; servi depuis le cache sur cache-hit.
+- **`SliderRepository::findOneByWithRelations`** : ajout de `m.thumbs` + `m.intls` au join média.
+- **`CatalogController::teaser`** : `disabledValues => true` dans les options du modèle. Les
+  cartes du teaser (`macros/card.html.twig`) n'affichent **pas** de feature/value (seulement
+  intl, média, ville/adresse via `information`), donc `getValues()` et tout son amorçage
+  features/values (`primeWebsiteEager` x2, `findAllByWebsiteIterate`, `findByCatalog`) étaient
+  inutiles ici (~11 requêtes économisées).
+- **`ProductRepository::primeForRendering`** : l'étape « media relations » joint désormais
+  `m.thumbs` + `m.intls`. Subtilité : `Media.thumbs`/`Media.intls` étant `EAGER`, ils se
+  déclenchent **dès la première hydratation du média** ; l'ancien `primeThumbsAndIntls()`
+  (deux requêtes batch séparées) s'exécutait donc **trop tard** et était neutralisé. Joindre
+  les deux collections au moment où le média est chargé initialise tout en une requête.
+
+> Exception au pattern « batch `WHERE IN` plutôt que JOIN » ci-dessous : il ne vaut que pour
+> des collections `LAZY`. Pour une collection `EAGER`, le premier chargement de l'entité
+> parente la charge de toute façon ; il faut donc la fetch-joindre **à ce moment-là**, sinon
+> tout amorçage séparé ultérieur est redondant.
+
 ---
 
 ## Mesurer (méthode de diagnostic)
@@ -99,5 +125,8 @@ Bénéficie à toutes les pages front. Résultat caché 1 h (`findIndex`), donc 
 - Une association `EAGER` non fetch-jointe = un `SELECT` par entité parente. La précharger par
   lot la neutralise ; `toIterable()` ne peut pas fetch-joindre, d'où l'amorçage séparé.
 
-Restes connus (hors module catalogue, non traités) : `layout_action_intl`, `module_slider`,
-`module_newscast` sur la home.
+Restes connus sur la home (non traités, gain faible ou architectural) : les 3 sous-requêtes
+`module_slider` (un bloc slider = une sous-requête `render_esi`), les médias du teaser
+`module_newscast` (chargés en amont par `findTeaserEntities`/`findOptimized`, l'amorçage
+arriverait trop tard) et quelques `block_media_relations` de blocs appartenant aux layouts
+des teasers.

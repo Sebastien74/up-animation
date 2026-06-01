@@ -173,7 +173,7 @@ class CatalogController extends ActionController
         $this->setClassname(Catalog\Product::class);
         $this->setJoins(['catalog', 'products']);
         $this->setModel(ProductModel::class);
-        $this->setModelOptions(['disabledProducts' => true, 'displayCity' => $displayCity]);
+        $this->setModelOptions(['disabledProducts' => true, 'disabledValues' => true, 'displayCity' => $displayCity]);
         $this->setInterfaceName('catalog');
 
         return $this->getTeaser($request, $block, $url, $filter);

@@ -598,13 +598,23 @@ class PageRepository extends ServiceEntityRepository
             ->leftJoin('b.intls', 'bi', 'WITH', 'bi.locale = :locale')
             ->leftJoin('b.actionIntls', 'bai', 'WITH', 'bai.locale = :locale')
             ->leftJoin('b.mediaRelations', 'bmr')
+            ->leftJoin('bmr.media', 'bmrm')
+            ->leftJoin('bmr.intl', 'bmri')
+            ->leftJoin('bmrm.thumbs', 'bmrmt')
+            ->leftJoin('bmrm.intls', 'bmrmi')
             ->leftJoin('b.fieldConfiguration', 'bfc')
             ->leftJoin('p.intls', 'pi', 'WITH', 'pi.locale = :locale')
+            ->leftJoin('p.mediaRelations', 'pmr')
+            ->leftJoin('pmr.media', 'pmrm')
+            ->leftJoin('pmr.intl', 'pmri')
+            ->leftJoin('pmrm.thumbs', 'pmrmt')
+            ->leftJoin('pmrm.intls', 'pmrmi')
             ->andWhere('u.website = :website')
             ->andWhere('u.locale = :locale')
             ->setParameter('website', $website->id)
             ->setParameter('locale', $locale)
-            ->addSelect('u', 'w', 'l', 'z', 'c', 'b', 'bt', 'ba', 'bi', 'bai', 'bmr', 'bfc', 'pi');
+            ->addSelect('u', 'w', 'l', 'z', 'c', 'b', 'bt', 'ba', 'bi', 'bai', 'bmr', 'bfc', 'pi')
+            ->addSelect('bmrm', 'bmri', 'bmrmt', 'bmrmi', 'pmr', 'pmrm', 'pmri', 'pmrmt', 'pmrmi');
 
         if (!$preview) {
             $qb->andWhere('p.publicationStart IS NULL OR p.publicationStart < CURRENT_TIMESTAMP()')
