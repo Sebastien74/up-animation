@@ -51,7 +51,7 @@ class CustomizedController extends FrontController
         $entity = null;
         if ($url && $route && str_contains($route, 'catalogproduct')) {
             $entity = $actionService->findEntityByUrlAndLocale($url);
-            $entity = $entity ? ProductModel::fromEntity($entity, $this->coreLocator, ['disabledIntl' => true, 'disabledMedias' => true, 'disabledUrl' => true, 'disabledCategories' => true, 'disabledCategory' => true]) : null;
+            $entity = $entity ? ProductModel::fromEntity($entity, $this->coreLocator, ['disabledIntl' => true, 'disabledMedias' => true, 'disabledUrl' => true, 'disabledCategories' => true, 'disabledCategory' => true, 'disabledProducts' => true, 'disabledValues' => true, 'disabledSubCategories' => true]) : null;
             if ($entity && $entity->agency) {
                 $contactPageParams['agence'] = $entity->slug;
                 $address = $entity->address;

@@ -6,6 +6,7 @@ namespace App\Model;
 
 use App\Entity\Core\Website;
 use App\Entity\Information\Information;
+use App\Entity\Layout\Block;
 use App\Entity\Layout\Layout;
 use App\Entity\Layout\Page;
 use App\Entity\Module\Catalog\Product;
@@ -338,12 +339,43 @@ class BaseModel extends FunctionModel
                 ->enableResultCache(3600, 'layout_'.($entity->getLayout()->getId()))
                 ->getOneOrNullResult();
 
+            if ($layout instanceof Layout) {
+                self::primeBlockIntls($layout);
+            }
+
             self::$baseCache[$classname][$entity->getId()] = $layout ?: $entity->getLayout();
 
             return self::$baseCache[$classname][$entity->getId()];
         }
 
         return null;
+    }
+
+    /**
+     * Batch-load the current-locale block translations to avoid one SELECT per block
+     * when intlByCollection reads each block intl during layout rendering (N+1).
+     */
+    protected static function primeBlockIntls(Layout $layout): void
+    {
+        $blockIds = [];
+        foreach ($layout->getZones() as $zone) {
+            foreach ($zone->getCols() as $col) {
+                foreach ($col->getBlocks() as $block) {
+                    $blockIds[] = $block->getId();
+                }
+            }
+        }
+
+        if ([] === $blockIds) {
+            return;
+        }
+
+        self::$coreLocator->em()->getRepository(Block::class)->createQueryBuilder('b')
+            ->leftJoin('b.intls', 'i')->addSelect('i')
+            ->andWhere('b.id IN (:ids)')->setParameter('ids', $blockIds)
+            ->andWhere('i.locale = :locale OR i.locale IS NULL')->setParameter('locale', self::$coreLocator->locale())
+            ->getQuery()
+            ->getResult();
     }
 
     /**

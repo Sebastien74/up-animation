@@ -197,11 +197,12 @@ inline** par `renderBlock`. Conséquences :
   si on y colle un embed tiers à jeton/par-utilisateur (cas limite, déjà couvert tel quel par le
   result-cache aujourd'hui).
 
-### 7. Fiche produit (vue détail) : N+1 sur les produits liés (~154 -> ~83 anonyme)
+### 7. Fiche produit (vue détail) : N+1 sur produits liés et intls de blocs (~154 -> ~51 anonyme)
 
 Mesuré au profiler (panneau `db`, **anonyme**, cache vidé) sur une fiche riche
 (`/types-d-evenements/fiche-produit/animation-anniversaire-d-entreprise`) :
-**~154 -> ~83 requêtes**, sans changement de rendu (vérifié : section produits associés intacte).
+**~154 -> ~51 requêtes** (en deux passes : 154 -> 83 -> 51), sans changement de rendu
+(vérifié : sections produits associés et « contact » intactes).
 
 > Important : profiler **en anonyme**. Connecté en admin, la même page montait à ~155 (cache de
 > fragments contourné + overlays `WebmasterEdit`) - ce n'est pas l'expérience visiteur.
@@ -227,10 +228,18 @@ par produit.
 lues uniquement par `CatalogController` / `ProductModel`), donc aucun effet de bord
 Newscast/Portfolio/etc.
 
-**Restes connus** (gain plus faible, non traités) : `upa_layout_block_intls` chargés par bloc
-(`IntlModel::intlByCollection`, ~9x, générique à toutes les pages à layout) ; un bloc
-`CustomizedController::zoneContactUs` qui bâtit lui aussi un `ProductModel` avec son arbre
-`products` (~4x). À reprendre si besoin (même levier : `disabledProducts`).
+**Deuxième passe (83 -> 51)** :
+- `BaseModel::getLayout` : la requête de layout *innerJoin* `b.intls` comme **filtre** mais ne
+  l'`addSelect` pas (éviter le produit cartésien avec les autres collections to-many jointes),
+  d'où un `SELECT` d'intl **par bloc** (`IntlModel::intlByCollection`, ~9x, sur **toutes** les
+  pages à layout). Ajout de `primeBlockIntls()` : un batch `b.intls WHERE b.id IN (:ids)` de la
+  locale courante, après chargement du layout (fonctionne aussi sur cache-hit du result-cache
+  `layout_<id>`, car exécuté après `getOneOrNullResult`). Bénéficie à toutes les pages CMS.
+- `CustomizedController::zoneContactUs` : ce bloc bâtissait un `ProductModel` avec son arbre
+  `products` (+ values/sous-catégories) pour n'utiliser que `agency`/`slug`/`address`/`city`.
+  Ajout de `disabledProducts` / `disabledValues` / `disabledSubCategories` (~4x économisés).
+
+Reste marginal : 2x `upa_layout_action` / `upa_layout_action_intl` (négligeable).
 
 ---
 
