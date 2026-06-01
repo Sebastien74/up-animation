@@ -1130,6 +1130,7 @@ class ImageThumbnail implements ImageThumbnailInterface
         $thumbnails['infos']['extension'] = $media->getExtension();
         $thumbnails['infos']['filename'] = $media->getOriginalName();
         $thumbnails['infos']['asDecor'] = $options['decor'] ?? 'svg' === $thumbnails['infos']['extension'];
+        $thumbnails['infos']['shape'] = $mediaModel?->shape;
 
         $thumbnails['infos']['width'] = !empty($runtimeConfig['thumbnail']['size'][0]) ? $runtimeConfig['thumbnail']['size'][0] : (!empty($svgSizes['width']) ? $svgSizes['width'] : null);
         $thumbnails['infos']['height'] = !empty($runtimeConfig['thumbnail']['size'][1]) ? $runtimeConfig['thumbnail']['size'][1] : (!empty($svgSizes['height']) ? $svgSizes['height'] : null);

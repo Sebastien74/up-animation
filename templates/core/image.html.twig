@@ -84,7 +84,7 @@
             {%- endfor -%}
             {%- set srcset = srcset|trim|trim(',', 'right') -%}
 
-            <picture class="img-fluid {% if not inAdmin %}d-block{% endif %}{% if not inAdmin and lazyLoad %} loader-image-wrapper lazy-picture loading{% endif %}{% if pictureClass %} {{ pictureClass }}{% endif %}"{% if infos.width and infos.height and infos.extension|default('') != 'svg' %} style="aspect-ratio: {{ infos.width }} / {{ infos.height }};"{% endif %}>
+            <picture class="img-fluid {% if not inAdmin %}d-block{% endif %}{% if not inAdmin and lazyLoad %} loader-image-wrapper lazy-picture loading{% endif %}{% if pictureClass %} {{ pictureClass }}{% endif %}"{% if infos.shape is defined and infos.shape and infos.width and infos.height and infos.extension|default('') != 'svg' %} style="aspect-ratio: {{ infos.width }} / {{ infos.height }};"{% endif %}>
                 {%- if srcset -%}
                     {%- for screen, config in mediaQueries -%}
                         <source {% if lazyLoad %}data-{% endif -%}srcset="{{ srcset }}"
