@@ -64,8 +64,15 @@ Commits concernés sur `main` :
   - Un seul site : `app:scheduler:install --website=ID --env=prod`
   - Toutes les définitions (10, avec leur état d'origine) : `--all`
   - Créées inactives (activation manuelle en admin ensuite) : `--disabled`
+- [ ] **`app:cache:reclaim` (grand ménage hebdomadaire)** : inactive par défaut, donc
+      **absente** de l'install standard. Pour qu'elle **existe en base et soit activable
+      en admin** sur un site existant, l'installer une fois avec `--all` (elle est posée
+      **inactive**, son état d'origine) : `app:scheduler:install --all --env=prod`
+      (ou `--website=ID --all`). Ne l'activer ensuite en admin que si la pression disque
+      le justifie (vague de cache-miss assumée, cf. section 5).
 - [ ] **Nouveaux sites** : rien à faire, les fixtures (`CommandFixtures` via
-      `ScheduledCommandCatalog`) posent déjà les 5 voulues actives.
+      `ScheduledCommandCatalog`) posent **toutes** les définitions, dont `app:cache:reclaim`
+      (inactive) ; les 5 voulues sont déjà actives.
 
 ## 5. Décisions de contenu à trancher AVANT prod
 
