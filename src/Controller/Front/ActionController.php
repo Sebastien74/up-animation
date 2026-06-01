@@ -238,6 +238,7 @@ class ActionController extends FrontController
             $associatedEntitiesThumbConfiguration = $this->thumbConfiguration($this->website, $this->classname, 'view', 'associated-'.$this->arguments['interface']['name']);
         }
 
+        $this->primeRenderEntities([$entity], $locale);
         $entityModel = ($this->model)::fromEntity($entity, $this->coreLocator, $this->modelOptions);
         $mainCategory = !empty($this->customArguments['mainTemplateCategory']) && !empty($this->customArguments['mainLayout']) ? $this->customArguments['mainTemplateCategory'] : null;
         $category = property_exists($entityModel, 'category') ? $entityModel->category : $this->service->getCategory($entity);
@@ -764,6 +765,7 @@ class ActionController extends FrontController
 
         $indexPagesCodes = $listingService->indexesPages($request->getLocale(), $this->listingClassname, $classname);
 
+        $this->primeRenderEntities($allAssociatedEntities, $request->getLocale());
         foreach ($allAssociatedEntities as $associatedEntity) {
             $result[] = ($this->model)::fromEntity($associatedEntity, $this->coreLocator, ['entitiesIds' => $entitiesIds, 'disableMediasLayout' => true]);
             $indexPages[$associatedEntity->getId()] = !empty($indexPagesCodes[$associatedEntity->getId()]) ? $indexPagesCodes[$associatedEntity->getId()] : null;

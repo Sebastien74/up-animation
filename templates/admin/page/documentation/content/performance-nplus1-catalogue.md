@@ -197,6 +197,29 @@ inline** par `renderBlock`. Conséquences :
   si on y colle un embed tiers à jeton/par-utilisateur (cas limite, déjà couvert tel quel par le
   result-cache aujourd'hui).
 
+### 7. Fiche produit (vue détail) : amorçage manquant sur `getView`
+
+La home était optimisée, mais la **vue détail** (`CatalogController::view` ->
+`ActionController::getView`, ~57 requêtes anonyme) ne profitait pas du même amorçage. Cause :
+`getTeaser` appelle `primeRenderEntities()` (-> `ProductRepository::primeForRendering`), **pas
+`getView`**. La fiche subissait donc une cascade `LAZY` sur le produit courant **et** sur chaque
+produit associé (`getAssociatedEntities` reconstruit un `ProductModel` complet par produit lié).
+
+Correctif (sans changement de rendu, l'amorçage ne fait que charger des collections déjà
+accédées ensuite) :
+- `ActionController::getView` : `$this->primeRenderEntities([$entity], $locale)` avant le
+  `ProductModel::fromEntity` du produit courant.
+- `ActionController::getAssociatedEntities` : `$this->primeRenderEntities($allAssociatedEntities,
+  $locale)` **avant** la boucle `fromEntity` -> les produits associés sont préchargés en **un lot**
+  (values+features, sous-catégories, intls, urls, médias+thumbs) au lieu de N x ~5 requêtes.
+
+`primeRenderEntities` est un **no-op** hors catalogue (surcharge uniquement dans
+`CatalogController`), donc aucun effet de bord sur Newscast/Portfolio/etc.
+
+> Mesure : non vérifiée en local (données multi-sites + redirections empêchaient un rendu propre
+> de la fiche). À confirmer au profiler (panneau `db`) sur une fiche qui rend : `cache:clear`,
+> 2-3 hits à chaud, comparer le nombre de requêtes avant/après.
+
 ---
 
 ## Mesurer (méthode de diagnostic)
