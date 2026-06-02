@@ -23,6 +23,10 @@ class FunctionModel
             return false;
         }
 
+        if (1 !== preg_match('/^\+?[0-9 .()-]{6,}$/', $var)) {
+            return false;
+        }
+
         static $phoneUtil = null;
         if (null === $phoneUtil) {
             $phoneUtil = PhoneNumberUtil::getInstance();
