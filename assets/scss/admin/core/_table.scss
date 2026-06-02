@@ -80,7 +80,8 @@ $tbl-muted : $crumb-muted !default;
     text-transform: uppercase;
     background: transparent;
     border-bottom: 1px solid $tbl-border !important;
-    padding: 12px 14px;
+    // override forced: beat Bootstrap .px-4 so headers align with td (also !important)
+    padding: 12px 14px !important;
     white-space: nowrap;
 }
 

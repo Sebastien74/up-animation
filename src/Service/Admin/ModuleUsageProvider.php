@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace App\Service\Admin;
 
 use App\Entity\Layout\Action;
+use App\Entity\Layout\Layout;
 use App\Entity\Layout\Page;
-use App\Entity\Seo\Url;
 use App\Model\Admin\ModulePageUsage;
 use App\Model\Core\WebsiteModel;
+use App\Repository\Layout\LayoutRepository;
 use App\Repository\Layout\PageRepository;
 use App\Service\Interface\CoreLocatorInterface;
 use App\Twig\Core\WebsiteRuntime;
@@ -33,6 +34,7 @@ class ModuleUsageProvider
     public function __construct(
         private readonly CoreLocatorInterface $coreLocator,
         private readonly WebsiteRuntime $websiteRuntime,
+        private readonly LayoutOwnerResolver $layoutOwnerResolver,
     ) {
     }
 
@@ -81,43 +83,67 @@ class ModuleUsageProvider
         $grouped = $pageRepository->findPagesGroupedByActionFilter($website->id, $locale, $classname, $ids);
 
         $result = [];
+        $domain = null;
         foreach ($grouped as $entityId => $pages) {
             foreach ($pages as $page) {
-                $result[$entityId][] = $this->toUsage($page, $website, $locale);
+                $result[$entityId][] = $this->toUsage($page, $website, $locale, $domain);
             }
         }
+
+        $this->appendNonPageUsages($result, $classname, $ids, $website, $locale);
 
         return $result;
     }
 
-    private function toUsage(Page $page, WebsiteModel $website, string $locale): ModulePageUsage
+    /**
+     * Append usages from non-page templates (news, product, category, listing...).
+     *
+     * @param array<int, array<ModulePageUsage>> $result
+     * @param array<int>                          $ids
+     */
+    private function appendNonPageUsages(array &$result, string $classname, array $ids, WebsiteModel $website, string $locale): void
     {
-        $url = $this->localeUrl($page, $locale);
-        $online = $url instanceof Url && $url->isOnline() && $url->getCode();
-        $name = $page->getAdminName() ?: ($url instanceof Url ? $url->getCode() : null) ?: '#'.$page->getId();
+        /** @var LayoutRepository $layoutRepository */
+        $layoutRepository = $this->coreLocator->em()->getRepository(Layout::class);
+        $grouped = $layoutRepository->findNonPageLayoutIdsGroupedByActionFilter($website->id, $locale, $classname, $ids);
+        if (!$grouped) {
+            return;
+        }
+
+        $allLayoutIds = array_merge(...array_values($grouped));
+        $usages = $this->layoutOwnerResolver->resolve($allLayoutIds, $website, $locale);
+        if (!$usages) {
+            return;
+        }
+
+        foreach ($grouped as $entityId => $layoutIds) {
+            foreach ($layoutIds as $layoutId) {
+                if (isset($usages[$layoutId])) {
+                    $result[$entityId][] = $usages[$layoutId];
+                }
+            }
+        }
+    }
+
+    /**
+     * @param array{pageId: int, adminName: ?string, urlId: ?int, code: ?string, online: bool} $page
+     */
+    private function toUsage(array $page, WebsiteModel $website, string $locale, bool|string|null &$domain): ModulePageUsage
+    {
+        $online = !empty($page['code']) && $page['online'];
+        $name = ($page['adminName'] ? ltrim($page['adminName'], '_') : null) ?: $page['code'] ?: '#'.$page['pageId'];
         $href = null;
 
         if ($online) {
-            $domain = $this->websiteRuntime->domain($locale, $website);
-            $href = $domain ? rtrim($domain, '/').'/'.$url->getCode() : null;
-        } elseif ($url instanceof Url && $url->getId()) {
+            $domain ??= $this->websiteRuntime->domain($locale, $website);
+            $href = $domain ? rtrim($domain, '/').'/'.$page['code'] : null;
+        } elseif ($page['urlId']) {
             $href = $this->coreLocator->router()->generate('front_page_preview', [
                 'website' => $website->id,
-                'url' => $url->getId(),
+                'url' => $page['urlId'],
             ], UrlGeneratorInterface::ABSOLUTE_URL);
         }
 
-        return new ModulePageUsage((string) $name, $href, (bool) $online);
-    }
-
-    private function localeUrl(Page $page, string $locale): ?Url
-    {
-        foreach ($page->getUrls() as $url) {
-            if ($url->getLocale() === $locale) {
-                return $url;
-            }
-        }
-
-        return null;
+        return new ModulePageUsage((string) $name, $href, $online);
     }
 }

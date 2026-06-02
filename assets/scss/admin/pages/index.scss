@@ -11,6 +11,32 @@
 
 #entities-index {
 
+    .used-pages-cell {
+
+        gap: 4px !important;
+
+        .btn-app.small {
+            // override forced: beat `#entities-index td *` (13px) and base .btn-app.small padding
+            font-size: 11px !important;
+            font-weight: 600;
+            line-height: 1.25;
+            letter-spacing: 0;
+            padding: .15rem .45rem !important;
+
+            &.success {
+                color: opacify($teal, 1);
+            }
+
+            &.warning {
+                color: opacify($warning, 1);
+            }
+
+            &.muted {
+                color: $btn-text;
+            }
+        }
+    }
+
     td {
 
         * {

@@ -320,7 +320,10 @@ class PageRepository extends ServiceEntityRepository
     /**
      * Pages grouped by the referenced module entity id, for one locale (single query).
      *
-     * @return array<int, array<Page>>
+     * Scalar projection on purpose: a full-entity select would let the object hydrator
+     * deduplicate a page hosting several modules, dropping all but one actionFilter.
+     *
+     * @return array<int, array<int, array{pageId: int, adminName: ?string, urlId: ?int, code: ?string, online: bool}>>
      */
     public function findPagesGroupedByActionFilter(
         mixed $website,
@@ -335,7 +338,14 @@ class PageRepository extends ServiceEntityRepository
         $websiteId = $website instanceof Website ? $website->getId() : (is_array($website) ? $website['id'] : (int) $website);
 
         $rows = $this->createQueryBuilder('p')
-            ->select('p', 'u', 'ai.actionFilter AS actionFilter')
+            ->select(
+                'ai.actionFilter AS actionFilter',
+                'p.id AS pageId',
+                'p.adminName AS adminName',
+                'u.id AS urlId',
+                'u.code AS code',
+                'u.online AS online'
+            )
             ->leftJoin('p.urls', 'u', 'WITH', 'u.locale = :locale')
             ->leftJoin('p.layout', 'l')
             ->leftJoin('l.zones', 'z')
@@ -352,12 +362,22 @@ class PageRepository extends ServiceEntityRepository
             ->setParameter('entity', $classname)
             ->setParameter('actionFilters', $filterIds)
             ->getQuery()
-            ->getResult();
+            ->getArrayResult();
 
         $result = [];
         foreach ($rows as $row) {
-            $page = $row[0];
-            $result[$row['actionFilter']][$page->getId()] = $page;
+            $filterId = (int) $row['actionFilter'];
+            $pageId = (int) $row['pageId'];
+            if (isset($result[$filterId][$pageId]) && empty($row['code'])) {
+                continue;
+            }
+            $result[$filterId][$pageId] = [
+                'pageId' => $pageId,
+                'adminName' => $row['adminName'],
+                'urlId' => null !== $row['urlId'] ? (int) $row['urlId'] : null,
+                'code' => $row['code'],
+                'online' => (bool) $row['online'],
+            ];
         }
 
         return array_map(static fn (array $pages): array => array_values($pages), $result);

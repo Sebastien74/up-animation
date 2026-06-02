@@ -249,6 +249,18 @@ body {
         }
     }
 
+    // Used-pages chips: re-assert state colors (the .btn-app color override above wins otherwise)
+    #entities-index .used-pages-cell .btn-app.small {
+
+        &.success {
+            color: opacify($teal, 1) !important;
+        }
+
+        &.warning {
+            color: opacify($warning, 1) !important;
+        }
+    }
+
     // Locales dropdown (le menu déroulant des langues reste sombre, parti pris)
     // Ses btn-surface/border viennent des variables globales overridées plus haut,
     // mais le contexte sombre nécessite des overlays clairs ici.
