@@ -10,16 +10,24 @@
 
 /*! purgecss start ignore */
 
+// webmaster toolbar palette (mirrors _webmaster.scss locals)
+$webmaster-primary: #2e1e51;
+$webmaster-primary-light: lighten($webmaster-primary, 9%);
+$webmaster-surface: 0 18px 40px -12px rgba(0, 0, 0, .6), 0 0 0 1px rgba(0, 0, 0, .25);
+$webmaster-bg: linear-gradient(155deg, $webmaster-primary-light, $webmaster-primary 58%);
+
 #users-switcher-box {
 
     position: fixed;
     z-index: 9999;
     top: 55px;
     left: 90px;
-    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.46) !important;
-    border-radius: 10px !important;
-    background-color: #24252e !important;
-    width: 300px;
+    box-shadow: $webmaster-surface !important;
+    border: 1px solid rgba(255, 255, 255, .08) !important;
+    border-radius: 14px !important;
+    background-color: $webmaster-primary !important;
+    background-image: $webmaster-bg !important;
+    width: 320px;
     font-weight: 300;
 
     * {
@@ -30,10 +38,10 @@
 
     .card-body {
 
-        padding: 15px !important;
+        padding: 5px !important;
 
         input.choices__input {
-            background: #dee2e6 url(../../medias/images/vendor/search.svg) no-repeat scroll 1rem 1rem !important;
+            background: #f1f3f5 url(../../medias/images/vendor/search.svg) no-repeat scroll 1rem 1rem !important;
             background-size: 15px !important;
             padding-left: 2rem !important;
             padding-top: .5rem;
@@ -42,26 +50,40 @@
         }
 
         svg {
-            width: 20px;
-            height: 20px;
+            width: 18px;
+            height: 18px;
             fill: #fff;
             cursor: pointer;
         }
 
         #users-switcher-close {
-            color: rgba(255, 255, 255, .8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            color: rgba(255, 255, 255, .85);
             position: absolute;
-            right: 9px;
-            top: 9px;
+            right: 12px;
+            top: 12px;
             opacity: 1;
+            background-color: rgba(255, 255, 255, .06);
+            transition: background-color .2s ease;
+
+            &:hover {
+                background-color: rgba(255, 255, 255, .18);
+            }
         }
 
         label {
-            color: #fff !important;
-            margin-top: -5px;
-            margin-bottom: 5px;
-            float: left;
-            font-size: 15px !important;
+            display: block;
+            color: rgba(255, 255, 255, .92) !important;
+            margin: 0 0 10px !important;
+            font-size: 12px !important;
+            font-weight: 600 !important;
+            letter-spacing: .04em;
+            text-transform: uppercase;
             width: 100%;
         }
     }
@@ -69,16 +91,18 @@
 
 #users-switcher-front-box {
 
-    border-radius: 10px !important;
-    background-color: #24252e !important;
-    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.46) !important;
+    border: 1px solid rgba(255, 255, 255, .08) !important;
+    border-radius: 14px !important;
+    background-color: $webmaster-primary !important;
+    background-image: $webmaster-bg !important;
+    box-shadow: $webmaster-surface !important;
 
     .card-body {
 
-        padding-top: 13px !important;
+        padding-top: 16px !important;
 
         label {
-            color: #fff !important;
+            color: rgba(255, 255, 255, .92) !important;
         }
     }
 }
@@ -103,7 +127,7 @@
         height: 0;
         width: 0;
         border-style: solid;
-        border-color: #6f7072 transparent transparent;
+        border-color: $webmaster-primary transparent transparent;
         border-width: 5px;
         position: absolute;
         right: 11.5px;
@@ -114,23 +138,40 @@
 
     .choices__list--single {
         margin-top: 3px;
-    }
-
-
-    .choices__list--dropdown {
-
-        border-radius: .75rem !important;
-        border: 0 !important;
-        padding: 0 !important;
-
-        .choices__item--selectable {
-            padding: 10px 1.5rem !important;
-        }
+        color: $webmaster-primary;
     }
 
     .choices__inner {
+        background-color: #fff;
         background-image: none;
-        border-radius: .75rem !important;
+        border: 0 !important;
+        border-radius: .65rem !important;
+        min-height: 42px;
+    }
+
+    .choices__list--dropdown {
+
+        margin-top: 6px !important;
+        border-radius: .65rem !important;
+        border: 0 !important;
+        padding: 4px !important;
+        box-shadow: 0 16px 34px -10px rgba(0, 0, 0, .55), 0 0 0 1px rgba(46, 30, 81, .12) !important;
+        overflow: hidden;
+
+        .choices__list {
+            max-height: 260px;
+        }
+
+        .choices__item--selectable {
+            padding: 10px 1rem !important;
+            border-radius: .45rem !important;
+            color: $webmaster-primary !important;
+
+            &.is-highlighted {
+                background-color: $webmaster-primary !important;
+                color: #fff !important;
+            }
+        }
     }
 
     .choices__input {
