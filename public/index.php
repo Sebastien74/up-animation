@@ -21,14 +21,6 @@ try {
     throw $platformException;
 }
 
-/** To set under maintenance status */
-const UNDER_MAINTENANCE = false;
-const MAINTENANCE_ALLOWED_IPS = [];
-if (UNDER_MAINTENANCE) {
-    $_ENV['UNDER_MAINTENANCE'] = UNDER_MAINTENANCE;
-    $_ENV['MAINTENANCE_ALLOWED_IPS'] = MAINTENANCE_ALLOWED_IPS;
-}
-
 (new Dotenv())->bootEnv(dirname(__DIR__).'/.env');
 
 if ($_SERVER['APP_DEBUG']) {
