@@ -1,0 +1,156 @@
+@charset "UTF-8";
+
+/* -----------------------------------------------------------------
+
+    SIDEBAR THEME — shared sidebar colours for both themes
+    (dark + light render the navigation identically:
+     warm graphite surface, cream text, taupe glyphs, lavender accent).
+    Driven by $theme-sidebar-* tokens, equal across themes.
+
+------------------------------------------------------------------ */
+
+body {
+
+    .sidebar-nav, #sidebarnav, .left-sidebar {
+
+        .btn-icon {
+            i {
+                color: $theme-sidebar-icons;
+            }
+
+            // Restore white hover neutralised by the global Buttons override.
+            &.cursor:hover i,
+            &:hover i {
+                color: $white !important;
+            }
+        }
+    }
+
+    .sidebar-nav ul li a {
+
+        color: $theme-sidebar-text !important;
+
+        svg {
+            fill: $theme-sidebar-text !important;
+        }
+
+        &:hover {
+
+            color: $white !important;
+
+            svg {
+                fill: $white !important;
+            }
+        }
+
+        &.active {
+
+            color: lighten($primary, 20%) !important;
+
+            svg {
+                fill: lighten($primary, 20%) !important;
+            }
+        }
+    }
+
+    // Accent lifted into a luminous lavender so it stays legible on the dark
+    // sidebar surface while keeping the family of the global indigo $primary.
+    .left-sidebar .scroll-sidebar > nav > ul > li > ul > li > a.active,
+    .left-sidebar .sidebar-top-section > ul > li > a.active,
+    .right-sidebar .scroll-sidebar > nav > ul > li > a.active {
+        background: rgba(lighten($primary, 20%), .16) !important;
+        color: lighten($primary, 20%) !important;
+
+        &::before {
+            background: lighten($primary, 20%) !important;
+        }
+    }
+
+    .left-sidebar .collapse .collapse > li > a.active,
+    .right-sidebar .collapse > li > a.active {
+        background: rgba(lighten($primary, 20%), .14) !important;
+        color: lighten($primary, 20%) !important;
+    }
+
+    .left-sidebar .scroll-sidebar > nav > ul > li > ul > li > a.active .btn-icon.small,
+    .left-sidebar .sidebar-top-section a.active .btn-icon.small,
+    .right-sidebar .scroll-sidebar > nav > ul > li > a.active .btn-icon.small {
+        background: rgba(lighten($primary, 20%), .2) !important;
+        border-color: rgba(lighten($primary, 20%), .45) !important;
+        color: lighten($primary, 20%) !important;
+
+        i {
+            color: lighten($primary, 20%) !important;
+        }
+
+        svg {
+            fill: lighten($primary, 20%) !important;
+        }
+
+        svg * {
+            fill: inherit !important;
+        }
+    }
+
+    .left-sidebar .scroll-sidebar > nav > ul > li > a.as-arrow.bigger.active {
+        color: lighten($primary, 20%) !important;
+    }
+
+    .sidebar-search-field input:focus {
+        border-color: rgba(lighten($primary, 20%), .55) !important;
+        box-shadow:
+            0 0 0 4px rgba(lighten($primary, 20%), .16),
+            inset 0 1px 0 rgba(255, 255, 255, 0.03) !important;
+    }
+
+    .sidebar-search-field:focus-within > i {
+        color: lighten($primary, 20%) !important;
+    }
+
+    .sidebar-nav ul li ul {
+
+        a {
+            color: $theme-sidebar-icons !important;
+        }
+    }
+
+    .sidebar-nav .as-arrow.bigger {
+
+        color: $theme-sidebar-icons !important;
+
+        &::after {
+            border-color: $theme-sidebar-icons !important;
+        }
+    }
+
+    .right-sidebar {
+
+        background: $theme-sidebar-bg !important;
+        color: $theme-sidebar-text !important;
+
+        .btn-icon i {
+            color: $theme-sidebar-icons !important;
+        }
+
+        .btn-icon.cursor:hover i,
+        .btn-icon:hover i {
+            color: $white !important;
+        }
+
+        a.active {
+            background: rgba(255, 255, 255, 0.06) !important;
+            color: $white !important;
+        }
+
+        ul.collapse {
+
+            a {
+                color: $theme-sidebar-icons !important;
+
+                &:hover, &.active {
+                    color: $white !important;
+                }
+            }
+        }
+    }
+}

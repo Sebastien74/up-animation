@@ -30,6 +30,7 @@
 @import "_shared-tokens";
 @import "_light-vars";
 @import "../admin-ui";
+@import "_sidebar-theme";
 
 /*-----------------------------------
    2 ) Globals
@@ -89,7 +90,7 @@ body {
 
     header.navbar.page-titles {
 
-        background: $theme-sidebar-bg !important;
+        background: $dash-dark !important;
         border-bottom: 1px solid rgba(255, 255, 255, 0.08);
         box-shadow: 0 1px 0 rgba(255, 255, 255, 0.02), 0 8px 24px rgba(0, 0, 0, 0.18);
         color: $theme-sidebar-text !important;
@@ -161,157 +162,7 @@ body {
         }
     }
 
-    /*--- Sidebar (conservée sombre, parti pris) ---*/
-
-    .sidebar-nav, #sidebarnav, .left-sidebar {
-
-        .btn-icon {
-            i {
-                color: $theme-sidebar-icons;
-            }
-
-            // Sidebar conservée sombre : restaure le hover blanc neutralisé par
-            // l'override global de la section Buttons.
-            &.cursor:hover i,
-            &:hover i {
-                color: $white !important;
-            }
-        }
-    }
-
-    .sidebar-nav ul li a {
-
-        color: $theme-sidebar-text !important;
-
-        svg {
-            fill: $theme-sidebar-text !important;
-        }
-
-        &:hover {
-
-            color: $white !important;
-
-            svg {
-                fill: $white !important;
-            }
-        }
-
-        &.active {
-
-            color: lighten($primary, 20%) !important;
-
-            svg {
-                fill: lighten($primary, 20%) !important;
-            }
-        }
-    }
-
-    // Sidebar accent — indigo lifted into a luminous lavender so it stays
-    // legible on the dark sidebar surface while keeping the family of the
-    // global indigo $primary (charte cohérence).
-    .left-sidebar .scroll-sidebar > nav > ul > li > ul > li > a.active,
-    .left-sidebar .sidebar-top-section > ul > li > a.active,
-    .right-sidebar .scroll-sidebar > nav > ul > li > a.active {
-        background: rgba(lighten($primary, 20%), .16) !important;
-        color: lighten($primary, 20%) !important;
-
-        &::before {
-            background: lighten($primary, 20%) !important;
-        }
-    }
-
-    .left-sidebar .collapse .collapse > li > a.active,
-    .right-sidebar .collapse > li > a.active {
-        background: rgba(lighten($primary, 20%), .14) !important;
-        color: lighten($primary, 20%) !important;
-    }
-
-    .left-sidebar .scroll-sidebar > nav > ul > li > ul > li > a.active .btn-icon.small,
-    .left-sidebar .sidebar-top-section a.active .btn-icon.small,
-    .right-sidebar .scroll-sidebar > nav > ul > li > a.active .btn-icon.small {
-        background: rgba(lighten($primary, 20%), .2) !important;
-        border-color: rgba(lighten($primary, 20%), .45) !important;
-        color: lighten($primary, 20%) !important;
-
-        i {
-            color: lighten($primary, 20%) !important;
-        }
-
-        svg {
-            fill: lighten($primary, 20%) !important;
-        }
-
-        svg * {
-            fill: inherit !important;
-        }
-    }
-
-    .left-sidebar .scroll-sidebar > nav > ul > li > a.as-arrow.bigger.active {
-        color: lighten($primary, 20%) !important;
-    }
-
-    .sidebar-search-field input:focus {
-        border-color: rgba(lighten($primary, 20%), .55) !important;
-        box-shadow:
-            0 0 0 4px rgba(lighten($primary, 20%), .16),
-            inset 0 1px 0 rgba(255, 255, 255, 0.03) !important;
-    }
-
-    .sidebar-search-field:focus-within > i {
-        color: lighten($primary, 20%) !important;
-    }
-
-    .sidebar-nav ul li ul {
-
-        a {
-            color: $theme-sidebar-icons !important;
-        }
-    }
-
-    .sidebar-nav .as-arrow.bigger {
-
-        color: $theme-sidebar-icons !important;
-
-        &::after {
-            border-color: $theme-sidebar-icons !important;
-        }
-    }
-
-    .right-sidebar {
-
-        // Parti pris design : sidebars conservées sombres en light theme
-        // (ancrage fort de la navigation, cf. project_admin_light_theme)
-        background: $theme-sidebar-bg !important;
-        color: $theme-sidebar-text !important;
-
-        .btn-icon i {
-            color: $theme-sidebar-icons !important;
-        }
-
-        // Sidebar conservée sombre : restaure le hover blanc neutralisé par
-        // l'override global de la section Buttons.
-        .btn-icon.cursor:hover i,
-        .btn-icon:hover i {
-            color: $white !important;
-        }
-
-        // Active item — keep dark sidebar Linear-like overlay (sober).
-        a.active {
-            background: rgba(255, 255, 255, 0.06) !important;
-            color: $white !important;
-        }
-
-        ul.collapse {
-
-            a {
-                color: $theme-sidebar-icons !important;
-
-                &:hover, &.active {
-                    color: $white !important;
-                }
-            }
-        }
-    }
+    /*--- Sidebar : couleurs partagées via themes/_sidebar-theme ---*/
 
     /*--- Breadcrumb — minimal inline, no surface ---*/
 

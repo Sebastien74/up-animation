@@ -42,10 +42,10 @@ $theme-border-subtle : transparentize($white, .92) !global;
 $theme-border-alt    : $btn-border !global;                       // rgba(255,255,255,.07)
 $theme-border-strong : $btn-border-hover !global;                 // rgba(255,255,255,.12)
 
-/*-- Sidebar --*/
-$theme-sidebar-bg    : $dash-dark !global;
-$theme-sidebar-text  : transparentize($white, .15) !global;
-$theme-sidebar-icons : transparentize($white, .3) !global;
+/*-- Sidebar : aligned on the light theme so both render identically --*/
+$theme-sidebar-bg    : #1a1610 !global;
+$theme-sidebar-text  : #e8e3d6 !global;
+$theme-sidebar-icons : #a89e87 !global;
 
 /*-- Cards / Modal --*/
 $theme-card-bg      : $dash-surface !global;
