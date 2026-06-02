@@ -67,6 +67,54 @@
     background-color: $danger !important;
 }
 
+/* TinyMCE (oxide-dark) toolbar aligned on the content surface ($theme-surface) */
+.tox.tox-tinymce {
+    border: 1px solid $theme-border !important;
+    border-radius: $radius-md;
+}
+
+.tox .tox-editor-header,
+.tox .tox-toolbar-overlord,
+.tox .tox-toolbar,
+.tox .tox-toolbar__primary,
+.tox .tox-toolbar__overflow {
+    background: $theme-surface !important;
+    border-color: $theme-border !important;
+}
+
+.tox .tox-edit-area__iframe {
+    background-color: $theme-surface !important;
+}
+
+.tox .tox-tbtn {
+    color: $theme-text;
+
+    svg {
+        fill: $theme-text-muted;
+    }
+
+    &:hover {
+        background: $theme-surface-alt;
+
+        svg {
+            fill: $theme-text;
+        }
+    }
+
+    &--enabled,
+    &--enabled:hover {
+        background: rgba($primary, .16);
+
+        svg {
+            fill: $primary;
+        }
+    }
+}
+
+.tox .tox-tbtn--select {
+    color: $theme-text;
+}
+
 /*-----------------------------------
    4 ) Vendor
 -----------------------------------*/

@@ -144,6 +144,13 @@ export function tinymcePlugin() {
     const url = window.location;
     let domain = (new URL(url)).origin;
 
+    /** Follow the admin theme (fallback to OS preference) so the editor matches dark/light */
+    const adminTheme = pluginsData.dataset.adminTheme;
+    const isDark = adminTheme ? adminTheme === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const contentStyle = isDark
+        ? "body { background-color: #14161e; color: #e9ecef; } body .sr-only { display: none; }"
+        : "body { background-color: #ffffff; color: #1f2430; } body .sr-only { display: none; }";
+
     if (typeof tinymce !== 'undefined') {
         editors.forEach(function (editor) {
             let textareaId = editor.getAttribute('id');
@@ -164,14 +171,14 @@ export function tinymcePlugin() {
                     language_url: domain + '/js/langs/fr_FR.js',
                     toolbar: toolbar,
                     plugins: 'emoticons link media lists table code searchreplace fullscreen',
-                    skin: (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'oxide-dark' : 'oxide'),
-                    content_css: (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'default'),
+                    skin: (isDark ? 'oxide-dark' : 'oxide'),
+                    content_css: (isDark ? 'dark' : 'default'),
                     font_css: fontsCss,
                     font_family_formats: pluginsData.dataset.fontsFormatEditor,
                     font_size_formats: "8px 10px 12px 14px 16px 17px 18px 22px 26px 36px 48px 60px 72px 96px",
                     color_cols: 4,
                     color_map: colors,
-                    content_style: "body { background-color: #292929; color: #adb5bd;} body .sr-only {display: none;}",
+                    content_style: contentStyle,
                     setup: (tinymceEl) => {
 
                         const runAccessibility = () => accessibilityFields(tinymceEl, editor);

@@ -110,6 +110,7 @@
             </footer>
             {%- include 'admin/include/translations.html.twig' -%}
             <span id="cms-plugins-data" class="d-none"
+                  data-admin-theme="{{ cssTheme }}"
                   data-colors-editor="{{ website|appColors('color') }}"
                   data-fonts-css-editor="{{ asset('build/front/'~configuration.template~'/front-default-fonts.css', 'front_'~(configuration.template|replace({'-': '_'}))) }}"
                   data-fonts-format-editor="{{ configuration|appAdminFonts('family') }}">
