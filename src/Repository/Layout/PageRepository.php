@@ -318,6 +318,52 @@ class PageRepository extends ServiceEntityRepository
     }
 
     /**
+     * Pages grouped by the referenced module entity id, for one locale (single query).
+     *
+     * @return array<int, array<Page>>
+     */
+    public function findPagesGroupedByActionFilter(
+        mixed $website,
+        string $locale,
+        string $classname,
+        array $filterIds
+    ): array {
+        if (!$filterIds) {
+            return [];
+        }
+
+        $websiteId = $website instanceof Website ? $website->getId() : (is_array($website) ? $website['id'] : (int) $website);
+
+        $rows = $this->createQueryBuilder('p')
+            ->select('p', 'u', 'ai.actionFilter AS actionFilter')
+            ->leftJoin('p.urls', 'u', 'WITH', 'u.locale = :locale')
+            ->leftJoin('p.layout', 'l')
+            ->leftJoin('l.zones', 'z')
+            ->leftJoin('z.cols', 'c')
+            ->leftJoin('c.blocks', 'b')
+            ->leftJoin('b.action', 'a')
+            ->leftJoin('b.actionIntls', 'ai')
+            ->andWhere('p.website = :website')
+            ->andWhere('a.entity = :entity')
+            ->andWhere('ai.actionFilter IN (:actionFilters)')
+            ->andWhere('ai.locale = :locale')
+            ->setParameter('locale', $locale)
+            ->setParameter('website', $websiteId)
+            ->setParameter('entity', $classname)
+            ->setParameter('actionFilters', $filterIds)
+            ->getQuery()
+            ->getResult();
+
+        $result = [];
+        foreach ($rows as $row) {
+            $page = $row[0];
+            $result[$row['actionFilter']][$page->getId()] = $page;
+        }
+
+        return array_map(static fn (array $pages): array => array_values($pages), $result);
+    }
+
+    /**
      * Find pages indexes by url code.
      */
     public function findPagesIndexByUrl(array $ids, string $classname, string $locale): array

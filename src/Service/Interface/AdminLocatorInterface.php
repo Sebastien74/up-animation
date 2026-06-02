@@ -22,6 +22,8 @@ interface AdminLocatorInterface
 
     public function indexHelper(): AdminService\IndexHelper;
 
+    public function moduleUsageProvider(): AdminService\ModuleUsageProvider;
+
     public function formDuplicateHelper(): AdminService\FormDuplicateHelper;
 
     public function clearMediasService(): AdminService\ClearMediasService;

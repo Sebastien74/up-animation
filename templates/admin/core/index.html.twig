@@ -143,6 +143,10 @@
                                     {%- endif -%}
                                 {%- endfor -%}
 
+                                {%- if displayUsedPages is defined and displayUsedPages -%}
+                                    <th class="px-4">{{ "Pages associées"|trans }}</th>
+                                {%- endif -%}
+
                                 {%- if haveActiveColumn -%}
                                     <th class="text-center px-4">{{ activeColumnTitle }}</th>
                                 {%- endif -%}
@@ -230,6 +234,33 @@
                                                 </td>
                                             {%- endif -%}
                                         {%- endfor -%}
+
+                                        {%- if displayUsedPages is defined and displayUsedPages -%}
+                                            {%- set entityPages = usedPages[entity.id] is defined ? usedPages[entity.id] : [] -%}
+                                            <td class="align-middle px-4">
+                                                {%- if entityPages -%}
+                                                    <div class="d-flex flex-wrap gap-2 used-pages-cell">
+                                                        {%- for usage in entityPages|slice(0, 8) -%}
+                                                            {%- set usageColor = usage.online ? 'success' : 'warning' -%}
+                                                            {%- set usageTitle = (usage.online ? "Voir en ligne"|trans|striptags : "Aperçu"|trans|striptags)~' : '~usage.name -%}
+                                                            {%- if usage.href -%}
+                                                                <a href="{{ usage.href }}" target="_blank" rel="noopener"
+                                                                   class="btn-app small {{ usageColor }}"
+                                                                   data-bs-toggle="tooltip" title="{{ usageTitle }}">{{ usage.name }}</a>
+                                                            {%- else -%}
+                                                                <span class="btn-app small muted">{{ usage.name }}</span>
+                                                            {%- endif -%}
+                                                        {%- endfor -%}
+                                                        {%- if entityPages|length > 8 -%}
+                                                            <span class="btn-app small muted" data-bs-toggle="tooltip"
+                                                                  title="{{ entityPages|slice(8)|map(u => u.name)|join(', ') }}">+{{ entityPages|length - 8 }}</span>
+                                                        {%- endif -%}
+                                                    </div>
+                                                {%- else -%}
+                                                    <span class="text-muted">-</span>
+                                                {%- endif -%}
+                                            </td>
+                                        {%- endif -%}
 
                                         {%- if haveActiveColumn -%}
                                             {%- set property = 'active' -%}

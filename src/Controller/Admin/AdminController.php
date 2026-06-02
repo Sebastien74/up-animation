@@ -101,6 +101,12 @@ class AdminController extends BaseController
             $this->breadcrumb($request);
         }
 
+        $moduleUsageProvider = $this->adminLocator->moduleUsageProvider();
+        $displayUsedPages = $moduleUsageProvider->supports($this->class);
+        $usedPages = $displayUsedPages
+            ? $moduleUsageProvider->forItems($this->class, $pagination->getItems(), $website, $request->getLocale())
+            : [];
+
         $template = $this->template ?: 'admin/core/index.html.twig';
         $arguments = array_merge($this->arguments, [
             'disableFormNew' => $this->disableFormNew,
@@ -115,6 +121,8 @@ class AdminController extends BaseController
             'pagination' => $pagination,
             'interface' => $interface,
             'archivedCount' => $helper->getArchivedCount(),
+            'displayUsedPages' => $displayUsedPages,
+            'usedPages' => $usedPages,
         ]);
 
         if (!empty($request->get('ajax'))) {

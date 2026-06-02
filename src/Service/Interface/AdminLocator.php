@@ -29,6 +29,7 @@ class AdminLocator implements AdminLocatorInterface
         #[AutowireLocator(AdminService\FormHelper::class, indexAttribute: 'key')] protected ServiceLocator $formHelperLocator,
         #[AutowireLocator(AdminService\TreeHelper::class, indexAttribute: 'key')] protected ServiceLocator $treeHelperLocator,
         #[AutowireLocator(AdminService\IndexHelper::class, indexAttribute: 'key')] protected ServiceLocator $indexHelperLocator,
+        #[AutowireLocator(AdminService\ModuleUsageProvider::class, indexAttribute: 'key')] protected ServiceLocator $moduleUsageProviderLocator,
         #[AutowireLocator(AdminService\FormDuplicateHelper::class, indexAttribute: 'key')] protected ServiceLocator $formDuplicateLocator,
         #[AutowireLocator(AdminService\ClearMediasService::class, indexAttribute: 'key')] protected ServiceLocator $clearMediasServiceLocator,
         #[AutowireLocator(AdminService\SearchFilterService::class, indexAttribute: 'key')] protected ServiceLocator $searchFilterServiceLocator,
@@ -77,6 +78,16 @@ class AdminLocator implements AdminLocatorInterface
     public function indexHelper(): AdminService\IndexHelper
     {
         return $this->indexHelperLocator->get('index_helper');
+    }
+
+    /**
+     * To call ModuleUsageProvider.
+     *
+     * @throws ContainerExceptionInterface
+     */
+    public function moduleUsageProvider(): AdminService\ModuleUsageProvider
+    {
+        return $this->moduleUsageProviderLocator->get('module_usage_provider');
     }
 
     /**
