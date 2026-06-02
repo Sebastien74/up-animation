@@ -1,0 +1,37 @@
+@charset "UTF-8";
+
+/* --------------------------------------------------------
+
+    ADMIN FONT INTER (self-hosted woff2) :
+    =====================================
+
+    https://fonts.google.com/specimen/Inter
+
+-------------------------------------------------------- */
+
+@import "../../scss/vendor/mixin/fonts";
+
+$fontFamily: 'Inter', sans-serif;
+
+$fonts: (
+    'Inter-Thin': ('weight': 100, 'style': normal),
+    'Inter-ThinItalic': ('weight': 100, 'style': italic),
+    'Inter-ExtraLight': ('weight': 200, 'style': normal),
+    'Inter-ExtraLightItalic': ('weight': 200, 'style': italic),
+    'Inter-Light': ('weight': 300, 'style': normal),
+    'Inter-LightItalic': ('weight': 300, 'style': italic),
+    'Inter-Regular': ('weight': 400, 'style': normal),
+    'Inter-Italic': ('weight': 400, 'style': italic),
+    'Inter-Medium': ('weight': 500, 'style': normal),
+    'Inter-MediumItalic': ('weight': 500, 'style': italic),
+    'Inter-SemiBold': ('weight': 600, 'style': normal),
+    'Inter-SemiBoldItalic': ('weight': 600, 'style': italic),
+    'Inter-Bold': ('weight': 700, 'style': normal),
+    'Inter-BoldItalic': ('weight': 700, 'style': italic),
+    'Inter-ExtraBold': ('weight': 800, 'style': normal),
+    'Inter-ExtraBoldItalic': ('weight': 800, 'style': italic),
+    'Inter-Black': ('weight': 900, 'style': normal),
+    'Inter-BlackItalic': ('weight': 900, 'style': italic),
+);
+
+@include font-face("Inter", $fonts, sans-serif, woff2);
