@@ -1,6 +1,45 @@
 # TODO — up-animation
 
 > Document de suivi des tâches. Tout le contenu d'origine est préservé, regroupé par thématique.
+> Les `- [x]` marquent ce qui a été livré (vérifié dans le code / les commits des 3 dernières semaines, voir « Livré récemment »).
+
+---
+
+## 🎯 Priorités (reste à faire)
+
+### P0 — Critique / bloquant
+
+- **Révoquer + régénérer l'App Secret Instagram dans la console Meta** (action manuelle, externe). Le code ne contient plus les clés en clair, mais la révocation côté Meta reste à faire.
+- Supprimer les IPs autres que celles des devs et les miennes.
+- Bugs admin bloquants : `CategoryType Newscast` save KO, layout catalogue KO, ajout redirection SEO KO, pagination filtres produits KO, modal ajout média (actus) KO, delete media (erreur JS), dropify bloc media « Qui sommes nous ».
+- Perf bloquante : `sitemap.xml` trop lent, page security ~1300 ms, mise à jour positions médias trop lente.
+
+### P1 — Important
+
+- Pages erreur/maintenance : 404 front, page de maintenance, styliser le 500, désindexer 404 + « Merci form contact ».
+- Login/security : traduire les mails security, validations sur le form de login, remonter les erreurs quand aucun champ rempli, border invalid reset password.
+- SEO : faire toutes les redirections + enregistrer anciennes URLs, microdonnées Schema.org JSON-LD, URLs en arborescence.
+- Doctrine cleanup : déplacer `setUpdatedAt`/`setCreatedAt` dans un listener, retirer args + `use` inutilisés, supprimer `findByOldUrl`.
+- Médias : compression à l'upload (Imagick si dispo), `filename` → `originalName`.
+
+### P2 — Polish / refactor / idées
+
+- Refactor SCSS front + back (factorisation, footer, carousels, boutons gradients).
+- Pages SEO locales (team building par ville) + contenus viraux.
+- APIs externes (Axonaut, Google Trads, social wall).
+- Idées & inspirations design.
+
+---
+
+## ✅ Livré récemment (3 dernières semaines)
+
+- Cron natif déclenché au trafic + rapport/journal dashboard + auto-provisionnement catalogue + rotation cache (`app:cache:reclaim`).
+- Cache : `PageRepository` en result-cache, gestion back-office des pools + invalidation par entité, cache de fragments home (~49 → ~20 requêtes anonyme).
+- N+1 home : produit/catalogue 235 → ~49 requêtes, fetch-joins layout/navigation, index composites listings, collections LAZY/EXTRA_LAZY.
+- Sécurité : 2FA back (code email + onboarding), gardes IDOR multi-website (Page/Product/Media + AJAX layout), CSRF systématique sur suppressions, blocage fichiers exécutables, tokens jamais loggés.
+- Feed : pipeline `app:feed:sync` IG + Facebook + YouTube + TikTok.
+- Admin : portail de documentation, page « Poids du projet », accès rapides dashboard, 10 formes de masque médias.
+- Cleanup : `dd()` mort retiré, `strict_types` + commentaire mort retirés (passe partielle).
 
 ---
 
@@ -24,8 +63,8 @@ utf8mb4_unicode_ci
   - Actions à mener :
     - Révoquer cet App Secret dans la console Meta (developers.facebook.com) — considérer comme compromis.
     - Régénérer un nouveau couple App ID / App Secret.
-    - Saisir les nouvelles valeurs **uniquement via l'admin** (Configuration du site > onglet Instagram) → persisté en base table `api_instagram`, lu via `$data->appId` / `$data->appSecret` dans `InstagramModel::modelCache()`.
-    - Vérifier qu'aucun autre fichier ne contient ces valeurs (`grep` repo + historique git).
+    - [x] Saisir les nouvelles valeurs **uniquement via l'admin** (Configuration du site > onglet Instagram) → `InstagramModel` lit désormais `$data->appId` / `$data->appSecret` depuis la base.
+    - [x] Vérifier qu'aucun autre fichier ne contient ces valeurs (clés absentes de `src/`, vérifié). Reste : vérifier l'historique git.
 - Supprimer les IPs autres que celles des devs et les miennes.
 - Demander à Juni de renforcer la sécurité dans le subscriber.
 - Demander à Juni d'optimiser le `.htaccess`.
@@ -96,7 +135,7 @@ Migrations à prévoir : `utf8mb4_0900_ai_ci` → `utf8mb4_unicode_ci`.
 
 ## Performance & Cache
 
-- **Faire le cache comme `PageRepository`** :
+- [x] **Faire le cache comme `PageRepository`** : implémenté (`enableResultCache` clés `page-*`, `pages_action_*`, etc.).
   ```php
   $result = $this->cacheInterface->get($cacheKey, function () use ($website, $urlCode, $locale, $preview) {
       $page = $this->optimizedQueryBuilder($website, $locale, $preview)
@@ -178,7 +217,7 @@ Migrations à prévoir : `utf8mb4_0900_ai_ci` → `utf8mb4_unicode_ci`.
 ## Sécurité applicative / 2FA / Login
 
 - Doc SchebTwoFactorBundle : <https://symfony.com/bundles/SchebTwoFactorBundle/current/api.html>
-- À une nouvelle connexion back, code chiffré par email.
+- [x] À une nouvelle connexion back, code chiffré par email (2FA email + onboarding livrés).
 - Mettre les validations sur le formulaire de login.
 - Refaire tout le security login, mdp, emails… mettre le logo Up Animations dans les mails et ajouter les trads.
 - Traduire les mails security.
@@ -195,6 +234,7 @@ Migrations à prévoir : `utf8mb4_0900_ai_ci` → `utf8mb4_unicode_ci`.
 - Faire la page 404 front.
 - Désindexer les pages 404 et « Merci form contact ».
 - Faire la page de maintenance.
+- Revoir la mécanique de la page de maintenance : pouvoir l'activer soit directement via l'`index` (`public/index.php`), soit (2e choix) via le back dans l'édition du website. Les deux doivent être possibles.
 - Styliser la page 500 Twig (logo, RS, etc.).
 - Page 404 back (n'est pas ouf, pas de menu sur `/admin-…/1/information/edit/1`).
 
@@ -220,7 +260,7 @@ Migrations à prévoir : `utf8mb4_0900_ai_ci` → `utf8mb4_unicode_ci`.
   ```php
   public static function fromEntity(mixed $entity, CoreLocatorInterface $coreLocator, ?string $locale = null, ?bool $query = true, array $options = []): self
   ```
-- Utiliser `'onlyForUrl' => true` :
+- [x] Utiliser `'onlyForUrl' => true` : option implémentée dans `ProductModel`/`CatalogModel` et utilisée (controllers front, `IntlModel`, `MenuModel`, sitemap). N+1 home résolu (235 → ~49).
   ```php
   foreach ($agenciesBd as $agency) {
       $agencies[] = ProductModel::fromEntity($agency, $this->coreLocator, [
@@ -267,6 +307,7 @@ Migrations à prévoir : `utf8mb4_0900_ai_ci` → `utf8mb4_unicode_ci`.
 - Trads back édition : mettre la pagination classique.
 - Changer l'intitulé du bouton « produits » index pour quelque chose de plus générique (ChatGPT).
 - Dans la liste des pages, produits, actus : mettre une icône « pas de SEO ».
+- Dans les index d'action de type `form`, `faq`, `slider`, etc., afficher les pages front qui utilisent cette action (savoir où l'action est rattachée).
 - Icon copyright pied de page back.
 - Édition site principal : styliser les Themes.
 - Faire un sélecteur d'icon pour backoffice.
@@ -560,7 +601,7 @@ Classement des meilleures activités. Articles type :
 - Faire une page FAQ (avec filtre si possible, comme sur Sydev — **IMPORTANT**).
 - Faire la base email front.
 - Faire la page « merci form » en responsive.
-- Finir le feed Instagram, etc. → Commit Feed.
+- [x] Finir le feed Instagram, etc. → Commit Feed (pipeline `app:feed:sync` IG/FB/YT/TikTok livré).
 
 ---
 
@@ -570,8 +611,8 @@ Classement des meilleures activités. Articles type :
 - Récupérer les groupes d'onglets de Sydev.
 - Récupérer IA sur Isacar.
 - Ajouter un `TypeOfBlock` Tel indicatifs à récupérer sur Sydev.
-- Créer une API Instagram feed.
-- Social wall Insta, Facebook.
+- [x] Créer une API Instagram feed (intégrée au pipeline `app:feed:sync`).
+- Social wall Insta, Facebook (affichage front à finir — la collecte est faite).
 - Connecter Google Trads.
 - GÉNÉRER LES TRADS.
 
@@ -579,6 +620,7 @@ Classement des meilleures activités. Articles type :
 
 ## Refactor / Dépréciations / Cleanup
 
+- Faire un tour complet de `src/` pour nettoyer et améliorer les commentaires : retirer les commentaires inutiles (paraphrase du code, debug résiduel), raccourcir ceux trop longs (1 ligne max, WHY non-évident), ajouter ceux qui manquent quand c'est pertinent. Commentaires en anglais (cf. CLAUDE.md).
 - Dépréciations 8.5.
 - Dépréciations (générales).
 - Remplacer les `app.request.get`.
