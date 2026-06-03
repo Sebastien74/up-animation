@@ -115,7 +115,7 @@ class CalendarType extends AbstractType
                 'data_config' => true,
                 'fields' => ['title' => 'col-md-6', 'subTitle' => 'col-md-6', 'body', 'placeholder' => 'col-12'],
                 'label_fields' => [
-                    'title' => $this->translator->trans('Objet du mail de reception', [], 'admin'),
+                    'title' => $this->translator->trans('Objet du mail de réception', [], 'admin'),
                     'subTitle' => $this->translator->trans('Objet du mail de confirmation', [], 'admin'),
                     'body' => $this->translator->trans('Corps du mail de confirmation', [], 'admin'),
                     'placeholder' => $this->translator->trans('Message de remerciement sur le site', [], 'admin'),

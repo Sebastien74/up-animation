@@ -64,11 +64,11 @@
         </div>
         {%- if interface.entity.urls is defined and archivedCount is defined and archivedCount -%}
             {%- set archivedLink = '<a href="'~path('admin_archive_index', {website: websiteId()})~'">Cliquez ici</a> pour voir.' -%}
-            {%- set archivedMessage = archivedCount > 1 ? "Vous avez %count% URLS archivées. Pensez a faire des redirections si nécessaire et à supprimer les URLS définitevement."|trans({'%count%': archivedCount})
-                : "Vous avez une URL archivée. Pensez a faire une redirection si nécessaire et à supprimer l'URL définitevement."|trans({'%count%': archivedCount}) -%}
+            {%- set archivedMessage = archivedCount > 1 ? "Vous avez %count% URLS archivées. Pensez à faire des redirections si nécessaire et à supprimer les URLS définitivement."|trans({'%count%': archivedCount})
+                : "Vous avez une URL archivée. Pensez à faire une redirection si nécessaire et à supprimer l'URL définitivement."|trans({'%count%': archivedCount}) -%}
             {%- include 'admin/include/alert.html.twig' with {alert: 'warning', display: 'alert', message: archivedMessage~' '~archivedLink, class: 'fw-400' } only -%}
         {%- endif -%}
-        {%- include 'admin/include/alert.html.twig' with {id: 'no-result-alert', class: 'd-none', display: 'alert', alert: 'info', message: 'Aucun resultat' } only -%}
+        {%- include 'admin/include/alert.html.twig' with {id: 'no-result-alert', class: 'd-none', display: 'alert', alert: 'info', message: 'Aucun résultat' } only -%}
         {%- include 'admin/core/include/nestable.html.twig' -%}
     </div>
 {%- endblock -%}

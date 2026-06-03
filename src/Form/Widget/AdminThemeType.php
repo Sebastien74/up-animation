@@ -34,7 +34,7 @@ class AdminThemeType extends AbstractType
     {
         $resolver->setDefaults([
             'label' => $this->translator->trans('refonte-admin thème', [], 'admin'),
-            'placeholder' => $this->translator->trans('Séléctionnez', [], 'admin'),
+            'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
             'required' => false,
             'choices' => $this->getTemplates(),
             'display' => 'search',

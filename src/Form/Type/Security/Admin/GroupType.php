@@ -72,7 +72,7 @@ class GroupType extends AbstractType
                 return strip_tags($entity->getAdminName());
             },
             'multiple' => true,
-            'constraints' => [new Assert\Count(min: 1, minMessage: $this->translator->trans('Vous devez sélctionner au moins un groupe.', [], 'security_cms'))],
+            'constraints' => [new Assert\Count(min: 1, minMessage: $this->translator->trans('Vous devez sélectionner au moins un groupe.', [], 'security_cms'))],
         ]);
 
         $save = new WidgetType\SubmitType($this->coreLocator);

@@ -66,7 +66,7 @@ class ColorType extends AbstractType
                 $this->translator->trans('Alerte', [], 'admin') => 'alert',
             ],
             'attr' => [
-                'placeholder' => $this->translator->trans('Séléctionnez', [], 'admin'),
+                'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
             ],
         ]);
 

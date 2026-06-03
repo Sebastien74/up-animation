@@ -77,7 +77,7 @@ class ButtonColorType extends AbstractType
         $linkColors = $options['linkColors'];
         $colors = $this->website->entity->getConfiguration()->getColors();
         $choices = $defaultChoices = [];
-        $choices[$this->translator->trans('Séléctionnez', [], 'admin')] = '';
+        $choices[$this->translator->trans('Sélectionnez', [], 'admin')] = '';
         $choices[$this->translator->trans('Lien classique', [], 'admin')] = 'link';
         $this->colors[''] = '';
         $this->colors['link'] = '#ffffff';

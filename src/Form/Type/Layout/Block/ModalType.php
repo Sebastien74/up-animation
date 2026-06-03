@@ -43,7 +43,7 @@ class ModalType extends AbstractType
 
         $builder->add('timer', Type\IntegerType::class, [
             'required' => false,
-            'label' => $this->translator->trans('Délais avant apparition', [], 'admin'),
+            'label' => $this->translator->trans('Délai avant apparition', [], 'admin'),
             'help' => $this->translator->trans("En secondes - S'affichera automatiquement sans le bouton", [], 'admin'),
             'attr' => [
                 'placeholder' => $this->translator->trans('Saisissez une durée', [], 'admin'),
@@ -52,8 +52,8 @@ class ModalType extends AbstractType
 
         $builder->add('width', Type\IntegerType::class, [
             'required' => false,
-            'label' => $this->translator->trans('Délais du cookie', [], 'admin'),
-            'help' => $this->translator->trans('En jours - Réaffichera la modal après ce délais', [], 'admin'),
+            'label' => $this->translator->trans('Délai du cookie', [], 'admin'),
+            'help' => $this->translator->trans('En jours - Réaffichera la modal après ce délai', [], 'admin'),
             'attr' => [
                 'placeholder' => $this->translator->trans('Saisissez une durée', [], 'admin'),
             ],

@@ -41,7 +41,7 @@ class TransitionType
         if ($this->website) {
             $builder->add('transition', EntityType::class, [
                 'required' => false,
-                'label' => $this->translator->trans('Éffet', [], 'admin'),
+                'label' => $this->translator->trans('Effet', [], 'admin'),
                 'display' => 'search',
                 'class' => Transition::class,
                 'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),

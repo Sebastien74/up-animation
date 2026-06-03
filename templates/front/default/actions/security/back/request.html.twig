@@ -21,9 +21,9 @@
                                     <i class="icon-shield-alt text-primary size-md-icon"></i>
                                     <strong class="d-inline-block mb-4 fz-sm text-primary d-inline-block w-100">{{ title|trans|raw }}</strong>
                                     {%- if 'remove' == type or 'remove-confirm' == type -%}
-                                        <p>{{ "Vous avez soumis une demande de suppression votre compte."|trans|raw }}</p>
+                                        <p>{{ "Vous avez soumis une demande de suppression de votre compte."|trans|raw }}</p>
                                         {%- if 'remove' == type -%}
-                                            <p>{{ "Un email de confirmation vous a été envoyé à votre adresse actuelle. Pour des raisons de sécurité, la suppression ne sera effective tant que vous ne l'aurez pas validée depuis ce message."|trans|raw }}</p>
+                                            <p>{{ "Un email de confirmation vous a été envoyé à votre adresse actuelle. Pour des raisons de sécurité, la suppression ne sera pas effective tant que vous ne l'aurez pas validée depuis ce message."|trans|raw }}</p>
                                             <div class="mb-4"><i class="icon-mailbox size-sm-icon text-primary"></i><p>{{ "Si vous n’avez pas reçu le mail, pensez à vérifier votre dossier «Spam» ou «Courrier indésirable»."|trans|raw }}</p></div>
                                         {%- endif -%}
                                         <div>

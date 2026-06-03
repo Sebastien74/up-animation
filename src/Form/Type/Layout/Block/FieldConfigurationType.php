@@ -118,7 +118,7 @@ class FieldConfigurationType extends AbstractType
             'required' => false,
             'display' => 'button',
             'color' => 'app',
-            'label' => $this->translator->trans('Champs obligatoire', [], 'admin'),
+            'label' => $this->translator->trans('Champ obligatoire', [], 'admin'),
             'attr' => ['class' => 'col-12 w-100 mb-0'],
             'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3 d-flex align-items-end'],
         ]);
@@ -318,7 +318,7 @@ class FieldConfigurationType extends AbstractType
     {
         $builder->add('maxFileSize', Type\IntegerType::class, [
             'required' => false,
-            'label' => $this->translator->trans('Poid maximum en kilobyte', [], 'admin'),
+            'label' => $this->translator->trans('Poids maximum en kilobyte', [], 'admin'),
             'attr' => [
                 'placeholder' => $this->translator->trans('Saisissez un chiffre', [], 'admin'),
                 'row_attr' => ['class' => $groupClass ?: 'col-md-4'],

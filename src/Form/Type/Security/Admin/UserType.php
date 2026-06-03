@@ -138,10 +138,10 @@ class UserType extends AbstractType
             'multiple' => true,
             'display' => 'search',
             'attr' => [
-                'data-placeholder' => $this->translator->trans('Séléctionnez', [], 'security_cms')
+                'data-placeholder' => $this->translator->trans('Sélectionnez', [], 'security_cms')
             ],
             'row_attr' => ['class' => 'col-12'],
-            'constraints' => [new Assert\Count(min: 1, minMessage: $this->translator->trans('Vous devez sélctionner au moins un site.', [], 'security_cms'))],
+            'constraints' => [new Assert\Count(min: 1, minMessage: $this->translator->trans('Vous devez sélectionner au moins un site.', [], 'security_cms'))],
         ]);
 
         if ($haveCompanies) {
@@ -159,7 +159,7 @@ class UserType extends AbstractType
                 'multiple' => true,
                 'display' => 'search',
                 'attr' => [
-                    'placeholder' => $this->translator->trans('Séléctionnez', [], 'security_cms'),
+                    'placeholder' => $this->translator->trans('Sélectionnez', [], 'security_cms'),
                     'row_attr' => ['class' => $isNew ? 'col-md-6' : 'col-12'],
                 ],
             ]);

@@ -133,7 +133,7 @@ class AddressType extends AbstractType
             $builder->add('department', Type\TextType::class, [
                 'label' => !empty($labels['department']) ? $labels['department'] : $this->translator->trans('Département', [], 'admin'),
                 'required' => false,
-                'attr' => ['placeholder' => $this->translator->trans('Saisissez une département', [],
+                'attr' => ['placeholder' => $this->translator->trans('Saisissez un département', [],
                     'admin')
                 ],
                 'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],

@@ -97,8 +97,8 @@
                         {%- if granted('ROLE_ALLOWED_TO_SWITCH') and 'secure-page'|moduleActive(configuration) -%}
                             <a id="users-switcher-btn"
                                class="btn btn-primary webmaster-btn cursor align-items-center justify-content-center"
-                               title="{{"Afficher le commutateur d'utilsateurs"|trans|striptags }}"
-                               aria-label="{{"Afficher le commutateur d'utilsateurs"|trans|striptags }}"
+                               title="{{"Afficher le commutateur d'utilisateurs"|trans|striptags }}"
+                               aria-label="{{"Afficher le commutateur d'utilisateurs"|trans|striptags }}"
                                data-path="{{ path('admin_user_switcher', {website: website.id, type: 'front'}) }}"
                                data-bs-toggle="tooltip"
                                data-bs-placement="right"

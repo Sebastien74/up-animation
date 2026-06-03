@@ -1,6 +1,6 @@
 {%- trans_default_domain 'admin' -%}
 
-{%- set pageTitle = pageTitle ? pageTitle : (defaultTitle is defined ? defaultTitle : "Adminstration"|trans) -%}
+{%- set pageTitle = pageTitle ? pageTitle : (defaultTitle is defined ? defaultTitle : "Administration"|trans) -%}
 {%- set website = website is defined ? website : website() -%}
 {%- set isAllowedToSwitch = granted('ROLE_ALLOWED_TO_SWITCH') or granted('ROLE_INTERNAL') -%}
 {%- set onlineUsers = website|online_users('admin') -%}
@@ -54,7 +54,7 @@
             {%- if isAllowedToSwitch and not is_granted('IS_IMPERSONATOR') -%}
                 <a id="users-switcher-btn" data-path="{{ path('admin_user_switcher', {website: website.id, type: 'admin'}) }}"
                    class="btn-icon cursor"
-                   aria-label="{{"Afficher le commutateur d'utilsateurs"|trans|striptags }}">
+                   aria-label="{{"Afficher le commutateur d'utilisateurs"|trans|striptags }}">
                     <i class="icm-switch-user"></i>
                 </a>
             {%- elseif is_granted('IS_IMPERSONATOR') -%}

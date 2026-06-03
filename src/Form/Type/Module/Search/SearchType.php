@@ -65,7 +65,7 @@ class SearchType extends AbstractType
             $builder->add('resultsPage', EntityType::class, [
                 'required' => false,
                 'display' => 'search',
-                'label' => $this->translator->trans('Page de resultats', [], 'admin'),
+                'label' => $this->translator->trans('Page de résultats', [], 'admin'),
                 'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
                 'class' => Page::class,
                 'query_builder' => function (PageRepository $er) {
@@ -129,7 +129,7 @@ class SearchType extends AbstractType
                 'required' => false,
                 'display' => 'button',
                 'color' => 'app',
-                'label' => $this->translator->trans('Afficher les résulats par groupes', [], 'admin'),
+                'label' => $this->translator->trans('Afficher les résultats par groupes', [], 'admin'),
                 'attr' => ['class' => 'col-12 w-100'],
                 'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);

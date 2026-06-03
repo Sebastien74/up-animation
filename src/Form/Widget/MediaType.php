@@ -87,7 +87,7 @@ class MediaType extends AbstractType
                 'onlyMedia' => $options['onlyMedia'],
                 'accept' => $options['onlyVideo'] ? ['video/*', 'text/vtt'] : ($options['onlyMp3'] ? 'audio/mpeg' : self::ACCEPT),
                 'data-max-size' => $maxSize,
-                'placeholder' => $this->translator->trans('Séléctionnez une image', [], 'admin'),
+                'placeholder' => $this->translator->trans('Sélectionnez une image', [], 'admin'),
                 'class' => !$options['multiple'] ? 'dropify' : 'dropzone-field',
                 'row_attr' => ['class' => 'col-12 ' . (!$options['multiple'] ? 'dropify-group' : 'd-none')],
                 'data-height' => $options['dataHeight'],

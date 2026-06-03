@@ -70,7 +70,7 @@ class FontawesomeType extends AbstractType
         if ($filesystem->exists($dirname)) {
             $finder = Finder::create();
             $finder->in($dirname);
-            $choices[$this->translator->trans('Séléctionnez', [], 'admin')] = '';
+            $choices[$this->translator->trans('Sélectionnez', [], 'admin')] = '';
             foreach ($finder as $file) {
                 if (!empty($file->getRelativePath())) {
                     $path = str_replace(['/', DIRECTORY_SEPARATOR], '\\', $file->getRelativePathname());

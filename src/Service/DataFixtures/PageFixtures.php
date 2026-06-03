@@ -530,7 +530,7 @@ class PageFixtures
         $message = $this->addBlock($col, 'form-textarea', null, null, 5);
         $this->addFieldConfiguration($message, 'Message', 'Saisissez votre message', true, false, 'Veuillez saisir un message.', 'message');
         $gdpr = $this->addBlock($col, 'form-gdpr', null, null, 6);
-        $this->addFieldConfiguration($gdpr, 'RGPD', "J'accepte que mes données soient utilisées pour me recontacter dans le cadre de cette demande.", true, true, 'Veuillez accépter.', 'gdpr');
+        $this->addFieldConfiguration($gdpr, 'RGPD', "J'accepte que mes données soient utilisées pour me recontacter dans le cadre de cette demande.", true, true, 'Veuillez accepter.', 'gdpr');
         $submit = $this->addBlock($col, 'form-submit', null, null, 7);
         $this->addFieldConfiguration($submit, 'Envoyer', 'Saisissez votre message', true, false, null, 'submit');
 

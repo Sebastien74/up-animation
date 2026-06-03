@@ -639,7 +639,7 @@ class IntlType extends AbstractType
         ];
         $translations['subTitlePosition'] = [
             'label' => $this->translator->trans('Position du sous-titre', [], 'admin'),
-            'placeholder' => $this->translator->trans('Séléctionnez', [], 'admin'),
+            'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
         ];
         $translations['titleForce'] = [
             'label' => $this->translator->trans('Force du titre', [], 'admin'),

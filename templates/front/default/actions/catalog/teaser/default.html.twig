@@ -4,7 +4,7 @@
 {%- if entities -%}
     <div class="products-teaser-container position-relative">
         {{ component('WebmasterEdit', {
-            title: "Éditer le tesaer"|trans([], 'front_webmaster'),
+            title: "Éditer le teaser"|trans([], 'front_webmaster'),
             role: 'ROLE_CATALOG',
             path: path('admin_productteaser_edit', {website: website.id, productteaser: teaser.id})
         }) }}

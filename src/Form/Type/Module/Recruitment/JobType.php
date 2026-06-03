@@ -160,8 +160,8 @@ class JobType extends AbstractType
                     'remuneration' => [
                         'type' => Type\TextType::class,
                         'required' => false,
-                        'label' => $this->translator->trans('Rémuneration', [], 'admin'),
-                        'attr' => ['placeholder' => $this->translator->trans('Saisissez la rémuneration', [],
+                        'label' => $this->translator->trans('Rémunération', [], 'admin'),
+                        'attr' => ['placeholder' => $this->translator->trans('Saisissez la rémunération', [],
                             'admin')
                         ],
                         'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],

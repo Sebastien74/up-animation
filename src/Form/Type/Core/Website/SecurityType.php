@@ -103,7 +103,7 @@ class SecurityType extends AbstractType
             'required' => false,
             'display' => 'button',
             'color' => 'app',
-            'label' => $this->translator->trans('Activer la validaté des mots de passe', [], 'admin'),
+            'label' => $this->translator->trans('Activer la validité des mots de passe', [], 'admin'),
             'attr' => ['class' => 'col-12 w-100'],
             'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3 d-flex align-items-end'],
         ]);
@@ -177,7 +177,7 @@ class SecurityType extends AbstractType
                 'required' => false,
                 'display' => 'button',
                 'color' => 'app',
-                'label' => $this->translator->trans('Activer la validaté des mots de passe', [], 'admin'),
+                'label' => $this->translator->trans('Activer la validité des mots de passe', [], 'admin'),
                 'attr' => ['class' => 'col-12 w-100'],
                 'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3 d-flex align-items-end'],
             ]);
@@ -241,7 +241,7 @@ class SecurityType extends AbstractType
                 'multiple' => true,
                 'display' => 'search',
                 'attr' => [
-                    'data-placeholder' => $this->translator->trans('Séléctionnez', [], 'admin'),
+                    'data-placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
                 ],
             ]);
         }

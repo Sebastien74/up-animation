@@ -181,7 +181,7 @@ class MapType extends AbstractType
                     'required' => false,
                     'display' => 'button',
                     'color' => 'app',
-                    'label' => $this->translator->trans('Géomérties des pays', [], 'admin'),
+                    'label' => $this->translator->trans('Géométries des pays', [], 'admin'),
                     'attr' => ['class' => 'col-12 w-100', 'data-config' => true],
                     'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
                 ]);
@@ -190,7 +190,7 @@ class MapType extends AbstractType
                     'required' => false,
                     'display' => 'button',
                     'color' => 'app',
-                    'label' => $this->translator->trans('Géomérties des départements', [], 'admin'),
+                    'label' => $this->translator->trans('Géométries des départements', [], 'admin'),
                     'attr' => ['class' => 'col-12 w-100', 'data-config' => true],
                     'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
                 ]);
@@ -199,7 +199,7 @@ class MapType extends AbstractType
                     'required' => false,
                     'display' => 'button',
                     'color' => 'app',
-                    'label' => $this->translator->trans('Activer les fichiers de Géomérties', [], 'admin'),
+                    'label' => $this->translator->trans('Activer les fichiers de Géométries', [], 'admin'),
                     'attr' => ['class' => 'col-12 w-100', 'data-config' => true],
                     'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
                 ]);

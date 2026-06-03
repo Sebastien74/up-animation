@@ -89,7 +89,7 @@ class ConfigurationType extends AbstractType
                 'label' => $this->translator->trans('En ligne', [], 'admin'),
                 'display' => 'switch',
                 'row_attr' => ['class' => 'col-12 mb-1'],
-                'help' => $this->translator->trans('Site en maintenace si hors ligne', [], 'admin'),
+                'help' => $this->translator->trans('Site en maintenance si hors ligne', [], 'admin'),
             ]);
 
             $builder->add('asDefault', Type\CheckboxType::class, [

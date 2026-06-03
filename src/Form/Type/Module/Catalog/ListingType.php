@@ -326,7 +326,7 @@ class ListingType extends AbstractType
                 'required' => false,
                 'display' => 'button',
                 'color' => 'app',
-                'label' => $this->translator->trans('Recherche mots-clés et flitres combinés', [], 'admin'),
+                'label' => $this->translator->trans('Recherche mots-clés et filtres combinés', [], 'admin'),
                 'attr' => ['class' => 'col-12 w-100'],
                 'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
@@ -336,7 +336,7 @@ class ListingType extends AbstractType
                     'required' => false,
                     'display' => 'button',
                     'color' => 'app',
-                    'label' => $this->translator->trans('Aficher sur une carte', [], 'admin'),
+                    'label' => $this->translator->trans('Afficher sur une carte', [], 'admin'),
                     'attr' => ['class' => 'col-12 w-100'],
                     'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
                 ]);

@@ -31,7 +31,7 @@ class BuildThemeType extends AbstractType
     {
         $resolver->setDefaults([
             'label' => $this->translator->trans('Maintenance thème', [], 'admin'),
-            'placeholder' => $this->translator->trans('Séléctionnez', [], 'admin'),
+            'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
             'required' => false,
             'choices' => $this->getTemplates(),
             'display' => 'search',

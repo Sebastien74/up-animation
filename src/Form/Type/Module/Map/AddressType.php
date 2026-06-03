@@ -109,7 +109,7 @@ class AddressType extends AbstractType
             'label' => $this->translator->trans('Département', [], 'admin'),
             'required' => $isRequired,
             'attr' => ['class' => 'col-12 department',
-                'placeholder' => $this->translator->trans('Saisissez une département', [],
+                'placeholder' => $this->translator->trans('Saisissez un département', [],
                     'admin')
             ],
             'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],

@@ -96,7 +96,7 @@ readonly class JobManager
         $file->setColor('btn-primary');
         $this->pageFixtures->addFieldConfiguration($file, 'Votre cv', null, true, false, 'Veuillez joindre votre CV..', 'curriculum')->setFilesTypes(['.doc', '.docx', '.pdf']);
         $gdpr = $this->pageFixtures->addBlock($col, 'form-gdpr', null, null, 7);
-        $this->pageFixtures->addFieldConfiguration($gdpr, 'RGPD', "J'accepte que mes données soient utilisées pour me recontacter dans le cadre de cette demande.", true, true, 'Veuillez accépter.', 'gdpr');
+        $this->pageFixtures->addFieldConfiguration($gdpr, 'RGPD', "J'accepte que mes données soient utilisées pour me recontacter dans le cadre de cette demande.", true, true, 'Veuillez accepter.', 'gdpr');
         $submit = $this->pageFixtures->addBlock($col, 'form-submit', null, null, 8);
         $this->pageFixtures->addFieldConfiguration($submit, 'Envoyer', 'Saisissez votre message', true, false, null, 'submit');
 

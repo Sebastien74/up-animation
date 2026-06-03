@@ -41,7 +41,7 @@
                                 {%- elseif 'clear-remove' == type -%}
                                     <p class="mb-4">{{ "La demande de suppression de compte a été annulée"|trans|raw }}</p>
                                 {%- elseif 'remove-user' == type -%}
-                                    <p class="mb-4">{{ "La suppression de compte a été éffectuée"|trans|raw }}</p>
+                                    <p class="mb-4">{{ "La suppression de compte a été effectuée"|trans|raw }}</p>
                                 {%- endif -%}
                                 {%- if type != 'remove-user' -%}
                                     <a href="{{ absolute_url(path('security_front_login')) }}" class="btn btn-primary text-uppercase w-100">{{ "Retourner dans mon espace personnel"|trans|raw }}</a>

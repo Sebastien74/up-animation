@@ -72,7 +72,7 @@ class FaqType extends AbstractType
             ]);
 
             $builder->add('displayTeaser', Type\ChoiceType::class, [
-                'label' => $this->translator->trans('Affichage tesaer', [], 'admin'),
+                'label' => $this->translator->trans('Affichage teaser', [], 'admin'),
                 'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
                 'choices' => [
                     $this->translator->trans('Tous les volets fermés', [], 'admin') => 'all-closed',

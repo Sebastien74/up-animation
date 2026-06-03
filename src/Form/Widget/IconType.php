@@ -61,7 +61,7 @@ class IconType extends AbstractType
     private function getIcons(): array
     {
         $choices = [];
-        $choices[$this->translator->trans('Séléctionnez', [], 'admin')] = '';
+        $choices[$this->translator->trans('Sélectionnez', [], 'admin')] = '';
         foreach ($this->icons as $icon) {
             $choices[$icon->getPath()] = $icon->getPath();
         }

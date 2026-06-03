@@ -58,7 +58,7 @@
             <div class="card mb-3">
                 <div class="card-body pb-3">
                     <h4 class="main-subtitle"><i class="icm-database"></i>{{ "Doctrine"|trans|raw }}</h4>
-                    <a href="{{ path('doctrine_schema_update') }}" class="btn-app center no-icon w-100 mb-3">{{ "MAJ de la base de donnée"|trans|raw }}</a>
+                    <a href="{{ path('doctrine_schema_update') }}" class="btn-app center no-icon w-100 mb-3">{{ "MAJ de la base de données"|trans|raw }}</a>
                     <a href="{{ path('doctrine_schema_validate') }}" class="btn-app center no-icon w-100 mb-3">{{ "Vérification du schéma"|trans|raw }}</a>
                     {%- if websiteId() -%}
                         <a href="{{ path('admin_entities_generator', {website: websiteId()}) }}" class="btn-app center no-icon w-100">{{ "Générer la configuration des entités"|trans|raw }}</a>

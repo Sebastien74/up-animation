@@ -39,7 +39,7 @@ class TextType extends AbstractType
             'website' => $options['website'],
             'fields' => ['introduction', 'body', 'placeholder' => 'col-12 accessibility-table warning-help d-none'],
             'label_fields' => ['placeholder' => $this->translator->trans("Description du tableau", [], 'admin')],
-            'placeholder_fields' => ['placeholder' => $this->translator->trans('Saisissez un description', [], 'admin')],
+            'placeholder_fields' => ['placeholder' => $this->translator->trans('Saisissez une description', [], 'admin')],
             'help_fields' => ['placeholder' => $this->translator->trans("A compléter pour l'accessibilité", [], 'admin')],
         ]);
 

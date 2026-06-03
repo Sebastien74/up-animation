@@ -209,7 +209,7 @@ class ProductType extends AbstractType
             if ('agencies' !== $catalogSlug) {
                 $builder->add('menu', Type\ChoiceType::class, [
                     'label' => $this->translator->trans('Afficher dans le menu', [], 'admin'),
-                    'placeholder' => $this->translator->trans('Séléctionnez', [], 'admin'),
+                    'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
                     'choices' => [
                         $this->translator->trans('Nos événements', [], 'admin') => 'events',
                         $this->translator->trans('Nos animations', [], 'admin') => 'animations',

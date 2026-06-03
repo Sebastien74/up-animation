@@ -56,7 +56,7 @@ class FormType extends AbstractType
                 'data_config' => true,
                 'fields' => ['title' => 'col-md-6', 'subTitle' => 'col-md-6', 'body', 'introduction' => 'editor', 'placeholder' => 'col-12'],
                 'label_fields' => [
-                    'title' => $this->translator->trans('Objet du mail de reception', [], 'admin'),
+                    'title' => $this->translator->trans('Objet du mail de réception', [], 'admin'),
                     'subTitle' => $this->translator->trans('Objet du mail de confirmation', [], 'admin'),
                     'body' => $this->translator->trans('Corps du mail de confirmation', [], 'admin'),
                     'introduction' => $this->translator->trans('Corps du mail au webmaster', [], 'admin'),

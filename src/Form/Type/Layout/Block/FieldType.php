@@ -184,7 +184,7 @@ class FieldType extends AbstractType
     {
         $icons = $this->iconRepository->findBy(['configuration' => $website->getConfiguration()]);
         $choices = [];
-        $choices[$this->translator->trans('Séléctionnez', [], 'admin')] = '';
+        $choices[$this->translator->trans('Sélectionnez', [], 'admin')] = '';
         foreach ($icons as $icon) {
             $choices[$icon->getPath()] = $icon->getPath();
         }

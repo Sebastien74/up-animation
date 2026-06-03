@@ -71,7 +71,7 @@ class FeatureType extends AbstractType
             ]);
 
             $builder->add('catalogs', EntityType::class, [
-                'label' => $this->translator->trans('Ajouter par défaut dans les catatogues :', [], 'admin'),
+                'label' => $this->translator->trans('Ajouter par défaut dans les catalogues :', [], 'admin'),
                 'required' => false,
                 'display' => 'search',
                 'class' => Catalog::class,

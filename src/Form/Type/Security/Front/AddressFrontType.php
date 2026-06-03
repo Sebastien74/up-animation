@@ -82,7 +82,7 @@ class AddressFrontType extends AbstractType
                 'label' => $this->translator->trans('Département', [], 'admin'),
                 'required' => $constraints['required'],
                 'row_attr' => ['class' => 'col-12 ' . (!empty($options['groups_classes']['department']) ? $options['groups_classes']['department'] : 'col-lg-4')],
-                'attr' => ['placeholder' => $this->translator->trans('Saisissez une département', [], 'admin')],
+                'attr' => ['placeholder' => $this->translator->trans('Saisissez un département', [], 'admin')],
                 'constraints' => $constraints['validators'],
             ]);
         }

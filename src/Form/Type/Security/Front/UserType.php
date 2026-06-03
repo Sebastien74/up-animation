@@ -102,7 +102,7 @@ class UserType extends AbstractType
                 },
                 'display' => 'search',
                 'attr' => [
-                    'placeholder' => $this->translator->trans('Séléctionnez', [], 'admin'),
+                    'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
                     'row_attr' => ['class' => $isNew ? 'col-md-3' : 'col-md-4'],
                 ],
             ]);

@@ -45,7 +45,7 @@ class LotType extends AbstractType
             'required' => false,
             'label' => $this->translator->trans('Type', [], 'admin'),
             'attr' => [
-                'placeholder' => $this->translator->trans('Saisissez une type', [], 'admin')
+                'placeholder' => $this->translator->trans('Saisissez un type', [], 'admin')
             ],
             'row_attr' => ['class' => 'col-12 col-md-8 col-lg-2'],
         ]);
