@@ -60,6 +60,9 @@
     <testsuite name="security">
       <directory>tests/Service/Security</directory>
     </testsuite>
+    <testsuite name="functional">
+      <directory>tests/Controller</directory>
+    </testsuite>
   </testsuites>
   <source>
     <include>
