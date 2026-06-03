@@ -216,6 +216,9 @@
     "phpoffice/phpspreadsheet": {
         "version": "1.9.0"
     },
+    "phpstan/phpstan": {
+        "version": "2.2.1"
+    },
     "psr/cache": {
         "version": "1.0.1"
     },

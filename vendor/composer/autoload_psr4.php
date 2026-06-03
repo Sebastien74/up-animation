@@ -126,8 +126,6 @@ return array(
     'PHPStan\\ExtensionInstaller\\' => array($vendorDir . '/phpstan/extension-installer/src'),
     'PHPStan\\' => array($vendorDir . '/phpstan/phpstan-deprecation-rules/src'),
     'PHPCSStandards\\Composer\\Plugin\\Installers\\PHPCodeSniffer\\' => array($vendorDir . '/dealerdirect/phpcodesniffer-composer-installer/src'),
-    'Oro\\ORM\\' => array($vendorDir . '/oro/doctrine-extensions/src/Oro/ORM'),
-    'Oro\\DBAL\\' => array($vendorDir . '/oro/doctrine-extensions/src/Oro/DBAL'),
     'OpenApi\\' => array($vendorDir . '/zircote/swagger-php/src'),
     'OTPHP\\' => array($vendorDir . '/spomky-labs/otphp/src'),
     'NunoMaduro\\PhpInsights\\' => array($vendorDir . '/nunomaduro/phpinsights/src'),

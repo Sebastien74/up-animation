@@ -3,7 +3,7 @@
         'name' => '__root__',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '6d2650a2621580f548965ae6940841b4758de388',
+        'reference' => 'be294f58f44a7245c9daa42af1e32032d43ecba8',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         '__root__' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '6d2650a2621580f548965ae6940841b4758de388',
+            'reference' => 'be294f58f44a7245c9daa42af1e32032d43ecba8',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -642,15 +642,6 @@
             'replaced' => array(
                 0 => '~2.0',
             ),
-        ),
-        'oro/doctrine-extensions' => array(
-            'pretty_version' => '2.0.2',
-            'version' => '2.0.2.0',
-            'reference' => '478101fdb37e7a3bd4efad78b6e36fc49c26055f',
-            'type' => 'library',
-            'install_path' => __DIR__ . '/../oro/doctrine-extensions',
-            'aliases' => array(),
-            'dev_requirement' => false,
         ),
         'paragonie/constant_time_encoding' => array(
             'pretty_version' => 'v3.1.3',

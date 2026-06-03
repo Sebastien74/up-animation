@@ -623,6 +623,7 @@ Classement des meilleures activités. Articles type :
 - Faire un tour complet de `src/` pour nettoyer et améliorer les commentaires : retirer les commentaires inutiles (paraphrase du code, debug résiduel), raccourcir ceux trop longs (1 ligne max, WHY non-évident), ajouter ceux qui manquent quand c'est pertinent. Commentaires en anglais (cf. CLAUDE.md).
 - Dépréciations 8.5.
 - Dépréciations (générales).
+- `composer.json` : remplacer `sfcms/faker` (`1.0.x-dev`, résolu en `dev-master`) par un tag stable. Utilisé en code runtime (`src/Twig/Content/ComponentRuntime.php`), une branche `-dev` en prod est fragile. Poser un tag stable sur le package puis passer la contrainte en `^1.0`.
 - Remplacer les `app.request.get`.
 - Retirer tous les `use` non utilisés.
 - Une fois le site terminé : supprimer les objets d'import.

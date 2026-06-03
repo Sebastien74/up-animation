@@ -37,9 +37,6 @@ doctrine:
                 dql:
                     string_functions:
                         MATCH_AGAINST: App\Service\Doctrine\MatchAgainst
-#                        MONTH: Oro\ORM\Query\AST\Functions\SimpleFunction
-#                        YEAR: Oro\ORM\Query\AST\Functions\SimpleFunction
-#                        # https://github.com/oroinc/doctrine-extensions
         auto_generate_proxy_classes: true
         enable_lazy_ghost_objects: true
         controller_resolver:
