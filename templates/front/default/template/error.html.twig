@@ -3,6 +3,7 @@
 {%- set displaySitemap = false -%}
 {%- set websiteTemplate = websiteTemplate is defined and websiteTemplate ? websiteTemplate : website().configuration.template -%}
 {%- set frontTheme = frontTheme() -%}
+{%- set webpack = webpack is defined ? webpack : 'front_'~websiteTemplate|replace({'-': '_'}) -%}
 
 {%- block stylesheets -%}
     {{ encore_entry_link_tags('front-'~websiteTemplate~'-error-'~frontTheme, null, webpack) }}
