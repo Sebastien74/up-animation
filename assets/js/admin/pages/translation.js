@@ -117,7 +117,8 @@ let generateTranslation = function (list, website, generator) {
                 progressBlockEl.querySelector('.counter').textContent = list.dataset.count;
                 progressBar.setAttribute('aria-valuenow', "100");
                 progressBar.style.width = "100%";
-                progressBar.classList.add('bg-info');
+                progressBar.classList.remove('bg-danger', 'bg-warning', 'bg-info');
+                progressBar.classList.add('bg-success');
 
                 if (count >= total) {
                     generateYaml(website, generator);
@@ -168,6 +169,120 @@ let clearCache = function (website, generator) {
                 location.reload();
             }
         });
+};
+
+const translateButtons = body.querySelectorAll('.translation-translate-btn');
+let machineCsrf = null;
+
+translateButtons.forEach(function (button) {
+    button.addEventListener('click', function (e) {
+        e.preventDefault();
+        machineCsrf = button.dataset.csrf;
+        confirmTranslate(button, function () {
+            generator.classList.remove('d-none');
+            const extractionTitle = generator.querySelector('.extraction-title');
+            const translateTitle = generator.querySelector('.translate-title');
+            if (extractionTitle) extractionTitle.classList.add('d-none');
+            if (translateTitle) translateTitle.classList.remove('d-none');
+            if (indexEl) indexEl.classList.add('d-none');
+            translateProgress(website, generator);
+        });
+    });
+});
+
+let confirmTranslate = function (button, onConfirm) {
+    import('../lib/sweetalert/sweetalert.min').then(() => {
+        import('../../../scss/admin/lib/sweetalert.scss');
+        swal({
+            title: button.dataset.confirmTitle || '',
+            text: button.dataset.confirmText || '',
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            closeOnConfirm: true
+        }, function () {
+            onConfirm();
+        });
+    }).catch(() => {
+        if (window.confirm(button.dataset.confirmText || '')) onConfirm();
+    });
+};
+
+let translateProgress = function (website, generator) {
+    fetch(route('admin_translation_translate_progress', {website: website}), {
+        method: "GET",
+        headers: {"X-Requested-With": "XMLHttpRequest"}
+    })
+        .then(response => response.json())
+        .then(response => {
+            generator.classList.add('d-none');
+            progressBlock.innerHTML = response.html;
+            const lists = progressBlock.querySelectorAll('.translation-list');
+            const mainCounter = progressBlock.querySelector('#main-counter');
+            const total = mainCounter ? parseInt(mainCounter.dataset.total) : 0;
+            if (!lists.length || total === 0) {
+                finalizeTranslate(website);
+                return;
+            }
+            lists.forEach(function (list) {
+                translateBatch(list, website);
+            });
+        });
+};
+
+let translateBatch = function (list, website) {
+    const payload = JSON.parse(list.querySelector('.domain-translations').textContent);
+    const batchUrl = list.dataset.batchUrl;
+    const mainCounter = progressBlock.querySelector('#main-counter');
+    const total = parseInt(mainCounter.dataset.total);
+
+    fetch(batchUrl, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json; charset=utf-8",
+            "X-Requested-With": "XMLHttpRequest",
+            "X-CSRF-Token": machineCsrf
+        },
+        body: JSON.stringify(payload)
+    })
+        .then(response => {
+            if (response.ok) {
+                list.classList.remove('undo');
+                let count = 0;
+                progressBlock.querySelectorAll('.translation-list:not(.undo)').forEach(function (listEl) {
+                    count += parseInt(listEl.dataset.count);
+                });
+                mainCounter.dataset.count = count.toString();
+                mainCounter.textContent = count.toString();
+
+                const block = list.closest('.progress-block');
+                const progressBar = block.querySelector('.progress-bar');
+                block.querySelector('.counter').textContent = list.dataset.count;
+                list.dataset.progress = list.dataset.count;
+                progressBar.setAttribute('aria-valuenow', "100");
+                progressBar.style.width = "100%";
+                progressBar.classList.add('bg-info');
+
+                if (count >= total) {
+                    finalizeTranslate(website);
+                }
+            } else {
+                list.classList.add('error');
+            }
+        })
+        .catch(error => {
+            console.error('Error translating batch:', error);
+            list.classList.add('error');
+        });
+};
+
+let finalizeTranslate = function (website) {
+    fetch(route('admin_translation_cache_clear', {website: website}) + '?ajax=true', {
+        method: "GET",
+        headers: {"X-Requested-With": "XMLHttpRequest"}
+    })
+        .then(() => location.reload())
+        .catch(() => location.reload());
 };
 
 let saveEls = document.querySelectorAll('.save-row-trans');

@@ -112,6 +112,35 @@ services:
         tags:
             - { name: translation.loader, alias: db, priority: 20 }
 
+    App\Service\Translation\Provider\DeepLProvider:
+        arguments:
+            $cache: '@cache.app'
+            $translationLogger: '@monolog.logger.translation'
+            $apiKey: '%env(DEEPL_API_KEY)%'
+            $enabled: '%env(bool:DEEPL_ENABLED)%'
+        tags:
+            - { name: app.translator_provider, priority: 30 }
+
+    App\Service\Translation\Provider\MyMemoryProvider:
+        arguments:
+            $cache: '@cache.app'
+            $translationLogger: '@monolog.logger.translation'
+            $email: '%env(MYMEMORY_EMAIL)%'
+        tags:
+            - { name: app.translator_provider, priority: 20 }
+
+    App\Service\Translation\Provider\LibreTranslateProvider:
+        arguments:
+            $url: '%env(LIBRETRANSLATE_URL)%'
+            $apiKey: '%env(LIBRETRANSLATE_API_KEY)%'
+        tags:
+            - { name: app.translator_provider, priority: 10 }
+
+    App\Service\Translation\TranslatorChain:
+        arguments:
+            $providers: !tagged_iterator { tag: app.translator_provider }
+            $translationLogger: '@monolog.logger.translation'
+
     #####################################
     #         Form extensions           #
     #####################################

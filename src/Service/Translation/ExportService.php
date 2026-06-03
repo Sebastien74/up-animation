@@ -636,4 +636,143 @@ class ExportService
 
         return $intlFields;
     }
+
+    /**
+     * Collect translatable groups (intl + translations) without writing any file.
+     *
+     * Each group: ['type' => 'intl'|'translation', 'locale', 'group' (label),
+     * 'class' (intl FQCN, intl only), 'items' => [['ref', 'source', 'html']]].
+     * Provisions missing intl rows as a side effect, like the export.
+     *
+     * @return array<int, array<string, mixed>>
+     *
+     * @throws MappingException|NonUniqueResultException
+     */
+    public function collectTranslatable(Website $website, int $chunkSize = 25): array
+    {
+        $this->website = $website;
+        $defaultLocale = $website->getConfiguration()->getLocale();
+        $locales = $website->getConfiguration()->getLocales();
+
+        $intls = $this->getIntls();
+        $intls = $this->generateSeo($intls, $defaultLocale, $locales);
+        $intls = $this->generateIntls($intls, $defaultLocale, $locales);
+
+        $groups = [];
+        $this->appendIntlGroups($groups, $intls, $defaultLocale, $chunkSize);
+        $this->appendTranslationGroups($groups, $defaultLocale, $chunkSize);
+
+        return $groups;
+    }
+
+    /**
+     * @param array<int, array<string, mixed>> $groups
+     *
+     * @throws MappingException
+     */
+    private function appendIntlGroups(array &$groups, array $intls, string $defaultLocale, int $chunkSize): void
+    {
+        $em = $this->coreLocator->em();
+        $perClass = [];
+
+        foreach ($intls as $tableEntities) {
+            foreach ($tableEntities as $localesInfo) {
+                foreach ($localesInfo as $locale => $info) {
+                    if ($locale === $defaultLocale || !property_exists($info, 'defaultIntl')) {
+                        continue;
+                    }
+                    $localeIntl = $info->intl ?? null;
+                    $defaultIntl = $info->defaultIntl ?? null;
+                    if (!$localeIntl || !$defaultIntl || !$localeIntl->getId()) {
+                        continue;
+                    }
+                    $class = $em->getClassMetadata(get_class($localeIntl))->getName();
+                    foreach ($this->getIntlFields($localeIntl) as $field) {
+                        if ('id' === $field->field) {
+                            continue;
+                        }
+                        $getter = $field->getter;
+                        $source = (string) $defaultIntl->$getter();
+                        $current = (string) $localeIntl->$getter();
+                        if ('' === trim(strip_tags($source)) || '' !== trim(strip_tags($current))) {
+                            continue;
+                        }
+                        $perClass[$class][$locale][] = [
+                            'ref' => ['id' => $localeIntl->getId(), 'field' => $field->field],
+                            'source' => $source,
+                            'html' => $source !== strip_tags($source),
+                        ];
+                    }
+                }
+            }
+        }
+
+        foreach ($perClass as $class => $byLocale) {
+            $label = preg_replace('/Intl$/', '', (new \ReflectionClass($class))->getShortName());
+            foreach ($byLocale as $locale => $items) {
+                foreach (array_chunk($items, $chunkSize) as $chunk) {
+                    $groups[] = ['type' => 'intl', 'locale' => $locale, 'group' => $label, 'class' => $class, 'items' => $chunk];
+                }
+            }
+        }
+    }
+
+    /**
+     * @param array<int, array<string, mixed>> $groups
+     */
+    private function appendTranslationGroups(array &$groups, string $defaultLocale, int $chunkSize): void
+    {
+        $byLocale = $this->getTranslations($defaultLocale);
+        if (!$byLocale) {
+            return;
+        }
+
+        $em = $this->coreLocator->em();
+        $unitIds = [];
+        foreach ($byLocale as $list) {
+            foreach ($list as $translation) {
+                $unitIds[$translation->getUnit()->getId()] = true;
+            }
+        }
+
+        $defaults = [];
+        if ($unitIds) {
+            $rows = $em->getRepository(Translation::class)->createQueryBuilder('t')
+                ->select('t, u')
+                ->join('t.unit', 'u')
+                ->where('t.locale = :locale')
+                ->andWhere('u.id IN (:ids)')
+                ->setParameter('locale', $defaultLocale)
+                ->setParameter('ids', array_keys($unitIds))
+                ->getQuery()
+                ->getResult();
+            foreach ($rows as $row) {
+                $defaults[$row->getUnit()->getId()] = $row->getContent();
+            }
+        }
+
+        $perDomain = [];
+        foreach ($byLocale as $locale => $list) {
+            foreach ($list as $translation) {
+                $unit = $translation->getUnit();
+                $source = $defaults[$unit->getId()] ?? null;
+                if (null === $source || '' === trim((string) $source)) {
+                    continue;
+                }
+                $perDomain[$locale][$unit->getDomain()->getName()][] = [
+                    'ref' => ['keyName' => $unit->getKeyName()],
+                    'source' => (string) $source,
+                    'html' => (string) $source !== strip_tags((string) $source),
+                ];
+            }
+        }
+
+        foreach ($perDomain as $locale => $domains) {
+            foreach ($domains as $domainName => $items) {
+                foreach (array_chunk($items, $chunkSize) as $chunk) {
+                    $groups[] = ['type' => 'translation', 'locale' => $locale, 'group' => $domainName, 'items' => $chunk];
+                }
+            }
+        }
+    }
 }

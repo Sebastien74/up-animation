@@ -43,6 +43,12 @@
                 <a class="btn-app d-inline-flex align-items-center gap-2" href="{{ path('admin_translation_cache_clear', { website: websiteId }) }}">
                     <i class="icm-broom"></i><span>{{ "Vider le cache"|trans|raw }}</span>
                 </a>
+                <button type="button" class="translation-translate-btn cursor btn-app d-inline-flex align-items-center gap-2"
+                        data-csrf="{{ csrf_token('machine_translate') }}"
+                        data-confirm-title="{{ "Tout traduire ?"|trans|striptags }}"
+                        data-confirm-text="{{ "Les traductions manquantes seront générées automatiquement (à relire avant diffusion)."|trans|striptags }}">
+                    <i class="icm-globe"></i><span>{{ "Tout traduire"|trans|raw }}</span>
+                </button>
                 {%- set newTranslationForm = render_esi(path("admin_translation_new", {website: websiteId()})) -%}
                 {%- set importTranslationModal = render_esi(path('admin_intls_import', {website: websiteId()} )) -%}
                 {{ newTranslationForm|raw }}
@@ -80,14 +86,16 @@
                                 <th class="align-middle px-4">{{ "Groupe"|trans|raw }}</th>
                                 {%- for transLocale in allLocales -%}
                                     <th class="align-middle px-4">
-                                        {%- if allLocales|length > 1 -%}
-                                            <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src=" {{ asset('/medias/icons/flags/'~transLocale~'.svg') }}"
-                                                 data-bs-toggle="tooltip" title="{{ languageName(transLocale, app.user.locale) }}"
-                                                 class="img-fluid lazy-load float-start mt-1 me-2" height="14" width="19">
-                                        {%- endif -%}
-                                        {%- if stats[transLocale] is defined -%}
-                                            <span class="d-inline-block fw-500">{{ stats[transLocale]['words'] }} {{ "mots"|trans|raw }}</span>
-                                        {%- endif -%}
+                                        <div class=" d-flex align-items-center">
+                                            {%- if allLocales|length > 1 -%}
+                                                <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src=" {{ asset('/medias/icons/flags/'~transLocale~'.svg') }}"
+                                                     data-bs-toggle="tooltip" title="{{ languageName(transLocale, app.user.locale) }}"
+                                                     class="img-fluid lazy-load float-start me-2" height="14" width="19">
+                                            {%- endif -%}
+                                            {%- if stats[transLocale] is defined -%}
+                                                <span class="d-inline-block fw-500">{{ stats[transLocale]['words'] }} {{ "mots"|trans|raw }}</span>
+                                            {%- endif -%}
+                                        </div>
                                     </th>
                                 {%- endfor -%}
                             </tr>

@@ -1,0 +1,52 @@
+{%- trans_default_domain 'admin' -%}
+
+<div id="translate-progress">
+
+    {%- set allLocales = website().configuration.allLocales -%}
+
+    <h4 class="text-center mb-1">{{ "Traduction automatique en cours"|trans|replace({'__': ''}) }}</h4>
+    <b class="italic mb-4 w-100 text-center d-inline-block">
+        <span id="main-counter" data-count="0" data-total="{{ total }}">0</span>/{{ total }} {{ "éléments à traduire"|trans|replace({'__': ''}) }}
+    </b>
+
+    {%- if total == 0 -%}
+        <p class="text-center">{{ "Aucune traduction manquante."|trans|raw }}</p>
+    {%- endif -%}
+
+    <div class="row m-0 reveal-stagger">
+        {%- for group in groups -%}
+            {%- set listId = 'translate-' ~ loop.index -%}
+            <div class="reveal {% if groups|length < 2 %}col-12{% else %}col-md-6 col-lg-4 col-xl-3{% endif %}">
+                <div class="progress-block card p-3 mb-3">
+                    <strong class="w-100 d-inline-flex align-items-center gap-2 mb-2">
+                        {%- if allLocales|length > 1 -%}
+                            <span class="locale-badge">
+                                <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="{{ group.locale|languageName }}"
+                                     data-src=" {{ asset('/medias/icons/flags/'~group.locale~'.svg') }}"
+                                     class="img-fluid lazy-load" height="17" width="17">
+                            </span>
+                        {%- endif -%}
+                        {{ group.group|trans|raw }}
+                        <small class="badge bg-light text-dark">{{ group.type == 'intl' ? "Contenus"|trans : "Interface"|trans }}</small>
+                        <small class="italic ms-auto">
+                            <span class="counter">0</span>/{{ group.items|length }}
+                        </small>
+                    </strong>
+                    <ul id="{{ listId }}"
+                        data-count="{{ group.items|length }}"
+                        data-progress="0"
+                        class="translation-list reset undo d-none"
+                        data-batch-url="{{ path('admin_translation_translate_batch', {website: websiteId()}) }}">
+                        <script type="application/json" class="domain-translations">
+                            {{ group|json_encode|raw }}
+                        </script>
+                    </ul>
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-striped" role="progressbar" style="width: 0" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </div>
+            </div>
+        {%- endfor -%}
+    </div>
+
+</div>
