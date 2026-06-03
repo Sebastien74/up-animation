@@ -46,6 +46,25 @@ class UrlRepository extends ServiceEntityRepository
     }
 
     /**
+     * Lightweight projection of online front URLs for the internal crawler.
+     *
+     * @return list<array{code: string, locale: string}>
+     */
+    public function findOnlineForCrawl(int $websiteId): array
+    {
+        return $this->createQueryBuilder('u')
+            ->select('u.code AS code', 'u.locale AS locale')
+            ->andWhere('u.website = :website')
+            ->andWhere('u.online = :online')
+            ->orderBy('u.locale', 'ASC')
+            ->addOrderBy('u.code', 'ASC')
+            ->setParameter('website', $websiteId)
+            ->setParameter('online', true)
+            ->getQuery()
+            ->getArrayResult();
+    }
+
+    /**
      * Find Empty SEO.
      *
      * @throws NoResultException|NonUniqueResultException

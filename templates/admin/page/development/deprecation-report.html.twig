@@ -1,0 +1,182 @@
+{%- extends "admin/base.html.twig" -%}
+
+{%- trans_default_domain 'admin' -%}
+
+{%- set pageTitle = "Rapport de dépréciations"|trans -%}
+
+{%- block title -%}{{ pageTitle|htmlEntities }}{%- endblock -%}
+{%- block pageTitle -%}{{ pageTitle }}{%- endblock -%}
+
+{%- block stylesheets -%}
+    {{ parent() }}
+    {{ encore_entry_link_tags('admin-development', null, 'admin') }}
+{%- endblock -%}
+
+{%- block body -%}
+
+    <div id="deprecations-page">
+
+        <p class="dep-intro">
+            {{ "Détection des usages dépréciés (Symfony, Doctrine, librairies)."|trans|raw }}
+            {{ "Le scan complet analyse statiquement le code PHP du projet (src, migrations, config, public)."|trans|raw }}
+            {{ "Les templates Twig et le code vendor ne sont pas analysables statiquement : ils restent couverts par le journal d'exécution ci-dessous."|trans|raw }}
+        </p>
+
+        {#-- Static scan (PHPStan) + runtime crawl --#}
+        <div class="dep-scan">
+            <div class="dep-scan-row">
+                <span class="dep-scan-text">
+                    <span class="dep-scan-title">{{ "Scan statique (PHPStan)"|trans|raw }}</span>
+                    <span class="dep-scan-desc">
+                        {{ scanFileCount }} {{ "fichiers PHP. Analyse le code sans l'exécuter (src, migrations, config, public)."|trans|raw }}
+                    </span>
+                </span>
+                <button type="button"
+                        id="dep-scan-btn"
+                        class="btn-app dark d-inline-flex align-items-center gap-2"
+                        data-scan-url="{{ path('admin_deprecation_scan') }}"
+                        data-token="{{ csrf_token('deprecation_scan') }}"
+                        data-total="{{ scanFileCount }}"
+                        data-size="300">
+                    <i class="icm-radar"></i>{{ "Lancer le scan statique"|trans|raw }}
+                </button>
+            </div>
+
+            <div id="dep-progress-wrap" class="dep-progress-wrap d-none">
+                <div class="dep-progress-meta">
+                    <span id="dep-progress-label">{{ "Analyse en cours…"|trans|raw }}</span>
+                    <span id="dep-progress-count">0 / {{ scanFileCount }}</span>
+                </div>
+                <div class="progress" role="progressbar" aria-label="{{ "Progression du scan"|trans|striptags }}" aria-valuemin="0" aria-valuemax="100">
+                    <div id="dep-progress-bar" class="progress-bar progress-bar-striped progress-bar-animated" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <hr class="dep-sep">
+
+            <div class="dep-scan-row">
+                <span class="dep-scan-text">
+                    <span class="dep-scan-title">{{ "Crawl des pages (runtime)"|trans|raw }}</span>
+                    <span class="dep-scan-desc">
+                        {{ crawlUrlCount }} {{ "URLs (front + back). Visite chaque page pour déclencher les dépréciations runtime (Twig, vendor)."|trans|raw }}
+                    </span>
+                </span>
+                <button type="button"
+                        id="dep-crawl-btn"
+                        class="btn-app dark d-inline-flex align-items-center gap-2"
+                        data-crawl-url="{{ path('admin_deprecation_crawl') }}"
+                        data-token="{{ csrf_token('deprecation_crawl') }}"
+                        data-total="{{ crawlUrlCount }}">
+                    <i class="icm-compass"></i>{{ "Crawler les pages"|trans|raw }}
+                </button>
+            </div>
+
+            <div id="dep-crawl-wrap" class="dep-progress-wrap d-none">
+                <div class="dep-progress-meta">
+                    <span id="dep-crawl-label">{{ "Crawl en cours…"|trans|raw }}</span>
+                    <span id="dep-crawl-count">0 / {{ crawlUrlCount }}</span>
+                </div>
+                <div class="progress" role="progressbar" aria-label="{{ "Progression du crawl"|trans|striptags }}" aria-valuemin="0" aria-valuemax="100">
+                    <div id="dep-crawl-bar" class="progress-bar progress-bar-striped progress-bar-animated" style="width: 0%"></div>
+                </div>
+                <div id="dep-crawl-current" class="dep-crawl-current"></div>
+            </div>
+
+            <div id="dep-feedback"></div>
+        </div>
+
+        {#-- Deprecations list: scan + crawl + journal kept, differentiated by source --#}
+        <div class="section-label mt-5 mb-3">
+            <span class="label-text">{{ "Dépréciations"|trans|raw }}</span>
+            <span class="label-aside">
+                {%- if scan.available -%}{{ "Scan"|trans|raw }} : {{ scan.total }} · {% endif -%}
+                {%- if crawl.available -%}{{ "Crawl"|trans|raw }} : {{ crawl.total }} · {% endif -%}
+                {{ "Journal"|trans|raw }} : {{ report.total }}
+            </span>
+        </div>
+
+        {%- if scan.available or crawl.available or (report.available and report.total > 0) -%}
+            <div class="d-flex justify-content-end mb-3">
+                <button type="button"
+                        id="dep-clear-btn"
+                        class="btn-app small dark d-inline-flex align-items-center gap-2"
+                        data-clear-url="{{ path('admin_deprecation_log_clear') }}"
+                        data-token="{{ csrf_token('deprecation_clear') }}">
+                    <i class="icm-trash"></i>{{ "Supprimer les logs"|trans|raw }}
+                </button>
+            </div>
+        {%- endif -%}
+
+        <div class="dep-summary">
+            <div class="dep-tile">
+                <span class="dep-tile-label">{{ "Dépréciations"|trans|raw }}</span>
+                <span class="dep-tile-value" id="dep-total">{{ globalTotal }}</span>
+            </div>
+            <div class="dep-tile">
+                <span class="dep-tile-label">{{ "Uniques"|trans|raw }}</span>
+                <span class="dep-tile-value" id="dep-unique">{{ globalUnique }}</span>
+            </div>
+        </div>
+
+        <div id="dep-chips" class="dep-chips{% if scan.byArea is empty and scan.byPackage is empty and crawl.byArea is empty and crawl.byPackage is empty %} d-none{% endif %}">
+            {%- for row in scan.byArea -%}<span class="dep-chip">{{ row.name }} <strong>{{ row.count }}</strong></span>{%- endfor -%}
+            {%- for row in scan.byPackage -%}<span class="dep-chip">{{ row.name }} <strong>{{ row.count }}</strong></span>{%- endfor -%}
+            {%- for row in crawl.byArea -%}<span class="dep-chip">{{ row.name }} <strong>{{ row.count }}</strong></span>{%- endfor -%}
+            {%- for row in crawl.byPackage -%}<span class="dep-chip">{{ row.name }} <strong>{{ row.count }}</strong></span>{%- endfor -%}
+        </div>
+
+        <div class="table-responsive app-table">
+            <table class="table table-striped responsive-cards">
+                <thead>
+                    <tr>
+                        <th class="align-middle px-4">{{ "Source"|trans|raw }}</th>
+                        <th class="align-middle px-4">{{ "Zone"|trans|raw }}</th>
+                        <th class="align-middle px-4">{{ "Paquet"|trans|raw }}</th>
+                        <th class="align-middle px-4">{{ "Message"|trans|raw }}</th>
+                        <th class="align-middle px-4">{{ "Emplacement"|trans|raw }}</th>
+                    </tr>
+                </thead>
+                <tbody id="dep-tbody">
+                    {%- for f in scan.findings -%}
+                        <tr data-source="scan">
+                            <td class="align-middle px-4" data-label="{{ "Source"|trans }}"><span class="dep-source dep-source-scan">scan</span></td>
+                            <td class="align-middle px-4" data-label="{{ "Zone"|trans }}"><span class="dep-pkg">{{ f.area }}</span></td>
+                            <td class="align-middle px-4" data-label="{{ "Paquet"|trans }}"><span class="dep-pkg">{{ f.package }}</span></td>
+                            <td class="align-middle px-4" data-label="{{ "Message"|trans }}"><span class="dep-message">{{ f.message }}</span></td>
+                            <td class="align-middle px-4" data-label="{{ "Emplacement"|trans }}"><span class="dep-loc">{{ f.file }}:{{ f.line }}</span></td>
+                        </tr>
+                    {%- endfor -%}
+                    {%- for f in crawl.findings -%}
+                        <tr data-source="crawl">
+                            <td class="align-middle px-4" data-label="{{ "Source"|trans }}"><span class="dep-source dep-source-crawl">crawl</span></td>
+                            <td class="align-middle px-4" data-label="{{ "Zone"|trans }}"><span class="dep-pkg">{{ f.area }}</span></td>
+                            <td class="align-middle px-4" data-label="{{ "Paquet"|trans }}"><span class="dep-pkg">{{ f.package }}</span></td>
+                            <td class="align-middle px-4" data-label="{{ "Message"|trans }}"><span class="dep-message">{{ f.message }}</span></td>
+                            <td class="align-middle px-4" data-label="{{ "Emplacement"|trans }}"><span class="dep-loc">{{ f.location }}</span></td>
+                        </tr>
+                    {%- endfor -%}
+                    {%- for item in report.items -%}
+                        <tr data-source="journal">
+                            <td class="align-middle px-4" data-label="{{ "Source"|trans }}"><span class="dep-source dep-source-journal">journal</span></td>
+                            <td class="align-middle px-4" data-label="{{ "Zone"|trans }}"><span class="dep-pkg">exécution</span></td>
+                            <td class="align-middle px-4" data-label="{{ "Paquet"|trans }}"><span class="dep-pkg">{{ item.package }}</span></td>
+                            <td class="align-middle px-4" data-label="{{ "Message"|trans }}"><span class="dep-message">{{ item.message }}</span></td>
+                            <td class="align-middle px-4" data-label="{{ "Emplacement"|trans }}"><span class="dep-loc">×{{ item.count }} · {{ item.lastSeen }}</span></td>
+                        </tr>
+                    {%- endfor -%}
+                </tbody>
+            </table>
+        </div>
+
+        <div id="dep-empty" class="alert alert-info mt-2{% if scan.total > 0 or crawl.total > 0 or report.total > 0 %} d-none{% endif %}">
+            {{ "Aucune dépréciation pour le moment. Lancez un scan ou un crawl ci-dessus."|trans|raw }}
+        </div>
+
+    </div>
+
+{%- endblock -%}
+
+{%- block javascripts -%}
+    {{ parent() }}
+    {{ encore_entry_script_tags('admin-development', null, 'admin', {defer: true}) }}
+{%- endblock -%}

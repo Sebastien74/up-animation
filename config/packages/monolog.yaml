@@ -24,12 +24,16 @@ when@dev:
                 path: '%kernel.logs_dir%/scheduler.log'
                 level: info
                 channels: ["scheduler"]
+            deprecation:
+                type: stream
+                path: "%kernel.logs_dir%/%kernel.environment%.deprecations.log"
+                channels: ["deprecation"]
             main:
                 type: rotating_file
                 max_files: 3
                 path: '%kernel.logs_dir%/%kernel.environment%.main.log'
                 level: debug
-                channels: ["!event", '!security', '!slow_request', '!scheduler']
+                channels: ["!event", '!security', '!slow_request', '!scheduler', '!deprecation']
             cache_helper:
                 type: stream
                 max_files: 3
@@ -88,14 +92,8 @@ when@local:
                 channels: ["scheduler"]
             deprecation:
                 type: stream
-                max_files: 3
                 path: "%kernel.logs_dir%/%kernel.environment%.deprecations.log"
-            deprecation_filter:
-                type: filter
-                max_files: 3
-                handler: deprecation
-                max_level: info
-                channels: ["php"]
+                channels: ["deprecation"]
 
 when@prod:
     monolog:
@@ -121,7 +119,7 @@ when@prod:
                 action_level: error
                 handler: nested
                 excluded_http_codes: [404, 405]
-                channels: ["!slow_request", "!scheduler"]
+                channels: ["!slow_request", "!scheduler", "!deprecation"]
             nested:
                 type: rotating_file
                 max_files: 3

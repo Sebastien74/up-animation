@@ -136,6 +136,10 @@ readonly class ExceptionListener
      */
     private function notFound(Request $request): void
     {
+        if ($request->headers->has('X-Internal-Crawler')) {
+            return;
+        }
+
         $excluded = ['build', '_wdt', 'front', 'accueil', '&', '.js', 'admin', 'images', '/www.'];
         $register = true;
         foreach ($excluded as $item) {

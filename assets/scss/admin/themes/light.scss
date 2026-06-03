@@ -249,6 +249,28 @@ body {
         }
     }
 
+    // Solid dark variant stays dark in light theme too (more specific than the .btn-app override above).
+    .btn-app.dark {
+        background: $dash-dark !important;
+        border-color: rgba($white, .18) !important;
+        color: $white !important;
+        box-shadow: $theme-shadow-md;
+
+        i {
+            background: rgba($white, .12) !important;
+            border-color: rgba($white, .18) !important;
+            color: $white !important;
+        }
+
+        @include mediaQuery(min-lg) {
+            &:hover {
+                background: mix($white, $dash-dark, 16%) !important;
+                border-color: rgba($white, .28) !important;
+                color: $white !important;
+            }
+        }
+    }
+
     // Used-pages chips: re-assert state colors (the .btn-app color override above wins otherwise)
     #entities-index .used-pages-cell .btn-app.small {
 
@@ -2352,6 +2374,75 @@ body {
 
     .pool-id {
         color: $theme-text-muted !important;
+    }
+}
+
+#deprecations-page {
+
+    .section-label .label-text {
+        color: $theme-text !important;
+    }
+
+    .section-label .label-aside,
+    .dep-intro {
+        color: $theme-text-muted !important;
+    }
+
+    .dep-intro code,
+    .dep-scan-title,
+    .dep-tile-value,
+    .dep-message,
+    .dep-chip strong {
+        color: $theme-text !important;
+    }
+
+    .dep-scan,
+    .dep-tile,
+    .dep-chip {
+        background: $theme-card-bg !important;
+        border-color: $theme-border !important;
+    }
+
+    .dep-scan-desc,
+    .dep-tile-label,
+    .dep-progress-meta,
+    .dep-chip,
+    .dep-pkg,
+    .dep-loc {
+        color: $theme-text-muted !important;
+    }
+
+    .dep-area {
+        color: $theme-text !important;
+        background: rgba($theme-accent, .12) !important;
+    }
+
+    .dep-sep {
+        border-top-color: $theme-border !important;
+    }
+
+    .dep-crawl-current {
+        color: $theme-text-muted !important;
+    }
+
+    .dep-source {
+        color: $theme-text !important;
+        background: rgba($theme-accent, .12) !important;
+    }
+
+    .dep-source-scan {
+        color: $info !important;
+        background: rgba($info, .16) !important;
+    }
+
+    .dep-source-crawl {
+        color: $warning !important;
+        background: rgba($warning, .16) !important;
+    }
+
+    .dep-source-journal {
+        color: $success !important;
+        background: rgba($success, .16) !important;
     }
 }
 

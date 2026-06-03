@@ -143,6 +143,28 @@
             color: $btn-text !important;
         }
     }
+
+    // Solid dark variant for development / maintenance actions (same in both themes).
+    &.dark {
+        background: $dash-dark;
+        border-color: rgba($white, .16);
+        color: $white !important;
+        box-shadow: $btn-shadow;
+
+        i {
+            background: rgba($white, .12);
+            border-color: rgba($white, .18);
+            color: $white;
+        }
+
+        @include mediaQuery(min-lg) {
+            &:hover {
+                background: mix($white, $dash-dark, 16%);
+                border-color: rgba($white, .28);
+                color: $white !important;
+            }
+        }
+    }
 }
 
 .btn-locale {

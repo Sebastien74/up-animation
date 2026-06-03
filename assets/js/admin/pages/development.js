@@ -61,6 +61,281 @@ importBoutons.forEach(function (btn) {
 });
 
 /**
+ * Recount the global / unique deprecation tiles from the current table rows.
+ */
+const updateDeprecationSummary = () => {
+    const tbody = document.getElementById('dep-tbody');
+    if (!tbody) {
+        return;
+    }
+    const rows = tbody.querySelectorAll('tr');
+    const total = document.getElementById('dep-total');
+    const unique = document.getElementById('dep-unique');
+    if (total) {
+        total.textContent = rows.length.toString();
+    }
+    if (unique) {
+        const messages = new Set();
+        rows.forEach((row) => {
+            const message = row.querySelector('.dep-message');
+            if (message) {
+                messages.add(message.textContent);
+            }
+        });
+        unique.textContent = messages.size.toString();
+    }
+};
+
+/**
+ * Complete deprecation scan (PHPStan), run in browser-driven batches with a real progress bar.
+ * Scan rows are appended to the existing list (journal rows are kept) and persisted server-side.
+ */
+const depScanBtn = document.getElementById('dep-scan-btn');
+if (depScanBtn) {
+    const escapeHtml = (value) => {
+        const div = document.createElement('div');
+        div.textContent = value == null ? '' : String(value);
+        return div.innerHTML;
+    };
+
+    const appendScanRows = (findings) => {
+        const tbody = document.getElementById('dep-tbody');
+        const rows = findings
+            .slice()
+            .sort((a, b) => (a.area + a.package).localeCompare(b.area + b.package))
+            .map((f) => '<tr data-source="scan">'
+                + '<td class="align-middle px-4" data-label="Source"><span class="dep-source dep-source-scan">scan</span></td>'
+                + '<td class="align-middle px-4" data-label="Zone"><span class="dep-pkg">' + escapeHtml(f.area) + '</span></td>'
+                + '<td class="align-middle px-4" data-label="Paquet"><span class="dep-pkg">' + escapeHtml(f.package) + '</span></td>'
+                + '<td class="align-middle px-4" data-label="Message"><span class="dep-message">' + escapeHtml(f.message) + '</span></td>'
+                + '<td class="align-middle px-4" data-label="Emplacement"><span class="dep-loc">' + escapeHtml(f.file) + ':' + f.line + '</span></td>'
+                + '</tr>')
+            .join('');
+        tbody.insertAdjacentHTML('afterbegin', rows);
+
+        const byArea = {};
+        const byPackage = {};
+        findings.forEach((f) => {
+            byArea[f.area] = (byArea[f.area] || 0) + 1;
+            byPackage[f.package] = (byPackage[f.package] || 0) + 1;
+        });
+        const chip = (map) => Object.entries(map)
+            .sort((a, b) => b[1] - a[1])
+            .map(([k, v]) => '<span class="dep-chip">' + escapeHtml(k) + ' <strong>' + v + '</strong></span>')
+            .join('');
+        const chips = document.getElementById('dep-chips');
+        chips.innerHTML = chip(byArea) + chip(byPackage);
+        chips.classList.remove('d-none');
+
+        const empty = document.getElementById('dep-empty');
+        if (empty) {
+            empty.classList.add('d-none');
+        }
+        updateDeprecationSummary();
+    };
+
+    const runDeprecationScan = async () => {
+        const url = depScanBtn.dataset.scanUrl;
+        const token = depScanBtn.dataset.token;
+        const size = parseInt(depScanBtn.dataset.size, 10) || 300;
+
+        const wrap = document.getElementById('dep-progress-wrap');
+        const bar = document.getElementById('dep-progress-bar');
+        const count = document.getElementById('dep-progress-count');
+        const label = document.getElementById('dep-progress-label');
+        const feedback = document.getElementById('dep-feedback');
+
+        depScanBtn.disabled = true;
+        feedback.innerHTML = '';
+        bar.classList.add('progress-bar-striped', 'progress-bar-animated');
+        bar.style.width = '0%';
+        wrap.classList.remove('d-none');
+
+        // Drop the previous scan trace (kept journal rows are left untouched).
+        document.querySelectorAll('#dep-tbody tr[data-source="scan"]').forEach((row) => row.remove());
+        updateDeprecationSummary();
+
+        const findings = [];
+        let offset = 0;
+        let done = false;
+        let lastDiag = null;
+
+        try {
+            while (!done) {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': token },
+                    body: JSON.stringify({ offset, size }),
+                });
+                if (!response.ok) {
+                    throw new Error('HTTP ' + response.status);
+                }
+                const data = await response.json();
+                if (data.error) {
+                    throw new Error(data.error);
+                }
+                if (data.diag) {
+                    lastDiag = data.diag;
+                }
+
+                findings.push(...(data.findings || []));
+                const percent = data.total > 0 ? Math.round((data.processed / data.total) * 100) : 100;
+                bar.style.width = percent + '%';
+                bar.parentElement.setAttribute('aria-valuenow', percent.toString());
+                count.textContent = data.processed + ' / ' + data.total;
+
+                offset = data.processed;
+                done = data.done;
+            }
+
+            bar.classList.remove('progress-bar-striped', 'progress-bar-animated');
+            label.textContent = 'Scan terminé';
+
+            if (findings.length > 0) {
+                appendScanRows(findings);
+                feedback.innerHTML = '<div class="alert alert-success mt-3">Scan terminé : ' + findings.length + ' dépréciation(s) ajoutée(s) à la liste.</div>';
+            } else if (lastDiag) {
+                feedback.innerHTML = '<div class="alert alert-warning mt-3">L\'analyse n\'a renvoyé aucun résultat exploitable (code ' + escapeHtml(lastDiag.exitCode) + ').'
+                    + (lastDiag.stderr ? '<pre class="dep-message mt-2 mb-0">' + escapeHtml(lastDiag.stderr) + '</pre>' : '') + '</div>';
+            } else {
+                feedback.innerHTML = '<div class="alert alert-success mt-3">Aucune dépréciation détectée par l\'analyse statique.</div>';
+            }
+        } catch (error) {
+            label.textContent = 'Échec du scan';
+            feedback.innerHTML = '<div class="alert alert-danger mt-3">Le scan a échoué : ' + escapeHtml(error.message) + '</div>';
+        } finally {
+            depScanBtn.disabled = false;
+        }
+    };
+
+    depScanBtn.addEventListener('click', runDeprecationScan);
+}
+
+/**
+ * Runtime crawl: visit every URL one by one, show the current URL, append findings to the list.
+ */
+const depCrawlBtn = document.getElementById('dep-crawl-btn');
+if (depCrawlBtn) {
+    const escapeHtml = (value) => {
+        const div = document.createElement('div');
+        div.textContent = value == null ? '' : String(value);
+        return div.innerHTML;
+    };
+
+    const appendCrawlRows = (findings) => {
+        if (findings.length === 0) {
+            return;
+        }
+        const tbody = document.getElementById('dep-tbody');
+        const rows = findings.map((f) => '<tr data-source="crawl">'
+            + '<td class="align-middle px-4" data-label="Source"><span class="dep-source dep-source-crawl">crawl</span></td>'
+            + '<td class="align-middle px-4" data-label="Zone"><span class="dep-pkg">' + escapeHtml(f.area) + '</span></td>'
+            + '<td class="align-middle px-4" data-label="Paquet"><span class="dep-pkg">' + escapeHtml(f.package) + '</span></td>'
+            + '<td class="align-middle px-4" data-label="Message"><span class="dep-message">' + escapeHtml(f.message) + '</span></td>'
+            + '<td class="align-middle px-4" data-label="Emplacement"><span class="dep-loc">' + escapeHtml(f.location) + '</span></td>'
+            + '</tr>').join('');
+        tbody.insertAdjacentHTML('afterbegin', rows);
+        const empty = document.getElementById('dep-empty');
+        if (empty) {
+            empty.classList.add('d-none');
+        }
+        updateDeprecationSummary();
+    };
+
+    const runCrawl = async () => {
+        const url = depCrawlBtn.dataset.crawlUrl;
+        const token = depCrawlBtn.dataset.token;
+        const total = parseInt(depCrawlBtn.dataset.total, 10) || 0;
+
+        const wrap = document.getElementById('dep-crawl-wrap');
+        const bar = document.getElementById('dep-crawl-bar');
+        const count = document.getElementById('dep-crawl-count');
+        const label = document.getElementById('dep-crawl-label');
+        const current = document.getElementById('dep-crawl-current');
+        const feedback = document.getElementById('dep-feedback');
+
+        depCrawlBtn.disabled = true;
+        feedback.innerHTML = '';
+        bar.classList.add('progress-bar-striped', 'progress-bar-animated');
+        bar.style.width = '0%';
+        wrap.classList.remove('d-none');
+        current.textContent = '';
+
+        document.querySelectorAll('#dep-tbody tr[data-source="crawl"]').forEach((row) => row.remove());
+        updateDeprecationSummary();
+
+        let totalFound = 0;
+        let index = 0;
+        let done = total === 0;
+
+        try {
+            while (!done) {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': token },
+                    body: JSON.stringify({ index }),
+                });
+                if (!response.ok) {
+                    throw new Error('HTTP ' + response.status);
+                }
+                const data = await response.json();
+                if (data.error) {
+                    throw new Error(data.error);
+                }
+
+                if (data.url) {
+                    current.textContent = data.url;
+                }
+                appendCrawlRows(data.findings || []);
+                totalFound += (data.findings || []).length;
+
+                const percent = data.total > 0 ? Math.round((data.processed / data.total) * 100) : 100;
+                bar.style.width = percent + '%';
+                bar.parentElement.setAttribute('aria-valuenow', percent.toString());
+                count.textContent = data.processed + ' / ' + data.total;
+
+                index = data.processed;
+                done = data.done;
+            }
+
+            bar.classList.remove('progress-bar-striped', 'progress-bar-animated');
+            label.textContent = 'Crawl terminé';
+            current.textContent = '';
+            feedback.innerHTML = '<div class="alert alert-success mt-3">Crawl terminé : ' + totalFound + ' dépréciation(s) runtime ajoutée(s) à la liste.</div>';
+        } catch (error) {
+            label.textContent = 'Échec du crawl';
+            feedback.innerHTML = '<div class="alert alert-danger mt-3">Le crawl a échoué : ' + escapeHtml(error.message) + '</div>';
+        } finally {
+            depCrawlBtn.disabled = false;
+        }
+    };
+
+    depCrawlBtn.addEventListener('click', runCrawl);
+}
+
+/**
+ * Clear the deprecation logs (runtime journal + scan & crawl traces), then reload.
+ */
+const depClearBtn = document.getElementById('dep-clear-btn');
+if (depClearBtn) {
+    depClearBtn.addEventListener('click', async () => {
+        depClearBtn.disabled = true;
+        try {
+            const body = new FormData();
+            body.append('_token', depClearBtn.dataset.token);
+            const response = await fetch(depClearBtn.dataset.clearUrl, { method: 'POST', body });
+            if (response.ok) {
+                window.location.reload();
+                return;
+            }
+        } catch (error) {
+            // fall through to re-enable the button
+        }
+        depClearBtn.disabled = false;
+    });
+}
+
+/**
  * Phpinfo search engine with highlight
  */
 const phpinfoSearch = document.getElementById('phpinfo-search');

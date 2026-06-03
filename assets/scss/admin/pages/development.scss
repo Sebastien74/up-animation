@@ -208,7 +208,8 @@
 -----------------------------------*/
 
 #log-page,
-#logs-page {
+#logs-page,
+#deprecations-page {
 
     .section-label {
         display: flex;
@@ -694,5 +695,210 @@
     .pool-action {
         flex: 0 0 auto;
         margin: 0;
+    }
+}
+
+/*-----------------------------------
+   7 ) Deprecations report
+-----------------------------------*/
+
+#deprecations-page {
+
+    .dep-intro {
+        font-size: 13px;
+        line-height: 1.6;
+        color: $crumb-muted;
+        margin-bottom: $space-5;
+
+        code {
+            font-family: $font-family-monospace;
+            color: $crumb-text;
+        }
+    }
+
+    .dep-scan {
+        background: $crumb-surface;
+        border: 1px solid $crumb-border;
+        border-radius: $radius-lg;
+        padding: $space-5;
+    }
+
+    .dep-scan-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: $space-4;
+    }
+
+    .dep-scan-text {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        min-width: 0;
+    }
+
+    .dep-scan-title {
+        font-size: 14px;
+        font-weight: 600;
+        color: $crumb-text;
+    }
+
+    .dep-scan-desc {
+        font-size: 12px;
+        color: $crumb-muted;
+    }
+
+    .dep-progress-wrap {
+        margin-top: $space-4;
+    }
+
+    .dep-progress-meta {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: $space-3;
+        font-size: 11px;
+        color: $crumb-muted;
+        font-variant-numeric: tabular-nums;
+        margin-bottom: 6px;
+    }
+
+    .dep-summary {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: $space-4;
+        margin-bottom: $space-5;
+    }
+
+    .dep-tile {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        padding: $space-4 $space-5;
+        background: $crumb-surface;
+        border: 1px solid $crumb-border;
+        border-radius: $radius-lg;
+    }
+
+    .dep-tile-label {
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: .12em;
+        color: $crumb-muted;
+    }
+
+    .dep-tile-value {
+        font-size: 24px;
+        font-weight: 600;
+        color: $crumb-text;
+        font-variant-numeric: tabular-nums;
+    }
+
+    .dep-chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: $space-2;
+        margin-bottom: $space-5;
+    }
+
+    .dep-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 12px;
+        font-size: 11px;
+        font-weight: 500;
+        font-family: $font-family-monospace;
+        color: $crumb-muted;
+        background: $crumb-surface;
+        border: 1px solid $crumb-border;
+        border-radius: $radius-pill;
+        font-variant-numeric: tabular-nums;
+
+        strong {
+            color: $crumb-text;
+        }
+    }
+
+    .dep-pkg {
+        font-family: $font-family-monospace;
+        font-size: 12px;
+        color: $crumb-muted;
+    }
+
+    .dep-message {
+        font-family: $font-family-monospace;
+        font-size: 12px;
+        line-height: 1.5;
+        color: $crumb-text;
+        word-break: break-word;
+        overflow-wrap: anywhere;
+    }
+
+    .dep-loc {
+        font-family: $font-family-monospace;
+        font-size: 11px;
+        color: $crumb-muted;
+        white-space: nowrap;
+    }
+
+    .dep-area {
+        display: inline-flex;
+        align-items: center;
+        padding: 2px 8px;
+        font-size: 10px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: .08em;
+        color: $crumb-text;
+        background: rgba($primary, .12);
+        border-radius: $radius-pill;
+    }
+
+    .dep-sep {
+        border: 0;
+        border-top: 1px solid $crumb-border;
+        margin: $space-5 0;
+        opacity: 1;
+    }
+
+    .dep-crawl-current {
+        margin-top: 6px;
+        font-family: $font-family-monospace;
+        font-size: 11px;
+        color: $crumb-muted;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .dep-source {
+        display: inline-flex;
+        align-items: center;
+        padding: 2px 8px;
+        font-size: 10px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: .08em;
+        border-radius: $radius-pill;
+        color: $crumb-text;
+        background: rgba($primary, .12);
+    }
+
+    .dep-source-scan {
+        color: $info;
+        background: rgba($info, .16);
+    }
+
+    .dep-source-crawl {
+        color: $warning;
+        background: rgba($warning, .16);
+    }
+
+    .dep-source-journal {
+        color: $success;
+        background: rgba($success, .16);
     }
 }

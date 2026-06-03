@@ -245,6 +245,13 @@
                             <span class="quick-desc">{{ "Lister les caches du site"|trans|raw }}</span>
                         </a>
                     </li>
+                    <li>
+                        <a href="{{ path('admin_deprecation_report') }}" class="quick-tile">
+                            <span class="quick-icon"><i class="icm-exclamation-triangle"></i></span>
+                            <span class="quick-title">{{ "Dépréciations"|trans|raw }}</span>
+                            <span class="quick-desc">{{ "Préparer une montée de version"|trans|raw }}</span>
+                        </a>
+                    </li>
                 {%- endif -%}
             </ul>
         </section>

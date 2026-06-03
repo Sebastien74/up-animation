@@ -1,0 +1,10 @@
+# Deprecation scan configuration.
+# phpstan-deprecation-rules is auto-registered by phpstan/extension-installer.
+# Level 0 keeps type-error noise low; the back-office scan filters results to
+# deprecation messages only. Run a full scan with: php vendor/bin/phpstan analyse
+parameters:
+    level: 0
+    paths:
+        - src
+    tmpDir: var/cache/phpstan
+    reportUnmatchedIgnoredErrors: false
