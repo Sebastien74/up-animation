@@ -83,6 +83,7 @@ class ApiType extends AbstractType
 
         $builder->add('tawkToId', Type\UrlType::class, [
             'required' => false,
+            'default_protocol' => null,
             'label' => $this->translator->trans('TawkTo URL', [], 'admin'),
             'attr' => [
                 'placeholder' => $this->translator->trans('Saisissez une URL', [], 'admin')

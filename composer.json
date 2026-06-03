@@ -82,7 +82,8 @@
             "symfony/flex": true,
             "symfony/runtime": true,
             "dealerdirect/phpcodesniffer-composer-installer": true,
-            "phpstan/extension-installer": true
+            "phpstan/extension-installer": true,
+            "cweagans/composer-patches": true
         },
         "sort-packages": true
     },
@@ -128,9 +129,15 @@
         "symfony": {
             "allow-contrib": false,
             "require": "7.4.*"
+        },
+        "patches": {
+            "eckinox/tinymce-bundle": {
+                "Fix deprecated HttpKernel Extension base class (Symfony 7.1+)": "patches/eckinox-tinymce-bundle-extension-deprecation.patch"
+            }
         }
     },
     "require-dev": {
+        "cweagans/composer-patches": "^1.7",
         "doctrine/doctrine-fixtures-bundle": "^4.1",
         "nunomaduro/phpinsights": "^2.13",
         "phpstan/extension-installer": "*",

@@ -165,6 +165,7 @@ class AddressType extends AbstractType
             $builder->add('googleMapUrl', Type\UrlType::class, [
                 'label' => !empty($labels['googleMapUrl']) ? $labels['googleMapUrl'] : $this->translator->trans("Plan d'accès", [], 'admin'),
                 'required' => false,
+                'default_protocol' => null,
                 'display' => 'search',
                 'attr' => [
                     'placeholder' => $this->translator->trans('Saisissez une URL', [], 'admin'),

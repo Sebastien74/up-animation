@@ -78,6 +78,40 @@ suite de tests via `SYMFONY_DEPRECATIONS_HELPER` (dans `phpunit.xml.dist`).
   1. `SYMFONY_DEPRECATIONS_HELPER="generateBaseline=true&baselineFile=tests/deprecations.baseline" vendor/bin/phpunit`
   2. Basculer `phpunit.xml.dist` sur `baselineFile=tests/deprecations.baseline`.
 
+## 4. Corriger une dépréciation vendor (composer-patches)
+
+Quand la dépréciation vient d'un **paquet tiers** (code `vendor/`, non éditable : tout
+serait écrasé au prochain `composer install`), on la corrige avec
+**`cweagans/composer-patches`** (`require-dev`). Un diff versionné dans `patches/` est
+ré-appliqué automatiquement à chaque (ré)installation du paquet ciblé.
+
+- Déclaration dans `composer.json` → `extra.patches`, indexée par nom de paquet :
+  ```json
+  "extra": {
+      "patches": {
+          "<vendor>/<paquet>": {
+              "Description courte du correctif": "patches/<paquet>-<sujet>.patch"
+          }
+      }
+  }
+  ```
+- Le diff (`patches/*.patch`) est un **diff unifié** dont les chemins sont relatifs à la
+  **racine du paquet** (préfixes `a/` `b/`, niveau `-p1`).
+- Le patch ne s'applique qu'à la **(ré)installation du paquet**, pas sur un `composer
+  install` quand le paquet est déjà présent. Pour forcer : supprimer le dossier du paquet
+  dans `vendor/<vendor>/<paquet>/` puis `php composer.phar install`. (`composer reinstall`
+  échoue sous WAMP : bug Windows « Uninstall failed / Package is not installed ».)
+- **Gotcha Windows** : composer-patches n'utilise `git apply` que si le paquet est lui-même
+  un dépôt git (jamais le cas en vendor) et retombe sur la commande système `patch`,
+  absente de WAMP. La fournir via Git for Windows :
+  `$env:Path = "C:\Program Files\Git\usr\bin;$env:Path"` avant `php composer.phar install`.
+  Sur Linux / OVH, `patch` est natif : rien à faire au déploiement.
+
+Patch en place : **`eckinox/tinymce-bundle`** (`TinymceExtension` étendait l'`Extension`
+de `HttpKernel`, interne depuis 7.1) → import basculé vers
+`Symfony\Component\DependencyInjection\Extension\Extension`. À retirer dès qu'une version
+du bundle compatible Symfony 8.x est publiée.
+
 ## Où la détection tourne
 
 Affaire de **développement et de tests**, jamais de production : journal en `dev`/`local`,

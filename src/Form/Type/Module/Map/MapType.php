@@ -96,6 +96,7 @@ class MapType extends AbstractType
 
                 $builder->add('layer', Type\UrlType::class, [
                     'required' => false,
+                    'default_protocol' => null,
                     'label' => $this->translator->trans('Template de la carte', [], 'admin'),
                     'attr' => ['placeholder' => $this->translator->trans('Saisissez une URL', [],
                         'admin'),

@@ -127,6 +127,10 @@ class ComposerStaticInitb6f039734207b56291bf391c5da7ade3
         array (
             'libphonenumber\\' => 15,
         ),
+        'c' =>
+        array (
+            'cweagans\\Composer\\' => 18,
+        ),
         'Z' =>
         array (
             'ZipStream\\' => 10,
@@ -374,6 +378,10 @@ class ComposerStaticInitb6f039734207b56291bf391c5da7ade3
         'libphonenumber\\' =>
         array (
             0 => __DIR__ . '/..' . '/giggsey/libphonenumber-for-php/src',
+        ),
+        'cweagans\\Composer\\' =>
+        array (
+            0 => __DIR__ . '/..' . '/cweagans/composer-patches/src',
         ),
         'ZipStream\\' =>
         array (
@@ -1157,6 +1165,7 @@ class ComposerStaticInitb6f039734207b56291bf391c5da7ade3
         'App\\Command\\SecurityTokenCommand' => __DIR__ . '/../..' . '/src/Command/SecurityTokenCommand.php',
         'App\\Command\\ThumbnailCommand' => __DIR__ . '/../..' . '/src/Command/ThumbnailCommand.php',
         'App\\Command\\TikTokRefreshTokenCommand' => __DIR__ . '/../..' . '/src/Command/TikTokRefreshTokenCommand.php',
+        'App\\Command\\TmpDeprecationCrawlCommand' => __DIR__ . '/../..' . '/src/Command/TmpDeprecationCrawlCommand.php',
         'App\\Command\\TranslationCommand' => __DIR__ . '/../..' . '/src/Command/TranslationCommand.php',
         'App\\Controller\\Admin\\AdminController' => __DIR__ . '/../..' . '/src/Controller/Admin/AdminController.php',
         'App\\Controller\\Admin\\Analytics\\StatsController' => __DIR__ . '/../..' . '/src/Controller/Admin/Analytics/StatsController.php',
@@ -1294,6 +1303,7 @@ class ComposerStaticInitb6f039734207b56291bf391c5da7ade3
         'App\\Controller\\Admin\\Seo\\UrlController' => __DIR__ . '/../..' . '/src/Controller/Admin/Seo/UrlController.php',
         'App\\Controller\\Admin\\Translation\\DomainController' => __DIR__ . '/../..' . '/src/Controller/Admin/Translation/DomainController.php',
         'App\\Controller\\Admin\\Translation\\IntlController' => __DIR__ . '/../..' . '/src/Controller/Admin/Translation/IntlController.php',
+        'App\\Controller\\Admin\\Translation\\MachineTranslationController' => __DIR__ . '/../..' . '/src/Controller/Admin/Translation/MachineTranslationController.php',
         'App\\Controller\\Admin\\Translation\\TranslationController' => __DIR__ . '/../..' . '/src/Controller/Admin/Translation/TranslationController.php',
         'App\\Controller\\Admin\\Translation\\UnitController' => __DIR__ . '/../..' . '/src/Controller/Admin/Translation/UnitController.php',
         'App\\Controller\\BaseController' => __DIR__ . '/../..' . '/src/Controller/BaseController.php',
@@ -2484,6 +2494,7 @@ class ComposerStaticInitb6f039734207b56291bf391c5da7ade3
         'App\\Service\\Export\\ExportContactService' => __DIR__ . '/../..' . '/src/Service/Export/ExportContactService.php',
         'App\\Service\\Export\\ExportCsvService' => __DIR__ . '/../..' . '/src/Service/Export/ExportCsvService.php',
         'App\\Service\\Export\\ExportProductsService' => __DIR__ . '/../..' . '/src/Service/Export/ExportProductsService.php',
+        'App\\Service\\Http\\RequestParam' => __DIR__ . '/../..' . '/src/Service/Http/RequestParam.php',
         'App\\Service\\Import\\ImportProductsService' => __DIR__ . '/../..' . '/src/Service/Import/ImportProductsService.php',
         'App\\Service\\Interface\\AdminLocator' => __DIR__ . '/../..' . '/src/Service/Interface/AdminLocator.php',
         'App\\Service\\Interface\\AdminLocatorInterface' => __DIR__ . '/../..' . '/src/Service/Interface/AdminLocatorInterface.php',
@@ -2501,16 +2512,23 @@ class ComposerStaticInitb6f039734207b56291bf391c5da7ade3
         'App\\Service\\Interface\\ImportLocator' => __DIR__ . '/../..' . '/src/Service/Interface/ImportLocator.php',
         'App\\Service\\Media\\Compressor' => __DIR__ . '/../..' . '/src/Service/Media/Compressor.php',
         'App\\Service\\Pdf\\ProductPdfRenderer' => __DIR__ . '/../..' . '/src/Service/Pdf/ProductPdfRenderer.php',
-        'App\\Service\\Translation\\DeepLInterface' => __DIR__ . '/../..' . '/src/Service/Translation/DeepLInterface.php',
-        'App\\Service\\Translation\\DeepLService' => __DIR__ . '/../..' . '/src/Service/Translation/DeepLService.php',
+        'App\\Service\\Security\\CaptchaService' => __DIR__ . '/../..' . '/src/Service/Security/CaptchaService.php',
+        'App\\Service\\Security\\WebsiteSecretProvider' => __DIR__ . '/../..' . '/src/Service/Security/WebsiteSecretProvider.php',
         'App\\Service\\Translation\\ExportService' => __DIR__ . '/../..' . '/src/Service/Translation/ExportService.php',
         'App\\Service\\Translation\\Extractor' => __DIR__ . '/../..' . '/src/Service/Translation/Extractor.php',
         'App\\Service\\Translation\\ImportService' => __DIR__ . '/../..' . '/src/Service/Translation/ImportService.php',
         'App\\Service\\Translation\\Loader' => __DIR__ . '/../..' . '/src/Service/Translation/Loader.php',
+        'App\\Service\\Translation\\MachineTranslationService' => __DIR__ . '/../..' . '/src/Service/Translation/MachineTranslationService.php',
+        'App\\Service\\Translation\\Provider\\DeepLProvider' => __DIR__ . '/../..' . '/src/Service/Translation/Provider/DeepLProvider.php',
+        'App\\Service\\Translation\\Provider\\LibreTranslateProvider' => __DIR__ . '/../..' . '/src/Service/Translation/Provider/LibreTranslateProvider.php',
+        'App\\Service\\Translation\\Provider\\MyMemoryProvider' => __DIR__ . '/../..' . '/src/Service/Translation/Provider/MyMemoryProvider.php',
+        'App\\Service\\Translation\\Provider\\TranslatorProviderInterface' => __DIR__ . '/../..' . '/src/Service/Translation/Provider/TranslatorProviderInterface.php',
         'App\\Service\\Translation\\TranslationExcelGenerator' => __DIR__ . '/../..' . '/src/Service/Translation/TranslationExcelGenerator.php',
+        'App\\Service\\Translation\\TranslatorChain' => __DIR__ . '/../..' . '/src/Service/Translation/TranslatorChain.php',
         'App\\Tests\\Command\\CommandRegistryTest' => __DIR__ . '/../..' . '/tests/Command/CommandRegistryTest.php',
         'App\\Tests\\Command\\SchedulerArgumentsTest' => __DIR__ . '/../..' . '/tests/Command/SchedulerArgumentsTest.php',
         'App\\Tests\\Command\\SecurityTokenCommandTest' => __DIR__ . '/../..' . '/tests/Command/SecurityTokenCommandTest.php',
+        'App\\Tests\\Controller\\Front\\Module\\CaptchaChallengeEndpointTest' => __DIR__ . '/../..' . '/tests/Controller/Front/Module/CaptchaChallengeEndpointTest.php',
         'App\\Tests\\Form\\Manager\\Front\\ContactEmailTest' => __DIR__ . '/../..' . '/tests/Form/Manager/Front/ContactEmailTest.php',
         'App\\Tests\\Form\\Manager\\Front\\NewsletterEmailTest' => __DIR__ . '/../..' . '/tests/Form/Manager/Front/NewsletterEmailTest.php',
         'App\\Tests\\Form\\Manager\\Security\\Front\\RegistrationEmailTest' => __DIR__ . '/../..' . '/tests/Form/Manager/Security/Front/RegistrationEmailTest.php',
@@ -2521,9 +2539,11 @@ class ComposerStaticInitb6f039734207b56291bf391c5da7ade3
         'App\\Tests\\Security\\ResetTokenExpiryTest' => __DIR__ . '/../..' . '/tests/Security/ResetTokenExpiryTest.php',
         'App\\Tests\\Security\\TwoFactor\\AuthCodeMailerTest' => __DIR__ . '/../..' . '/tests/Security/TwoFactor/AuthCodeMailerTest.php',
         'App\\Tests\\Service\\Core\\MailerServiceTest' => __DIR__ . '/../..' . '/tests/Service/Core/MailerServiceTest.php',
+        'App\\Tests\\Service\\Security\\CaptchaServiceTest' => __DIR__ . '/../..' . '/tests/Service/Security/CaptchaServiceTest.php',
         'App\\Tests\\Support\\MailerKernelTestCase' => __DIR__ . '/../..' . '/tests/Support/MailerKernelTestCase.php',
         'App\\Tests\\Support\\NullTranslationLoader' => __DIR__ . '/../..' . '/tests/Support/NullTranslationLoader.php',
         'App\\Tests\\Support\\WebsiteModelFactory' => __DIR__ . '/../..' . '/tests/Support/WebsiteModelFactory.php',
+        'App\\Tests\\Twig\\Content\\ManifestRuntimeTest' => __DIR__ . '/../..' . '/tests/Twig/Content/ManifestRuntimeTest.php',
         'App\\Twig\\Admin\\CoreRuntime' => __DIR__ . '/../..' . '/src/Twig/Admin/CoreRuntime.php',
         'App\\Twig\\Components\\Date' => __DIR__ . '/../..' . '/src/Twig/Components/Date.php',
         'App\\Twig\\Components\\LastNews' => __DIR__ . '/../..' . '/src/Twig/Components/LastNews.php',
@@ -12793,6 +12813,9 @@ class ComposerStaticInitb6f039734207b56291bf391c5da7ade3
         'ZipStream\\Zip64\\ExtendedInformationExtraField' => __DIR__ . '/..' . '/maennchen/zipstream-php/src/Zip64/ExtendedInformationExtraField.php',
         'ZipStream\\ZipStream' => __DIR__ . '/..' . '/maennchen/zipstream-php/src/ZipStream.php',
         'ZipStream\\Zs\\ExtendedInformationExtraField' => __DIR__ . '/..' . '/maennchen/zipstream-php/src/Zs/ExtendedInformationExtraField.php',
+        'cweagans\\Composer\\PatchEvent' => __DIR__ . '/..' . '/cweagans/composer-patches/src/PatchEvent.php',
+        'cweagans\\Composer\\PatchEvents' => __DIR__ . '/..' . '/cweagans/composer-patches/src/PatchEvents.php',
+        'cweagans\\Composer\\Patches' => __DIR__ . '/..' . '/cweagans/composer-patches/src/Patches.php',
         'libphonenumber\\AlternateFormatsCountryCodeSet' => __DIR__ . '/..' . '/giggsey/libphonenumber-for-php/src/AlternateFormatsCountryCodeSet.php',
         'libphonenumber\\AsYouTypeFormatter' => __DIR__ . '/..' . '/giggsey/libphonenumber-for-php/src/AsYouTypeFormatter.php',
         'libphonenumber\\CountryCodeSource' => __DIR__ . '/..' . '/giggsey/libphonenumber-for-php/src/CountryCodeSource.php',

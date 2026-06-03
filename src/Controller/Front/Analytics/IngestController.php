@@ -19,7 +19,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Messenger\MessageBusInterface;
-use Symfony\Component\RateLimiter\RateLimiterFactory;
+use Symfony\Component\RateLimiter\RateLimiterFactoryInterface;
 use Symfony\Component\Routing\Attribute\Route;
 
 /**
@@ -56,7 +56,7 @@ final class IngestController extends AbstractController
         private readonly MessageBusInterface $messageBus,
         private readonly CoreLocatorInterface $coreLocator,
         #[Target('analytics_ingest.limiter')]
-        private readonly RateLimiterFactory $ingestLimiter,
+        private readonly RateLimiterFactoryInterface $ingestLimiter,
     ) {
     }
 

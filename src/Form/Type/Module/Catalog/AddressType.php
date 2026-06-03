@@ -153,6 +153,7 @@ class AddressType extends AbstractType
             $builder->add('googleMapUrl', Type\UrlType::class, [
                 'label' => $this->translator->trans('Google map URL', [], 'admin'),
                 'required' => false,
+                'default_protocol' => null,
                 'attr' => ['placeholder' => $this->translator->trans('Saisissez une URL', [],
                     'admin')
                 ],
@@ -162,6 +163,7 @@ class AddressType extends AbstractType
             $builder->add('googleMapDirectionUrl', Type\UrlType::class, [
                 'label' => $this->translator->trans('Google map itinéraire URL', [], 'admin'),
                 'required' => false,
+                'default_protocol' => null,
                 'attr' => ['placeholder' => $this->translator->trans('Saisissez une URL', [],
                     'admin')
                 ],
