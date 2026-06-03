@@ -7,7 +7,6 @@ namespace App\EventSubscriber;
 use Doctrine\Bundle\DoctrineBundle\Attribute\AsDoctrineListener;
 use Doctrine\ORM\Event\LoadClassMetadataEventArgs;
 use Doctrine\ORM\Events;
-use Doctrine\ORM\Mapping\ClassMetadata;
 
 /**
  * TablePrefix.
@@ -37,10 +36,9 @@ class TablePrefix
                 'name' => $this->prefix.'_'.$classMetadata->getTableName(),
             ]);
         }
-        foreach ($classMetadata->getAssociationMappings() as $fieldName => $mapping) {
-            if (ClassMetadata::MANY_TO_MANY == $mapping['type'] && $mapping['isOwningSide']) {
-                $mappedTableName = $mapping['joinTable']['name'];
-                $classMetadata->associationMappings[$fieldName]['joinTable']['name'] = $this->prefix.'_'.$mappedTableName;
+        foreach ($classMetadata->getAssociationMappings() as $mapping) {
+            if ($mapping->isManyToManyOwningSide()) {
+                $mapping->joinTable->name = $this->prefix.'_'.$mapping->joinTable->name;
             }
         }
     }
