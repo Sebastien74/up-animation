@@ -16,7 +16,7 @@
 {%- set color = icons[alert].color is defined ? icons[alert].color : icons['undefined'].color -%}
 {%- set iconColor = icons[alert].iconColor is defined ? icons[alert].iconColor : icons['undefined'].iconColor -%}
 {%- set help = help is defined ? help : null -%}
-{%- set class = class is defined ? class : null -%}
+{%- set class = class is defined ? class : (alertClass is defined ? alertClass : null) -%}
 
 {%- if 'alert' == display -%}
     <div class="alert alert-{{ bgColor }} d-flex align-items-center gap-3 shadow-sm{% if class %} {{ class }}{% endif %}" role="alert">

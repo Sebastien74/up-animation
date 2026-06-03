@@ -47,7 +47,9 @@
     {%- if messageSuccess or messageError -%}
         {%- set alert = messageSuccess ? "success" : "error" -%}
         {%- set message = messageSuccess ? messageSuccess : messageError -%}
-        {%- include 'front/'~websiteTemplate~'/include/alert.html.twig' with {display: 'alert', alert: alert, message: message, alertClass: 'mt-3'} only -%}
+        <div class="px-3">
+            {%- include 'front/'~websiteTemplate~'/include/alert.html.twig' with {display: 'alert', alert: alert, message: message, alertClass: 'mt-4'} only -%}
+        </div>
     {%- endif -%}
     {%- if formConfiguration.ajax -%}
         </div>
