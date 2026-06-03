@@ -1,15 +1,13 @@
 {%- if entity.recaptcha -%}
-    <div class="row">
+    <div class="row" aria-hidden="true">
         <div class="col-12">
             {%- if form['field_ho'] is defined -%}
-                {{ form_label(form['field_ho']) }}
                 {{ form_widget(form['field_ho']) }}
             {%- endif -%}
             {%- if form['field_ho_entitled'] is defined -%}
-                {{ form_label(form['field_ho_entitled']) }}
                 {{ form_widget(form['field_ho_entitled']) }}
             {%- endif -%}
         </div>
     </div>
-    <div class="form-data" data-id="{{ entity.securityKey }}" data-website="{{ websiteId() }}"></div>
+    <div class="form-data" data-challenge="{{ path('front_captcha_challenge', {website: websiteId()}) }}"></div>
 {%- endif -%}

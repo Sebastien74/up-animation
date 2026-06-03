@@ -6,3 +6,7 @@ framework:
             policy: 'token_bucket'
             limit: 120
             rate: { interval: '1 minute', amount: 120 }
+        form_submission:
+            policy: 'sliding_window'
+            limit: 15
+            interval: '1 minute'

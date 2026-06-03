@@ -10,7 +10,8 @@ use App\Entity\Security\UserFront;
 use App\Model\Core\WebsiteModel;
 use App\Repository\Security\UserFrontRepository;
 use App\Repository\Security\UserRepository;
-use App\Service\Content\CryptService;
+use App\Service\Security\CaptchaService;
+use App\Service\Security\WebsiteSecretProvider;
 use App\Service\Interface\CoreLocatorInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -64,7 +65,8 @@ class BaseAuthenticator
      */
     public function __construct(
         private readonly CoreLocatorInterface $coreLocator,
-        private readonly CryptService $cryptService,
+        private readonly CaptchaService $captcha,
+        private readonly WebsiteSecretProvider $secretProvider,
         private readonly CsrfTokenManagerInterface $csrfTokenManager,
         private readonly UserChecker $userChecker,
     ) {
@@ -292,50 +294,51 @@ class BaseAuthenticator
      */
     public function checkRecaptcha(WebsiteModel $website, Request $request, bool $asResponse = false)
     {
-        $formSecurityKey = $website->entity->getSecurity()->getSecurityKey();
-        $this->setSecurityKeys($website);
+        [$payload, $honeypot] = $this->readChallengeFields($request);
 
-        $fieldHo = $request->request->get('field_ho');
-        $fieldHoEntitled = $request->request->get('field_ho_entitled');
-        if (!$fieldHo) {
-            foreach ($request->request->all() as $key => $value) {
-                if (!empty($request->request->all()[$key]['field_ho'])) {
-                    $fieldHo = $request->request->all()[$key]['field_ho'];
-                    $fieldHoEntitled = $request->request->all()[$key]['field_ho_entitled'];
+        if (!$this->captcha->verify($this->secretProvider->hmacKey($website->entity), $payload, $honeypot)) {
+            $this->logger($request);
+            if ($asResponse) {
+                $this->coreLocator->request()->getSession()->getFlashBag()->add(
+                    'error',
+                    $this->translator->trans('Erreur de sécurité !! Rechargez la page et réessayez.', [], 'security_cms')
+                );
+
+                return false;
+            }
+
+            throw new SecurityException\CustomUserMessageAccountStatusException(
+                $this->translator->trans('Erreur de sécurité !! Rechargez la page et réessayez.', [], 'security_cms')
+            );
+        }
+
+        return $asResponse;
+    }
+
+    /**
+     * Read the challenge fields whether posted top-level or nested under a form name.
+     *
+     * @return array{0: string|null, 1: string|null}
+     */
+    private function readChallengeFields(Request $request): array
+    {
+        $payload = $request->request->get('field_ho');
+        $honeypot = $request->request->get('field_ho_entitled');
+
+        if (null === $payload) {
+            foreach ($request->request->all() as $value) {
+                if (is_array($value) && !empty($value['field_ho'])) {
+                    $payload = $value['field_ho'];
+                    $honeypot = $value['field_ho_entitled'] ?? null;
                     break;
                 }
             }
         }
 
-        $message = $this->translator->trans('Erreur de sécurité !! Rechargez la page et réessayez.', [], 'security_cms');
-        $session = $this->coreLocator->request()->getSession();
-
-        if (!empty($fieldHo) && empty($fieldHoEntitled)) {
-            $honeyPost = $this->cryptService->execute($website, $fieldHo, 'd');
-            if ($honeyPost && urldecode($honeyPost) != $formSecurityKey) {
-                $this->logger($request);
-                if ($asResponse) {
-                    $session->getFlashBag()->add('error', $message);
-                    return false;
-                } else {
-                    throw new SecurityException\CustomUserMessageAccountStatusException($message);
-                }
-            }
-        } else {
-            $this->logger($request);
-            if ($asResponse) {
-                $session->getFlashBag()->add('error', $message);
-                return false;
-            } else {
-                throw new SecurityException\CustomUserMessageAccountStatusException($message);
-            }
-        }
-
-        if ($asResponse) {
-            return true;
-        }
-
-        return false;
+        return [
+            is_string($payload) ? $payload : null,
+            is_string($honeypot) ? $honeypot : null,
+        ];
     }
 
     /**
@@ -401,29 +404,6 @@ class BaseAuthenticator
      *
      * @throws Exception
      */
-    private function setSecurityKeys(WebsiteModel $website): void
-    {
-        $api = $website->entity->getApi();
-        $securityKey = $api->getSecuritySecretKey();
-        $securityIv = $api->getSecuritySecretIv();
-        $flush = !$securityKey || !$securityIv;
-
-        if (!$securityKey) {
-            $key = base64_encode(uniqid().password_hash(uniqid(), PASSWORD_BCRYPT).random_bytes(10));
-            $api->setSecuritySecretKey(substr(str_shuffle($key), 0, 45));
-        }
-
-        if (!$securityIv) {
-            $key = base64_encode(uniqid().password_hash(uniqid(), PASSWORD_BCRYPT).random_bytes(10));
-            $api->setSecuritySecretIv(substr(str_shuffle($key), 0, 45));
-        }
-
-        if ($flush) {
-            $this->entityManager->persist($api);
-            $this->entityManager->flush();
-        }
-    }
-
     /**
      * To log message.
      */

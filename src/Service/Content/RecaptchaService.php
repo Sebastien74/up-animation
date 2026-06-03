@@ -5,69 +5,72 @@ declare(strict_types=1);
 namespace App\Service\Content;
 
 use App\Entity\Core\Website;
-use App\Model\Core\WebsiteModel;
-use App\Service\Interface\CoreLocatorInterface;
-use Doctrine\ORM\EntityManagerInterface;
-use Exception;
+use App\Service\Security\CaptchaService;
+use App\Service\Security\WebsiteSecretProvider;
 use Monolog\Handler\RotatingFileHandler;
 use Monolog\Level;
 use Monolog\Logger;
-use Psr\Cache\InvalidArgumentException;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\RateLimiter\RateLimiterFactoryInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * RecaptchaService.
  *
- * Manage recaptcha security post
+ * Front form anti-bot gate. Delegates the actual challenge verification to the
+ * self-hosted proof-of-work CaptchaService, adds IP rate limiting and logs spam.
  *
  * @author Sébastien FOURNIER <fournier.sebastien@outlook.com>
  */
 class RecaptchaService
 {
-    private ?Request $request;
-    private Session $session;
-
-    /**
-     * RecaptchaService constructor.
-     */
     public function __construct(
-        private readonly CoreLocatorInterface $coreLocator,
-        private readonly CryptService $cryptService,
+        private readonly CaptchaService $captcha,
+        private readonly WebsiteSecretProvider $secretProvider,
         private readonly TranslatorInterface $translator,
         private readonly RequestStack $requestStack,
-        private readonly EntityManagerInterface $entityManager,
+        private readonly RateLimiterFactoryInterface $formSubmissionLimiter,
         private readonly string $logDir,
     ) {
-        $this->request = $this->requestStack->getCurrentRequest();
     }
 
     /**
-     * Check if is valid POST.
-     *
-     * @throws Exception|InvalidArgumentException
+     * Check if the submitted form clears the anti-bot challenge.
      */
     public function execute(Website $website, mixed $entity, FormInterface $form, ?string $email = null): bool
     {
-        $post = filter_input_array(INPUT_POST)[$form->getName()];
-        $formSecurityKey = method_exists($entity, 'getSecurityKey') ? $entity->getSecurityKey() : $website->getSecurity()->getSecurityKey();
-        $this->securityKeys($website);
-
         if (method_exists($entity, 'isRecaptcha') && !$entity->isRecaptcha()) {
             return true;
         }
 
-        if (!empty($post['field_ho']) && empty($post['field_ho_entitled'])) {
-            $honeyPost = $this->cryptService->execute(WebsiteModel::fromEntity($website, $this->coreLocator), $post['field_ho'], 'd');
-            if ($honeyPost && urldecode($honeyPost) == $formSecurityKey) {
-                return true;
-            }
+        $request = $this->requestStack->getCurrentRequest();
+
+        if (!$this->withinRateLimit($request)) {
+            return $this->reject($request, $email, 'rate limited');
         }
 
-        $request = $this->requestStack->getCurrentRequest();
+        $fields = $request instanceof Request ? (array) $request->request->all($form->getName()) : [];
+        $payload = is_string($fields['field_ho'] ?? null) ? $fields['field_ho'] : null;
+        $honeypot = is_string($fields['field_ho_entitled'] ?? null) ? $fields['field_ho_entitled'] : null;
+
+        if ($this->captcha->verify($this->secretProvider->hmacKey($website), $payload, $honeypot)) {
+            return true;
+        }
+
+        return $this->reject($request, $email, 'challenge failed');
+    }
+
+    private function withinRateLimit(?Request $request): bool
+    {
+        $clientIp = $request?->getClientIp() ?: 'unknown';
+
+        return $this->formSubmissionLimiter->create($clientIp)->consume()->isAccepted();
+    }
+
+    private function reject(?Request $request, ?string $email, string $reason): bool
+    {
         if ($request?->hasSession()) {
             $request->getSession()->getFlashBag()->add(
                 'error_form',
@@ -77,43 +80,9 @@ class RecaptchaService
 
         $logger = new Logger('SPAM');
         $logger->pushHandler(new RotatingFileHandler($this->logDir.'/spams.log', 10, Level::Info));
-
-        if ($email) {
-            $logger->alert('Recaptcha security. This email seems to be spam :'.$email);
-        } else {
-            $logger->alert('Recaptcha security. IP spam :'.$this->request->getClientIp());
-        }
+        $context = $email ?: ($request?->getClientIp() ?? 'unknown');
+        $logger->alert(sprintf('Captcha security (%s). Rejected: %s', $reason, $context));
 
         return false;
-    }
-
-    /**
-     * Set security keys if not generated.
-     *
-     * @throws Exception
-     */
-    private function securityKeys(Website $website): void
-    {
-        $flush = false;
-        $api = $website->getApi();
-        $securityKey = $api->getSecuritySecretKey();
-        $securityIv = $api->getSecuritySecretIv();
-
-        if (!$securityKey) {
-            $key = base64_encode(uniqid().password_hash(uniqid(), PASSWORD_BCRYPT).random_bytes(10));
-            $api->setSecuritySecretKey(substr(str_shuffle($key), 0, 45));
-            $flush = true;
-        }
-
-        if (!$securityIv) {
-            $key = base64_encode(uniqid().password_hash(uniqid(), PASSWORD_BCRYPT).random_bytes(10));
-            $api->setSecuritySecretIv(substr(str_shuffle($key), 0, 45));
-            $flush = true;
-        }
-
-        if ($flush) {
-            $this->entityManager->persist($api);
-            $this->entityManager->flush();
-        }
     }
 }

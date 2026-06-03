@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace App\Security;
 
 use App\Entity\Core\Website;
-use App\Service\Content\CryptService;
+use App\Service\Security\CaptchaService;
+use App\Service\Security\WebsiteSecretProvider;
 use Doctrine\ORM\EntityManagerInterface;
 use Monolog\Handler\RotatingFileHandler;
 use Monolog\Level;
@@ -16,17 +17,16 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 /**
  * RecaptchaAuthenticator.
  *
- * Manage recaptcha security authenticate post
+ * Anti-bot gate for registration/security posts. Delegates verification to the
+ * self-hosted proof-of-work CaptchaService.
  *
  * @author Sébastien FOURNIER <fournier.sebastien@outlook.com>
  */
 class RecaptchaAuthenticator
 {
-    /**
-     * RecaptchaAuthenticator constructor.
-     */
     public function __construct(
-        private readonly CryptService $cryptService,
+        private readonly CaptchaService $captcha,
+        private readonly WebsiteSecretProvider $secretProvider,
         private readonly TranslatorInterface $translator,
         private readonly EntityManagerInterface $entityManager,
         private readonly string $logDir,
@@ -35,60 +35,55 @@ class RecaptchaAuthenticator
 
     /**
      * Check if is valid POST.
-     *
-     * @throws \Exception
      */
     public function execute(Request $request): bool
     {
         $website = $this->entityManager->getRepository(Website::class)->findOneByHost($request->getHost());
-        $formSecurityKey = $website->getSecurity()->getSecurityKey();
-        $this->setSecurityKeys($website);
-        $fieldHo = $request->request->get('field_ho');
-        $fieldHoEntitled = $request->request->get('field_ho_entitled');
-
-        if (!empty($fieldHo) && empty($fieldHoEntitled)) {
-            $honeyPost = $this->cryptService->execute($website, $fieldHo, 'd');
-            if (urldecode($honeyPost) == $formSecurityKey) {
-                return true;
-            }
+        if (!$website instanceof Website) {
+            return false;
         }
 
-        $request->getSession()->getFlashBag()->add('error_form', $this->translator->trans('Erreur de sécurité !! Rechargez la page et réessayez.', [], 'front_form'));
+        [$payload, $honeypot] = $this->readChallengeFields($request);
+
+        if ($this->captcha->verify($this->secretProvider->hmacKey($website), $payload, $honeypot)) {
+            return true;
+        }
+
+        $request->getSession()->getFlashBag()->add(
+            'error_form',
+            $this->translator->trans('Erreur de sécurité !! Rechargez la page et réessayez.', [], 'front_form')
+        );
 
         $logger = new Logger('SECURITY_FORM');
         $logger->pushHandler(new RotatingFileHandler($this->logDir.'/security-cms.log', 10, Level::Critical));
-        $logger->critical('Recaptcha security. IP register :'.$request->getClientIp());
+        $logger->critical('Captcha security. IP register :'.$request->getClientIp());
 
         return false;
     }
 
     /**
-     * Set security keys if not generated.
+     * Read the challenge fields whether posted top-level or nested under a form name.
      *
-     * @throws \Exception
+     * @return array{0: string|null, 1: string|null}
      */
-    private function setSecurityKeys(Website $website): void
+    private function readChallengeFields(Request $request): array
     {
-        $flush = false;
-        $api = $website->getApi();
-        $securityKey = $api->getSecuritySecretKey();
-        $securityIv = $api->getSecuritySecretIv();
+        $payload = $request->request->get('field_ho');
+        $honeypot = $request->request->get('field_ho_entitled');
 
-        if (!$securityKey) {
-            $key = base64_encode(uniqid().password_hash(uniqid(), PASSWORD_BCRYPT).random_bytes(10));
-            $api->setSecuritySecretKey(substr(str_shuffle($key), 0, 45));
-            $flush = true;
+        if (null === $payload) {
+            foreach ($request->request->all() as $value) {
+                if (is_array($value) && !empty($value['field_ho'])) {
+                    $payload = $value['field_ho'];
+                    $honeypot = $value['field_ho_entitled'] ?? null;
+                    break;
+                }
+            }
         }
 
-        if (!$securityIv) {
-            $key = base64_encode(uniqid().password_hash(uniqid(), PASSWORD_BCRYPT).random_bytes(10));
-            $api->setSecuritySecretIv(substr(str_shuffle($key), 0, 45));
-            $flush = true;
-        }
-
-        if ($flush) {
-            $this->entityManager->persist($api);
-            $this->entityManager->flush();
-        }
+        return [
+            is_string($payload) ? $payload : null,
+            is_string($honeypot) ? $honeypot : null,
+        ];
     }
 }

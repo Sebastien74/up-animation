@@ -57,6 +57,9 @@
     <testsuite name="twig">
       <directory>tests/Twig</directory>
     </testsuite>
+    <testsuite name="security">
+      <directory>tests/Service/Security</directory>
+    </testsuite>
   </testsuites>
   <source>
     <include>

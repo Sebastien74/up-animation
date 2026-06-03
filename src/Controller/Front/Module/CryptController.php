@@ -8,6 +8,8 @@ use App\Entity\Core\Website;
 use App\Model\Core\WebsiteModel;
 use App\Service\Content\CryptService;
 use App\Service\Interface\CoreLocatorInterface;
+use App\Service\Security\CaptchaService;
+use App\Service\Security\WebsiteSecretProvider;
 use Doctrine\ORM\Mapping\MappingException;
 use Doctrine\ORM\NonUniqueResultException;
 use Psr\Cache\InvalidArgumentException;
@@ -49,6 +51,22 @@ class CryptController extends AbstractController
         return new JsonResponse([
             'result' => $cryptService->execute(WebsiteModel::fromEntity($website, $coreLocator), $string, 'e'),
         ]);
+    }
+
+    /**
+     * Issue a proof-of-work captcha challenge bound to the website secret.
+     */
+    #[Route('/captcha/challenge/{website}', name: 'front_captcha_challenge', options: ['isMainRequest' => false], defaults: ['website' => null], methods: 'GET')]
+    public function captchaChallenge(CaptchaService $captchaService, WebsiteSecretProvider $secretProvider, ?Website $website = null): JsonResponse
+    {
+        if (!$website instanceof Website) {
+            throw new NotFoundHttpException();
+        }
+
+        $response = new JsonResponse($captchaService->issue($secretProvider->hmacKey($website)));
+        $response->headers->set('Cache-Control', 'no-store, max-age=0');
+
+        return $response;
     }
 
     /**

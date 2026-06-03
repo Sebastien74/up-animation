@@ -38,27 +38,28 @@ class RecaptchaType extends AbstractType
 
             $builder->add('field_ho', Type\TextType::class, [
                 'mapped' => false,
-                'label' => $this->translator->trans('Valeur'),
-                'required' => true,
-                'label_attr' => ['class' => 'col-12 d-none'],
+                'required' => false,
+                'label' => false,
                 'attr' => [
-                    'placeholder' => $this->translator->trans('Saisissez une valeur', [], 'front_form'),
                     'class' => 'col-12 form-field-none field_ho',
                     'autocomplete' => 'off',
+                    'tabindex' => '-1',
+                    'aria-hidden' => 'true',
                 ],
-                'row_attr' => ['class' => 'col-12 mb-0'],
+                'row_attr' => ['class' => 'col-12 mb-0 form-field-none', 'aria-hidden' => 'true'],
             ]);
 
             $builder->add('field_ho_entitled', Type\TextType::class, [
                 'mapped' => false,
-                'label' => $this->translator->trans('Intitulé'),
-                'label_attr' => ['class' => 'col-12 d-none'],
+                'required' => false,
+                'label' => false,
                 'attr' => [
-                    'placeholder' => $this->translator->trans('Saisissez un intitulé', [], 'front_form'),
                     'class' => 'col-12 form-field-none',
                     'autocomplete' => 'off',
+                    'tabindex' => '-1',
+                    'aria-hidden' => 'true',
                 ],
-                'row_attr' => ['class' => 'col-12 mb-0'],
+                'row_attr' => ['class' => 'col-12 mb-0 form-field-none', 'aria-hidden' => 'true'],
             ]);
         }
     }
