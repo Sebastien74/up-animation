@@ -90,11 +90,11 @@ class CacheController extends BaseCommand
     #[Route('/clear', name: 'cache_clear', options: ['expose' => true], methods: 'GET')]
     public function clear(Request $request, CacheCommand $cmd, string $projectDir): RedirectResponse|JsonResponse
     {
-        if ($request->get('ajax')) {
+        if ($request->query->get('ajax')) {
             return new JsonResponse(['success' => true]);
         }
 
-        if ($request->get('clear')) {
+        if ($request->query->get('clear')) {
             $filesystem = new Filesystem();
             $finder = Finder::create();
             $finder->directories()->name('__*')->in($projectDir.'/var/cache/')->depth([0]);
@@ -104,7 +104,7 @@ class CacheController extends BaseCommand
             return new JsonResponse(['success' => true]);
         }
 
-        if ($request->get('translations')) {
+        if ($request->query->get('translations')) {
             $filesystem = new Filesystem();
             $finder = Finder::create();
             $finder->files()->in($projectDir.'/var/cache/'.$_ENV['APP_ENV'].'/translations');
@@ -114,7 +114,7 @@ class CacheController extends BaseCommand
             return new JsonResponse(['success' => true]);
         }
 
-        $asRename = (bool) $request->get('rename');
+        $asRename = (bool) $request->query->get('rename');
         $this->setFlashBag($cmd->clear($asRename, $asRename), 'cache:clear', $projectDir);
         return $this->redirect($request->headers->get('referer').'?cache_clear=true');
     }

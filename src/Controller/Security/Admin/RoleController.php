@@ -107,7 +107,7 @@ class RoleController extends AdminController
     #[Route('/delete/{securityrole}', name: 'admin_securityrole_delete', methods: 'DELETE')]
     public function delete(Request $request)
     {
-        $role = $this->coreLocator->em()->getRepository(Role::class)->find($request->get('securityrole'));
+        $role = $this->coreLocator->em()->getRepository(Role::class)->find($request->attributes->get('securityrole'));
         $groups = $this->coreLocator->em()->getRepository(Group::class)->findAll();
         foreach ($groups as $group) {
             foreach ($group->getRoles() as $roleGroup) {
@@ -126,7 +126,7 @@ class RoleController extends AdminController
      */
     protected function breadcrumb(Request $request, array $items = []): void
     {
-        if ($request->get('securityrole')) {
+        if ($request->attributes->get('securityrole')) {
             $items[$this->coreLocator->translator()->trans('Rôles', [], 'admin_breadcrumb')] = 'admin_securityrole_index';
         }
 

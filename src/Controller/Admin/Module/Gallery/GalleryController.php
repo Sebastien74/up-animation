@@ -99,7 +99,7 @@ class GalleryController extends AdminController
      */
     protected function breadcrumb(Request $request, array $items = []): void
     {
-        if ($request->get('gallery')) {
+        if ($request->attributes->get('gallery')) {
             $items[$this->coreLocator->translator()->trans('Galeries', [], 'admin_breadcrumb')] = 'admin_gallery_index';
         }
 

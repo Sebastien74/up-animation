@@ -92,9 +92,9 @@ class ContactFormController extends AdminController
      */
     protected function breadcrumb(Request $request, array $items = []): void
     {
-        if ($request->get('form')) {
+        if ($request->attributes->get('form')) {
             $items[$this->coreLocator->translator()->trans('Formulaires', [], 'admin_breadcrumb')] = 'admin_form_index';
-            if ($request->get('formcontact')) {
+            if ($request->attributes->get('formcontact')) {
                 $items[$this->coreLocator->translator()->trans('Contacts', [], 'admin_breadcrumb')] = 'admin_formcontact_index';
             }
         }

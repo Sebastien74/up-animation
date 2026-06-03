@@ -185,7 +185,7 @@ class SecurityController extends FrontController
         }
 
         if ($form->isSubmitted()) {
-            $isValid = !$request->get('update_form') && $form->isValid() && $baseAuthenticator->checkRecaptcha($website, $request, true);
+            $isValid = !($request->query->get('update_form') ?? $request->request->get('update_form')) && $form->isValid() && $baseAuthenticator->checkRecaptcha($website, $request, true);
             $redirection = $isValid ? $manager->register($form, $security, $website) : null;
             return new JsonResponse([
                 'success' => $isValid,
@@ -427,7 +427,7 @@ class SecurityController extends FrontController
      */
     private function secureModuleActive(Request $request, WebsiteModel $website)
     {
-        $secureModuleRole = $request->get('tpl-form') ? 'ROLE_SECURE_MODULE' : 'ROLE_SECURE_PAGE';
+        $secureModuleRole = $request->query->get('tpl-form') ? 'ROLE_SECURE_MODULE' : 'ROLE_SECURE_PAGE';
         $secureModule = $this->coreLocator->em()->getRepository(Module::class)->findOneBy(['role' => $secureModuleRole]);
 
         return $secureModule instanceof Module ? $this->coreLocator->em()->getRepository(Configuration::class)->moduleExist($website->entity, $secureModule) : null;

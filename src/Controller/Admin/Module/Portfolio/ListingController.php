@@ -99,7 +99,7 @@ class ListingController extends AdminController
      */
     protected function breadcrumb(Request $request, array $items = []): void
     {
-        if ($request->get('portfoliolisting')) {
+        if ($request->attributes->get('portfoliolisting')) {
             $items[$this->coreLocator->translator()->trans('Portfolios', [], 'admin_breadcrumb')] = 'admin_portfoliolisting_index';
         }
 

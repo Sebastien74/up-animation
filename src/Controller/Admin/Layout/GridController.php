@@ -99,7 +99,7 @@ class GridController extends AdminController
      */
     protected function breadcrumb(Request $request, array $items = []): void
     {
-        if ($request->get('grid')) {
+        if ($request->attributes->get('grid')) {
             $items[$this->coreLocator->translator()->trans('Grilles', [], 'admin_breadcrumb')] = 'admin_grid_index';
         }
 

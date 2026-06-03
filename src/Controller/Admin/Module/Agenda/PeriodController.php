@@ -36,10 +36,10 @@ class PeriodController extends AdminController
     public function new(Request $request)
     {
         $website = $this->getWebsite();
-        $agenda = $this->coreLocator->em()->getRepository(Agenda::class)->find($request->get('agenda'));
+        $agenda = $this->coreLocator->em()->getRepository(Agenda::class)->find($request->attributes->get('agenda'));
 
         $this->template = 'admin/page/agenda/period-modal.html.twig';
-        $this->arguments['event_start_date'] = $request->get('date');
+        $this->arguments['event_start_date'] = $request->attributes->get('date');
         $this->arguments['agenda'] = $agenda;
         $this->entity = new Period();
         $this->entity->setAgenda($agenda);
@@ -88,7 +88,7 @@ class PeriodController extends AdminController
     public function editAgenda(Request $request, AgendaService $service)
     {
         $this->template = 'admin/page/agenda/calendar.html.twig';
-        $agenda = $this->coreLocator->em()->getRepository(Agenda::class)->find($request->get('agenda'));
+        $agenda = $this->coreLocator->em()->getRepository(Agenda::class)->find($request->attributes->get('agenda'));
 
         if (!$agenda instanceof Agenda) {
             throw $this->createNotFoundException(sprintf('Aucune entité trouvée !!'));
@@ -120,7 +120,7 @@ class PeriodController extends AdminController
      */
     protected function breadcrumb(Request $request, array $items = []): void
     {
-        if ($request->get('agenda')) {
+        if ($request->attributes->get('agenda')) {
             $items[$this->coreLocator->translator()->trans('Agendas', [], 'admin_breadcrumb')] = 'admin_agenda_index';
         }
 

@@ -105,7 +105,7 @@ class CardController extends AdminController
      */
     protected function breadcrumb(Request $request, array $items = []): void
     {
-        if ($request->get('portfoliocard')) {
+        if ($request->attributes->get('portfoliocard')) {
             $items[$this->coreLocator->translator()->trans('Fiches', [], 'admin_breadcrumb')] = 'admin_portfoliocard_index';
         }
 

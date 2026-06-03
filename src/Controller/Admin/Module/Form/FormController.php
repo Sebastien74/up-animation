@@ -55,7 +55,7 @@ class FormController extends AdminController
     #[Route('/index/{stepform}', name: 'admin_form_index', defaults: ['stepform' => null], methods: 'GET|POST')]
     public function index(Request $request, PaginatorInterface $paginator, ?string $domains = null): JsonResponse|string|Response
     {
-        if (!empty($request->get('stepform'))) {
+        if (!empty($request->attributes->get('stepform'))) {
             $this->pageTitle = $this->coreLocator->translator()->trans('Étapes', [], 'admin');
         }
 
@@ -113,7 +113,7 @@ class FormController extends AdminController
     public function duplicateForm(Request $request, FormDuplicateInterface $service): \Symfony\Component\HttpFoundation\RedirectResponse|JsonResponse
     {
         $website = $this->getWebsite();
-        $form = $this->coreLocator->em()->getRepository(Form::class)->find($request->get('form'));
+        $form = $this->coreLocator->em()->getRepository(Form::class)->find($request->attributes->get('form'));
 
         if (!$form || $form->getStepform()) {
             return $this->redirectToRoute('admin_form_index', ['website' => $website->id]);
@@ -165,11 +165,11 @@ class FormController extends AdminController
      */
     protected function breadcrumb(Request $request, array $items = []): void
     {
-        if ($request->get('stepform')) {
+        if ($request->attributes->get('stepform')) {
             $items[$this->coreLocator->translator()->trans('Formulaires', [], 'admin_breadcrumb')] = 'admin_stepform_index';
         }
-        if ($request->get('form') && !$request->isMethod('post')) {
-            $form = $this->coreLocator->em()->getRepository(Form::class)->find($request->get('form'));
+        if ($request->attributes->get('form') && !$request->isMethod('post')) {
+            $form = $this->coreLocator->em()->getRepository(Form::class)->find($request->attributes->get('form'));
             if ($form && $form->getStepform()) {
                 $items[$this->coreLocator->translator()->trans('Formulaires', [], 'admin_breadcrumb')] = 'admin_stepform_index';
                 $items[$this->coreLocator->translator()->trans('Étapes', [], 'admin_breadcrumb')] = $this->coreLocator->router()->generate('admin_form_index', [

@@ -56,7 +56,7 @@ class BaseController extends AdminController
                     ->andWhere('u.locale = :locale')
                     ->andWhere('u.archived = :archived')
                     ->setParameter('website', $website)
-                    ->setParameter('locale', $request->get('entitylocale'))
+                    ->setParameter('locale', ($request->attributes->get('entitylocale') ?? $request->query->get('entitylocale')))
                     ->setParameter('archived', false)
                     ->addSelect('w')
                     ->addSelect('u')
@@ -79,7 +79,7 @@ class BaseController extends AdminController
             foreach ($entities as $entity) {
                 foreach ($entity->getUrls() as $url) {
                     if ($url instanceof Url) {
-                        if ($url->getLocale() === $request->get('entitylocale')) {
+                        if ($url->getLocale() === ($request->attributes->get('entitylocale') ?? $request->query->get('entitylocale'))) {
                             $this->getUrls($url, $entity, $seoService, $currentUrl);
                         }
                     }
@@ -116,18 +116,18 @@ class BaseController extends AdminController
         //            $urlExisting = false;
         //            $isArchived = false;
         //            foreach ($entity->getUrls() as $url) {
-        //                if ($url->getLocale() === $request->get('entitylocale')) {
+        //                if ($url->getLocale() === ($request->attributes->get('entitylocale') ?? $request->query->get('entitylocale'))) {
         //                    $urlExisting = true;
         //                }
         //                if ($url->isArchived()) {
         //                    $isArchived = true;
         //                }
         //            }
-        //            if (!$urlExisting && !$isArchived && !empty($request->get('entitylocale'))) {
+        //            if (!$urlExisting && !$isArchived && !empty(($request->attributes->get('entitylocale') ?? $request->query->get('entitylocale')))) {
         //                $url = new Url();
         //                $url->setCreatedAt(new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris')));
         //                $url->setCreatedBy($this->getUser());
-        //                $url->setLocale($request->get('entitylocale'));
+        //                $url->setLocale(($request->attributes->get('entitylocale') ?? $request->query->get('entitylocale')));
         //                $url->setWebsite($website);
         //                $entity->addUrl($url);
         //                $this->coreLocator->em()->persist($entity);
@@ -244,12 +244,12 @@ class BaseController extends AdminController
             'className' => $classname,
             'childClassName' => $childClassName,
             'entityId' => $entityId,
-            'locale' => $request->get('entitylocale'),
+            'locale' => ($request->attributes->get('entitylocale') ?? $request->query->get('entitylocale')),
         ]);
 
         if (!$model) {
             $model = new Model();
-            $model->setLocale($request->get('entitylocale'))
+            $model->setLocale(($request->attributes->get('entitylocale') ?? $request->query->get('entitylocale')))
                 ->setClassName($classname)
                 ->setChildClassName($childClassName)
                 ->setAdminName($adminName)

@@ -83,7 +83,7 @@ class FolderController extends AdminController
     #[Route('/delete/{folder}', name: 'admin_folder_delete', methods: 'DELETE')]
     public function delete(Request $request)
     {
-        $folder = $this->coreLocator->em()->getRepository(Folder::class)->find($request->get('folder'));
+        $folder = $this->coreLocator->em()->getRepository(Folder::class)->find($request->attributes->get('folder'));
         if ($folder instanceof Folder && !$folder->getFolders()->isEmpty()) {
             return new JsonResponse([
                 'alert' => 'error',
@@ -213,7 +213,7 @@ class FolderController extends AdminController
      */
     protected function breadcrumb(Request $request, array $items = []): void
     {
-        if ($request->get('folder')) {
+        if ($request->attributes->get('folder')) {
             $items[$this->coreLocator->translator()->trans('Médias', [], 'admin_breadcrumb')] = 'admin_medias_library';
         }
 

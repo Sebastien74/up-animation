@@ -119,7 +119,7 @@ class FeatureController extends AdminController
     #[Route('/delete/{catalogfeature}', name: 'admin_catalogfeature_delete', methods: 'DELETE')]
     public function delete(Request $request)
     {
-        $feature = $this->coreLocator->em()->getRepository(Feature::class)->find($request->get('catalogfeature'));
+        $feature = $this->coreLocator->em()->getRepository(Feature::class)->find($request->attributes->get('catalogfeature'));
         if ($feature->getValues()->count() > 0) {
             $session = $request->getSession();
             $message = $this->coreLocator->translator()->trans('Vous ne pouvez pas supprimer cette Caractéristique car des valeurs lui sont associées.', [], 'admin');
@@ -136,7 +136,7 @@ class FeatureController extends AdminController
      */
     protected function breadcrumb(Request $request, array $items = []): void
     {
-        if ($request->get('catalogfeature')) {
+        if ($request->attributes->get('catalogfeature')) {
             $items[$this->coreLocator->translator()->trans('Caractéristiques', [], 'admin_breadcrumb')] = 'admin_catalogfeature_index';
         }
 

@@ -245,10 +245,10 @@ class MediaRelationController extends AdminController
     #[Route('/position/{position}/{entityId}', name: 'admin_mediarelation_position', options: ['expose' => true], methods: 'GET')]
     public function relationPosition(Request $request, int $position, int $entityId): JsonResponse
     {
-        $mediaRelationId = $request->get('mediaRelation');
+        $mediaRelationId = ($request->attributes->get('mediaRelation') ?? $request->query->get('mediaRelation'));
 
-        if ($entityId && $request->get('entityNamespace')) {
-            $entity = $this->coreLocator->em()->getRepository(urldecode($request->get('entityNamespace')))->find($entityId);
+        if ($entityId && $request->query->get('entityNamespace')) {
+            $entity = $this->coreLocator->em()->getRepository(urldecode($request->query->get('entityNamespace')))->find($entityId);
             $metadata = $entity ? $this->coreLocator->metadata($entity, 'mediaRelations')->targetEntity : null;
             $mediaRelation = $metadata && $mediaRelationId ? $this->coreLocator->em()->getRepository($metadata)->find($mediaRelationId) : null;
             if ($mediaRelation) {
@@ -270,9 +270,9 @@ class MediaRelationController extends AdminController
     #[Route('/relation/delete/{entityId}', name: 'admin_mediarelation_delete', methods: 'DELETE')]
     public function relationDelete(Request $request, int $entityId): JsonResponse
     {
-        $classname = urldecode($request->get('entityNamespace'));
+        $classname = urldecode($request->query->get('entityNamespace'));
         $metadata = $this->coreLocator->metadata(new $classname(), 'mediaRelations');
-        $mediaRelation = $this->coreLocator->em()->getRepository($metadata->targetEntity)->find($request->get('mediaRelation'));
+        $mediaRelation = $this->coreLocator->em()->getRepository($metadata->targetEntity)->find(($request->attributes->get('mediaRelation') ?? $request->query->get('mediaRelation')));
         $positionToRemove = $mediaRelation->getPosition();
         $localesRelations = $this->getAllLocalesRelations($classname, $entityId);
         if ($localesRelations) {

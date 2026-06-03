@@ -81,10 +81,10 @@ class NewscastController extends AdminController
     #[Route('/layout/{newscast}', name: 'admin_newscast_layout', methods: 'GET|POST')]
     public function edit(Request $request)
     {
-        $newscast = $this->coreLocator->em()->getRepository($this->class)->find($request->get('newscast'));
+        $newscast = $this->coreLocator->em()->getRepository($this->class)->find($request->attributes->get('newscast'));
         if ($newscast instanceof Newscast && !$newscast->isCustomLayout()) {
             $this->template = 'admin/page/newscast/newscast-edit.html.twig';
-            $this->arguments['activeTab'] = $request->get('tab');
+            $this->arguments['activeTab'] = $request->query->get('tab');
         } else {
             $this->arguments['blockTypesDisabled'] = ['layout' => ['']];
             $this->arguments['blockTypesCategories'] = ['layout', 'content', 'global', 'action', 'modules'];
@@ -108,7 +108,7 @@ class NewscastController extends AdminController
         return $this->render('admin/page/newscast/newscast-medias.html.twig', array_merge($this->arguments, [
             'entity' => $newscast,
             'website' => $this->getWebsite(),
-            'activeTab' => $request->get('tab'),
+            'activeTab' => $request->query->get('tab'),
             'interface' => $this->getInterface($this->class),
             'tooHeavyFiles' => $this->adminLocator->tooHeavyFiles($newscast),
             'mediasAlert' => $this->adminLocator->mediasAlert($newscast),
@@ -179,7 +179,7 @@ class NewscastController extends AdminController
      */
     protected function breadcrumb(Request $request, array $items = []): void
     {
-        if ($request->get('newscast')) {
+        if ($request->attributes->get('newscast')) {
             $items[$this->coreLocator->translator()->trans('Actualités', [], 'admin_breadcrumb')] = 'admin_newscast_index';
         }
 

@@ -104,7 +104,7 @@ class ProfileController extends FrontController
             }
         }
 
-        return $request->get('ajax') ? new JsonResponse([
+        return $request->query->get('ajax') ? new JsonResponse([
             'success' => $form && $form->isValid(),
             'redirection' => $form && $form->isValid() ? $redirection : false,
             'html' => $this->renderView($template, $arguments),
@@ -155,7 +155,7 @@ class ProfileController extends FrontController
 
         $website = $this->getWebsite();
         $websiteTemplate = $website->configuration->template;
-        $status = $request->get('status');
+        $status = $request->query->get('status');
 
         if ('confirm' === $status) {
             $this->coreLocator->em()->remove($user);

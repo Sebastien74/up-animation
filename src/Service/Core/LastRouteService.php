@@ -40,13 +40,13 @@ class LastRouteService
             $isAdminPath = $securityToken && str_contains($uri, '/admin-' . $securityToken);
 
             if ($isAdminPath && str_contains($uri, 'index') && !$request->isMethod('POST')) {
-                $page = intval($request->get('page'));
+                $page = intval(($request->attributes->get('page') ?? $request->query->get('page')));
                 if ($session->get('last_route_back_page') !== $page) {
                     $session->set('last_route_back_page', $page);
                 }
             }
 
-            $routeParams = $request->get('_route_params');
+            $routeParams = $request->attributes->get('_route_params');
             $routeData = (object) ['name' => $routeName, 'params' => $routeParams];
 
             /** Do not save same matched route twice */

@@ -30,7 +30,7 @@ class DefaultType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $excludes = ['id'];
-        $properties = $this->entityManager->getClassMetadata($options['data_class'])->getReflectionProperties();
+        $properties = $this->entityManager->getClassMetadata($options['data_class'])->getPropertyAccessors();
         $associationMappings = $this->entityManager->getClassMetadata($options['data_class'])->getAssociationMappings();
 
         foreach ($properties as $property => $reflexionProperty) {

@@ -88,7 +88,7 @@ class AgendaController extends AdminController
      */
     protected function breadcrumb(Request $request, array $items = []): void
     {
-        if ($request->get('agenda')) {
+        if ($request->attributes->get('agenda')) {
             $items[$this->coreLocator->translator()->trans('Agendas', [], 'admin_breadcrumb')] = 'admin_agenda_index';
         }
 

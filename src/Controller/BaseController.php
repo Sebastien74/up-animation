@@ -94,7 +94,7 @@ abstract class BaseController extends AbstractController
      */
     protected function getCurrentNamespace(Request $request): ?string
     {
-        $matches = explode('::', $request->get('_controller'));
+        $matches = explode('::', $request->attributes->get('_controller'));
 
         return !empty($matches) ? $matches[0] : null;
     }

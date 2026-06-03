@@ -119,8 +119,8 @@ class InterfaceHelper
 
         $this->setEntity($classname);
 
-        $website = $this->request && $this->request->get('website')
-            ? $this->entityManager->getRepository(Website::class)->find($this->request->get('website'))
+        $website = $this->request && $this->request->attributes->get('website')
+            ? $this->entityManager->getRepository(Website::class)->find($this->request->attributes->get('website'))
             : null;
 
         $entity = $this->getEntity();
@@ -129,9 +129,9 @@ class InterfaceHelper
         $this->setLabels();
 
         $this->interface['masterField'] = $this->masterField;
-        $this->interface['masterFieldId'] = $this->request && $this->masterField ? $this->request->get($this->masterField) : null;
+        $this->interface['masterFieldId'] = $this->request && $this->masterField ? $this->request->attributes->get($this->masterField) : null;
         $this->interface['parentMasterField'] = $this->parentMasterField;
-        $this->interface['parentMasterFieldId'] = $this->request && $this->parentMasterField ? $this->request->get($this->parentMasterField) : null;
+        $this->interface['parentMasterFieldId'] = $this->request && $this->parentMasterField ? $this->request->attributes->get($this->parentMasterField) : null;
         $this->interface['website'] = $website;
         $this->interface['entityCode'] = strtolower(end($matchesEntity));
         $this->interface['actionCode'] = $actionCode;
@@ -270,8 +270,8 @@ class InterfaceHelper
     public function setEntity(string $classname): void
     {
         if ($this->request instanceof Request) {
-            if (!empty($this->interface['name']) && !empty($this->request->get($this->interface['name'])) && 'configuration' !== $this->interface['name']) {
-                if (is_numeric($this->request->get($this->interface['name']))) {
+            if (!empty($this->interface['name']) && !empty($this->request->attributes->get($this->interface['name'])) && 'configuration' !== $this->interface['name']) {
+                if (is_numeric($this->request->attributes->get($this->interface['name']))) {
                     $referClass = new $classname();
                     if (method_exists($referClass, 'getLayout')) {
                         $this->entity = $this->entityManager->createQueryBuilder()->select('e')
@@ -281,7 +281,7 @@ class InterfaceHelper
                             ->leftJoin('z.cols', 'c')
                             ->leftJoin('c.blocks', 'b')
                             ->andWhere('e.id = :id')
-                            ->setParameter('id', $this->request->get($this->interface['name']))
+                            ->setParameter('id', $this->request->attributes->get($this->interface['name']))
                             ->addSelect('l')
                             ->addSelect('z')
                             ->addSelect('c')
@@ -289,13 +289,13 @@ class InterfaceHelper
                             ->getQuery()
                             ->getOneOrNullResult();
                     } else {
-                        $this->entity = $this->entityManager->getRepository($classname)->find($this->request->get($this->interface['name']));
+                        $this->entity = $this->entityManager->getRepository($classname)->find($this->request->attributes->get($this->interface['name']));
                     }
                 }
-            } elseif ('configuration' !== $this->interface['name'] && $this->interface['name'] && !$this->request->get($this->interface['name'])) {
+            } elseif ('configuration' !== $this->interface['name'] && $this->interface['name'] && !$this->request->attributes->get($this->interface['name'])) {
                 $this->entity = class_exists($classname) ? new $classname() : null;
             }
-            if (!$this->entity && $this->interface['name'] && is_array($this->request->get($this->interface['name']))) {
+            if (!$this->entity && $this->interface['name'] && is_array($this->request->attributes->get($this->interface['name']))) {
                 $this->entity = class_exists($classname) ? new $classname() : null;
             }
         }
@@ -329,7 +329,7 @@ class InterfaceHelper
         $configuration = [];
         $entity = $this->cache['entityConf'][$classname] = !empty($this->cache['entityConf'][$classname])
             ? $this->cache['entityConf'][$classname] : $this->entityManager->getRepository(Entity::class)->optimizedQuery($classname, $this->website);
-        $properties = $this->entityManager->getClassMetadata(Entity::class)->getReflectionProperties();
+        $properties = $this->entityManager->getClassMetadata(Entity::class)->getPropertyAccessors();
         $default = new Entity();
         foreach ($properties as $property => $reflexionProperty) {
             $getMethod = 'get'.ucfirst($property);

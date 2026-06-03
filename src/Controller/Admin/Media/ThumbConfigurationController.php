@@ -99,7 +99,7 @@ class ThumbConfigurationController extends AdminController
      */
     protected function breadcrumb(Request $request, array $items = []): void
     {
-        if ($request->get('thumbconfiguration')) {
+        if ($request->attributes->get('thumbconfiguration')) {
             $items[$this->coreLocator->translator()->trans('Thumbnails', [], 'admin_breadcrumb')] = 'admin_thumbconfiguration_index';
         }
 

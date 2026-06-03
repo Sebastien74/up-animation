@@ -38,7 +38,7 @@ class ModelController extends BaseController
     #[Route('/edit/{model}/{entitylocale}', name: 'admin_seo_model_edit', methods: 'GET|POST')]
     public function editModel(Request $request, SeoInterface $seoInterface)
     {
-        $this->entity = $this->coreLocator->em()->getRepository(Model::class)->find($request->get('model'));
+        $this->entity = $this->coreLocator->em()->getRepository(Model::class)->find($request->attributes->get('model'));
         if (!$this->entity) {
             throw $this->createNotFoundException($this->coreLocator->translator()->trans("Ce modèle n'existe pas !!", [], 'admin'));
         }

@@ -1058,9 +1058,6 @@ class ImageThumbnail implements ImageThumbnailInterface
             $written = @imagewebp($image, $targetFile, 78);
         }
 
-        imagedestroy($img);
-        imagedestroy($image);
-
         return $written && $this->filesystem->exists($targetFile);
     }
 

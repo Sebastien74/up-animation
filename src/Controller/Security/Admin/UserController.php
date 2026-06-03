@@ -151,7 +151,7 @@ class UserController extends AdminController
     private function isAllowed(Request $request): void
     {
         /** @var User $user */
-        $user = $this->coreLocator->em()->getRepository(User::class)->find($request->get('user'));
+        $user = $this->coreLocator->em()->getRepository(User::class)->find($request->attributes->get('user'));
         $isInternalUser = false;
         foreach ($user->getRoles() as $role) {
             if ('ROLE_INTERNAL' === $role) {
@@ -169,7 +169,7 @@ class UserController extends AdminController
      */
     protected function breadcrumb(Request $request, array $items = []): void
     {
-        if ($request->get('user')) {
+        if ($request->attributes->get('user')) {
             $items[$this->coreLocator->translator()->trans('Utilisateurs', [], 'admin_breadcrumb')] = 'admin_user_index';
         }
 

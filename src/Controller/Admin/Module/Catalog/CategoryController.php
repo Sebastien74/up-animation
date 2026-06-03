@@ -92,7 +92,7 @@ class CategoryController extends AdminController
     #[Route('/delete/{catalogcategory}', name: 'admin_catalogcategory_delete', methods: 'DELETE')]
     public function delete(Request $request)
     {
-        $category = $this->coreLocator->em()->getRepository(Category::class)->find($request->get('catalogcategory'));
+        $category = $this->coreLocator->em()->getRepository(Category::class)->find($request->attributes->get('catalogcategory'));
         $products = $category ? $this->coreLocator->em()->getRepository(Product::class)->findByCategory($category) : [];
 
         if ($products) {
@@ -127,7 +127,7 @@ class CategoryController extends AdminController
      */
     protected function breadcrumb(Request $request, array $items = []): void
     {
-        if ($request->get('catalogcategory')) {
+        if ($request->attributes->get('catalogcategory')) {
             $items[$this->coreLocator->translator()->trans('Catégories', [], 'admin_breadcrumb')] = 'admin_catalogcategory_index';
         }
 

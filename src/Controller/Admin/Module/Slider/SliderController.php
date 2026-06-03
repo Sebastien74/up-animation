@@ -123,7 +123,7 @@ class SliderController extends AdminController
      */
     protected function breadcrumb(Request $request, array $items = []): void
     {
-        if ($request->get('slider')) {
+        if ($request->attributes->get('slider')) {
             $items[$this->coreLocator->translator()->trans('Carrousels', [], 'admin_breadcrumb')] = 'admin_slider_index';
         }
 

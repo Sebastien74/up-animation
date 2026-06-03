@@ -55,8 +55,8 @@ class ArchiveController extends AdminController
     public function restore(Request $request, UrlManager $urlManager): RedirectResponse
     {
         $website = $this->getWebsite();
-        $classname = urldecode($request->get('classname'));
-        $entity = $this->coreLocator->em()->getRepository($classname)->find($request->get('id'));
+        $classname = urldecode($request->attributes->get('classname'));
+        $entity = $this->coreLocator->em()->getRepository($classname)->find($request->attributes->get('id'));
 
         if (is_object($entity) && method_exists($entity, 'getUrls')) {
             foreach ($entity->getUrls() as $url) {

@@ -149,7 +149,7 @@ class GroupController extends AdminController
     private function isAllowed(Request $request): void
     {
         /** @var Group $group */
-        $group = $this->coreLocator->em()->getRepository(Group::class)->find($request->get('securitygroup'));
+        $group = $this->coreLocator->em()->getRepository(Group::class)->find($request->attributes->get('securitygroup'));
         if ($group) {
             $isInternalGroup = false;
             foreach ($group->getRoles() as $role) {
@@ -169,7 +169,7 @@ class GroupController extends AdminController
      */
     protected function breadcrumb(Request $request, array $items = []): void
     {
-        if ($request->get('securitygroup')) {
+        if ($request->attributes->get('securitygroup')) {
             $items[$this->coreLocator->translator()->trans('Groupes', [], 'admin_breadcrumb')] = 'admin_securitygroup_index';
         }
 

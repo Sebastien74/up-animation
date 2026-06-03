@@ -93,7 +93,7 @@ class CronSchedulerService
                 $this->executeCommand($command, $commandLogger, $logFilename);
             } else {
                 try {
-                    $cron = CronExpression::factory($command->getCronExpression());
+                    $cron = new CronExpression($command->getCronExpression());
                     $nextRunDate = $cron->getNextRunDate($command->getLastExecution());
 
                     if ($nextRunDate < new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris'))) {

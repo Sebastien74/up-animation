@@ -96,7 +96,7 @@ class LayoutConfigurationController extends AdminController
      */
     protected function breadcrumb(Request $request, array $items = []): void
     {
-        if ($request->get('layoutconfiguration')) {
+        if ($request->attributes->get('layoutconfiguration')) {
             $items[$this->coreLocator->translator()->trans('Configurations', [], 'admin_breadcrumb')] = 'admin_layoutconfiguration_index';
         }
 

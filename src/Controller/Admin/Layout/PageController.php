@@ -112,7 +112,7 @@ class PageController extends AdminController
      */
     protected function breadcrumb(Request $request, array $items = []): void
     {
-        if ($request->get('page')) {
+        if ($request->attributes->get('page')) {
             $items[$this->coreLocator->translator()->trans('Arborescence', [], 'admin_breadcrumb')] = 'admin_page_tree';
         }
 

@@ -101,9 +101,9 @@ class QuestionController extends AdminController
      */
     protected function breadcrumb(Request $request, array $items = []): void
     {
-        if ($request->get('faq')) {
+        if ($request->attributes->get('faq')) {
             $items[$this->coreLocator->translator()->trans('FAQ', [], 'admin_breadcrumb')] = 'admin_faq_index';
-            if ($request->get('faqquestion')) {
+            if ($request->attributes->get('faqquestion')) {
                 $items[$this->coreLocator->translator()->trans('Questions', [], 'admin_breadcrumb')] = 'admin_faqquestion_index';
             }
         }

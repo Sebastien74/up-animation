@@ -112,7 +112,7 @@ class FeatureValueController extends AdminController
     #[Route('/delete/{catalogfeaturevalue}', name: 'admin_catalogfeaturevalue_delete', methods: 'DELETE')]
     public function delete(Request $request)
     {
-        $values = $this->coreLocator->em()->getRepository(FeatureValueProduct::class)->findBy(['value' => $request->get('catalogfeaturevalue')]);
+        $values = $this->coreLocator->em()->getRepository(FeatureValueProduct::class)->findBy(['value' => $request->attributes->get('catalogfeaturevalue')]);
         if ($values) {
             $session = $request->getSession();
             if (1 === count($values)) {
@@ -138,9 +138,9 @@ class FeatureValueController extends AdminController
      */
     protected function breadcrumb(Request $request, array $items = []): void
     {
-        if ($request->get('catalogfeature')) {
+        if ($request->attributes->get('catalogfeature')) {
             $items[$this->coreLocator->translator()->trans('Caractéristiques', [], 'admin_breadcrumb')] = 'admin_catalogfeature_index';
-            if ($request->get('catalogfeaturevalue')) {
+            if ($request->attributes->get('catalogfeaturevalue')) {
                 $items[$this->coreLocator->translator()->trans('Valeurs', [], 'admin_breadcrumb')] = 'admin_catalogfeaturevalue_index';
             }
         }

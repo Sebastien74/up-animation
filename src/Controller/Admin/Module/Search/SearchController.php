@@ -99,7 +99,7 @@ class SearchController extends AdminController
      */
     protected function breadcrumb(Request $request, array $items = []): void
     {
-        if ($request->get('search')) {
+        if ($request->attributes->get('search')) {
             $items[$this->coreLocator->translator()->trans('Moteurs de recherche', [], 'admin_breadcrumb')] = 'admin_search_index';
         }
 

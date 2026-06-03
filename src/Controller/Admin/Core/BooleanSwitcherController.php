@@ -32,8 +32,8 @@ class BooleanSwitcherController extends AdminController
     #[Route('/switch-boolean/{entityId}/{property}', name: 'admin_switch_boolean', methods: 'GET|POST')]
     public function switchBoolean(Request $request, Website $website, int $entityId, string $property): JsonResponse
     {
-        $status = 'true' === $request->get('status');
-        $repository = $this->coreLocator->em()->getRepository(urldecode($request->get('classname')));
+        $status = 'true' === $request->query->get('status');
+        $repository = $this->coreLocator->em()->getRepository(urldecode($request->query->get('classname')));
         $currentEntity = $repository->find($entityId);
         $this->denyUnlessEntityWebsite($currentEntity);
         $setter = 'set'.ucfirst($property);

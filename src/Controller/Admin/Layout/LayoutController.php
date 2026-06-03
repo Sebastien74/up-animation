@@ -105,7 +105,7 @@ class LayoutController extends AdminController
     private function getMappedEntityInfos(Request $request): ?object
     {
         $excludes = ['createdBy', 'updatedBy', 'zones', 'website'];
-        $layout = $this->coreLocator->em()->getRepository(Layout::class)->find($request->get('layout'));
+        $layout = $this->coreLocator->em()->getRepository(Layout::class)->find($request->attributes->get('layout'));
         $associationsMapping = $this->coreLocator->em()->getClassMetadata(Layout::class)->getAssociationMappings();
 
         foreach ($associationsMapping as $property => $properties) {

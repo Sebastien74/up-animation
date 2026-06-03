@@ -162,7 +162,7 @@ class ColController extends AdminController
     public function configuration(Request $request)
     {
         $this->disableFlash = true;
-        $this->entity = $this->coreLocator->em()->getRepository(Col::class)->find($request->get('col'));
+        $this->entity = $this->coreLocator->em()->getRepository(Col::class)->find($request->attributes->get('col'));
         $this->formType = FormType\ColConfigurationType::class;
         $this->template = 'admin/core/layout/col-configuration.html.twig';
         $this->arguments['col'] = $this->entity;

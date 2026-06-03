@@ -52,7 +52,7 @@ class UnitController extends AdminController
     #[Route('/edit/{translationunit}/{displayDomain}', name: 'admin_translationunit_edit', defaults: ['displayDomain' => null], methods: 'GET|POST')]
     public function edit(Request $request)
     {
-        $this->entity = $this->coreLocator->em()->getRepository(TranslationUnit::class)->find($request->get('translationunit'));
+        $this->entity = $this->coreLocator->em()->getRepository(TranslationUnit::class)->find($request->attributes->get('translationunit'));
         if (!$this->entity) {
             throw $this->createNotFoundException($this->coreLocator->translator()->trans("Cette clé n'existe pas !!", [], 'admin'));
         }
@@ -97,7 +97,7 @@ class UnitController extends AdminController
     public function deleteUnit(Request $request, string $projectDir)
     {
         /** @var TranslationUnit $unit */
-        $unit = $this->coreLocator->em()->getRepository(TranslationUnit::class)->find($request->get('translationunit'));
+        $unit = $this->coreLocator->em()->getRepository(TranslationUnit::class)->find($request->attributes->get('translationunit'));
 
         if (!$unit) {
             return new JsonResponse(['success' => false]);

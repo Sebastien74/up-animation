@@ -125,7 +125,7 @@ class AdminController extends BaseController
             'usedPages' => $usedPages,
         ]);
 
-        if (!empty($request->get('ajax'))) {
+        if (!empty($request->query->get('ajax'))) {
             return new JsonResponse(['html' => $this->adminRender($template, $arguments, $request)]);
         }
 
@@ -249,7 +249,7 @@ class AdminController extends BaseController
 
         return $referer ? $this->redirect($referer) : $this->redirectToRoute('admin_'.$interface['name'].'_edit', [
             'website' => $website->id,
-            $interface['name'] => $request->get($interface['name']),
+            $interface['name'] => $request->attributes->get($interface['name']),
         ]);
     }
 
@@ -261,10 +261,10 @@ class AdminController extends BaseController
     protected function show(Request $request)
     {
         $interface = $this->getInterface($this->class);
-        $entity = $this->coreLocator->em()->getRepository($this->class)->find($request->get($interface['name']));
+        $entity = $this->coreLocator->em()->getRepository($this->class)->find($request->attributes->get($interface['name']));
         $template = $this->template ?: 'admin/core/show.html.twig';
         if (!$entity) {
-            throw $this->createNotFoundException(sprintf("Aucune entité pour l'ID %s", $request->get($interface['name'])));
+            throw $this->createNotFoundException(sprintf("Aucune entité pour l'ID %s", $request->attributes->get($interface['name'])));
         }
         $this->denyUnlessEntityWebsite($entity);
         if (empty($this->arguments['breadcrumb'])) {
@@ -296,8 +296,8 @@ class AdminController extends BaseController
             'form' => $helper->getForm()->createView(),
             'interface' => $helper->getInterface(),
             'entity' => $helper->getEntityToDuplicate(),
-            'refresh' => $request->get('refresh'),
-            'template' => $request->get('template'),
+            'refresh' => $request->query->get('refresh'),
+            'template' => $request->query->get('template'),
         ]);
         if ($helper->isSubmitted()) {
             return new JsonResponse(['success' => $helper->isValid(), 'html' => $render]);
@@ -341,12 +341,12 @@ class AdminController extends BaseController
             }
         }
 
-        if ($request->get('export')) {
+        if ($request->query->get('export')) {
             $repository = $this->coreLocator->em()->getRepository($interface['classname']);
             $filterBuilder = $repository->createQueryBuilder('e');
-            if (!empty($interface['masterField']) && $request->get($interface['masterField'])) {
+            if (!empty($interface['masterField']) && $request->attributes->get($interface['masterField'])) {
                 $filterBuilder->andWhere('e.'.$interface['masterField'].' = :'.$interface['masterField']);
-                $filterBuilder->setParameter($interface['masterField'], $request->get($interface['masterField']));
+                $filterBuilder->setParameter($interface['masterField'], $request->attributes->get($interface['masterField']));
             }
             $order = is_object($configuration) && $configuration->orderBy ? $configuration->orderBy : 'id';
             $sort = is_object($configuration) && $configuration->orderSort ? $configuration->orderSort : 'ASC';
@@ -374,12 +374,12 @@ class AdminController extends BaseController
             $this->denyAccessUnlessGranted('ROLE_EDIT');
         }
 
-        if ($request->get('ajax')) {
+        if ($request->query->get('ajax')) {
             $interface = $this->getInterface($this->class);
-            $entity = !empty($interface['name']) ? $this->coreLocator->em()->getRepository($this->class)->find($request->get($interface['name'])) : null;
+            $entity = !empty($interface['name']) ? $this->coreLocator->em()->getRepository($this->class)->find($request->attributes->get($interface['name'])) : null;
             $this->denyUnlessEntityWebsite($entity);
-            if (is_object($entity) && $request->get('position') && method_exists($entity, 'setPosition')) {
-                $entity->setPosition(intval($request->get('position')));
+            if (is_object($entity) && $request->query->get('position') && method_exists($entity, 'setPosition')) {
+                $entity->setPosition(intval($request->query->get('position')));
                 $this->coreLocator->em()->persist($entity);
                 $this->coreLocator->em()->flush();
             }
@@ -467,9 +467,9 @@ class AdminController extends BaseController
 
         if (empty($items)) {
             $interface = $this->class ? $this->getInterface($this->class) : [];
-            if (!empty($interface['classname']) && !empty($interface['name']) && $request->get($interface['name']) && $this->coreLocator->routeExist('admin_'.$interface['name'].'_index')) {
+            if (!empty($interface['classname']) && !empty($interface['name']) && $request->attributes->get($interface['name']) && $this->coreLocator->routeExist('admin_'.$interface['name'].'_index')) {
                 $entityConfiguration = $this->coreLocator->em()->getRepository(Entity::class)->findOneBy([
-                    'website' => $request->get('website'),
+                    'website' => $request->attributes->get('website'),
                     'className' => $interface['classname'],
                 ]);
                 $breadcrumb = $this->coreLocator->translator()->trans('breadcrumb', [], 'entity_'.$interface['name']);
@@ -546,7 +546,7 @@ class AdminController extends BaseController
             'website' => $website,
             'configuration' => $website->configuration,
             'request' => $request,
-            'entitylocale' => $request->get('entitylocale'),
+            'entitylocale' => $request->query->get('entitylocale'),
             'formType' => $this->formType,
             'templateConfig' => $this->templateConfig,
             'formManager' => $this->formManager,
@@ -640,7 +640,7 @@ class AdminController extends BaseController
     protected function checkEntityLocale(Request $request): void
     {
         $website = $this->getWebsite();
-        $localeRequest = $request->get('entitylocale');
+        $localeRequest = $request->query->get('entitylocale');
         if ($localeRequest && !in_array($localeRequest, $website->configuration->allLocales)) {
             throw $this->createNotFoundException();
         }

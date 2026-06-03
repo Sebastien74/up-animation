@@ -71,8 +71,8 @@ class SqlService implements SqlServiceInterface
 
             $sql = sprintf(
                 'SELECT * FROM %s WHERE %s = :value',
-                $this->connection->quoteIdentifier($table),
-                $this->connection->quoteIdentifier($column)
+                $this->connection->quoteSingleIdentifier($table),
+                $this->connection->quoteSingleIdentifier($column)
             );
             $result = $this->connection->executeQuery($sql, ['value' => $value])->fetchAllAssociative();
 
@@ -97,8 +97,8 @@ class SqlService implements SqlServiceInterface
 
             $sql = sprintf(
                 'SELECT * FROM %s ORDER BY %s %s',
-                $this->connection->quoteIdentifier($table),
-                $this->connection->quoteIdentifier($sort),
+                $this->connection->quoteSingleIdentifier($table),
+                $this->connection->quoteSingleIdentifier($sort),
                 $this->normalizeOrder($order)
             );
 
@@ -123,14 +123,14 @@ class SqlService implements SqlServiceInterface
 
             $sql = sprintf(
                 'SELECT * FROM %s WHERE %s = :value',
-                $this->connection->quoteIdentifier($table),
-                $this->connection->quoteIdentifier($column)
+                $this->connection->quoteSingleIdentifier($table),
+                $this->connection->quoteSingleIdentifier($column)
             );
 
             if ($sort && $order && $this->isValidColumn($table, $sort)) {
                 $sql .= sprintf(
                     ' ORDER BY %s %s',
-                    $this->connection->quoteIdentifier($sort),
+                    $this->connection->quoteSingleIdentifier($sort),
                     $this->normalizeOrder($order)
                 );
             }
@@ -149,9 +149,9 @@ class SqlService implements SqlServiceInterface
     public function prefix(): string|array|null
     {
         try {
-            $tables = $this->connection->createSchemaManager()->listTableNames();
+            $tables = $this->connection->createSchemaManager()->introspectTableNames();
             $firstTable = reset($tables);
-            $matches = explode('_', $firstTable);
+            $matches = explode('_', $firstTable ? $firstTable->toString() : '');
             return $matches[0];
         } catch (\Exception $exception) {
             $this->logger->error('SqlService query failed: '.$exception->getMessage());
@@ -166,8 +166,9 @@ class SqlService implements SqlServiceInterface
     public function relationName(string $table, string $excluded): string|array|null
     {
         try {
-            $columns = $this->connection->createSchemaManager()->listTableColumns($table);
-            foreach ($columns as $name => $value) {
+            $columns = $this->connection->createSchemaManager()->introspectTableColumnsByUnquotedName($table);
+            foreach ($columns as $column) {
+                $name = $column->getObjectName()->toString();
                 if (!str_contains($name, $excluded)) {
                     return $name;
                 }
@@ -188,12 +189,17 @@ class SqlService implements SqlServiceInterface
         }
 
         try {
-            $columns = $this->connection->createSchemaManager()->listTableColumns($table);
+            $columns = $this->connection->createSchemaManager()->introspectTableColumnsByUnquotedName($table);
         } catch (\Exception) {
             return false;
         }
 
-        return array_key_exists(strtolower($column), array_change_key_case($columns));
+        $names = [];
+        foreach ($columns as $tableColumn) {
+            $names[strtolower($tableColumn->getObjectName()->toString())] = true;
+        }
+
+        return array_key_exists(strtolower($column), $names);
     }
 
     private function normalizeOrder(?string $order): string

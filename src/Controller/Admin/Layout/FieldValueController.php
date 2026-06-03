@@ -32,7 +32,7 @@ class FieldValueController extends AdminController
     public function delete(Request $request)
     {
         /** @var FieldValue $fieldValue */
-        $fieldValue = $this->coreLocator->em()->getRepository($this->class)->find($request->get('fieldvalue'));
+        $fieldValue = $this->coreLocator->em()->getRepository($this->class)->find($request->attributes->get('fieldvalue'));
         $this->entities = $fieldValue ? $fieldValue->getConfiguration()->getFieldValues() : [];
         return parent::delete($request);
     }

@@ -168,7 +168,7 @@ class ZoneController extends AdminController
     public function configuration(Request $request)
     {
         $this->disableFlash = true;
-        $this->entity = $this->coreLocator->em()->getRepository(Zone::class)->find($request->get('zone'));
+        $this->entity = $this->coreLocator->em()->getRepository(Zone::class)->find($request->attributes->get('zone'));
         $this->formType = FormType\ZoneConfigurationType::class;
         $this->formManager = $this->layoutLocator->zoneConfiguration();
         $this->template = 'admin/core/layout/zone-configuration.html.twig';
@@ -204,9 +204,9 @@ class ZoneController extends AdminController
      */
     protected function breadcrumb(Request $request, array $items = []): void
     {
-        if ($request->get('layout')) {
-            $items[$this->coreLocator->translator()->trans('Arborescence', [], 'admin_'.$request->get('interfaceName').'_tree')] = 'admin_'.$request->get('interfaceName').'_tree';
-            $items[$this->coreLocator->translator()->trans('Mise en page', [], 'admin_'.$request->get('interfaceName').'_layout')] = 'admin_'.$request->get('interfaceName').'_layout';
+        if ($request->attributes->get('layout')) {
+            $items[$this->coreLocator->translator()->trans('Arborescence', [], 'admin_'.$request->attributes->get('interfaceName').'_tree')] = 'admin_'.$request->attributes->get('interfaceName').'_tree';
+            $items[$this->coreLocator->translator()->trans('Mise en page', [], 'admin_'.$request->attributes->get('interfaceName').'_layout')] = 'admin_'.$request->attributes->get('interfaceName').'_layout';
         }
 
         parent::breadcrumb($request, $items);

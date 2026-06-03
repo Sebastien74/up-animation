@@ -103,7 +103,7 @@ class StepFormController extends AdminController
      */
     protected function breadcrumb(Request $request, array $items = []): void
     {
-        if ($request->get('stepform')) {
+        if ($request->attributes->get('stepform')) {
             $items[$this->coreLocator->translator()->trans('Formulaires', [], 'admin_breadcrumb')] = 'admin_stepform_index';
         }
 

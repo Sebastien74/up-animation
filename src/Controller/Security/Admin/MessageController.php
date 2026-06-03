@@ -91,7 +91,7 @@ class MessageController extends AdminController
      */
     protected function breadcrumb(Request $request, array $items = []): void
     {
-        if ($request->get('securitymessage')) {
+        if ($request->attributes->get('securitymessage')) {
             $items[$this->coreLocator->translator()->trans('Messages', [], 'admin_breadcrumb')] = 'admin_securitymessage_index';
         }
 

@@ -121,7 +121,7 @@ class ProductController extends AdminController
     #[Route('/medias/{catalogproduct}/{catalog}', name: 'admin_catalogproduct_medias', defaults: ['catalog' => null], methods: 'GET|POST')]
     public function medias(Request $request): Response
     {
-        $product = $this->coreLocator->em()->getRepository(Product::class)->find($request->get('catalogproduct'));
+        $product = $this->coreLocator->em()->getRepository(Product::class)->find($request->attributes->get('catalogproduct'));
         if (!$product) {
             throw new NotFoundHttpException();
         }
@@ -219,10 +219,10 @@ class ProductController extends AdminController
      */
     protected function breadcrumb(Request $request, array $items = []): void
     {
-        if ($request->get('catalog')) {
+        if ($request->attributes->get('catalog')) {
             $items[$this->coreLocator->translator()->trans('Catalogues', [], 'admin_breadcrumb')] = 'admin_catalog_index';
-            if ($request->get('catalogproduct')) {
-                $catalog = $this->coreLocator->em()->getRepository(Catalog::class)->find($request->get('catalog'));
+            if ($request->attributes->get('catalogproduct')) {
+                $catalog = $this->coreLocator->em()->getRepository(Catalog::class)->find($request->attributes->get('catalog'));
                 $label = $catalog ? $catalog->getAdminName() : $this->coreLocator->translator()->trans('Produits', [], 'admin_breadcrumb');
                 $items[$label] = 'admin_catalogproduct_index';
             }

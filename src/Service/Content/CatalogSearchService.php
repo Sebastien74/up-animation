@@ -51,7 +51,8 @@ class CatalogSearchService implements CatalogSearchServiceInterface
     {
         $this->productRepository = $this->coreLocator->em()->getRepository(Product::class);
         if ($this->coreLocator->request()) {
-            $this->filters = $this->coreLocator->request()->get('products') ? $this->coreLocator->request()->get('products') : $this->coreLocator->request()->query->all();
+            $queryParams = $this->coreLocator->request()->query->all();
+            $this->filters = !empty($queryParams['products']) ? $queryParams['products'] : $queryParams;
             $this->filterText = !empty($this->filters['text']) ? $this->filters['text'] : '';
             $excludedPatterns = ['utm_', 'ajax', 'fbclid', 'text', 'page', 'website'];
             foreach ($this->filters as $key => $value) {

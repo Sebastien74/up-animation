@@ -77,7 +77,7 @@ class TranslationController extends AdminController
     public function searchEdit(Request $request, TranslationDomainRepository $domainRepository): string|Response
     {
         return $this->adminRender('admin/page/translation/translations.html.twig', [
-            'domains' => $domainRepository->findBySearch($request->get('search')),
+            'domains' => $domainRepository->findBySearch($request->query->get('search')),
         ]);
     }
 
@@ -155,10 +155,10 @@ class TranslationController extends AdminController
     #[Route('/progress', name: 'admin_translation_progress', options: ['expose' => true], methods: 'GET')]
     public function progress(Request $request, WebsiteRepository $websiteRepository, TranslationDomainRepository $domainRepository, Extractor $extractor): JsonResponse
     {
-        $domainName = $request->get('domain');
+        $domainName = $request->query->get('domain');
         $domains = 'only_front' === $domainName ? $domainRepository->getFrontDomains() : [];
         $domainName = 'only_front' === $domainName ? null : $domainName;
-        $website = $websiteRepository->find($request->get('website'));
+        $website = $websiteRepository->find($request->attributes->get('website'));
         $locales = $website->getConfiguration()->getAllLocales();
 
         $yaml = $extractor->findYaml($locales);
@@ -179,7 +179,7 @@ class TranslationController extends AdminController
 
         return new JsonResponse(['html' => $this->renderView('admin/page/translation/progress.html.twig', [
             'translations' => $translations,
-            'domainName' => $request->get('domain'),
+            'domainName' => $request->query->get('domain'),
             'multiCols' => count($translations) > 1,
         ])], Response::HTTP_OK);
     }
@@ -195,7 +195,7 @@ class TranslationController extends AdminController
         string $locale,
         string $domain): JsonResponse
     {
-        $website = $websiteRepository->find($request->get('website'));
+        $website = $websiteRepository->find($request->attributes->get('website'));
         $defaultLocale = $website->getConfiguration()->getLocale();
         $translations = json_decode($request->getContent(), true)['translations'] ?? [];
 
@@ -237,14 +237,14 @@ class TranslationController extends AdminController
         string $locale,
         string $domain): JsonResponse
     {
-        $website = $websiteRepository->find($request->get('website'));
+        $website = $websiteRepository->find($request->attributes->get('website'));
         $defaultLocale = $website->getConfiguration()->getLocale();
-        $keyName = $request->get('keyName');
+        $keyName = $request->query->get('keyName');
         $extractor->generateTranslation(
             $defaultLocale,
             $locale,
             urldecode($domain),
-            urldecode($request->get('content')),
+            urldecode($request->query->get('content')),
             $keyName !== null ? (string) urldecode($keyName) : null
         );
 
@@ -257,7 +257,7 @@ class TranslationController extends AdminController
     #[Route('/generate/files', name: 'admin_translation_generate_files', options: ['expose' => true], methods: 'GET')]
     public function generateFiles(Request $request, WebsiteRepository $websiteRepository, Extractor $extractor): JsonResponse
     {
-        $website = $websiteRepository->find($request->get('website'));
+        $website = $websiteRepository->find($request->attributes->get('website'));
         $extractor->initFiles($website->getConfiguration()->getAllLocales());
 
         return new JsonResponse(['success' => true], Response::HTTP_OK);
@@ -270,7 +270,7 @@ class TranslationController extends AdminController
     public function cacheClear(Request $request, Extractor $extractor, string $cacheDir): RedirectResponse|JsonResponse
     {
         $extractor->clearCache();
-        if ($request->get('ajax')) {
+        if ($request->query->get('ajax')) {
             return new JsonResponse(['success' => true], Response::HTTP_OK);
         }
         $request->getSession()->getFlashBag()->add('command', [

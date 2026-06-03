@@ -57,7 +57,7 @@ final class PerformanceController extends AdminController
         // which the parent breadcrumb resolver does not know how to fill from default args.
         $breadcrumbUrl = $this->coreLocator->router()->generate('admin_performance_inspector', [
             'area' => $area,
-            'website' => $request->get('website'),
+            'website' => $request->attributes->get('website'),
         ]);
         $this->breadcrumb($request, [$label => $breadcrumbUrl]);
 

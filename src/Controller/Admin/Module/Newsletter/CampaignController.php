@@ -124,7 +124,7 @@ class CampaignController extends AdminController
      */
     protected function breadcrumb(Request $request, array $items = []): void
     {
-        if ($request->get('campaign')) {
+        if ($request->attributes->get('campaign')) {
             $items[$this->coreLocator->translator()->trans('Campagnes', [], 'admin_breadcrumb')] = 'admin_campaign_index';
         }
 

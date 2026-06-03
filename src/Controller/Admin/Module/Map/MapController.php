@@ -99,7 +99,7 @@ class MapController extends AdminController
      */
     protected function breadcrumb(Request $request, array $items = []): void
     {
-        if ($request->get('map')) {
+        if ($request->attributes->get('map')) {
             $items[$this->coreLocator->translator()->trans('Cartes', [], 'admin_breadcrumb')] = 'admin_map_index';
         }
 

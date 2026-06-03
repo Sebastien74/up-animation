@@ -65,7 +65,7 @@ class LinkController extends AdminController
     public function new(Request $request)
     {
         $this->template = 'admin/page/menu/new-link.html.twig';
-        $this->arguments['menu'] = $request->get('menu');
+        $this->arguments['menu'] = $request->attributes->get('menu');
 
         return parent::new($request);
     }
@@ -78,11 +78,11 @@ class LinkController extends AdminController
     #[Route('/edit/{menu}/{link}/{entitylocale}', name: 'admin_link_edit', methods: 'GET|POST')]
     public function edit(Request $request)
     {
-        $link = $this->coreLocator->em()->getRepository(Link::class)->find($request->get('link'));
+        $link = $this->coreLocator->em()->getRepository(Link::class)->find($request->attributes->get('link'));
         if (!$link) {
             throw $this->createNotFoundException($this->coreLocator->translator()->trans("Ce lien n'existe pas !!", [], 'front'));
         }
-        if ($link->getLocale() !== $request->get('entitylocale')) {
+        if ($link->getLocale() !== $request->attributes->get('entitylocale')) {
             throw $this->createNotFoundException();
         }
 
@@ -105,9 +105,9 @@ class LinkController extends AdminController
      */
     protected function breadcrumb(Request $request, array $items = []): void
     {
-        if ($request->get('menu')) {
+        if ($request->attributes->get('menu')) {
             $items[$this->coreLocator->translator()->trans('Navigations', [], 'admin_breadcrumb')] = 'admin_menu_index';
-            if ($request->get('link')) {
+            if ($request->attributes->get('link')) {
                 $items[$this->coreLocator->translator()->trans('Menu', [], 'admin_breadcrumb')] = 'admin_menu_edit';
             }
         }

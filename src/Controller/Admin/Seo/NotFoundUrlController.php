@@ -76,8 +76,8 @@ class NotFoundUrlController extends AdminController
         }
 
         $this->arguments['all'] = $all;
-        $this->arguments['type'] = $request->get('type');
-        $this->arguments['category'] = $request->get('category');
+        $this->arguments['type'] = $request->attributes->get('type');
+        $this->arguments['category'] = $request->attributes->get('category');
         $this->template = 'admin/page/seo/notfound-url.html.twig';
 
         $this->forceEntities = true;

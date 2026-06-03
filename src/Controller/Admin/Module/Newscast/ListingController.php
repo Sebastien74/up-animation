@@ -115,7 +115,7 @@ class ListingController extends AdminController
      */
     protected function breadcrumb(Request $request, array $items = []): void
     {
-        if ($request->get('newscastlisting')) {
+        if ($request->attributes->get('newscastlisting')) {
             $items[$this->coreLocator->translator()->trans('Index', [], 'admin_breadcrumb')] = 'admin_newscastlisting_index';
         }
 

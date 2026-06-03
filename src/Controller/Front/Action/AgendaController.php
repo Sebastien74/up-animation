@@ -77,7 +77,7 @@ class AgendaController extends FrontController
         $website = $this->getWebsite();
         $configuration = $website->configuration;
         $websiteTemplate = $configuration->template;
-        $period = $request->get('period') ? $periodRepository->find($request->get('period')) : null;
+        $period = ($request->attributes->get('period') ?? $request->query->get('period')) ? $periodRepository->find(($request->attributes->get('period') ?? $request->query->get('period'))) : null;
 
         return new JsonResponse([
             'success' => true,

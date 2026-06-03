@@ -99,9 +99,9 @@ class GroupController extends AdminController
      */
     protected function breadcrumb(Request $request, array $items = []): void
     {
-        if ($request->get('gdprcategory')) {
+        if ($request->attributes->get('gdprcategory')) {
             $items[$this->coreLocator->translator()->trans('RGPD', [], 'admin_breadcrumb')] = 'admin_gdprgroup_index';
-            if ($request->get('gdprgroup')) {
+            if ($request->attributes->get('gdprgroup')) {
                 $items[$this->coreLocator->translator()->trans('Groupes', [], 'admin_breadcrumb')] = 'admin_gdprgroup_index';
             }
         }

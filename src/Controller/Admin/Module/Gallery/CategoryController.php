@@ -99,7 +99,7 @@ class CategoryController extends AdminController
      */
     protected function breadcrumb(Request $request, array $items = []): void
     {
-        if ($request->get('gallerycategory')) {
+        if ($request->attributes->get('gallerycategory')) {
             $items[$this->coreLocator->translator()->trans('Catégories', [], 'admin_breadcrumb')] = 'admin_gallerycategory_index';
         }
 

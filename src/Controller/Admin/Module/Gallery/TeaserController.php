@@ -99,7 +99,7 @@ class TeaserController extends AdminController
      */
     protected function breadcrumb(Request $request, array $items = []): void
     {
-        if ($request->get('galleryteaser')) {
+        if ($request->attributes->get('galleryteaser')) {
             $items[$this->coreLocator->translator()->trans('Teasers', [], 'admin_breadcrumb')] = 'admin_galleryteaser_index';
         }
 

@@ -99,7 +99,7 @@ class UserCategoryController extends AdminController
      */
     protected function breadcrumb(Request $request, array $items = []): void
     {
-        if ($request->get('securityusercategory')) {
+        if ($request->attributes->get('securityusercategory')) {
             $items[$this->coreLocator->translator()->trans('Catégories', [], 'admin_breadcrumb')] = 'admin_securityusercategory_index';
         }
 

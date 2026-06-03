@@ -77,7 +77,7 @@ class ThumbController extends AdminController
     #[Route('/generator/remove-cache', name: 'admin_thumbs_remove_cache_file', methods: 'DELETE')]
     public function removeCache(Request $request): JsonResponse
     {
-        $relationsIds = json_decode($request->get('relations'));
+        $relationsIds = json_decode($request->query->get('relations'));
         $em = $this->coreLocator->em();
         foreach ($relationsIds as $id) {
             $mediaRelation = $em->getRepository(MediaRelation::class)->find($id);
@@ -87,7 +87,7 @@ class ThumbController extends AdminController
         }
 
         $filesystem = new Filesystem();
-        $path = urldecode($request->get('path'));
+        $path = urldecode($request->query->get('path'));
         if ($path && str_contains($path, '\public\thumbnails') && !is_dir($path) && $filesystem->exists($path)) {
             $filesystem->remove($path);
         }

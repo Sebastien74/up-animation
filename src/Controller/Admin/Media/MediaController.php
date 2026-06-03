@@ -79,7 +79,7 @@ class MediaController extends AdminController
 
         $history = $request->query->get('history');
         $historyRequestAsBool = isset($history) && !preg_match('/\//', $history) && in_array($history, ['true', 'false', false, true, 0, 1]);
-        $this->arguments['history'] = $historyRequestAsBool ? (bool) $history : $this->generateUrl('admin_medias_library', ['website' => $website->id, 'folder' => $request->get('folder')]);
+        $this->arguments['history'] = $historyRequestAsBool ? (bool) $history : $this->generateUrl('admin_medias_library', ['website' => $website->id, 'folder' => $request->attributes->get('folder')]);
         $this->arguments['formPositions'] = $formPositions->createView();
         $arguments = $this->editionArguments($request);
         $arguments['params']->medias = $paginator->paginate(
@@ -106,8 +106,8 @@ class MediaController extends AdminController
         $this->formOptions = ['edition' => true, 'copyright' => true, 'name' => 'col-12', 'quality' => true, 'disabledTitle' => true];
         $this->template = 'admin/page/media/modal-media.html.twig';
 
-        $website = $request->get('website');
-        $media = $this->coreLocator->em()->getRepository($this->class)->find($request->get('media'));
+        $website = $request->attributes->get('website');
+        $media = $this->coreLocator->em()->getRepository($this->class)->find($request->attributes->get('media'));
         $this->arguments['redirection'] = $this->generateUrl('admin_medias_library', [
             'website' => $website,
             'folder' => $media->getFolder() instanceof Folder ? $media->getFolder()->getId() : null,
@@ -163,7 +163,7 @@ class MediaController extends AdminController
     #[Route('/modal/add/{media}', name: 'admin_medias_modal_add', options: ['expose' => true], methods: 'GET|POST')]
     public function modalAdd(Request $request, Media $media): JsonResponse
     {
-        $this->mediaLocator->modalLibrary()->add($this->getWebsite()->entity, $media, $request->get('options'));
+        $this->mediaLocator->modalLibrary()->add($this->getWebsite()->entity, $media, $request->query->get('options'));
 
         return new JsonResponse(['success' => true]);
     }
@@ -178,12 +178,12 @@ class MediaController extends AdminController
     public function delete(Request $request): RedirectResponse|JsonResponse|Response
     {
         $this->class = Media::class;
-        $media = $this->coreLocator->em()->getRepository(Media::class)->find($request->get('media'));
+        $media = $this->coreLocator->em()->getRepository(Media::class)->find($request->attributes->get('media'));
         if ($media instanceof Media && $media->getMedia() instanceof Media) {
             $parentMedia = $media->getMedia();
             $exist = false;
             foreach ($parentMedia->getMediaScreens() as $mediaScreen) {
-                if ($mediaScreen->getOriginalName() && $mediaScreen->getId() !== intval($request->get('media'))) {
+                if ($mediaScreen->getOriginalName() && $mediaScreen->getId() !== intval($request->attributes->get('media'))) {
                     $exist = true;
                     break;
                 }
@@ -448,7 +448,7 @@ class MediaController extends AdminController
         }
 
         $folderRepository = $this->coreLocator->em()->getRepository(Folder::class);
-        $folder = $request->get('folder') ? $folderRepository->findOneByWebsite($website, $request->attributes->getInt('folder')) : null;
+        $folder = $request->attributes->get('folder') ? $folderRepository->findOneByWebsite($website, $request->attributes->getInt('folder')) : null;
         $folders = $folderRepository->findByWebsite($website);
         $this->arguments['folder'] = $folder;
         $this->arguments['tree'] = $this->getTree($folders);
@@ -456,7 +456,7 @@ class MediaController extends AdminController
         $this->arguments['fileSizeLimit'] = $fileSizeLimit;
         $this->arguments['tooHeavyFilesSizes'] = $filesSizes;
         $this->arguments['tooHeavyFilesCount'] = count($this->arguments['tooHeavyFiles']);
-        $this->arguments['medias'] = $request->get('too_heavy_files') ? $this->arguments['tooHeavyFiles']
+        $this->arguments['medias'] = $request->query->get('too_heavy_files') ? $this->arguments['tooHeavyFiles']
             : $this->coreLocator->em()->getRepository(Media::class)->findByWebsiteAndFolder($website, $folder);
 
         return $this->arguments;

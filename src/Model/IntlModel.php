@@ -254,7 +254,7 @@ final class IntlModel extends BaseModel
      *
      * @throws NonUniqueResultException
      */
-    public static function intl(mixed $entity, string $locale = null): mixed
+    public static function intl(mixed $entity, ?string $locale = null): mixed
     {
         $metadata = self::$coreLocator->metadata($entity, 'intls');
         $locale = $locale ?? self::$coreLocator->locale();

@@ -116,7 +116,7 @@ class TableController extends AdminController
      */
     protected function breadcrumb(Request $request, array $items = []): void
     {
-        if ($request->get('table')) {
+        if ($request->attributes->get('table')) {
             $items[$this->coreLocator->translator()->trans('Tableaux', [], 'admin_breadcrumb')] = 'admin_table_index';
         }
 

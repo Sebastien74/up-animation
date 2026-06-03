@@ -105,7 +105,7 @@ class CompanyController extends AdminController
      */
     protected function breadcrumb(Request $request, array $items = []): void
     {
-        if ($request->get('securitycompany')) {
+        if ($request->attributes->get('securitycompany')) {
             $items[$this->coreLocator->translator()->trans('Entreprises', [], 'admin_breadcrumb')] = 'admin_securitycompany_index';
         }
 

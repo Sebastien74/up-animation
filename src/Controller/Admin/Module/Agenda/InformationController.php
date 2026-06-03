@@ -99,7 +99,7 @@ class InformationController extends AdminController
      */
     protected function breadcrumb(Request $request, array $items = []): void
     {
-        if ($request->get('agendainformation')) {
+        if ($request->attributes->get('agendainformation')) {
             $items[$this->coreLocator->translator()->trans('Informations', [], 'admin_breadcrumb')] = 'admin_agendainformation_index';
         }
 

@@ -91,9 +91,9 @@ class ContentController extends AdminController
      */
     protected function breadcrumb(Request $request, array $items = []): void
     {
-        if ($request->get('tab')) {
+        if ($request->attributes->get('tab')) {
             $items[$this->coreLocator->translator()->trans("Groupes d'onglets", [], 'admin_breadcrumb')] = 'admin_tab_index';
-            if ($request->get('tabcontent')) {
+            if ($request->attributes->get('tabcontent')) {
                 $items[$this->coreLocator->translator()->trans('Contents', [], 'admin_breadcrumb')] = 'admin_tabcontent_tree';
             }
         }

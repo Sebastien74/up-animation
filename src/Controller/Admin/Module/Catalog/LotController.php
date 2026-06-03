@@ -33,8 +33,8 @@ class LotController extends AdminController
     public function position(Request $request)
     {
         /** @var Lot $lot */
-        $lot = $this->coreLocator->em()->getRepository($this->class)->find($request->get('cataloglot'));
-        $lot->setPosition($request->get('position'));
+        $lot = $this->coreLocator->em()->getRepository($this->class)->find($request->attributes->get('cataloglot'));
+        $lot->setPosition(($request->query->get('position') ?? $request->request->get('position')));
 
         $this->coreLocator->em()->persist($lot);
         $this->coreLocator->em()->flush();

@@ -88,7 +88,7 @@ class ScheduledCommandController extends AdminController
      */
     protected function breadcrumb(Request $request, array $items = []): void
     {
-        if ($request->get('command')) {
+        if ($request->attributes->get('command')) {
             $items[$this->coreLocator->translator()->trans('Tâches planifiées', [], 'admin_breadcrumb')] = 'admin_command_index';
         }
 

@@ -54,7 +54,7 @@ class UserController extends AdminController
     #[Route('/index/{role}', name: 'admin_userfront_index', defaults: ['role' => null], methods: 'GET|POST')]
     public function index(Request $request, PaginatorInterface $paginator, ?string $domains = null): JsonResponse|string|Response
     {
-        $role = $request->get('role') ? 'ROLE_'.strtoupper($request->get('role')) : null;
+        $role = $request->attributes->get('role') ? 'ROLE_'.strtoupper($request->attributes->get('role')) : null;
         if ($role) {
             $this->forceEntities = true;
             $this->entities = $this->coreLocator->em()->getRepository($this->class)->findByWebsiteAndRole($this->getWebsite()->entity, $role);
@@ -94,7 +94,7 @@ class UserController extends AdminController
     #[Route('/password/{userfront}', name: 'admin_userfront_password', methods: 'GET|POST')]
     public function password(Request $request)
     {
-        $this->entity = $this->coreLocator->em()->getRepository($this->class)->find($request->get('userfront'));
+        $this->entity = $this->coreLocator->em()->getRepository($this->class)->find($request->attributes->get('userfront'));
         $this->template = 'admin/page/security/password-user-front.html.twig';
         $this->formType = UserPasswordType::class;
 
@@ -139,7 +139,7 @@ class UserController extends AdminController
      */
     protected function breadcrumb(Request $request, array $items = []): void
     {
-        if ($request->get('userfront')) {
+        if ($request->attributes->get('userfront')) {
             $items[$this->coreLocator->translator()->trans('Utilisateurs', [], 'admin_breadcrumb')] = 'admin_userfront_index';
         }
 

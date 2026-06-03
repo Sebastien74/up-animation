@@ -114,7 +114,7 @@ class FeatureValueProductController extends AdminController
     {
         $value = $this->coreLocator->em()->getRepository($this->class)->find($request->attributes->getInt('catalogfeaturevalueproduct'));
         $product = $value ? $value->getProduct() : null;
-        $this->adminLocator->positionService()->setByJsonArray($request->get('data'), $this->class);
+        $this->adminLocator->positionService()->setByJsonArray($request->request->get('data'), $this->class);
         if ($product) {
             $this->moduleFormInterface->catalogProduct()->setValues($product, $this->coreLocator->website()->entity);
         }
@@ -129,8 +129,8 @@ class FeatureValueProductController extends AdminController
     {
         foreach ($product->getValues() as $value) {
             if ($value->getFeature()->getId() === $feature->getId()) {
-                $value->setPosition($request->get('position'));
-                $value->setFeaturePosition($request->get('position'));
+                $value->setPosition(($request->query->get('position') ?? $request->request->get('position')));
+                $value->setFeaturePosition(($request->query->get('position') ?? $request->request->get('position')));
                 $this->coreLocator->em()->persist($value);
             }
         }

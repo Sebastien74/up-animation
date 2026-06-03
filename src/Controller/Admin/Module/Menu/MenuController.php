@@ -73,7 +73,7 @@ class MenuController extends AdminController
         $this->arguments['pages'] = $this->adminLocator->treeHelper()->execute(Page::class, $this->getInterface(Page::class), $website);
         $this->arguments['treePages'] = $this->getTree($this->arguments['pages']);
 
-        $links = $this->coreLocator->em()->getRepository(Link::class)->findByMenuAndLocale($menu, $request->get('entitylocale'));
+        $links = $this->coreLocator->em()->getRepository(Link::class)->findByMenuAndLocale($menu, $request->attributes->get('entitylocale'));
         $this->arguments['tree'] = $this->getTree($links);
 
         $formPositions = $this->getTreeForm($request, Link::class);
@@ -126,7 +126,7 @@ class MenuController extends AdminController
      */
     protected function breadcrumb(Request $request, array $items = []): void
     {
-        if ($request->get('menu')) {
+        if ($request->attributes->get('menu')) {
             $items[$this->coreLocator->translator()->trans('Navigations', [], 'admin_breadcrumb')] = 'admin_menu_index';
         }
 

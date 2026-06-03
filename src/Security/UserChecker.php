@@ -91,7 +91,7 @@ class UserChecker implements UserCheckerInterface
      */
     private function checkAccount(RequestEvent $event, Request $request, Security\User|Security\UserFront $user): void
     {
-        if (!$user->isActive() && !$request->get('inactive')) {
+        if (!$user->isActive() && !($request->attributes->get('inactive') ?? $request->query->get('inactive'))) {
             $response = new RedirectResponse($this->coreLocator->router()->generate('app_logout'));
             $event->setResponse($response);
         }

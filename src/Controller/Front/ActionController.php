@@ -697,7 +697,7 @@ class ActionController extends FrontController
     public function setCore(Request $request, ?Url $url = null, ?Block $block = null, $filter = null): void
     {
         $interface = $this->getInterface($this->classname);
-        $websiteId = $request->get('website') ? intval($request->get('website')) : null;
+        $websiteId = ($request->attributes->get('website') ?? $request->query->get('website')) ? intval(($request->attributes->get('website') ?? $request->query->get('website'))) : null;
         $this->website = str_contains($request->getUri(), 'preview') && $websiteId
             ? $this->coreLocator->em()->getRepository(Website::class)->findObject($websiteId)
             : $this->coreLocator->em()->getRepository(Website::class)->findOneByHost($request->getHost());

@@ -192,7 +192,6 @@ class NewsletterManager
             curl_setopt($curl, CURLOPT_MAXREDIRS, 2);
             curl_setopt($curl, CURLOPT_NOBODY, true);
             $response = curl_exec($curl);
-            curl_close($curl);
         }
     }
 
@@ -320,7 +319,6 @@ class NewsletterManager
         $errorMsg = curl_error($ch);
         $error = curl_errno($ch);
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        curl_close($ch);
 
         return [
             'output' => $output,

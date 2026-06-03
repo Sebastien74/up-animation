@@ -43,9 +43,9 @@ class LocaleController extends FrontController
     public function switcher(Request $request, LocaleService $localeService): Response
     {
         $website = $this->getWebsite();
-        $class = $request->get('class');
-        $classname = $request->get('classname');
-        $entityId = $request->get('entityId');
+        $class = $request->query->get('class');
+        $classname = $request->query->get('classname');
+        $entityId = $request->query->get('entityId');
 
         $websites = [];
         $routes = [];

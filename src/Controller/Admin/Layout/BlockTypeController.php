@@ -99,7 +99,7 @@ class BlockTypeController extends AdminController
      */
     protected function breadcrumb(Request $request, array $items = []): void
     {
-        if ($request->get('blocktype')) {
+        if ($request->attributes->get('blocktype')) {
             $items[$this->coreLocator->translator()->trans('Types', [], 'admin_breadcrumb')] = 'admin_blocktype_index';
         }
 

@@ -160,7 +160,7 @@ class BlockController extends AdminController
 
         if (!$isLayout && !$block->getAction() && isset(self::FORM_TYPES[$slugBlock]) || !$isLayout && $isForm || !$isLayout && $block->getAction() && $action->getEntity()) {
             return $this->redirectToRoute('admin_block_edit', [
-                'website' => $request->get('website'),
+                'website' => $request->attributes->get('website'),
                 'interfaceName' => $interfaceName,
                 'interfaceEntity' => $interfaceEntity,
                 'col' => $block->getCol()->getId(),
@@ -203,7 +203,7 @@ class BlockController extends AdminController
                 if (preg_match('/'.$group.'/', $blockTypeSlug)) {
                     $this->formType = $configuration['formType'];
                     $this->template = 'admin/page/layout/field.html.twig';
-                    $formClass = 'form' === $request->get('interfaceName') ? Form::class : StepForm::class;
+                    $formClass = 'form' === $request->attributes->get('interfaceName') ? Form::class : StepForm::class;
                     $this->formOptions['currentForm'] = $this->coreLocator->em()->getRepository($formClass)->find($request->attributes->getInt('interfaceEntity'));
                     $this->formOptions['layout'] = $layout;
                     break;
@@ -366,8 +366,8 @@ class BlockController extends AdminController
      */
     protected function breadcrumb(Request $request, array $items = []): void
     {
-        $interfaceName = $request->get('interfaceName');
-        $entityId = $request->get('interfaceEntity');
+        $interfaceName = $request->attributes->get('interfaceName');
+        $entityId = $request->attributes->get('interfaceEntity');
         $configuration = [
             'page' => \App\Entity\Layout\Page::class,
             'form' => \App\Entity\Module\Form\Form::class,
@@ -378,7 +378,7 @@ class BlockController extends AdminController
         if ($entityId && !empty($configuration[$interfaceName])) {
             $entity = $this->coreLocator->em()->getRepository($configuration[$interfaceName])->find($entityId);
             $entityConfiguration = $this->coreLocator->em()->getRepository(Entity::class)->findOneBy([
-                'website' => $request->get('website'),
+                'website' => $request->attributes->get('website'),
                 'className' => $configuration[$interfaceName],
             ]);
             $indexRoute = 'page' === $interfaceName ? 'admin_page_tree' : 'admin_'.$interfaceName.'_index';

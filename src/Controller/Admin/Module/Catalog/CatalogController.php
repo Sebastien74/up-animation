@@ -174,7 +174,7 @@ class CatalogController extends AdminController
      */
     protected function breadcrumb(Request $request, array $items = []): void
     {
-        if ($request->get('catalog')) {
+        if ($request->attributes->get('catalog')) {
             $items[$this->coreLocator->translator()->trans('Catalogues', [], 'admin_breadcrumb')] = 'admin_catalog_index';
         }
 

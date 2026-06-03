@@ -111,7 +111,7 @@ class UploadController extends AdminController
     {
         $mimeTypes = ['csv' => 'text/csv'];
         $publicRoot = realpath($projectDir.'/public');
-        $requested = (string) $request->get('fileDirname');
+        $requested = (string) $request->query->get('fileDirname');
 
         if ('' === $requested || false === $publicRoot) {
             throw $this->createNotFoundException();

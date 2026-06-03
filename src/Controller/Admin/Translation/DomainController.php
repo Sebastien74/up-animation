@@ -89,7 +89,7 @@ class DomainController extends AdminController
             'pagination' => $indexHelper->getPagination(),
         ]);
 
-        if (!empty($request->get('ajax'))) {
+        if (!empty($request->query->get('ajax'))) {
             return new JsonResponse(['html' => $this->adminRender($template, $arguments, $request)]);
         }
 
@@ -106,7 +106,7 @@ class DomainController extends AdminController
     public function deleteDomain(Request $request, string $projectDir): JsonResponse|string|Response
     {
         /** @var TranslationDomain $domain */
-        $domain = $this->coreLocator->em()->getRepository(TranslationDomain::class)->find($request->get('translationdomain'));
+        $domain = $this->coreLocator->em()->getRepository(TranslationDomain::class)->find($request->attributes->get('translationdomain'));
 
         if (!$domain) {
             return new JsonResponse(['success' => false]);
@@ -133,7 +133,7 @@ class DomainController extends AdminController
      */
     protected function breadcrumb(Request $request, array $items = []): void
     {
-        if ($request->get('translationdomain')) {
+        if ($request->attributes->get('translationdomain')) {
             $items[$this->coreLocator->translator()->trans('Groupes de traductions', [], 'admin_breadcrumb')] = 'admin_translationdomain_index';
         }
 

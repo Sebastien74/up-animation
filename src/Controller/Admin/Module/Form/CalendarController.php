@@ -55,7 +55,7 @@ class CalendarController extends AdminController
     public function index(Request $request, PaginatorInterface $paginator, ?string $domains = null): JsonResponse|string|Response
     {
         /** @var Form $form */
-        $form = $this->coreLocator->em()->getRepository(Form::class)->find($request->get('form'));
+        $form = $this->coreLocator->em()->getRepository(Form::class)->find($request->attributes->get('form'));
         if (!self::MULTIPLES_CALENDARS && $form->getCalendars()->count() > 0) {
             $this->disableFormNew = true;
         }
@@ -83,7 +83,7 @@ class CalendarController extends AdminController
     public function edit(Request $request)
     {
         /** @var Calendar $calendar */
-        $calendar = $this->coreLocator->em()->getRepository($this->class)->find($request->get('formcalendar'));
+        $calendar = $this->coreLocator->em()->getRepository($this->class)->find($request->attributes->get('formcalendar'));
         $this->formManager->setSchedules($calendar);
 
         return parent::edit($request);

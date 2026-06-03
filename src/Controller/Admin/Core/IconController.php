@@ -82,7 +82,7 @@ class IconController extends AdminController
     #[Route('/add', name: 'admin_icon_add', options: ['expose' => true], methods: 'GET')]
     public function add(Request $request, IconRepository $iconRepository, Website $website): JsonResponse
     {
-        $path = json_decode(urldecode($request->get('path')));
+        $path = json_decode(urldecode($request->query->get('path')));
         $existing = $iconRepository->findBy([
             'configuration' => $website->getConfiguration(),
             'path' => $path,
@@ -103,7 +103,7 @@ class IconController extends AdminController
     #[Route('/remove', name: 'admin_icon_remove', options: ['expose' => true], methods: 'GET')]
     public function remove(Request $request, Website $website): JsonResponse
     {
-        $path = json_decode(urldecode($request->get('path')));
+        $path = json_decode(urldecode($request->query->get('path')));
         $this->coreFormInterface->icon()->remove($path, $website->getConfiguration());
 
         return new JsonResponse(['success' => true]);

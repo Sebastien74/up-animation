@@ -99,9 +99,9 @@ class StepController extends AdminController
      */
     protected function breadcrumb(Request $request, array $items = []): void
     {
-        if ($request->get('timeline')) {
+        if ($request->attributes->get('timeline')) {
             $items[$this->coreLocator->translator()->trans('Chronologies', [], 'admin_breadcrumb')] = 'admin_timeline_index';
-            if ($request->get('timelinestep')) {
+            if ($request->attributes->get('timelinestep')) {
                 $items[$this->coreLocator->translator()->trans('Étapes', [], 'admin_breadcrumb')] = 'admin_timelinestep_index';
             }
         }

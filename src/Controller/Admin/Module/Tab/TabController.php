@@ -99,7 +99,7 @@ class TabController extends AdminController
      */
     protected function breadcrumb(Request $request, array $items = []): void
     {
-        if ($request->get('tab')) {
+        if ($request->attributes->get('tab')) {
             $items[$this->coreLocator->translator()->trans("Groupes d'onglets", [], 'admin_breadcrumb')] = 'admin_tab_index';
         }
 

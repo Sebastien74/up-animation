@@ -147,7 +147,7 @@ class WebsiteController extends AdminController
      */
     protected function breadcrumb(Request $request, array $items = []): void
     {
-        if ($request->get('site')) {
+        if ($request->attributes->get('site')) {
             $items[$this->coreLocator->translator()->trans('Sites', [], 'admin_breadcrumb')] = 'admin_site_index';
         }
 

@@ -38,9 +38,9 @@ class SearchFilterService
     {
         $repository = $this->entityManager->getRepository($interface['classname']);
         $filterBuilder = $repository->createQueryBuilder('e');
-        if (!empty($interface['masterField']) && $request->get($interface['masterField'])) {
+        if (!empty($interface['masterField']) && $request->attributes->get($interface['masterField'])) {
             $filterBuilder->andWhere('e.'.$interface['masterField'].' = :'.$interface['masterField']);
-            $filterBuilder->setParameter($interface['masterField'], $request->get($interface['masterField']));
+            $filterBuilder->setParameter($interface['masterField'], $request->attributes->get($interface['masterField']));
         }
         $this->builderUpdater->addFilterConditions($form, $filterBuilder);
 

@@ -188,7 +188,7 @@ class FrontController extends CacheController
     #[Route('/front/website-alert/{mode}', name: 'website_alert', options: ['expose' => true, 'isMainRequest' => false], methods: 'GET', schemes: '%protocol%')]
     public function websiteAlert(Request $request, string $mode): JsonResponse
     {
-        $hide = 'show' === $request->get('currentStatus');
+        $hide = 'show' === $request->query->get('currentStatus');
         $request->getSession()->set('front_website_alert_'.$mode, $hide);
 
         return new JsonResponse(['success' => true, 'hide' => $hide], 200);

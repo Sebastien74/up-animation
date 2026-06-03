@@ -64,7 +64,7 @@ class SeoController extends BaseController
     {
         $url = null;
 
-        if (!$request->get('url')) {
+        if (!$request->attributes->get('url')) {
             $page = $this->coreLocator->em()->getRepository(Page::class)->findOneBy([
                 'asIndex' => true,
                 'website' => $website,
@@ -75,11 +75,11 @@ class SeoController extends BaseController
             }
 
             $url = $this->getUrl($request, $page);
-        } elseif ($request->get('url')) {
-            $url = $this->coreLocator->em()->getRepository(Url::class)->find($request->get('url'));
+        } elseif ($request->attributes->get('url')) {
+            $url = $this->coreLocator->em()->getRepository(Url::class)->find($request->attributes->get('url'));
         }
 
-        if ($url instanceof Url && $url->getLocale() !== $request->get('entitylocale')) {
+        if ($url instanceof Url && $url->getLocale() !== $request->attributes->get('entitylocale')) {
             throw $this->createNotFoundException();
         }
 
@@ -98,7 +98,7 @@ class SeoController extends BaseController
     {
         foreach ($entity->getUrls() as $url) {
             /** @var Url $url */
-            if ($url->getLocale() === $request->get('entitylocale')) {
+            if ($url->getLocale() === $request->attributes->get('entitylocale')) {
                 return $url;
             }
         }

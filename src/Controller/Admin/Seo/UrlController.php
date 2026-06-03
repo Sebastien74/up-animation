@@ -31,8 +31,8 @@ class UrlController extends AdminController
     public function status(Request $request, Url $url): JsonResponse
     {
         $newStatus = !$url->isOnline();
-        $classname = $request->get('classname') ? urldecode($request->get('classname')) : null;
-        $entityId = $request->get('entityId');
+        $classname = $request->query->get('classname') ? urldecode($request->query->get('classname')) : null;
+        $entityId = $request->query->get('entityId');
 
         if ($entityId && $classname === Page::class) {
             $currentPage = $this->coreLocator->em()->getRepository(Page::class)->find(intval($entityId));

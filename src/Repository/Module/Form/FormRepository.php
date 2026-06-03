@@ -87,7 +87,7 @@ class FormRepository extends ServiceEntityRepository
             ->setParameter('website', $website)
             ->addSelect('w');
 
-        $stepForm = $request->get('stepform');
+        $stepForm = ($request->attributes->get('stepform') ?? $request->query->get('stepform'));
 
         if ($stepForm) {
             $statement->andWhere('f.stepform = :stepform')

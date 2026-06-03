@@ -92,7 +92,7 @@ class SubCategoryController extends AdminController
     #[Route('/delete/{catalogsubcategory}', name: 'admin_catalogsubcategory_delete', methods: 'DELETE')]
     public function delete(Request $request)
     {
-        $subCategory = $this->coreLocator->em()->getRepository(SubCategory::class)->find($request->get('catalogsubcategory'));
+        $subCategory = $this->coreLocator->em()->getRepository(SubCategory::class)->find($request->attributes->get('catalogsubcategory'));
         $products = $subCategory ? $this->coreLocator->em()->getRepository(Product::class)->findBySubCategory($subCategory) : [];
 
         if ($products) {
@@ -121,9 +121,9 @@ class SubCategoryController extends AdminController
      */
     protected function breadcrumb(Request $request, array $items = []): void
     {
-        if ($request->get('catalogcategory')) {
+        if ($request->attributes->get('catalogcategory')) {
             $items[$this->coreLocator->translator()->trans('Catégories', [], 'admin_breadcrumb')] = 'admin_catalogcategory_index';
-            if ($request->get('catalogsubcategory')) {
+            if ($request->attributes->get('catalogsubcategory')) {
                 $items[$this->coreLocator->translator()->trans('Sous-catégorie', [], 'admin_breadcrumb')] = 'admin_catalogsubcategory_index';
             }
         }
