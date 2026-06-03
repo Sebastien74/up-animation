@@ -11,7 +11,9 @@
 {%- if logos['favicon-apple-touch-icon'] is defined and logos['favicon-apple-touch-icon'] -%}
     <link rel="apple-touch-icon" sizes="180x180" href="{{ absolute_url(asset(logos['favicon-apple-touch-icon'])) }}">
 {%- endif -%}
-<link rel="manifest" href="{{ absolute_url(asset(website|manifest)) }}">
+{%- if pwaEnabled is defined and pwaEnabled -%}
+    <link rel="manifest" href="{{ absolute_url(asset(website|manifest)) }}">
+{%- endif -%}
 {%- set color = 'favicon'|color(website, 'mask-icon') -%}
 {%- if logos['mask-icon'] is defined and logos['mask-icon'] and color.active is defined and color.active -%}
     <link rel="mask-icon" href="{{ absolute_url(asset(logos['mask-icon'])) }}" {% if color %} color="{{ color.color }}" {% endif %}>

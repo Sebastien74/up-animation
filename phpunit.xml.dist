@@ -1,78 +1,66 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <!-- https://phpunit.readthedocs.io/en/latest/configuration.html -->
-<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:noNamespaceSchemaLocation="./bin/phpunit"
-         backupGlobals="false"
-         colors="true"
-         bootstrap="tests/bootstrap.php"
->
-    <php>
-        <ini name="display_errors" value="1" />
-        <ini name="error_reporting" value="-1" />
-        <!-- Deprecation detection (Symfony 8 prep): "weak" reports without failing the build.
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="./bin/phpunit" backupGlobals="false" colors="true" bootstrap="tests/bootstrap.php" cacheDirectory=".phpunit.cache">
+  <php>
+    <ini name="display_errors" value="1"/>
+    <ini name="error_reporting" value="-1"/>
+    <!-- Deprecation detection (Symfony 8 prep): "weak" reports without failing the build.
              Switch to baselineFile=tests/deprecations.baseline to fail only on NEW deprecations. -->
-        <env name="SYMFONY_DEPRECATIONS_HELPER" value="weak" />
-        <server name="APP_ENV" value="test" force="true" />
-        <server name="SHELL_VERBOSITY" value="-1" />
-        <server name="SYMFONY_PHPUNIT_REMOVE" value="" />
-        <server name="SYMFONY_PHPUNIT_VERSION" value="11.5" />
-
-        <!-- ###+ symfony/lock ### -->
-        <!-- Choose one of the stores below -->
-        <!-- postgresql+advisory://db_user:db_password@localhost/db_name -->
-        <env name="LOCK_DSN" value="semaphore"/>
-        <!-- ###- symfony/lock ### -->
-
-        <!-- ###+ doctrine/doctrine-bundle ### -->
-        <!-- Test env : valeurs factices. Les tests ne se connectent pas reellement a la base. -->
-        <env name="DB_HOST" value="127.0.0.1"/>
-        <env name="DB_PORT" value="3306"/>
-        <env name="DB_USER" value="test"/>
-        <env name="DB_PASSWORD" value="test"/>
-        <env name="DB_NAME" value="test"/>
-        <env name="DB_VERSION" value="8.0"/>
-        <env name="DATABASE_PREFIX" value="cms"/>
-        <!-- ###- doctrine/doctrine-bundle ### -->
-        <!-- App env defaults -->
-        <env name="APP_PROTOCOL" value="https"/>
-        <env name="APP_LOCALE" value="fr"/>
-        <env name="SECURITY_TOKEN" value="test-security-token"/>
-        <!-- ###+ symfony/mailer ### -->
-        <env name="MAILER_DSN" value="null://null"/>
-        <!-- ###- symfony/mailer ### -->
-        <!-- ###+ symfony/framework-bundle ### -->
-        <env name="APP_SECRET" value="d943448f27e6fcbbdb2adf949bd026df"/>
-        <env name="KERNEL_CLASS" value="App\Kernel"/>
-        <!-- ###- symfony/framework-bundle ### -->
-
-        <!-- ###+ symfony/messenger ### -->
-        <!-- Choose one of the transports below -->
-        <!-- MESSENGER_TRANSPORT_DSN=amqp://guest:guest@localhost:5672/%2f/messages -->
-        <!-- MESSENGER_TRANSPORT_DSN=redis://localhost:6379/messages -->
-        <env name="MESSENGER_TRANSPORT_DSN" value="doctrine://default?auto_setup=0"/>
-        <!-- ###- symfony/messenger ### -->
-    </php>
-
-    <testsuites>
-        <testsuite name="mail">
-            <directory>tests/Form/Manager</directory>
-            <directory>tests/Service/Core</directory>
-            <directory>tests/Security</directory>
-            <directory>tests/Message</directory>
-        </testsuite>
-        <testsuite name="command">
-            <directory>tests/Command</directory>
-        </testsuite>
-    </testsuites>
-
-    <filter>
-        <whitelist processUncoveredFilesFromWhitelist="true">
-            <directory suffix=".php">src</directory>
-        </whitelist>
-    </filter>
-
-    <listeners>
-        <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener" />
-    </listeners>
+    <env name="SYMFONY_DEPRECATIONS_HELPER" value="weak"/>
+    <server name="APP_ENV" value="test" force="true"/>
+    <server name="SHELL_VERBOSITY" value="-1"/>
+    <server name="SYMFONY_PHPUNIT_REMOVE" value=""/>
+    <server name="SYMFONY_PHPUNIT_VERSION" value="11.5"/>
+    <!-- ###+ symfony/lock ### -->
+    <!-- Choose one of the stores below -->
+    <!-- postgresql+advisory://db_user:db_password@localhost/db_name -->
+    <env name="LOCK_DSN" value="semaphore"/>
+    <!-- ###- symfony/lock ### -->
+    <!-- ###+ doctrine/doctrine-bundle ### -->
+    <!-- Test env : valeurs factices. Les tests ne se connectent pas reellement a la base. -->
+    <env name="DB_HOST" value="127.0.0.1"/>
+    <env name="DB_PORT" value="3306"/>
+    <env name="DB_USER" value="test"/>
+    <env name="DB_PASSWORD" value="test"/>
+    <env name="DB_NAME" value="test"/>
+    <env name="DB_VERSION" value="8.0"/>
+    <env name="DATABASE_PREFIX" value="cms"/>
+    <!-- ###- doctrine/doctrine-bundle ### -->
+    <!-- App env defaults -->
+    <env name="APP_PROTOCOL" value="https"/>
+    <env name="APP_LOCALE" value="fr"/>
+    <env name="SECURITY_TOKEN" value="test-security-token"/>
+    <!-- ###+ symfony/mailer ### -->
+    <env name="MAILER_DSN" value="null://null"/>
+    <!-- ###- symfony/mailer ### -->
+    <!-- ###+ symfony/framework-bundle ### -->
+    <env name="APP_SECRET" value="d943448f27e6fcbbdb2adf949bd026df"/>
+    <env name="KERNEL_CLASS" value="App\Kernel"/>
+    <!-- ###- symfony/framework-bundle ### -->
+    <!-- ###+ symfony/messenger ### -->
+    <!-- Choose one of the transports below -->
+    <!-- MESSENGER_TRANSPORT_DSN=amqp://guest:guest@localhost:5672/%2f/messages -->
+    <!-- MESSENGER_TRANSPORT_DSN=redis://localhost:6379/messages -->
+    <env name="MESSENGER_TRANSPORT_DSN" value="doctrine://default?auto_setup=0"/>
+    <!-- ###- symfony/messenger ### -->
+  </php>
+  <testsuites>
+    <testsuite name="mail">
+      <directory>tests/Form/Manager</directory>
+      <directory>tests/Service/Core</directory>
+      <directory>tests/Security</directory>
+      <directory>tests/Message</directory>
+    </testsuite>
+    <testsuite name="command">
+      <directory>tests/Command</directory>
+    </testsuite>
+    <testsuite name="twig">
+      <directory>tests/Twig</directory>
+    </testsuite>
+  </testsuites>
+  <source>
+    <include>
+      <directory suffix=".php">src</directory>
+    </include>
+  </source>
 </phpunit>

@@ -40,7 +40,8 @@ self.addEventListener('fetch', function (event) {
                 console.log('[Service Worker] Fetch failed; returning offline page instead.', error);
                 const cache = await caches.open(CACHE_NAME);
                 const cachedResponse = await cache.match(OFFLINE_URL);
-                return cachedResponse;
+                // Guard against a cache miss so respondWith never resolves to undefined.
+                return cachedResponse || new Response('', {status: 503, statusText: 'Service Unavailable'});
             }
         })());
     }

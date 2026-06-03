@@ -75,7 +75,7 @@ class ManifestRuntime implements RuntimeExtensionInterface
                     }
                 }
                 $data = [
-                    'prefer_related_applications' => true,
+                    'prefer_related_applications' => false,
                     'short_name' => $name,
                     'name' => $name,
                     'icons' => $icons,

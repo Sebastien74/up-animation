@@ -85,6 +85,7 @@ blackfire.msi
 .phpunit
 /phpunit.xml
 .phpunit.result.cache
+/.phpunit.cache
 ###< symfony/phpunit-bridge ###
 ###> friendsofphp/php-cs-fixer ###
 /.php-cs-fixer.php

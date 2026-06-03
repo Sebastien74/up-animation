@@ -124,7 +124,7 @@
         }) }}
 
         {%- if website.logos is defined -%}
-            {%- include 'core/favicon.html.twig' with {website: website, logos: website.logos, microDataActive: microDataActive} only -%}
+            {%- include 'core/favicon.html.twig' with {website: website, logos: website.logos, microDataActive: microDataActive, pwaEnabled: configuration.progressiveWebApp is defined and configuration.progressiveWebApp} only -%}
         {%- endif -%}
 
         {%- if microDataActive -%}
