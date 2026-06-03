@@ -47,6 +47,9 @@ class ContactForm extends BaseInterface
     #[ORM\Column(type: Types::BOOLEAN)]
     private bool $tokenExpired = false;
 
+    #[ORM\Column(type: Types::STRING, length: 2048, nullable: true)]
+    private ?string $submissionPageUrl = null;
+
     #[ORM\OneToOne(targetEntity: CalendarAppointment::class, mappedBy: 'contactForm', cascade: ['persist', 'remove'])]
     private ?CalendarAppointment $appointment = null;
 
@@ -118,6 +121,18 @@ class ContactForm extends BaseInterface
     public function setTokenExpired(bool $tokenExpired): static
     {
         $this->tokenExpired = $tokenExpired;
+
+        return $this;
+    }
+
+    public function getSubmissionPageUrl(): ?string
+    {
+        return $this->submissionPageUrl;
+    }
+
+    public function setSubmissionPageUrl(?string $submissionPageUrl): static
+    {
+        $this->submissionPageUrl = $submissionPageUrl;
 
         return $this;
     }

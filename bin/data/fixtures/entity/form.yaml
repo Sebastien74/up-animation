@@ -135,6 +135,9 @@ App\Entity\Module\Form\ContactForm:
         createdAt:
             fr: 'Envoyé le'
             en: 'Send on'
+        submissionPageUrl:
+            fr: 'Page de soumission'
+            en: 'Submission page'
         appointment:
             fr: 'Rendez-vous'
             en: 'Appointment'
@@ -152,6 +155,7 @@ App\Entity\Module\Form\ContactForm:
         - phone
         - infos
     show:
+        - submissionPageUrl
         - email
         - phone
         - createdAt
@@ -215,6 +219,9 @@ App\Entity\Module\Form\ContactStepForm:
         createdAt:
             fr: 'Envoyé le'
             en: 'Send on'
+        submissionPageUrl:
+            fr: 'Page de soumission'
+            en: 'Submission page'
         contactValues:
             fr: 'Message'
             en: 'Message'
@@ -225,6 +232,7 @@ App\Entity\Module\Form\ContactStepForm:
         - email
         - infos
     show:
+        - submissionPageUrl
         - email
         - createdAt
         - contactValues

@@ -428,6 +428,10 @@ class FormManager
         if ($registrationValid) {
             $contact = $form instanceof Form\Form ? new Form\ContactForm() : new Form\ContactStepForm();
 
+            // Form is posted to its own action route, so the hosting page is the referer.
+            $mainRequest = $this->coreLocator->requestStack()->getMainRequest();
+            $contact->setSubmissionPageUrl($mainRequest?->headers->get('referer') ?: $mainRequest?->getUri());
+
             $requestCalendar = $this->coreLocator->requestStack()->getCurrentRequest()?->query->get('calendar');
             if ($requestCalendar) {
                 $contact->setCalendar($this->coreLocator->em()->getRepository(Form\Calendar::class)->find($requestCalendar));
