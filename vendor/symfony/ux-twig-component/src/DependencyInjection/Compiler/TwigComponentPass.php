@@ -28,8 +28,12 @@ final class TwigComponentPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container): void
     {
-        $componentConfig = [];
+        if ($container->hasDefinition('twig') && $container->hasDefinition('ux.twig_component.twig.lexer')) {
+            $container->getDefinition('twig')
+                ->addMethodCall('setLexer', [new Reference('ux.twig_component.twig.lexer')]);
+        }
 
+        $componentConfig = [];
         $componentReferences = [];
         $componentClassMap = [];
         $componentNames = [];
@@ -114,7 +118,7 @@ final class TwigComponentPass implements CompilerPassInterface
     private function getMountMethods(string $component): array
     {
         $preMount = $mount = $postMount = [];
-        foreach ((new \ReflectionClass($component))->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
+        foreach (new \ReflectionClass($component)->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
             foreach ($method->getAttributes(PreMount::class) as $attribute) {
                 $preMount[$method->getName()] = $attribute->newInstance()->priority;
             }

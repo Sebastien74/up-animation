@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 3.1.0
+
+- Add `provide()` and `inject()` Twig functions to share state from a parent
+  component down to deeply-nested descendants without prop drilling
+- Include the attribute name in the error message thrown when an attribute value is `null`
+
 ## 3.0.0
 
 - Minimum required Symfony version is now 7.4

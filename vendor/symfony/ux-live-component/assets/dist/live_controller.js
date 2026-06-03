@@ -623,12 +623,9 @@ var Idiomorph = (function() {
 			} else if (ctx.head.shouldRemove(currentHeadElt) !== false) removed.push(currentHeadElt);
 		}
 		nodesToAppend.push(...srcToNewHeadNodes.values());
-		log("to append: ", nodesToAppend);
 		let promises = [];
 		for (const newNode of nodesToAppend) {
-			log("adding: ", newNode);
 			let newElt = document.createRange().createContextualFragment(newNode.outerHTML).firstChild;
-			log(newElt);
 			if (ctx.callbacks.beforeNodeAdded(newElt) !== false) {
 				if (newElt.href || newElt.src) {
 					let resolve = null;
@@ -656,7 +653,6 @@ var Idiomorph = (function() {
 		});
 		return promises;
 	}
-	function log() {}
 	function noOp() {}
 	function mergeDefaults(config) {
 		let finalConfig = {};
@@ -1494,9 +1490,11 @@ var Component = class {
 		this.unsyncedInputsTracker.resetUnsyncedFields();
 		const filesToSend = {};
 		for (const [key, value] of Object.entries(this.pendingFiles)) if (value.files) filesToSend[key] = value.files;
+		const actionsToSend = this.pendingActions.slice(0, 50);
+		const remainingActions = this.pendingActions.slice(50);
 		const requestConfig = {
 			props: this.valueStore.getOriginalProps(),
-			actions: this.pendingActions,
+			actions: actionsToSend,
 			updated: this.valueStore.getDirtyProps(),
 			children: {},
 			updatedPropsFromParent: this.valueStore.getUpdatedPropsFromParent(),
@@ -1505,9 +1503,9 @@ var Component = class {
 		this.hooks.triggerHook("request:started", requestConfig);
 		this.backendRequest = this.backend.makeRequest(requestConfig.props, requestConfig.actions, requestConfig.updated, requestConfig.children, requestConfig.updatedPropsFromParent, requestConfig.files);
 		this.hooks.triggerHook("loading.state:started", this.element, this.backendRequest);
-		this.pendingActions = [];
+		this.pendingActions = remainingActions;
 		this.valueStore.flushDirtyPropsToPending();
-		this.isRequestPending = false;
+		this.isRequestPending = remainingActions.length > 0;
 		this.backendRequest.promise.then(async (response) => {
 			const backendResponse = new BackendResponse_default(response);
 			const html = await backendResponse.getBody();
@@ -1750,7 +1748,8 @@ var ChildComponentPlugin_default = class {
 	constructor(component) {
 		this.parentModelBindings = [];
 		this.component = component;
-		this.parentModelBindings = getAllModelDirectiveFromElements(this.component.element).map(get_model_binding_default);
+		const modelDirectives = getAllModelDirectiveFromElements(this.component.element);
+		this.parentModelBindings = modelDirectives.map(get_model_binding_default);
 	}
 	attachToComponent(component) {
 		component.on("request:started", (requestData) => {
@@ -1825,8 +1824,8 @@ var LoadingPlugin_default = class {
 		this.handleLoadingToggle(component, false, targetElement, null);
 	}
 	handleLoadingToggle(component, isLoading, targetElement, backendRequest) {
-		if (isLoading) this.addAttributes(targetElement, ["busy"]);
-		else this.removeAttributes(targetElement, ["busy"]);
+		if (isLoading) targetElement.setAttribute("aria-busy", "true");
+		else targetElement.removeAttribute("aria-busy");
 		this.getLoadingDirectives(component, targetElement).forEach(({ element, directives }) => {
 			if (isLoading) this.addAttributes(element, ["data-live-is-loading"]);
 			else this.removeAttributes(element, ["data-live-is-loading"]);
