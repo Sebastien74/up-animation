@@ -1,3 +1,4 @@
+<?php header('X-Robots-Tag: noindex, nofollow, noarchive'); ?>
 <!DOCTYPE html>
 <html lang="fr" dir="ltr">
 <head>
@@ -11,15 +12,15 @@
     <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --ink: #101129;
-            --ink-2: #161834;
-            --orange: #ff7100;
-            --orange-soft: #ff9a4d;
-            --cream: #f3ede2;
-            --text: #eceaf6;
-            --muted: #9396b9;
-            --line: rgba(255, 255, 255, .09);
-            --surface: rgba(255, 255, 255, .035);
+            --ink: #0e1014;
+            --ink-2: #14171d;
+            --text: #e6e8ee;
+            --bright: #f5f6f8;
+            --muted: #9aa0ad;
+            --line: rgba(255, 255, 255, .08);
+            --surface: rgba(255, 255, 255, .04);
+            --hl: #fbbf24;
+            --hl-soft: #fde68a;
             --radius-btn: 20px;
         }
 
@@ -43,8 +44,8 @@
             position: fixed;
             inset: 0;
             background:
-                radial-gradient(58vw 58vw at 82% -8%, rgba(255, 113, 0, .2), transparent 60%),
-                radial-gradient(55vw 55vw at 8% 112%, rgba(34, 37, 78, .9), transparent 55%),
+                radial-gradient(58vw 58vw at 82% -8%, color-mix(in srgb, var(--hl) 18%, transparent), transparent 60%),
+                radial-gradient(55vw 55vw at 8% 112%, rgba(255, 255, 255, .035), transparent 55%),
                 linear-gradient(180deg, var(--ink), var(--ink-2));
             z-index: -2;
         }
@@ -93,7 +94,7 @@
             opacity: 0;
             animation: rise .7s .05s cubic-bezier(.2, .7, .2, 1) forwards;
         }
-        .mark svg { width: 26px; height: 26px; color: var(--orange); }
+        .mark svg { width: 26px; height: 26px; color: var(--hl); }
 
         .eyebrow {
             display: inline-flex;
@@ -103,15 +104,15 @@
             font-size: .78rem;
             letter-spacing: .24em;
             text-transform: uppercase;
-            color: var(--orange-soft);
+            color: var(--hl-soft);
             font-weight: 600;
             opacity: 0;
             animation: rise .7s .18s cubic-bezier(.2, .7, .2, 1) forwards;
         }
         .eyebrow .dot {
             width: 9px; height: 9px; border-radius: 50%;
-            background: var(--orange);
-            box-shadow: 0 0 12px var(--orange);
+            background: var(--hl);
+            box-shadow: 0 0 12px var(--hl);
             animation: blink 2.4s ease-in-out infinite;
         }
 
@@ -123,6 +124,7 @@
             font-size: clamp(2.4rem, 7.5vw, 5.25rem);
             margin: 1rem 0 1.2rem;
             color: #fff;
+            overflow-wrap: break-word;
             opacity: 0;
             animation: rise .7s .26s cubic-bezier(.2, .7, .2, 1) forwards;
         }
@@ -132,6 +134,7 @@
             max-width: 52ch;
             font-size: 1.15rem;
             margin-left: 4rem;
+            overflow-wrap: break-word;
             opacity: 0;
             animation: rise .7s .34s cubic-bezier(.2, .7, .2, 1) forwards;
         }
@@ -159,10 +162,8 @@
             border: 1px solid transparent;
             transition: background .25s ease, transform .25s ease, border-color .25s ease, color .25s ease;
         }
-        .btn-primary { background: var(--orange); color: #fff; }
-        .btn-primary:hover { background: var(--orange-soft); transform: translateY(-2px); }
-        .btn-ghost { background: transparent; border-color: var(--line); color: var(--text); }
-        .btn-ghost:hover { border-color: var(--orange); color: #fff; transform: translateY(-2px); }
+        .btn-primary { background: var(--hl); color: #2a1d02; }
+        .btn-primary:hover { background: var(--hl-soft); transform: translateY(-2px); }
         .btn svg { width: 17px; height: 17px; }
 
         @keyframes rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }

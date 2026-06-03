@@ -1,5 +1,7 @@
 <?php
 
+header('X-Robots-Tag: noindex, nofollow, noarchive');
+
 $ips = ['::1', '127.0.0.1', 'fe80::1', '194.51.155.21', '195.135.16.88', '176.135.112.19', '2001:861:43c3:ce70:448f:74b:e526:cdae', '2001:861:43c3:ce70:60b8:f71:1c9:4843'];
 // Trust only the real TCP peer; X-Forwarded-For is client-spoofable.
 $allowed = in_array($_SERVER['REMOTE_ADDR'] ?? '', $ips, true);
@@ -44,22 +46,25 @@ $watermark = $hasMajorProblems ? 'KO' : 'OK';
     <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300;400;500;600;700;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
         :root {
-            --ink: #101129;
-            --ink-2: #161834;
-            --navy: #22254e;
-            --orange: #ff7100;
-            --orange-soft: #ff9a4d;
-            --cream: #f3ede2;
-            --text: #eceaf6;
-            --muted: #9396b9;
-            --line: rgba(255, 255, 255, .09);
-            --surface: rgba(255, 255, 255, .035);
-            --ok: #bcd02f;
-            --danger: #ff596b;
-            --warning: #f6c049;
+            --ink: #0e1014;
+            --ink-2: #14171d;
+            --text: #e6e8ee;
+            --bright: #f5f6f8;
+            --muted: #9aa0ad;
+            --line: rgba(255, 255, 255, .08);
+            --surface: rgba(255, 255, 255, .04);
+            --ok: #4ade80;
+            --warning: #fbbf24;
+            --danger: #f87171;
+            --info: #60a5fa;
+            --hl: var(--info);
+            --hl-soft: #93c5fd;
             --radius: 28px;
             --radius-btn: 20px;
         }
+        [data-state="ready"]    { --hl: #4ade80; --hl-soft: #86efac; }
+        [data-state="warning"]  { --hl: #fbbf24; --hl-soft: #fde68a; }
+        [data-state="critical"] { --hl: #f87171; --hl-soft: #fca5a5; }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
         html { -webkit-text-size-adjust: 100%; }
@@ -75,14 +80,14 @@ $watermark = $hasMajorProblems ? 'KO' : 'OK';
             overflow-x: hidden;
         }
 
-        /* Atmosphere: amber glow + cool counter-glow */
+        /* Atmosphere: subtle accent glow tinted by the current state + neutral fill */
         body::before {
             content: "";
             position: fixed;
             inset: 0;
             background:
-                radial-gradient(58vw 58vw at 82% -8%, rgba(255, 113, 0, .2), transparent 60%),
-                radial-gradient(55vw 55vw at 8% 112%, rgba(34, 37, 78, .9), transparent 55%),
+                radial-gradient(58vw 58vw at 82% -8%, color-mix(in srgb, var(--hl) 20%, transparent), transparent 60%),
+                radial-gradient(55vw 55vw at 8% 112%, rgba(255, 255, 255, .035), transparent 55%),
                 linear-gradient(180deg, var(--ink), var(--ink-2));
             z-index: -2;
         }
@@ -144,7 +149,7 @@ $watermark = $hasMajorProblems ? 'KO' : 'OK';
             place-items: center;
             flex: none;
         }
-        .mark svg { width: 23px; height: 23px; color: var(--orange); }
+        .mark svg { width: 23px; height: 23px; color: var(--hl); }
         .brand .tag {
             font-size: .66rem;
             letter-spacing: .26em;
@@ -160,7 +165,7 @@ $watermark = $hasMajorProblems ? 'KO' : 'OK';
             text-align: right;
             white-space: nowrap;
         }
-        .versions b { color: var(--cream); font-weight: 500; }
+        .versions b { color: var(--bright); font-weight: 500; }
 
         /* ---- Hero (editorial offset) ---- */
         .hero { padding: clamp(2.5rem, 7vw, 5rem) 0 1.5rem; }
@@ -171,19 +176,17 @@ $watermark = $hasMajorProblems ? 'KO' : 'OK';
             font-size: .78rem;
             letter-spacing: .24em;
             text-transform: uppercase;
-            color: var(--orange-soft);
+            color: var(--hl-soft);
             font-weight: 600;
             opacity: 0;
             animation: rise .7s .2s cubic-bezier(.2, .7, .2, 1) forwards;
         }
         .eyebrow .dot {
             width: 9px; height: 9px; border-radius: 50%;
-            background: var(--ok);
-            box-shadow: 0 0 12px var(--ok);
+            background: var(--hl);
+            box-shadow: 0 0 12px var(--hl);
             animation: blink 2.4s ease-in-out infinite;
         }
-        [data-state="critical"] .eyebrow .dot { background: var(--danger); box-shadow: 0 0 12px var(--danger); }
-        [data-state="warning"] .eyebrow .dot { background: var(--warning); box-shadow: 0 0 12px var(--warning); }
 
         .hero h1 {
             font-weight: 900;
@@ -193,6 +196,7 @@ $watermark = $hasMajorProblems ? 'KO' : 'OK';
             font-size: clamp(2.4rem, 7vw, 4.75rem);
             margin: 1rem 0 1.1rem;
             color: #fff;
+            overflow-wrap: break-word;
             opacity: 0;
             animation: rise .7s .28s cubic-bezier(.2, .7, .2, 1) forwards;
         }
@@ -253,10 +257,10 @@ $watermark = $hasMajorProblems ? 'KO' : 'OK';
             position: absolute;
             left: 0; top: 0; bottom: 0;
             width: 4px;
-            background: var(--accent, var(--warning));
+            background: var(--rail, var(--warning));
         }
-        .item.major { --accent: var(--danger); }
-        .item .msg { font-weight: 600; color: var(--cream); }
+        .item.major { --rail: var(--danger); }
+        .item .msg { font-weight: 600; color: var(--bright); }
         .item .help {
             margin-top: .45rem;
             font-family: 'IBM Plex Mono', monospace;
@@ -265,7 +269,7 @@ $watermark = $hasMajorProblems ? 'KO' : 'OK';
             color: var(--muted);
             word-break: break-word;
         }
-        .item .help a { color: var(--orange-soft); text-decoration: none; border-bottom: 1px solid color-mix(in srgb, var(--orange-soft) 40%, transparent); }
+        .item .help a { color: var(--hl-soft); text-decoration: none; border-bottom: 1px solid color-mix(in srgb, var(--hl-soft) 40%, transparent); }
         .item .help a:hover { color: #fff; }
         .item .help strong { color: var(--text); font-weight: 600; }
 
@@ -278,7 +282,7 @@ $watermark = $hasMajorProblems ? 'KO' : 'OK';
             border-radius: var(--radius);
             background: linear-gradient(120deg, color-mix(in srgb, var(--ok) 10%, transparent), transparent);
             border: 1px solid color-mix(in srgb, var(--ok) 30%, transparent);
-            color: var(--cream);
+            color: var(--bright);
             font-size: 1.08rem;
             opacity: 0;
             animation: rise .7s .5s cubic-bezier(.2, .7, .2, 1) forwards;
@@ -302,9 +306,9 @@ $watermark = $hasMajorProblems ? 'KO' : 'OK';
             gap: .65rem;
             min-height: 50px;
             padding: 0 1.7rem;
-            border: 1px solid color-mix(in srgb, var(--orange) 45%, transparent);
+            border: 1px solid color-mix(in srgb, var(--hl) 45%, transparent);
             border-radius: var(--radius-btn);
-            background: color-mix(in srgb, var(--orange) 14%, transparent);
+            background: color-mix(in srgb, var(--hl) 14%, transparent);
             color: #fff;
             font: inherit;
             font-weight: 600;
@@ -313,7 +317,7 @@ $watermark = $hasMajorProblems ? 'KO' : 'OK';
             text-decoration: none;
             transition: background .25s ease, transform .25s ease, border-color .25s ease;
         }
-        .btn:hover { background: var(--orange); border-color: var(--orange); transform: translateY(-2px); }
+        .btn:hover { background: color-mix(in srgb, var(--hl) 30%, transparent); border-color: var(--hl); transform: translateY(-2px); }
         .btn svg { width: 17px; height: 17px; transition: transform .55s ease; }
         .btn:hover svg { transform: rotate(-180deg); }
         .footnote {
@@ -322,7 +326,7 @@ $watermark = $hasMajorProblems ? 'KO' : 'OK';
             color: var(--muted);
             text-align: right;
         }
-        .footnote b { color: var(--cream); font-weight: 500; }
+        .footnote b { color: var(--bright); font-weight: 500; }
 
         @keyframes rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: .35; } }

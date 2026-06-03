@@ -1,5 +1,7 @@
 <?php
 
+header('X-Robots-Tag: noindex, nofollow, noarchive');
+
 $locale = \Locale::getDefault();
 
 $translations['fr_FR'] = [
@@ -33,15 +35,15 @@ $button = !empty($t['button']) ? $t['button'] : $translations['en_GB']['button']
     <title><?= $title ?></title>
     <style>
         :root {
-            --ink: #101129;
-            --ink-2: #161834;
-            --orange: #ff7100;
-            --orange-soft: #ff9a4d;
-            --cream: #f3ede2;
-            --text: #eceaf6;
-            --muted: #9396b9;
-            --line: rgba(255, 255, 255, .09);
-            --surface: rgba(255, 255, 255, .035);
+            --ink: #0e1014;
+            --ink-2: #14171d;
+            --text: #e6e8ee;
+            --bright: #f5f6f8;
+            --muted: #9aa0ad;
+            --line: rgba(255, 255, 255, .08);
+            --surface: rgba(255, 255, 255, .04);
+            --hl: #60a5fa;
+            --hl-soft: #93c5fd;
             --radius-btn: 20px;
         }
 
@@ -65,8 +67,8 @@ $button = !empty($t['button']) ? $t['button'] : $translations['en_GB']['button']
             position: fixed;
             inset: 0;
             background:
-                radial-gradient(58vw 58vw at 82% -8%, rgba(255, 113, 0, .2), transparent 60%),
-                radial-gradient(55vw 55vw at 8% 112%, rgba(34, 37, 78, .9), transparent 55%),
+                radial-gradient(58vw 58vw at 82% -8%, color-mix(in srgb, var(--hl) 18%, transparent), transparent 60%),
+                radial-gradient(55vw 55vw at 8% 112%, rgba(255, 255, 255, .035), transparent 55%),
                 linear-gradient(180deg, var(--ink), var(--ink-2));
             z-index: -2;
         }
@@ -107,10 +109,10 @@ $button = !empty($t['button']) ? $t['button'] : $translations['en_GB']['button']
             position: absolute;
             inset: -10px;
             border-radius: 50%;
-            border: 1px solid rgba(255, 113, 0, .25);
+            border: 1px solid color-mix(in srgb, var(--hl) 35%, transparent);
             animation: halo 3.2s ease-in-out infinite;
         }
-        .mark svg { width: 42px; height: 42px; color: var(--orange); }
+        .mark svg { width: 42px; height: 42px; color: var(--hl); }
 
         .eyebrow {
             display: inline-block;
@@ -118,7 +120,7 @@ $button = !empty($t['button']) ? $t['button'] : $translations['en_GB']['button']
             font-size: .78rem;
             letter-spacing: .24em;
             text-transform: uppercase;
-            color: var(--orange-soft);
+            color: var(--hl-soft);
             font-weight: 600;
             opacity: 0;
             animation: rise .7s .24s cubic-bezier(.2, .7, .2, 1) forwards;
@@ -131,6 +133,7 @@ $button = !empty($t['button']) ? $t['button'] : $translations['en_GB']['button']
             font-size: clamp(2.4rem, 8vw, 4.2rem);
             margin: .9rem 0;
             color: #fff;
+            overflow-wrap: break-word;
             opacity: 0;
             animation: rise .7s .32s cubic-bezier(.2, .7, .2, 1) forwards;
         }
@@ -140,6 +143,7 @@ $button = !empty($t['button']) ? $t['button'] : $translations['en_GB']['button']
             max-width: 46ch;
             margin: 0 auto;
             font-size: 1.1rem;
+            overflow-wrap: break-word;
             opacity: 0;
             animation: rise .7s .4s cubic-bezier(.2, .7, .2, 1) forwards;
         }
@@ -153,8 +157,8 @@ $button = !empty($t['button']) ? $t['button'] : $translations['en_GB']['button']
             padding: 0 1.9rem;
             border: none;
             border-radius: var(--radius-btn);
-            background: var(--orange);
-            color: #fff;
+            background: var(--hl);
+            color: #07121f;
             font: inherit;
             font-weight: 600;
             font-size: .95rem;
@@ -163,7 +167,7 @@ $button = !empty($t['button']) ? $t['button'] : $translations['en_GB']['button']
             opacity: 0;
             animation: rise .7s .48s cubic-bezier(.2, .7, .2, 1) forwards;
         }
-        .btn:hover { background: var(--orange-soft); transform: translateY(-2px); }
+        .btn:hover { background: var(--hl-soft); transform: translateY(-2px); }
         .btn svg { width: 17px; height: 17px; transition: transform .55s ease; }
         .btn:hover svg { transform: rotate(-180deg); }
 
