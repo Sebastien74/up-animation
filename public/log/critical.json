@@ -1,4 +1,8 @@
 {
+    "2026-06-02 19:10:51": {
+        "type": "email",
+        "message": "Connection could not be established with host \"localhost:1025\": stream_socket_client(): Unable to connect to localhost:1025 (Aucune connexion n’a pu être établie car l’ordinateur cible l’a expressément refusée) in App\\Service\\Core\\MailerService at line 154"
+    },
     "2026-05-27 16:53:23": {
         "type": "email",
         "message": "Impossible to invoke a method (\"getSchemeAndHttpHost\") on a null variable in \"front\/default\/actions\/security\/email\/password-request.html.twig\" at line 5. in App\\Service\\Core\\MailerService at line 5"
