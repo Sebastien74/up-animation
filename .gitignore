@@ -47,6 +47,8 @@ changes.rar
 !public/js/langs
 /public/medias/webp/*
 /public/manifest.*
+/public/log/*
+!public/log/.gitkeep
 
 /assets/medias/movies/*
 !/assets/medias/movies/.gitkeep
