@@ -62,7 +62,7 @@ class FieldValueType extends AbstractType
             'placeholder' => $this->coreLocator->translator()->trans('Sélectionnez', [], 'admin'),
             'class' => FieldValue::class,
             'query_builder' => function (EntityRepository $er) {
-                $configuration = $this->coreLocator->em()->getRepository(Block::class)->find($this->coreLocator->request()->get('block'))->getFieldConfiguration();
+                $configuration = $this->coreLocator->em()->getRepository(Block::class)->find($this->coreLocator->requestGet('block'))->getFieldConfiguration();
 
                 return $er->createQueryBuilder('v')
                     ->andWhere('v.configuration = :configuration')

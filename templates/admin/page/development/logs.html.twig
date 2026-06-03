@@ -35,7 +35,7 @@
                             {%- if 'critical' in logFile or 'error' in logFile -%}{% set modifier = 'is-critical' %}{% endif -%}
                             {%- if 'deprecations' in logFile -%}{% set modifier = 'is-warning' %}{% endif -%}
                             <li>
-                                <a href="{{ path('admin_log', {locale: app.request.get('locale'), website: websiteId, file: logFile}) }}"
+                                <a href="{{ path('admin_log', {locale: masterRequestGet('locale'), website: websiteId, file: logFile}) }}"
                                    class="log-file-link {{ modifier }}">
                                     <span class="log-file-dot" aria-hidden="true"></span>
                                     <span class="log-file-name">{{ logFile }}</span>
@@ -70,7 +70,7 @@
                                         {%- if 'critical' in logFile or 'error' in logFile -%}{% set modifier = 'is-critical' %}{% endif -%}
                                         {%- if 'deprecations' in logFile -%}{% set modifier = 'is-warning' %}{% endif -%}
                                         <li>
-                                            <a href="{{ path('admin_log', {locale: app.request.get('locale'), website: websiteId, file: logFile}) }}"
+                                            <a href="{{ path('admin_log', {locale: masterRequestGet('locale'), website: websiteId, file: logFile}) }}"
                                                class="log-file-link {{ modifier }}">
                                                 <span class="log-file-dot" aria-hidden="true"></span>
                                                 <span class="log-file-name">{{ logFile }}</span>

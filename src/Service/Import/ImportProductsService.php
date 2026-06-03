@@ -18,6 +18,7 @@ use App\Entity\Seo\Seo;
 use App\Entity\Seo\Url;
 use App\Service\Core\Urlizer;
 use App\Service\Core\XlsxFileReader;
+use App\Service\Http\RequestParam;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -92,7 +93,7 @@ class ImportProductsService
                 if (!$product) {
                     /* Add if not existing */
                     $product = new Product();
-                    $catalog = $this->entityManager->getRepository(Catalog::class)->find($this->request->get('catalog'));
+                    $catalog = $this->entityManager->getRepository(Catalog::class)->find(RequestParam::get($this->request, 'catalog'));
                     $product->setCatalog($catalog);
                     $product->setWebsite($website);
                     $product->setAdminName($row['title|fr'] ?? '');

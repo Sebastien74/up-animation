@@ -42,7 +42,7 @@ class VideoService
         $configuration = $website->getConfiguration();
         $defaultLocale = $configuration->getLocale();
         $interface = $this->coreLocator->interfaceHelper()->generate($classname);
-        $entity = $this->coreLocator->em()->getRepository($interface['classname'])->find(intval($this->coreLocator->request()->get($interface['name'])));
+        $entity = $this->coreLocator->em()->getRepository($interface['classname'])->find(intval($this->coreLocator->requestGet($interface['name'])));
 
         if ($entity) {
             $position = $this->getPosition($entity, $defaultLocale);

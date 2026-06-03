@@ -122,9 +122,9 @@ final class BlockModel extends Model\BaseModel
      */
     private static function intlForm(?string $slug = null, ?Model\IntlModel $intl = null): ?object
     {
-        if ($intl && 'title-header' === $slug && self::$coreLocator->request()->get('category') && self::$coreLocator->request()->get('code')) {
-            $interface = self::$coreLocator->interfaceHelper()->interfaceByName(self::$coreLocator->request()->get('category'));
-            $entity = !empty($interface['classname']) ? self::$coreLocator->em()->getRepository($interface['classname'])->find(self::$coreLocator->request()->get('code')) : null;
+        if ($intl && 'title-header' === $slug && self::$coreLocator->requestGet('category') && self::$coreLocator->requestGet('code')) {
+            $interface = self::$coreLocator->interfaceHelper()->interfaceByName(self::$coreLocator->requestGet('category'));
+            $entity = !empty($interface['classname']) ? self::$coreLocator->em()->getRepository($interface['classname'])->find(self::$coreLocator->requestGet('code')) : null;
             $modelClassnames = [
                 \App\Entity\Module\Catalog\Product::class => \App\Model\Module\ProductModel::class,
                 \App\Entity\Module\Newscast\Newscast::class => \App\Model\Module\NewscastModel::class,

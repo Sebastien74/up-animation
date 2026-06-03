@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Service\Admin;
 
 use App\Service\Core\InterfaceHelper;
+use App\Service\Http\RequestParam;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Bundle\PaginatorBundle\Pagination\SlidingPagination;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
@@ -123,7 +124,7 @@ class PositionService
      */
     public function setEntity(): void
     {
-        $this->entity = $this->repository->find($this->request->get($this->interface['name']));
+        $this->entity = $this->repository->find(RequestParam::get($this->request, $this->interface['name']));
     }
 
     /**

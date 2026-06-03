@@ -13,6 +13,7 @@ use App\Entity\Module\Map\Point;
 use App\Entity\Seo\Seo;
 use App\Service\Core\InterfaceHelper;
 use App\Service\Core\Uploader;
+use App\Service\Http\RequestParam;
 use App\Service\Interface\CoreLocatorInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Exception\ORMException;
@@ -375,7 +376,7 @@ class MediaManager
         $media = $mediaRelation->getMedia();
         $uploadedFile = $form['mediaRelation']['media']['uploadedFile']->getData();
         $locale = property_exists($entity, 'locale')
-            ? $entity->getLocale() : $this->request->get('entitylocale');
+            ? $entity->getLocale() : RequestParam::get($this->request, 'entitylocale');
 
         if (!$mediaRelation->getLocale()) {
             $mediaRelation->setLocale($locale);
@@ -466,7 +467,7 @@ class MediaManager
     public function setEntityLocale(array $interface, mixed $entity, ?Website $website = null): void
     {
         if (!$entity->getMediaRelation()) {
-            $locale = empty($this->request->get('entitylocale')) ? $website->getConfiguration()->getLocale() : $this->request->get('entitylocale');
+            $locale = empty(RequestParam::get($this->request, 'entitylocale')) ? $website->getConfiguration()->getLocale() : RequestParam::get($this->request, 'entitylocale');
             $mediaRelationData = $this->coreLocator->metadata($entity, 'mediaRelation');
             $mediaRelation = new ($mediaRelationData->targetEntity)();
             $mediaRelation->setLocale($locale);

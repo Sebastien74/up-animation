@@ -11,6 +11,7 @@ use App\Service\Content;
 use App\Service\Core;
 use App\Service\Core\InterfaceHelper;
 use App\Service\Doctrine\QueryServiceInterface;
+use App\Service\Http\RequestParam;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Psr\Cache\InvalidArgumentException;
@@ -183,6 +184,11 @@ class CoreLocator implements CoreLocatorInterface
         return $this->requestStack->getMainRequest();
     }
 
+    public function requestGet(string $key, mixed $default = null): mixed
+    {
+        return RequestParam::get($this->request(), $key, $default);
+    }
+
     /**
      * To get Request.
      */
@@ -320,8 +326,8 @@ class CoreLocator implements CoreLocatorInterface
                 if (!empty($matches[1])) {
                     foreach ($matches[1] as $match) {
                         if (empty($parameters[$match])) {
-                            if ($this->request()->get($match) && is_numeric($this->request()->get($match))) {
-                                $parameters[$match] = intval($this->request()->get($match));
+                            if ($this->requestGet($match) && is_numeric($this->requestGet($match))) {
+                                $parameters[$match] = intval($this->requestGet($match));
                             } elseif ($entity && is_object($entity) && method_exists($entity, 'getId')) {
                                 $interface = $this->interfaceHelper()->generate(get_class($entity));
                                 if (!empty($interface['name']) && $match === $interface['name']) {

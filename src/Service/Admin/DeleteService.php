@@ -51,7 +51,7 @@ class DeleteService
 
         $interface = $this->coreLocator->interfaceHelper()->generate($classname);
         $repository = $this->coreLocator->em()->getRepository($classname);
-        $entityToDelete = $repository->find($this->coreLocator->request()->get($interface['name']));
+        $entityToDelete = $repository->find($this->coreLocator->requestGet($interface['name']));
 
         if ($entityToDelete && !$this->coreLocator->isEntityWebsiteAllowed($entityToDelete)) {
             throw new AccessDeniedHttpException('Entity does not belong to the current website.');

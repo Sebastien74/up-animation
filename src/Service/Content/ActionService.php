@@ -6,6 +6,7 @@ namespace App\Service\Content;
 
 use App\Entity\Layout\Page;
 use App\Model\Core\WebsiteModel;
+use App\Service\Http\RequestParam;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\QueryBuilder;
@@ -124,9 +125,9 @@ class ActionService
                     ->setParameter('categoriesIds', $categoriesIds);
             }
         }
-        if ($this->request->get('category') && method_exists($referEntity, 'getCategory')) {
+        if (RequestParam::get($this->request, 'category') && method_exists($referEntity, 'getCategory')) {
             $qb->andWhere('e.category = :category')
-                ->setParameter('category', $this->request->get('category'));
+                ->setParameter('category', RequestParam::get($this->request, 'category'));
         }
         if ($this->listing && property_exists($this->listing, 'pastEvents') && method_exists($this->listing, 'isPastEvents') && $this->listing->isPastEvents() && 'startDate' === $sort
             && method_exists($referEntity, 'getStartDate')) {

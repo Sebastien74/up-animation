@@ -8,6 +8,7 @@ use App\Entity\Core\Website;
 use App\Form\Type\Core\DefaultType;
 use App\Repository\Core\WebsiteRepository;
 use App\Service\Core\InterfaceHelper;
+use App\Service\Http\RequestParam;
 use App\Service\Interface\CoreLocatorInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
@@ -96,7 +97,7 @@ class FormDuplicateHelper
      */
     public function setWebsite(): void
     {
-        $this->website = $this->websiteRepository->find($this->request->get('website'));
+        $this->website = $this->websiteRepository->find(RequestParam::get($this->request, 'website'));
     }
 
     /**
@@ -112,7 +113,7 @@ class FormDuplicateHelper
      */
     public function setEntityToDuplicate($classname): void
     {
-        $this->entityToDuplicate = $this->entityManager->getRepository($classname)->find($this->request->get($this->interface['name']));
+        $this->entityToDuplicate = $this->entityManager->getRepository($classname)->find(RequestParam::get($this->request,$this->interface['name']));
     }
 
     /**

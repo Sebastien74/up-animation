@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Form\Validator;
 
 use App\Service\Core\InterfaceHelper;
+use App\Service\Http\RequestParam;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
@@ -54,7 +55,7 @@ class UniqDateValidator extends ConstraintValidator
                 $interface = is_object($parentEntity) ? $this->interfaceHelper->generate(get_class($parentEntity)) : [];
                 $masterField = !empty($interface['masterField']) ? $interface['masterField']
                     : (is_object($parentEntity) && method_exists($parentEntity, 'getWebsite') ? 'website' : null);
-                $masterFieldId = $masterField && $this->request->get($masterField) ? $this->request->get($masterField) : null;
+                $masterFieldId = $masterField && RequestParam::get($this->request,$masterField) ? RequestParam::get($this->request,$masterField) : null;
                 $existingStart = $this->existing($value, $parentEntity, $masterField, $masterFieldId);
                 $existingEnd = $this->existing($value, $parentEntity, $masterField, $masterFieldId);
 

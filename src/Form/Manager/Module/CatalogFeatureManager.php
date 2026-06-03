@@ -46,7 +46,7 @@ readonly class CatalogFeatureManager
      */
     public function preUpdate(Feature $feature, Website $website, array $interface, Form $form): void
     {
-        $post = $this->coreLocator->request()->get('feature');
+        $post = $this->coreLocator->requestGet('feature');
         if (isset($post['removeCards'])) {
             $valueProducts = $this->coreLocator->entityManager()->getRepository(FeatureValueProduct::class)->findBy(['feature' => $feature, 'asDefault' => true]);
             foreach ($valueProducts as $value) {

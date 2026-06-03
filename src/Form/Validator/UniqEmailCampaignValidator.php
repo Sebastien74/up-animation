@@ -7,6 +7,7 @@ namespace App\Form\Validator;
 use App\Repository\Core\WebsiteRepository;
 use App\Repository\Module\Newsletter\CampaignRepository;
 use App\Repository\Module\Newsletter\EmailRepository;
+use App\Service\Http\RequestParam;
 use App\Service\Interface\CoreLocatorInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Component\HttpFoundation\Request;
@@ -44,8 +45,8 @@ class UniqEmailCampaignValidator extends ConstraintValidator
      */
     public function validate(mixed $value, Constraint $constraint): void
     {
-        $websiteRequest = $this->request->get('website');
-        $campaignRequest = $this->request->get('filter');
+        $websiteRequest = RequestParam::get($this->request, 'website');
+        $campaignRequest = RequestParam::get($this->request, 'filter');
         if ($websiteRequest && $campaignRequest) {
             $website = $this->websiteRepository->find($websiteRequest);
             $campaign = $this->campaignRepository->findOneByFilter($website, $this->request->getLocale(), $campaignRequest);

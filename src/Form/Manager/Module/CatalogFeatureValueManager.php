@@ -48,7 +48,7 @@ readonly class CatalogFeatureValueManager
      */
     public function preUpdate(FeatureValue $featureValue, Website $website, array $interface, Form $form): void
     {
-        $post = $this->coreLocator->request()->get('feature_value');
+        $post = $this->coreLocator->requestGet('feature_value');
         $featureBeforePostId = intval($post['featureBeforePost']);
         $featureBeforePost = $this->coreLocator->em()->getRepository(Feature::class)->find($featureBeforePostId);
         $currentFeature = $featureValue->getCatalogfeature();

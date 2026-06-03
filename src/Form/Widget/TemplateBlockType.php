@@ -6,6 +6,7 @@ namespace App\Form\Widget;
 
 use App\Entity\Core\Website;
 use App\Entity\Layout\Block;
+use App\Service\Http\RequestParam;
 use App\Service\Interface\CoreLocatorInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Filesystem\Filesystem;
@@ -41,7 +42,7 @@ class TemplateBlockType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $blockRequest = $this->request->get('block');
+        $blockRequest = RequestParam::get($this->request, 'block');
         $block = $blockRequest ? $this->entityManager->getRepository(Block::class)->find($blockRequest) : null;
         $templates = $this->getTemplates($block);
         $haveCustom = count($templates) > 1;
@@ -64,7 +65,7 @@ class TemplateBlockType extends AbstractType
     private function getTemplates(Block $block): array
     {
         $templates = [];
-        $website = $this->entityManager->getRepository(Website::class)->find($this->request->get('website'));
+        $website = $this->entityManager->getRepository(Website::class)->find(RequestParam::get($this->request, 'website'));
         $blockType = $block->getBlockType()->getSlug();
 
         if ($website instanceof Website) {

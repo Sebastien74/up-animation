@@ -107,7 +107,7 @@ class ExportContactService
      */
     private function contactFormHeader(): void
     {
-        $form = $this->coreLocator->em()->getRepository(Form\Form::class)->find($this->coreLocator->request()->get('form'));
+        $form = $this->coreLocator->em()->getRepository(Form\Form::class)->find($this->coreLocator->requestGet('form'));
         $zones = $form->getLayout()->getZones();
         $excluded = [SubmitType::class];
 

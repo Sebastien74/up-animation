@@ -11,6 +11,7 @@ use App\Entity\Module\Form\CalendarException;
 use App\Entity\Module\Form\CalendarSchedule;
 use App\Entity\Module\Form\ContactForm;
 use App\Service\Core\MailerService;
+use App\Service\Http\RequestParam;
 use DateInterval;
 use DatePeriod;
 use DateTime;
@@ -58,7 +59,7 @@ class FormCalendarManager
      */
     public function setCalendar(Website $website, ?ContactForm $contact = null): mixed
     {
-        $requestCalendar = $this->request->get('calendar');
+        $requestCalendar = RequestParam::get($this->request, 'calendar');
 
         $this->calendar = $contact instanceof ContactForm ? $contact->getCalendar() : null;
 
@@ -89,7 +90,7 @@ class FormCalendarManager
         }
 
         $daysNumbers = $contact && $this->calendar->getDaysPerPage() ? $this->calendar->getDaysPerPage() : self::DAYS_NUMBER;
-        $startRequest = $this->request->get('startDate');
+        $startRequest = RequestParam::get($this->request, 'startDate');
         $start = $startRequest ? new DateTime($startRequest) : new DateTimeImmutable('now', new DateTimeZone('Europe/Paris'));
         $currentDate = new DateTimeImmutable('now', new DateTimeZone('Europe/Paris'));
         $limitDates = $this->getLimitDates($currentDate, $start, $daysNumbers);

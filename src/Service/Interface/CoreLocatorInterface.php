@@ -42,6 +42,8 @@ interface CoreLocatorInterface
 
     public function request(): ?HttpFoundation\Request;
 
+    public function requestGet(string $key, mixed $default = null): mixed;
+
     public function currentRequest(): ?HttpFoundation\Request;
 
     public function schemeAndHttpHost(): ?string;

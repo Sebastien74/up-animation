@@ -749,8 +749,8 @@ class FrontType extends AbstractType
      */
     private function setData(string $fieldType, Layout\FieldConfiguration $configuration): void
     {
-//        if (Type\HiddenType::class === $fieldType && 'formation-name' === $configuration->getSlug() && $this->coreLocator->request()->get('code')) {
-//            $formation = $this->coreLocator->em()->getRepository(Product::class)->find($this->coreLocator->request()->get('code'));
+//        if (Type\HiddenType::class === $fieldType && 'formation-name' === $configuration->getSlug() && $this->coreLocator->requestGet('code')) {
+//            $formation = $this->coreLocator->em()->getRepository(Product::class)->find($this->coreLocator->requestGet('code'));
 //            $formation = $formation ? ProductModel::fromEntity($formation, $this->coreLocator, [
 //                'disabledLayout' => true,
 //                'disabledMedias' => true,

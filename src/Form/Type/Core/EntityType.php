@@ -7,6 +7,7 @@ namespace App\Form\Type\Core;
 use App\Entity\Core\Entity;
 use App\Entity\Core\Website;
 use App\Form\Widget as WidgetType;
+use App\Service\Http\RequestParam;
 use App\Service\Interface\CoreLocatorInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\AbstractType;
@@ -227,7 +228,7 @@ class EntityType extends AbstractType
     {
         $choices = [];
         $className = $configuration->getClassName();
-        $defaultLocale = $this->request->get('locale');
+        $defaultLocale = RequestParam::get($this->request, 'locale');
 
         if (!empty($className) && class_exists($configuration->getClassName())) {
             $repository = $this->entityManager->getRepository($configuration->getClassName());

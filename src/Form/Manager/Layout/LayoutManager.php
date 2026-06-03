@@ -8,6 +8,7 @@ use App\Entity\Core\Website;
 use App\Entity\Layout;
 use App\Entity\Module\Menu\Menu;
 use App\Form\Manager\Module\AddLinkManager;
+use App\Service\Http\RequestParam;
 use DateTimeImmutable;
 use DateTimeZone;
 use Doctrine\ORM\EntityManagerInterface;
@@ -82,7 +83,7 @@ class LayoutManager
             $this->setGridZone($entity->getLayout());
             $this->entityManager->persist($layout);
             $this->entityManager->flush();
-            $inMenu = isset($this->request->get('page')['inMenu']);
+            $inMenu = isset(RequestParam::get($this->request, 'page')['inMenu']);
             if ($entity instanceof Layout\Page && $inMenu) {
                 $this->addToMenu($entity, $website);
             }

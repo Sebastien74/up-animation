@@ -67,7 +67,7 @@ class CatalogProductManager
      */
     public function preUpdate(CatalogEntities\Product $product, Website $website, array $interface, Form $form): void
     {
-        $catalogBeforePostId = intval($this->coreLocator->request()->get('product')['catalogBeforePost']);
+        $catalogBeforePostId = intval($this->coreLocator->requestGet('product')['catalogBeforePost']);
         /** @var CatalogEntities\Catalog $catalogBeforePost */
         $catalogBeforePost = $this->coreLocator->em()->getRepository(CatalogEntities\Catalog::class)->find($catalogBeforePostId);
         $currentCatalog = $product->getCatalog();
@@ -160,7 +160,7 @@ class CatalogProductManager
             }
         }
 
-        $post = $form ? $this->coreLocator->request()->get($form->getName()) : [];
+        $post = $form ? $this->coreLocator->requestGet($form->getName()) : [];
         $postValues = !empty($post['values']) ? $post['values'] : [];
         $values = [];
         foreach ($postValues as $postValue) {

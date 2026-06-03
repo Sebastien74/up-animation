@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Form\Type\Media;
 
 use App\Entity\Media\Folder;
+use App\Service\Http\RequestParam;
 use App\Service\Interface\CoreLocatorInterface;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -40,7 +41,7 @@ class SelectFolderType extends AbstractType
         $this->translator = $this->coreLocator->translator();
         $user = !empty($this->tokenStorage->getToken()) ? $this->tokenStorage->getToken()->getUser() : null;
         $this->isInternalUser = $user && in_array('ROLE_INTERNAL', $user->getRoles());
-        $this->website = $this->request->get('website');
+        $this->website = RequestParam::get($this->request, 'website');
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void

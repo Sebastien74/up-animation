@@ -56,7 +56,7 @@
                 <div class="form-data" data-id="{{ website.security.securityKey }}" data-website="{{ websiteId() }}"></div>
             {{ form_end(form) }}
         {%- else -%}
-            {%- set message = app.request.get('tpl-form')
+            {%- set message = masterRequestGet('tpl-form')
                 ? "Pour afficher le formulaire, activer <strong>Modules sécurisés</strong>."
                 : "Pour afficher le formulaire, activer <strong>Pages sécurisées</strong>." -%}
             {%- include 'front/'~websiteTemplate~'/include/alert.html.twig' with {alert: "warning", message: message} only -%}

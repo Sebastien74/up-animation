@@ -7,6 +7,7 @@ namespace App\Form\Validator;
 use App\Entity\Seo as SeoEntities;
 use App\Form\Manager\Seo\UrlManager;
 use App\Repository\Core\WebsiteRepository;
+use App\Service\Http\RequestParam;
 use Exception;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -50,7 +51,7 @@ class UniqUrlValidator extends ConstraintValidator
             $session = $this->requestStack->getSession();
             try {
                 $request = $this->requestStack->getMainRequest();
-                $website = $this->websiteRepository->find(intval($request->get('website')));
+                $website = $this->websiteRepository->find(intval(RequestParam::get($request, 'website')));
                 $existingUrl = $this->urlManager->getExistingUrl($urlPost, $website, $parentEntity);
             } catch (Exception $exception) {
                 $session->getFlashBag()->add('error', $exception->getMessage());

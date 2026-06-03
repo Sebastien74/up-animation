@@ -7,6 +7,7 @@ namespace App\Form\Manager\Core;
 use App\Entity\Core\Website;
 use App\Entity\Media;
 use App\Service\Core\Uploader;
+use App\Service\Http\RequestParam;
 use App\Service\Interface\CoreLocatorInterface;
 use DateTimeImmutable;
 use DateTimeZone;
@@ -55,7 +56,7 @@ class BaseDuplicateManager
     protected function addMediaRelations(mixed $entity, Collection $mediaRelationsToDuplicate): void
     {
         $session = $this->requestStack->getSession();
-        $duplicateToWebsiteSession = $session->get('DUPLICATE_TO_WEBSITE') ? $session->get('DUPLICATE_TO_WEBSITE') : $this->entityManager->getRepository(Website::class)->find($this->request->get('website'));
+        $duplicateToWebsiteSession = $session->get('DUPLICATE_TO_WEBSITE') ? $session->get('DUPLICATE_TO_WEBSITE') : $this->entityManager->getRepository(Website::class)->find(RequestParam::get($this->request, 'website'));
         $duplicateToWebsite = $duplicateToWebsiteSession instanceof Website ? $duplicateToWebsiteSession->getConfiguration()->isDuplicateMediasStatus() : self::DISABLE_DUPLICATION_MEDIA;
         $duplicateToWebsiteFromZoneSession = $session->get('DUPLICATE_TO_WEBSITE_FROM_ZONE');
         $duplicateToWebsiteFromZone = $duplicateToWebsiteFromZoneSession instanceof Website ? $duplicateToWebsiteFromZoneSession->getConfiguration()->isDuplicateMediasStatus() : self::DISABLE_DUPLICATION_MEDIA;

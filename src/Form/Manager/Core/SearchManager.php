@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Form\Manager\Core;
 
 use App\Entity\Module\Catalog\FeatureValueProduct;
+use App\Service\Http\RequestParam;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
@@ -69,9 +70,9 @@ class SearchManager
                     $this->setQuery($field, $searchValue);
                 }
             }
-            if (!empty($this->masterField) && !empty($this->request->get($this->masterField))) {
+            if (!empty($this->masterField) && !empty(RequestParam::get($this->request, $this->masterField))) {
                 $this->queryBuilder->andWhere('e.'.$this->masterField.' = :'.$this->masterField);
-                $this->queryBuilder->setParameter($this->masterField, $this->request->get($this->masterField));
+                $this->queryBuilder->setParameter($this->masterField, RequestParam::get($this->request, $this->masterField));
             }
             if (is_object($referClass) && method_exists($referClass, 'getUrls')) {
                 $this->queryBuilder->leftJoin('e.urls', 'u');

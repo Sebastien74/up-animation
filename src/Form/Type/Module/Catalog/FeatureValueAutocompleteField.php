@@ -36,10 +36,10 @@ class FeatureValueAutocompleteField extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $extraOptions = $this->coreLocator->request()->get('extra_options') ? $this->coreLocator->request()->get('extra_options') : null;
+        $extraOptions = $this->coreLocator->requestGet('extra_options') ? $this->coreLocator->requestGet('extra_options') : null;
         $decodedJson = $extraOptions ? base64_decode($extraOptions) : null;
         $extraOptions = $decodedJson ? json_decode($decodedJson, true) : null;
-        $this->productId = $this->coreLocator->request()->get('catalogproduct') ? (int)$this->coreLocator->request()->get('catalogproduct')
+        $this->productId = $this->coreLocator->requestGet('catalogproduct') ? (int)$this->coreLocator->requestGet('catalogproduct')
             : (!empty($extraOptions['catalogproduct']) ? (int)$extraOptions['catalogproduct'] : null);
 
         $resolver->setDefaults([

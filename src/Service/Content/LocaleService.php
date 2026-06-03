@@ -11,6 +11,7 @@ use App\Entity\Module\Catalog\Product;
 use App\Entity\Seo\Url;
 use App\Model\Core\WebsiteModel;
 use App\Service\Core\InterfaceHelper;
+use App\Service\Http\RequestParam;
 use App\Service\Interface\CoreLocatorInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
@@ -62,7 +63,7 @@ class LocaleService
     {
         $this->localesWebsites = $this->getLocalesWebsites($website);
         $routeName = $this->request->attributes->get('_route');
-        $requestUrl = $url instanceof Url ? $url->getCode() : (!empty($url['code']) ? $url['code'] : $this->request->get('url'));
+        $requestUrl = $url instanceof Url ? $url->getCode() : (!empty($url['code']) ? $url['code'] : RequestParam::get($this->request, 'url'));
         $configuration = $website->configuration;
         $locales = $configuration->onlineLocales;
         $classname = is_object($entity) ? get_class($entity) : null;
@@ -84,7 +85,7 @@ class LocaleService
         } elseif ($routeName === 'front_'.$interfaceName.'_view_only' || $routeName !== 'front_'.$interfaceName.'_view' && $asCard && !$pageUrl) {
             $urlCodes = $this->getUrlCodes($locales, $entity);
         } elseif ($routeName === 'front_'.$interfaceName.'_view' || $asCard) {
-            $pageUrl = $pageUrl ?: $this->request->get('pageUrl');
+            $pageUrl = $pageUrl ?: RequestParam::get($this->request, 'pageUrl');
             $pageIndex = $this->getEntity(Page::class, $pageUrl, $website->entity);
             $urlIndexCodes = $this->getUrlCodes($locales, $pageIndex);
             $entity = $this->getEntity($classname, $requestUrl, $website->entity);

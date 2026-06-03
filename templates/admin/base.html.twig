@@ -21,7 +21,7 @@
         {%- set intlsModules = website|intlsModules -%}
         {%- set userClass = granted("ROLE_INTERNAL") ? 'internal' : 'admin' -%}
         {%- set userEditClass = 'edit'|moduleActive(configuration) ? 'editor' : 'visitor' -%}
-        {%- set bodyClass = block('bodyClass') is defined ? ' '~block('bodyClass')~' '~urlize(app.request.get('_route'))  : ' '~urlize(masterRequestGet('_route')) -%}
+        {%- set bodyClass = block('bodyClass') is defined ? ' '~block('bodyClass')~' '~urlize(masterRequestGet('_route'))  : ' '~urlize(masterRequestGet('_route')) -%}
         {%- set adminInformation = website.information -%}
         {%- set defaultTitle = isCustomPath and adminInformation.title is defined and adminInformation.title ? adminInformation.title : "Up Animations CMS"|trans|striptags -%}
         {%- set cmsAuthorTitle = 'Up Animations!'|trans -%}

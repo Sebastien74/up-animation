@@ -8,6 +8,7 @@ use App\Entity\Core\Website;
 use App\Entity\Layout\Page;
 use App\Form\Widget\AdminNameType;
 use App\Repository\Core\WebsiteRepository;
+use App\Service\Http\RequestParam;
 use App\Service\Interface\CoreLocatorInterface;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -90,7 +91,7 @@ class PageDuplicateType extends AbstractType
 
                 return $queryBuilder;
             },
-            'data' => $this->websiteRepository->find($this->request->get('website')),
+            'data' => $this->websiteRepository->find(RequestParam::get($this->request, 'website')),
             'choice_label' => function ($entity) {
                 return strip_tags($entity->getAdminName());
             },

@@ -10,6 +10,7 @@ use App\Entity\Layout\Page;
 use App\Entity\Layout\Zone;
 use App\Repository\Core\WebsiteRepository;
 use App\Service\Core\InterfaceHelper;
+use App\Service\Http\RequestParam;
 use App\Service\Interface\CoreLocatorInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
@@ -107,9 +108,9 @@ class ZoneDuplicateType extends AbstractType
     private function getBuildConfiguration(): array
     {
         /** @var Zone $zone */
-        $website = $this->entityManager->getRepository(Website::class)->find($this->request->get('website'));
+        $website = $this->entityManager->getRepository(Website::class)->find(RequestParam::get($this->request, 'website'));
         /** @var Zone $zone */
-        $zone = $this->entityManager->getRepository(Zone::class)->find($this->request->get('zone'));
+        $zone = $this->entityManager->getRepository(Zone::class)->find(RequestParam::get($this->request, 'zone'));
         $layout = $zone->getLayout();
 
         $metasData = $this->entityManager->getMetadataFactory()->getAllMetadata();

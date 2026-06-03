@@ -19,8 +19,8 @@
 
 {%- block body -%}
 
-    {%- set toExtract = pagination.getTotalItemCount is defined and pagination.getTotalItemCount == 0 and not app.request.get('index_search')
-        or pagination|length == 0 and not app.request.get('index_search') -%}
+    {%- set toExtract = pagination.getTotalItemCount is defined and pagination.getTotalItemCount == 0 and not masterRequestGet('index_search')
+        or pagination|length == 0 and not masterRequestGet('index_search') -%}
     {%- set allLocales = interface.website.configuration.allLocales -%}
     {%- set defaultLocale = interface.website.configuration.locale -%}
     {%- set stats = domains|transStats -%}
@@ -61,9 +61,9 @@
                 {%- if searchForm -%}
                     {%- include 'admin/core/form/index-search-form.html.twig' with {form: searchForm} -%}
                 {%- endif -%}
-                {%- set domainsPath = app.request.get('domains') ? path('admin_translationdomain_index', {website: website.id})
+                {%- set domainsPath = masterRequestGet('domains') ? path('admin_translationdomain_index', {website: website.id})
                     : path('admin_translationdomain_index', {website: website.id, domains: 'admin'}) -%}
-                {%- set domainslabel = app.request.get('domains') ? "Traductions front"|trans : "Traductions admin"|trans -%}
+                {%- set domainslabel = masterRequestGet('domains') ? "Traductions front"|trans : "Traductions admin"|trans -%}
                 <a href="{{ domainsPath }}" class="btn-app d-flex align-items-center ms-auto">
                     <i class="icm-eye"></i><span>{{ domainslabel|raw }}</span>
                 </a>
@@ -162,7 +162,7 @@
                                                     <small>{{ stats[entity.name]['units'][transLocale] }}/{{ stats[entity.name]['units']['count'][transLocale] }} <span class="d-inline-block"> - {{ stats[entity.name][transLocale]['words'] }} {{ 'mots'|trans|raw }}</span></small>
                                                     <div class="progress">
                                                         {%- set percent = stats[entity.name]['units'][transLocale]|percent(stats[entity.name]['units']['count'][transLocale]) -%}
-                                                        {%- set color = percent < 100 ? 'danger' : 'success' -%}
+                                                        {%- set color = percent >= 100 ? 'success' : (percent >= 66 ? 'info' : (percent >= 33 ? 'warning' : 'danger')) -%}
                                                         <div class="progress-bar progress-bar-striped bg-{{ color }} wow animated progress-animated" style="width: {{ percent }}%; height:6px;" role="progressbar"></div>
                                                     </div>
                                                 {%- else -%}

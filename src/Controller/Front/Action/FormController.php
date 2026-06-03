@@ -22,6 +22,7 @@ use App\Repository\Module\Form\ContactFormRepository;
 use App\Repository\Module\Form\ContactStepFormRepository;
 use App\Repository\Module\Form\FormRepository;
 use App\Repository\Module\Form\StepFormRepository;
+use App\Service\Http\RequestParam;
 use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\Mapping\MappingException;
 use Doctrine\ORM\NonUniqueResultException;
@@ -316,12 +317,12 @@ class FormController extends FrontController
 
             $arguments['form'] = $form->createView();
             $contact = null;
-            $asSuccess = 'finished' === $request->get('advancement') || !$request->get('advancement');
+            $asSuccess = 'finished' === RequestParam::get($request, 'advancement') || !RequestParam::get($request, 'advancement');
 
-            if ($form->isValid() && $asSuccess && !$request->get('refresh')) {
+            if ($form->isValid() && $asSuccess && !RequestParam::get($request, 'refresh')) {
                 $contact = $formManager->success($entity, $form);
                 $arguments['contact'] = $contact;
-            } elseif (!$request->get('refresh')) {
+            } elseif (!RequestParam::get($request, 'refresh')) {
                 $formManager->errors($form);
             }
 
@@ -335,7 +336,7 @@ class FormController extends FrontController
             }
 
             return new JsonResponse([
-                'success' => $asContact || $request->get('refresh'),
+                'success' => $asContact || RequestParam::get($request, 'refresh'),
                 'showModal' => $configuration->isThanksModal(),
                 'dataId' => $asContact ? $contact->getId() : null,
                 'token' => $asContact && !$configuration->isThanksPage() ? $contact->getToken() : null,

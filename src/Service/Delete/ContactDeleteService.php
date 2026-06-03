@@ -6,6 +6,7 @@ namespace App\Service\Delete;
 
 use App\Entity\Module\Form\ContactForm;
 use App\Entity\Module\Form\ContactStepForm;
+use App\Service\Http\RequestParam;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -46,10 +47,10 @@ class ContactDeleteService
      */
     public function execute(): void
     {
-        $requestName = $this->request->get('formcontact') ? 'formcontact' : ($this->request->get('contactstepform') ? 'contactstepform' : null);
+        $requestName = RequestParam::get($this->request, 'formcontact') ? 'formcontact' : (RequestParam::get($this->request, 'contactstepform') ? 'contactstepform' : null);
         if ($requestName) {
             $classname = 'formcontact' === $requestName ? ContactForm::class : ContactStepForm::class;
-            $contact = $this->entityManager->getRepository($classname)->find($this->request->get($requestName));
+            $contact = $this->entityManager->getRepository($classname)->find(RequestParam::get($this->request,$requestName));
             $this->deleteAttachments($contact);
         }
     }

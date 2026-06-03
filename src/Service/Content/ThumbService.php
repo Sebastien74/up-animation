@@ -127,7 +127,7 @@ class ThumbService
             $type = str_replace('-large', '', $type);
         }
 
-        $bustCache = (bool) $this->coreLocator->request()->get('thumbs');
+        $bustCache = (bool) $this->coreLocator->requestGet('thumbs');
         $cacheKey = null;
         if (!$bustCache && ($filter === null || is_scalar($filter))) {
             $cacheKey = $website->uploadDirname.'|'.$classname.'|'.($action ?? '')

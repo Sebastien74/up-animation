@@ -9,6 +9,7 @@ use App\Entity\Translation\TranslationDomain;
 use App\Entity\Translation\TranslationUnit;
 use App\Repository\Translation\TranslationDomainRepository;
 use App\Repository\Translation\TranslationRepository;
+use App\Service\Http\RequestParam;
 use App\Service\Translation\Extractor;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
@@ -56,12 +57,12 @@ class FrontManager
         if (!$translation) {
             $message = $this->translator->trans("Deux contenus identiques ont été trouvés. Veuillez éditer via l'administration.", [], 'admin');
         } else {
-            $translation->setContent($this->request->get('content'));
+            $translation->setContent(RequestParam::get($this->request, 'content'));
             $this->entityManager->flush();
             $this->extractor->clearCache();
         }
 
-        return ['success' => false !== $translation, 'message' => $message, 'content' => $this->request->get('content')];
+        return ['success' => false !== $translation, 'message' => $message, 'content' => RequestParam::get($this->request, 'content')];
     }
 
     /**
@@ -69,11 +70,11 @@ class FrontManager
      */
     private function getDomain(): TranslationDomain
     {
-        $domain = $this->domainRepository->findOneBy(['name' => $this->request->get('domain')]);
+        $domain = $this->domainRepository->findOneBy(['name' => RequestParam::get($this->request, 'domain')]);
         if (!$domain) {
             $domain = new TranslationDomain();
-            $domain->setAdminName($this->request->get('domain'));
-            $domain->setName($this->request->get('domain'));
+            $domain->setAdminName(RequestParam::get($this->request, 'domain'));
+            $domain->setName(RequestParam::get($this->request, 'domain'));
             $this->entityManager->persist($domain);
             $this->entityManager->flush();
         }
@@ -86,14 +87,14 @@ class FrontManager
      */
     private function getTranslation(TranslationDomain $domain): bool|Translation|null
     {
-        $translations = $this->translationRepository->findByDomainAndKeyName($domain, $this->request->get('key_name'), $this->request->get('locale'));
+        $translations = $this->translationRepository->findByDomainAndKeyName($domain, RequestParam::get($this->request, 'key_name'), RequestParam::get($this->request, 'locale'));
         if (count($translations) > 1) {
             return false;
         }
         $translation = !empty($translations[0]) ? $translations[0] : null;
         if (!$translations) {
             $translation = new Translation();
-            $translation->setLocale($this->request->get('locale'));
+            $translation->setLocale(RequestParam::get($this->request, 'locale'));
             $translation->setUnit($this->getUnit($domain));
             $this->entityManager->persist($translation);
         }
@@ -108,7 +109,7 @@ class FrontManager
     {
         $unit = new TranslationUnit();
         $unit->setDomain($domain);
-        $unit->setKeyname($this->request->get('key_name'));
+        $unit->setKeyname(RequestParam::get($this->request, 'key_name'));
         $this->entityManager->persist($unit);
 
         return $unit;

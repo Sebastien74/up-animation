@@ -14,6 +14,7 @@ use App\Form\Manager\Core\GlobalManager;
 use App\Form\Manager\Media\MediaManager;
 use App\Form\Manager\Translation\IntlManager;
 use App\Form\Type\Core\DefaultType;
+use App\Service\Http\RequestParam;
 use App\Service\Interface\CoreLocatorInterface;
 use App\Twig\Core\AppRuntime;
 use Doctrine\ORM\Exception\ORMException;
@@ -128,9 +129,9 @@ class FormHelper
      */
     public function setWebsite(): void
     {
-        $websiteRequest = $this->request->get('website')
-            ? $this->request->get('website')
-            : $this->request->get('site');
+        $websiteRequest = RequestParam::get($this->request, 'website')
+            ? RequestParam::get($this->request, 'website')
+            : RequestParam::get($this->request, 'site');
         $this->website = $this->coreLocator->em()->getRepository(Website::class)->find($websiteRequest);
     }
 
@@ -143,8 +144,8 @@ class FormHelper
     {
         $entityRequest = null;
         if ($this->interface['name']) {
-            $entityRequest = $this->request->get($this->interface['name'])
-                ? $this->request->get($this->interface['name'])
+            $entityRequest = RequestParam::get($this->request,$this->interface['name'])
+                ? RequestParam::get($this->request,$this->interface['name'])
                 : $this->currentRequest->get($this->interface['name']);
         }
 
@@ -163,7 +164,7 @@ class FormHelper
         $this->setMasterField();
 
         if ($this->entity && property_exists($this->entity, 'locale') && !$this->entity->getLocale()) {
-            $locale = $this->request->get('entitylocale') ? $this->request->get('entitylocale') : $this->website->getConfiguration()->getLocale();
+            $locale = RequestParam::get($this->request, 'entitylocale') ? RequestParam::get($this->request, 'entitylocale') : $this->website->getConfiguration()->getLocale();
             $this->entity->setLocale($locale);
         }
 
@@ -280,7 +281,7 @@ class FormHelper
             } else {
                 $metadata = $this->coreLocator->em()->getClassMetadata($this->interface['classname']);
                 $masterClassname = $metadata->associationMappings[$this->interface['masterField']]['targetEntity'];
-                if (!empty($this->request->get($this->interface['masterField']))) {
+                if (!empty(RequestParam::get($this->request,$this->interface['masterField']))) {
                     $masterEntity = $this->coreLocator->em()->getRepository($masterClassname)->find($this->interface['masterFieldId']);
                 }
             }
@@ -437,7 +438,7 @@ class FormHelper
             $clickedButtonName = is_object($clickedButton) && method_exists($clickedButton, 'getName') ? $clickedButton->getName() : null;
             $saveEditRoute = 'admin_'.$this->interface['name'].'_edit';
             $interfaceName = ($this->interface['entity'] instanceof Block || $this->interface['entity'] instanceof Zone)
-                ? $this->request->get('interfaceName') : $this->interface['name'];
+                ? RequestParam::get($this->request, 'interfaceName') : $this->interface['name'];
             $saveLayoutRoute = 'admin_'.$interfaceName.'_layout';
             $saveAddRoute = 'admin_'.$interfaceName.'_index';
             $currentRoute = $this->request->attributes->get('_route');
@@ -522,8 +523,8 @@ class FormHelper
             if (!empty($matches[1])) {
                 foreach ($matches[1] as $match) {
                     if (empty($parameters[$match])) {
-                        if ($this->request->get($match)) {
-                            $parameters[$match] = $this->request->get($match);
+                        if (RequestParam::get($this->request,$match)) {
+                            $parameters[$match] = RequestParam::get($this->request,$match);
                         } elseif (is_object($entity) && method_exists($entity, 'getId')) {
                             $interface = $this->coreLocator->interfaceHelper()->generate(get_class($entity));
                             if (!empty($interface['name']) && $match === $interface['name']) {

@@ -10,6 +10,7 @@ use App\Entity\Module\Catalog\FeatureValue;
 use App\Entity\Module\Catalog\Listing;
 use App\Model\IntlModel;
 use App\Service\Core\Urlizer;
+use App\Service\Http\RequestParam;
 use App\Service\Interface\CoreLocatorInterface;
 use Collator;
 use Doctrine\ORM\Mapping\MappingException;
@@ -51,7 +52,7 @@ class FrontSearchFiltersType extends AbstractType
     {
         $request = $this->coreLocator->currentRequest();
         $formName = $builder->getForm()->getName();
-        $this->filters = $request->get($formName) ? $request->get($formName) : $request->query->all();
+        $this->filters = RequestParam::get($request,$formName) ? RequestParam::get($request,$formName) : $request->query->all();
         if (isset($this->filters['ajax'])) {
             unset($this->filters['ajax']);
         }

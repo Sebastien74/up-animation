@@ -83,8 +83,8 @@ class SeoService implements SeoInterface
         private readonly LocaleService $localeService,
     ) {
         $this->schemeAndHttpHost = $this->coreLocator->request() instanceof Request ? $this->coreLocator->request()->getSchemeAndHttpHost() : null;
-        $this->locale = $this->coreLocator->request()->get('entitylocale')
-            ? $this->coreLocator->request()->get('entitylocale')
+        $this->locale = $this->coreLocator->requestGet('entitylocale')
+            ? $this->coreLocator->requestGet('entitylocale')
             : ($this->coreLocator->request() instanceof Request ? $this->coreLocator->request()->getLocale() : '');
     }
 
