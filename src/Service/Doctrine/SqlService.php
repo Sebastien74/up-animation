@@ -151,7 +151,7 @@ class SqlService implements SqlServiceInterface
         try {
             $tables = $this->connection->createSchemaManager()->introspectTableNames();
             $firstTable = reset($tables);
-            $matches = explode('_', $firstTable ? $firstTable->toString() : '');
+            $matches = explode('_', $firstTable ? $firstTable->getUnqualifiedName()->getValue() : '');
             return $matches[0];
         } catch (\Exception $exception) {
             $this->logger->error('SqlService query failed: '.$exception->getMessage());
@@ -168,7 +168,7 @@ class SqlService implements SqlServiceInterface
         try {
             $columns = $this->connection->createSchemaManager()->introspectTableColumnsByUnquotedName($table);
             foreach ($columns as $column) {
-                $name = $column->getObjectName()->toString();
+                $name = $column->getObjectName()->getIdentifier()->getValue();
                 if (!str_contains($name, $excluded)) {
                     return $name;
                 }
@@ -196,7 +196,7 @@ class SqlService implements SqlServiceInterface
 
         $names = [];
         foreach ($columns as $tableColumn) {
-            $names[strtolower($tableColumn->getObjectName()->toString())] = true;
+            $names[strtolower($tableColumn->getObjectName()->getIdentifier()->getValue())] = true;
         }
 
         return array_key_exists(strtolower($column), $names);
