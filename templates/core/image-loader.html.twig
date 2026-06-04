@@ -90,6 +90,18 @@
                         default: '',
                         attributes: {evaljs: 'true', class: 'hx-include-media-loader '~ class}
                     })|raw }}
+                {%- elseif pathSource is defined and pathSource -%}
+                    {%- set class = generateThumbs ? ' generating' : '' -%}
+                    {{ render_hinclude(controller('App\\Controller\\Front\\FrontController::mediaLoader', {
+                        src: pathSource|url_encode,
+                        width: width,
+                        height: height,
+                        thumbConfigurationJson: thumbConfigurationJson,
+                        inAdmin: inAdmin ? 1 : 0
+                    }), {
+                        default: '',
+                        attributes: {evaljs: 'true', class: 'hx-include-media-loader '~ class}
+                    })|raw }}
                 {%- endif -%}
             {%- elseif display -%}
                 {{ media|thumb(thumbConfiguration, options) }}

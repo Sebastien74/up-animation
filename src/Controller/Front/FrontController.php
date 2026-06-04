@@ -98,6 +98,32 @@ class FrontController extends CacheController
 
         $classname = $options['classname'] ?? null;
 
+        $pathSource = $options['src'] ?? null;
+        if ($pathSource && (!$classname || !isset($options['id']))) {
+            $publicRoot = realpath($this->coreLocator->projectDir().'/public');
+            $resolved = realpath(str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $this->coreLocator->projectDir().'/public/'.ltrim($pathSource, '/')));
+            if (str_contains($pathSource, "\0") || preg_match('#(^|[\\\\/])\.\.([\\\\/]|$)#', $pathSource)
+                || !$publicRoot || !$resolved || !str_starts_with($resolved.DIRECTORY_SEPARATOR, $publicRoot.DIRECTORY_SEPARATOR)) {
+                return new JsonResponse(['success' => false, 'message' => 'Invalid source'], 400);
+            }
+            $thumbs = !empty($options['thumbConfigurationJson']) ? (array) json_decode($options['thumbConfigurationJson']) : [];
+            $thumbConfiguration = [];
+            foreach ($thumbs as $screen => $thumbId) {
+                $thumbConfiguration[$screen] = $this->coreLocator->em()->getRepository(ThumbConfiguration::class)->find($thumbId);
+            }
+            $options['class'] = !empty($options['class']) ? $options['class'].' in-viewport' : 'in-viewport';
+            $arguments = $runtime->file('/'.ltrim($pathSource, '/'), $thumbConfiguration, array_merge($options, [
+                'only_arguments' => true,
+                'forceThumb' => true,
+                'lazyFiles' => true,
+                'inAdmin' => !empty($options['inAdmin']),
+            ]));
+
+            return is_array($arguments)
+                ? new JsonResponse(['html' => $this->renderView('core/image-config.html.twig', $arguments)])
+                : new JsonResponse(['success' => false, 'message' => 'Unable to render path source'], 404);
+        }
+
         if (!$classname || !class_exists($classname) || !str_starts_with($classname, 'App\\Entity\\') || !isset($options['id'])) {
             return new JsonResponse(['success' => false, 'message' => 'Invalid classname or ID'], 400);
         }

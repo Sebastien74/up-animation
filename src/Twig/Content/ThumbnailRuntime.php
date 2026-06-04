@@ -100,6 +100,11 @@ class ThumbnailRuntime implements RuntimeExtensionInterface
     public function file(mixed $src = null, array $thumbs = [], array $options = []): mixed
     {
         if (!isset($options['beforeRender'])) {
+            if (is_string($src) && !empty($options['pathLoader'])
+                && empty($options['path']) && empty($options['file']) && empty($options['asMedia'])
+                && empty($options['style']) && empty($options['only_html'])) {
+                return $this->pathLoaderRender($src, $thumbs, $options);
+            }
             if ((isset($options['path']) && true === (bool) $options['path'])
                 || (isset($options['file']) && true === (bool) $options['file'])
                 || (isset($options['asMedia']) && true === (bool) $options['asMedia'])) {
@@ -405,6 +410,88 @@ class ThumbnailRuntime implements RuntimeExtensionInterface
         }
 
         return $this->thumb($media, $thumbs, $options);
+    }
+
+    /**
+     * Render a string asset through the async loader-media path (no entity).
+     *
+     * Defers thumbnail generation to the mediaLoader fragment so the main
+     * request never blocks generating variants inline (cf. background-security).
+     */
+    private function pathLoaderRender(string $src, array $thumbs = [], array $options = []): string|false
+    {
+        $this->setRequest();
+        $relativeSrc = str_starts_with($src, '/') ? $src : '/'.$src;
+        $relativeSrc = str_replace($this->request->getSchemeAndHttpHost(), '', $relativeSrc);
+        $fileDirname = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $this->projectDirname.'/public'.$relativeSrc);
+        $filesystem = new Filesystem();
+
+        $publicRoot = realpath($this->projectDirname.'/public');
+        $resolved = realpath($fileDirname);
+        if (str_contains($src, "\0") || preg_match('#(^|[\\\\/])\.\.([\\\\/]|$)#', $src)
+            || !$publicRoot || !$resolved || !str_starts_with($resolved.DIRECTORY_SEPARATOR, $publicRoot.DIRECTORY_SEPARATOR)) {
+            return false;
+        }
+
+        $allowed = $this->imageThumbnail->getAllowedExtensions();
+        $file = $filesystem->exists($fileDirname) && !is_dir($fileDirname) ? new File($fileDirname) : null;
+        if (!$file instanceof File || !in_array(strtolower($file->getExtension()), $allowed, true)) {
+            $options['src'] = $src;
+            $options['thumb'] = $options['thumb'] ?? [];
+            $options['thumbs'] = $thumbs;
+            return $this->fileRender($options);
+        }
+
+        $inAdmin = $this->coreLocator->inAdmin();
+        $width = !empty($options['width']) ? $options['width'] : (!empty($options['maxWidth']) ? $options['maxWidth'] : null);
+        $height = !empty($options['height']) ? $options['height'] : (!empty($options['maxHeight']) ? $options['maxHeight'] : null);
+        if (empty($width) || empty($height)) {
+            $size = @getimagesize($fileDirname);
+            if ($size) {
+                $width = $width ?: $size[0];
+                $height = $height ?: $size[1];
+            }
+        }
+
+        $thumbConfigurationJson = urlencode(json_encode(array_map(static fn ($thumb) => $thumb->getId(), $thumbs)));
+        $radiusClass = '';
+        if (!empty($options['class'])) {
+            foreach (explode(' ', $options['class']) as $class) {
+                if (str_contains($class, 'radius')) {
+                    $radiusClass .= ' '.$class;
+                }
+            }
+            $radiusClass = trim($radiusClass);
+        }
+
+        echo $this->templating->render('core/image-loader.html.twig', [
+            'generateThumbs' => true,
+            'onlyLazy' => false,
+            'onlyHx' => false,
+            'popupWithoutBox' => false,
+            'display' => true,
+            'pathSource' => ltrim($relativeSrc, '/'),
+            'loaderSrc' => $relativeSrc,
+            'loaderSvgSrc' => 'data:image/svg+xml,%3Csvg width="'.$width.'" height="'.$height.'" xmlns="http://www.w3.org/2000/svg"%3E%3Crect width="'.$width.'" height="'.$height.'" fill="none"/%3E%3C/svg%3E',
+            'width' => $width,
+            'height' => $height,
+            'extension' => strtolower($file->getExtension()),
+            'class' => $options['class'] ?? null,
+            'radius' => false,
+            'radiusClass' => $radiusClass,
+            'spinnerColor' => $inAdmin ? 'white-50' : 'primary',
+            'inAdmin' => $inAdmin,
+            'entity' => null,
+            'thumbs' => null,
+            'lazyFiles' => [],
+            'alt' => $options['title'] ?? null,
+            'title' => $options['title'] ?? null,
+            'thumbConfigurationJson' => $thumbConfigurationJson,
+            'thumbConfiguration' => $thumbs,
+            'options' => $options,
+        ]);
+
+        return false;
     }
 
     /**
