@@ -112,6 +112,41 @@ de `HttpKernel`, interne depuis 7.1) → import basculé vers
 `Symfony\Component\DependencyInjection\Extension\Extension`. À retirer dès qu'une version
 du bundle compatible Symfony 8.x est publiée.
 
+## 5. Corriger une dépréciation applicative (`Request::get()`)
+
+`symfony/http-foundation` 7.4 déprécie l'accès « fourre-tout » `Request::get()` (qui
+cherche dans les attributs, puis la query, puis le corps). Remplacement projet **fidèle
+et sans dépréciation** :
+
+- **PHP** : `App\Service\Http\RequestParam::get($request, $key, $default)` — reproduit
+  l'ordre attributs → query → body. Ne **jamais** réintroduire `$request->get($key)`.
+- **Twig** : fonction/filtre `masterRequestGet('key')` (exposé par `AppRuntime`, délègue à
+  `CoreLocator::requestGet` → `RequestParam::get`). Remplace `masterRequest().get('key')`.
+
+**À ne pas confondre** : `$request->query->get()`, `->attributes->get()`,
+`->request->get()`, `->cookies->get()`, `->headers->get()`, `->getSession()->get()` ne
+sont **pas** dépréciés (sacs spécifiques). Seul l'accès direct sur l'objet `Request`
+(`$request->get(...)` / `masterRequest().get(...)`) l'est.
+
+**Gotcha d'investigation** : en CLI, le crawl s'exécute via des sous-requêtes
+synthétiques ; les pages admin qui plantent dans ce contexte rendent la page d'erreur, et
+le premier cadre `src/` d'une backtrace `Request::get()` pointe alors toujours sur
+`ExceptionController` (le vrai appelant est dans le **template Twig compilé**, invisible
+dans `var/cache`). Pour localiser : préférer le **grep statique** des deux formes
+ci-dessus (PHP + Twig) plutôt que la backtrace runtime.
+
+## État vérifié (2026-06-04)
+
+- **Runtime** : crawl complet (284 URLs) → **0 dépréciation**, tous paquets confondus.
+- **Compile-time** : journal vidé puis `cache:clear` → **0 dépréciation** (TinyMCE,
+  RateLimiter… réglés).
+- **Statique** : 0 occurrence des formes `Request::get()` (PHP + Twig).
+- **Reste hors périmètre applicatif** : Doctrine DBAL « MySQL < 8 » (version serveur,
+  affaire d'infra — voir `pages-utilitaires` / TODO, pas du code).
+- **Réserve** : le crawl couvre les URLs front en ligne + routes admin GET sans paramètre
+  requis ; ni les POST/formulaires soumis, ni les routes admin à paramètres obligatoires.
+  Couverture large, pas absolue.
+
 ## Où la détection tourne
 
 Affaire de **développement et de tests**, jamais de production : journal en `dev`/`local`,
