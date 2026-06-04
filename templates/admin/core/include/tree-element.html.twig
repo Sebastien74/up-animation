@@ -52,7 +52,7 @@
                 {%- if infoUrl -%}
                     {%- set entityIntl = entity.intl is defined ? entity.intl : null -%}
                     {%- set page = entityIntl.targetPage is defined and entityIntl.targetPage ? entityIntl.targetPage : null -%}
-                    {%- set url = page ? page.website|intlUrl(page, masterRequest().get('entitylocale'), true) : null -%}
+                    {%- set url = page ? page.website|intlUrl(page, masterRequestGet('entitylocale'), true) : null -%}
                     {%- set color = (entity.intl.targetPage is not defined) or (url.online is defined and url.online) or (entityIntl.targetLink is defined and entityIntl.targetLink) ? 'success' : 'light' -%}
                     {%- set color = url.code is defined and not url.code and page.asIndex is defined and not page.asIndex ? 'light' : color -%}
                     {%- set color = (page.infill is defined and page.infill) or (not page) ? 'success' : color -%}

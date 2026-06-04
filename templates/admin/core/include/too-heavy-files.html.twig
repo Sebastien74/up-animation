@@ -8,7 +8,7 @@
     {%- set message = message~'<ul class="m-0 ps-4">' -%}
     {%- for filename, files in tooHeavyFiles -%}
         {%- for entityId, alert in files -%}
-            {%- set link = 'block' == alert.interfaceName and 'admin_block_edit' != masterRequest().get('_route')
+            {%- set link = 'block' == alert.interfaceName and 'admin_block_edit' != masterRequestGet('_route')
                 ? path('admin_block_edit', {website: websiteId(), col: alert.entity.col.id, interfaceName: interface.name, interfaceEntity: entity.id, block: alert.entity.id}) : null -%}
             {%- set message = message~'<li class="my-1"><span class="d-flex align-items-center">' -%}
             {%- if link -%}

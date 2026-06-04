@@ -76,7 +76,7 @@
     {%- set message = message~'<ul class="m-0 ps-4">' -%}
     {%- for filename, files in mediasAlert -%}
         {%- for entityId, alert in files -%}
-            {%- set link = 'admin_block_edit' != masterRequest().get('_route') and alert.block is defined
+            {%- set link = 'admin_block_edit' != masterRequestGet('_route') and alert.block is defined
                 ? path('admin_block_edit', {website: websiteId(), col: alert.block.col.id, interfaceName: interface.name, interfaceEntity: entity.id, block: alert.block.id}) : null -%}
             {%- set message = message~'<li class="my-1"><span class="d-flex align-items-center">' -%}
             {%- if link -%}

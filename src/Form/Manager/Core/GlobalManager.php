@@ -9,6 +9,7 @@ use App\Entity\Core\Website;
 use App\Entity\Layout;
 use App\Form\Interface as FormManagerInterface;
 use App\Service\Core\Urlizer;
+use App\Service\Http\RequestParam;
 use App\Service\Interface as ServiceLocator;
 use Exception;
 use Monolog\Handler\RotatingFileHandler;
@@ -141,7 +142,7 @@ class GlobalManager
     private function getErrors(FormInterface $form, Session $session, string $message): string
     {
         $disabledRoutes = ['admin_redirection_edit'];
-        $route = $this->masterRequest->get('_route');
+        $route = RequestParam::get($this->masterRequest, '_route');
         if ($route && in_array($route, $disabledRoutes)) {
             return '';
         }
@@ -200,8 +201,8 @@ class GlobalManager
     public function setWebsite(array $interface): void
     {
         $this->website = $interface['website'] instanceof Website ?
-            $interface['website'] : ($this->masterRequest->get('website')
-                ? $this->coreLocator->em()->getRepository(Website::class)->find($this->masterRequest->get('website')) : null);
+            $interface['website'] : (RequestParam::get($this->masterRequest, 'website')
+                ? $this->coreLocator->em()->getRepository(Website::class)->find(RequestParam::get($this->masterRequest, 'website')) : null);
         if (method_exists($this->data, 'getWebsite') && !$this->data->getWebsite()) {
             $this->data->setWebsite($this->website);
         }
@@ -226,7 +227,7 @@ class GlobalManager
     public function setParentMasterField(array $interface): void
     {
         $parentMasterField = $interface['parentMasterField'];
-        $parentRequest = $parentMasterField ? $this->masterRequest->get($parentMasterField) : null;
+        $parentRequest = $parentMasterField ? RequestParam::get($this->masterRequest, $parentMasterField) : null;
         $mapping = $this->coreLocator->em()->getClassMetadata($interface['classname'])->getAssociationMappings();
         $setter = $interface['parentMasterField'] ? 'set'.ucfirst($interface['parentMasterField']) : null;
         if ($setter && !empty($parentRequest) && method_exists($this->data, $setter) && !empty($mapping[$parentMasterField])) {
@@ -318,9 +319,9 @@ class GlobalManager
             && method_exists($this->data, 'getAdminName')
             && empty($this->data->getSlug()) && !empty($this->interface['classname'])) {
             $queryBuilder = $this->coreLocator->em()->getRepository($this->interface['classname'])->createQueryBuilder('e');
-            if (!empty($this->masterField) && !empty($this->masterRequest->get($this->masterField))) {
+            if (!empty($this->masterField) && !empty(RequestParam::get($this->masterRequest, $this->masterField))) {
                 $queryBuilder->andWhere('e.'.$this->masterField.' = :'.$this->masterField);
-                $queryBuilder->setParameter($this->masterField, $this->masterRequest->get($this->masterField));
+                $queryBuilder->setParameter($this->masterField, RequestParam::get($this->masterRequest, $this->masterField));
             }
 
             $slug = Urlizer::urlize($this->data->getAdminName());

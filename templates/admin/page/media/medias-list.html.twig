@@ -2,7 +2,7 @@
 
 {%- set website = website() -%}
 {%- set configuration = website.configuration -%}
-{%- set tooHeavyFiles = masterRequest().get('too_heavy_files') -%}
+{%- set tooHeavyFiles = masterRequestGet('too_heavy_files') -%}
 {%- set asCopy = asCopy is defined ? asCopy : false -%}
 
 <div id="medias-results">

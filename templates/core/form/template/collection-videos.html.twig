@@ -42,8 +42,8 @@
                 {%- set interfaceName = interface.name -%}
                 {%- set masterField = interface.masterField -%}
                 {%- set arguments = {website: websiteId(), (interfaceName): video.id} -%}
-                {%- if masterField and masterRequest().get(masterField) -%}
-                    {%- set arguments = arguments|merge({(masterField): masterRequest().get(masterField)}) -%}
+                {%- if masterField and masterRequestGet(masterField) -%}
+                    {%- set arguments = arguments|merge({(masterField): masterRequestGet(masterField)}) -%}
                 {%- endif -%}
                 <li class="ui-video parent-item" data-position="{{ video.position }}"
                     data-id="{{ video.id }}" data-product="{{ entity.id }}"

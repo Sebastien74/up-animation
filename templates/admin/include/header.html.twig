@@ -5,10 +5,10 @@
 {%- set isAllowedToSwitch = granted('ROLE_ALLOWED_TO_SWITCH') or granted('ROLE_INTERNAL') -%}
 {%- set onlineUsers = website|online_users('admin') -%}
 {%- set pageIcon = pageIcon ? pageIcon
-    : ('index' in masterRequest().get('_route') ? 'list'
-    : ('edit' in masterRequest().get('_route') ? 'pencil'
-    : ('tree' in masterRequest().get('_route') ? 'network-wired'
-    : ('layout' in masterRequest().get('_route') ? 'desktop-alt' : 'pencil'
+    : ('index' in masterRequestGet('_route') ? 'list'
+    : ('edit' in masterRequestGet('_route') ? 'pencil'
+    : ('tree' in masterRequestGet('_route') ? 'network-wired'
+    : ('layout' in masterRequestGet('_route') ? 'desktop-alt' : 'pencil'
 )))) -%}
 
 <header class="page-titles d-flex navbar w-100 p-0">

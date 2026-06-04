@@ -46,7 +46,7 @@
     {%- set entity = form.parent.vars.data -%}
     {%- set featuresGroups = entity|productData -%}
     {%- set features = displayByGroup ? featuresGroups['byGroupFeaturesPosition'] : featuresGroups['byPosition'] -%}
-    {%- set catalogId = masterRequest().get('catalog') -%}
+    {%- set catalogId = masterRequestGet('catalog') -%}
 
     <div class="col-12">
         <ul id="features-sortable" class="reset ps-0">

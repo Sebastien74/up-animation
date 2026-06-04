@@ -11,7 +11,7 @@
     {%- set pageTitle = entity.adminName is defined and entity.adminName ? title~' : '~entity.adminName : title -%}
 {%- endif -%}
 
-{%- set activeTab = masterRequest().get('tab') ? masterRequest().get('tab') : 'description' -%}
+{%- set activeTab = masterRequestGet('tab') ? masterRequestGet('tab') : 'description' -%}
 
 {%- block title -%}{{ pageTitle|htmlEntities }}{%- endblock -%}
 {%- block pageTitle -%}{{ pageTitle }}{%- endblock -%}

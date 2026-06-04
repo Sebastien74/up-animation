@@ -22,13 +22,13 @@
         {%- set formAction = formAction -%}
     {%- else -%}
         {%- set formAction = app.request.uri -%}
-        {%- if interface['name'] is defined and routeExist('admin_'~interface['name']~'_new') and not masterRequest().get('debug') -%}
+        {%- if interface['name'] is defined and routeExist('admin_'~interface['name']~'_new') and not masterRequestGet('debug') -%}
             {%- set args = ('admin_'~interface['name']~'_new')|routeArgs(interface.entity, args) -%}
             {%- set formAction = path('admin_'~interface['name']~'_new', args) -%}
-        {%- elseif interface['name'] is defined and routeExist('admin_'~interface['name']~'_index') and not masterRequest().get('debug') -%}
+        {%- elseif interface['name'] is defined and routeExist('admin_'~interface['name']~'_index') and not masterRequestGet('debug') -%}
             {%- set args = ('admin_'~interface['name']~'_index')|routeArgs(interface.entity, args) -%}
             {%- set formAction = path('admin_'~interface['name']~'_index', args) -%}
-        {%- elseif interface['name'] is defined and routeExist('admin_'~interface['name']~'_tree') and not masterRequest().get('debug') -%}
+        {%- elseif interface['name'] is defined and routeExist('admin_'~interface['name']~'_tree') and not masterRequestGet('debug') -%}
             {%- set args = ('admin_'~interface['name']~'_tree')|routeArgs(interface.entity, args) -%}
             {%- set args = args|merge({(interface.masterField): interface.masterFieldId}) -%}
             {%- set formAction = path('admin_'~interface['name']~'_tree', args) -%}

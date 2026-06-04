@@ -44,7 +44,7 @@
         {%- endif -%}
 
         {%- if tooHeavyFiles is defined and tooHeavyFiles is not empty -%}
-            {%- if not masterRequest().get('too_heavy_files') -%}
+            {%- if not masterRequestGet('too_heavy_files') -%}
                 {%- set tooHeavyLink = path('admin_medias_library', {website: website.id, too_heavy_files: true}) -%}
                 {%- set tooHeavyMessageHelp = "Des images trop volumineuses auront un impact négatif sur les performances de votre site Internet. Le poids recommandé est de 200Ko maximum."|trans -%}
                 {%- set tooHeavyMessage = tooHeavyFilesCount > 1 ? 'Vous avez %count% images (> %limit%) qui devraient être optimisées ! Poids total : %weight%. <a href="%link%" class="text-underline">Voir les fichiers</a><br>%help%'|trans({'%count%': tooHeavyFilesCount, '%weight%': tooHeavyFilesSize|formatBytes, '%limit%': fileSizeLimit, '%link%': tooHeavyLink, '%help%': tooHeavyMessageHelp})

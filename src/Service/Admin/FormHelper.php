@@ -144,9 +144,9 @@ class FormHelper
     {
         $entityRequest = null;
         if ($this->interface['name']) {
-            $entityRequest = RequestParam::get($this->request,$this->interface['name'])
-                ? RequestParam::get($this->request,$this->interface['name'])
-                : $this->currentRequest->get($this->interface['name']);
+            $entityRequest = RequestParam::get($this->request, $this->interface['name'])
+                ? RequestParam::get($this->request, $this->interface['name'])
+                : RequestParam::get($this->currentRequest, $this->interface['name']);
         }
 
         if ($entity) {

@@ -164,7 +164,7 @@ final class MediaModel extends BaseModel
             shape: self::getContent('shape', $mediaRelation),
         );
 
-        if ($entity) {
+        if ($entity && $entity->getId()) {
             self::$cache['response'][get_class($entity)][$entity->getId()][self::$coreLocator->locale()] = $response;
         }
 

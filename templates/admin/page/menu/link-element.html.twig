@@ -13,7 +13,7 @@
             {%- else -%}
                 <span class="ms-4"></span>
             {%- endif -%}
-            {%- set intlUrl = page.website|intlUrl(page, masterRequest().get('entitylocale'), true) -%}
+            {%- set intlUrl = page.website|intlUrl(page, masterRequestGet('entitylocale'), true) -%}
             {%- set isOnline = intlUrl.online is defined and intlUrl.online -%}
             {%- set isArchived = intlUrl.archived is defined and intlUrl.archived -%}
             {%- set tooltipTitle = isArchived ? "Page archivée"|trans : (not isOnline ? "Page non publiée"|trans : null) -%}

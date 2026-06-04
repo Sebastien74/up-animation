@@ -3,8 +3,8 @@
 {%- set website = website() -%}
 {%- set btnColor = btnColor is defined ? btnColor : 'info' -%}
 {%- set arguments = {website: website.id, (interfaceName): entityId} -%}
-{%- if masterField is defined and masterRequest().get(masterField) -%}
-    {%- set arguments = arguments|merge({(masterField): masterRequest().get(masterField)}) -%}
+{%- if masterField is defined and masterRequestGet(masterField) -%}
+    {%- set arguments = arguments|merge({(masterField): masterRequestGet(masterField)}) -%}
 {%- endif -%}
 
 {%- if entityId and 'delete'|moduleActive(website.configuration) and ('admin_'~interfaceName~'_delete')|routeExist -%}
