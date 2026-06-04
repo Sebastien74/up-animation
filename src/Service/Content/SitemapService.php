@@ -39,6 +39,8 @@ class SitemapService
     private array $urls = [];
     private array $xml = [];
     private bool $securePage = false;
+    private bool $agenciesResolved = false;
+    private ?CatalogModel $agenciesCatalogModel = null;
 
     /**
      * SitemapService constructor.
@@ -297,10 +299,9 @@ class SitemapService
                     $catalog = $entityDb->getCatalog();
                     $catalogSlug = $catalog?->getSlug();
                     if ($catalogSlug && $catalogSlug !== 'agencies') {
-                        $catalog = $this->coreLocator->em()->getRepository(Catalog::class)->findOneBy(['website' => $this->website->entity, 'slug' => 'agencies']);
-                        $catalogModel = $catalog ? CatalogModel::fromEntity($catalog, $this->coreLocator, ['onlyForUrl' => true]) : null;
+                        $catalogModel = $this->agenciesCatalogModel();
                         $xml = $this->xml[$interface['name']][$entity->id][$urlEntity->getLocale()];
-                        foreach ($catalogModel->products as $agency) {
+                        foreach (($catalogModel->products ?? []) as $agency) {
                             $this->xml[$interface['name']][$entity->id.'-agency-'.$agency->id][$urlEntity->getLocale()] = [
                                 'update' => $xml['update'],
                                 'uri' => $xml['uri'].'/'.$agency->slug,
@@ -321,6 +322,20 @@ class SitemapService
         }
 
         return null;
+    }
+
+    /**
+     * Agencies catalog model, resolved once (shared across all product URLs).
+     */
+    private function agenciesCatalogModel(): ?CatalogModel
+    {
+        if (!$this->agenciesResolved) {
+            $this->agenciesResolved = true;
+            $catalog = $this->coreLocator->em()->getRepository(Catalog::class)->findOneBy(['website' => $this->website->entity, 'slug' => 'agencies']);
+            $this->agenciesCatalogModel = $catalog ? CatalogModel::fromEntity($catalog, $this->coreLocator, ['onlyForUrl' => true]) : null;
+        }
+
+        return $this->agenciesCatalogModel;
     }
 
     /**
