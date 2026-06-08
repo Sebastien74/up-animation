@@ -82,6 +82,8 @@
 
     <body id="skin-admin-body" class="skin-default fixed-header skin-admin {{ userClass~" "~userEditClass }}{{ bodyClass }}" data-id="{{ websiteId }}">
 
+        <a href="#admin-body" class="skip-link visually-hidden-focusable">{{ 'Aller au contenu'|trans }}</a>
+
         {%- include 'admin/include/stripe-preloader.html.twig' with {preloaderId: 'main-preloader', preloaderClass: 'main-preloader', visible: false, full: true} only -%}
 
         <div id="main-wrapper">
@@ -94,7 +96,7 @@
             <div class="page-wrapper">
                 <div class="container-fluid px-5 pt-4">
                     {%- include 'admin/include/breadcrumb.html.twig' -%}
-                    <div id="admin-body">
+                    <div id="admin-body" tabindex="-1">
                         {%- if disabledFlashBag is not defined -%}
                             {%- include 'admin/include/flashbag.html.twig' -%}
                         {%- endif -%}

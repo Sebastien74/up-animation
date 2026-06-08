@@ -24,6 +24,19 @@ html body {
     color: $theme-text-muted;
 }
 
+// Skip-link: hidden until focused (Bootstrap .visually-hidden-focusable), then lifted above the fixed header.
+.skip-link:focus {
+    position: fixed;
+    top: $space-2;
+    left: $space-2;
+    z-index: 3000;
+    padding: $space-2 ($space-2 * 2);
+    background-color: $primary;
+    color: $white;
+    border-radius: .25rem;
+    text-decoration: none;
+}
+
 #main-wrapper {
     min-height: 100dvh;
     width: 100%;
