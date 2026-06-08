@@ -20,9 +20,9 @@
             <div class="card mb-3">
                 <div class="card-body pb-3">
                     <h4 class="main-subtitle"><i class="icm-crosshairs"></i>{{ "Cache"|trans|raw }}</h4>
-                    <a href="{{ path('cache_clear', {rename: true}) }}" class="btn-app center no-icon w-100 mb-3">{{ "Vider le cache principal"|trans|raw }}</a>
-                    <a href="{{ path('cache_clear_html') }}" class="btn-app center no-icon w-100 mb-3">{{ "Vider le cache HTML"|trans|raw }}</a>
-                    <a href="{{ path('doctrine_clear_cache_result') }}" class="btn-app center no-icon w-100 mb-3">{{ "Vider le cache Doctrine"|trans|raw }}</a>
+                    <a href="{{ path('cache_clear', {rename: true}) }}" class="btn-app center no-icon w-100 mb-3">{{ "Invalider le cache principal"|trans|raw }}</a>
+                    <a href="{{ path('cache_clear_html') }}" class="btn-app center no-icon w-100 mb-3">{{ "Invalider le cache HTML"|trans|raw }}</a>
+                    <a href="{{ path('doctrine_clear_cache_result') }}" class="btn-app center no-icon w-100 mb-3">{{ "Invalider le cache Doctrine"|trans|raw }}</a>
                     <a href="{{ path('cache_liip_clear') }}" class="btn-app center no-icon w-100 mb-3">{{ "Vider les médias"|trans|raw }}</a>
                     <a href="{{ path('admin_translation_cache_clear', {website: websiteId()}) }}" class="btn-app center no-icon w-100 mb-3">{{ "Vider les traductions"|trans|raw }}</a>
                     <a href="{{ path('admin_clear_sessions') }}" class="btn-app center no-icon w-100">{{ "Vider les sessions"|trans|raw }}</a>

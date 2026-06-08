@@ -41,7 +41,7 @@
                     <i class="icm-download"></i><span>{{ "Importer les traductions"|trans|raw }}</span>
                 </button>
                 <a class="btn-app d-inline-flex align-items-center gap-2" href="{{ path('admin_translation_cache_clear', { website: websiteId }) }}">
-                    <i class="icm-broom"></i><span>{{ "Vider le cache"|trans|raw }}</span>
+                    <i class="icm-broom"></i><span>{{ "Invalider le cache"|trans|raw }}</span>
                 </a>
                 <button type="button" class="translation-translate-btn cursor btn-app d-inline-flex align-items-center gap-2"
                         data-csrf="{{ csrf_token('machine_translate') }}"

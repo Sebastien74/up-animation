@@ -31,7 +31,7 @@ Commits concernés sur `main` :
       (vérifie au passage les extensions Twig mail : `cssinliner-extra`, `inky-extra`,
       `markdown-extra`).
 - [ ] Assets (si le front a changé) : `yarn install && yarn build`.
-- [ ] Vider le cache : `php bin/console cache:clear --env=prod`.
+- [ ] Invalider le cache : `php bin/console cache:clear --env=prod`.
 - [ ] Routing JS si besoin : `php bin/console fos:js-routing:dump --env=prod`.
 
 ## 2. Migrations base de données

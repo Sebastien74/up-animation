@@ -50,7 +50,7 @@
                         <form method="post" action="{{ path('admin_website_cache_invalidate', {website: websiteId()}) }}" class="hero-cache-form">
                             <input type="hidden" name="_token" value="{{ csrf_token('admin_website_cache_invalidate') }}">
                             <button type="submit" class="btn-app small d-inline-flex align-items-center gap-2">
-                                <i class="icm-sync"></i><span>{{ "Vider le cache"|trans|raw }}</span>
+                                <i class="icm-sync"></i><span>{{ "Invalider le cache"|trans|raw }}</span>
                             </button>
                         </form>
                     </span>
