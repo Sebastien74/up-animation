@@ -103,7 +103,7 @@ function prepare(dataEl) {
     fetch(dataEl.dataset.challenge, {headers: {'X-Requested-With': 'XMLHttpRequest'}})
         .then((response) => (response.ok ? response.json() : null))
         .then((challenge) => (challenge ? solve(challenge) : null))
-        .then((payload) => { if (payload) field.dataset.solution = payload; })
+        .then((payload) => { if (payload) { field.dataset.solution = payload; field.value = payload; } })
         .catch(() => {});
 }
 

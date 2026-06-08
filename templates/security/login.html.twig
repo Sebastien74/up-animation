@@ -23,7 +23,7 @@
         <div class="info-request mb-4 text-center">
             <h5 class="text-white mb-2">{{ "Connectez-vous"|trans|raw }}</h5>
         </div>
-        <div class="form-data" data-id="{{ securityKey }}" data-website="{{ websiteId() }}"></div>
+        <div class="form-data" data-challenge="{{ path('front_captcha_challenge', {website: websiteId()}) }}"></div>
         {%- for field in form.children -%}
             {%- if field.vars.name == '_remember_me' -%}
                 <div class="row mb-4">
