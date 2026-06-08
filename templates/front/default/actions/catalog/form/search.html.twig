@@ -99,7 +99,7 @@
             <div id="search-text-container">
                 {{ form_start(formText, {attr: {id: "search-text-form", 'data-component': 'webpack-form'}}) }}
                 <div class="group d-inline-flex">
-                    {{ form_widget(formText.text) }}
+                    {{ form_widget(formText.text, {attr: {'aria-label': 'Rechercher'|trans|striptags}}) }}
                 </div>
                 {{ form_end(formText) }}
             </div>

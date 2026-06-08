@@ -15,9 +15,9 @@
             <div class="col-md-6">
                 <div class="input-group">
                     <div class="position-relative">
-                        {{ form_widget(form.search) }}
+                        {{ form_widget(form.search, {attr: {'aria-label': 'Rechercher'|trans|striptags}}) }}
                     </div>
-                    <button type="submit" class="input-group-text search-engine-submit cursor">
+                    <button type="submit" class="input-group-text search-engine-submit cursor" aria-label="{{ 'Rechercher'|trans|striptags }}">
                         {{ 'far search'|icon(20, 20, 'search') }}
                     </button>
                 </div>
