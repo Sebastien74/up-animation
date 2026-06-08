@@ -50,9 +50,6 @@
                     {%- endfor -%}
                 </div>
             </div>
-            {%- if campaign.recaptcha -%}
-                <div class="form-data" data-id="{{ campaign.securityKey }}" data-website="{{ websiteId() }}"></div>
-            {%- endif -%}
         {{ form_end(form) }}
     </section>
 {%- endif -%}
