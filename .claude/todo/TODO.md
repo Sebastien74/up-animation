@@ -11,7 +11,7 @@
 
 - **Révoquer + régénérer l'App Secret Instagram dans la console Meta** (action manuelle, externe). Le code ne contient plus les clés en clair, mais la révocation côté Meta reste à faire.
 - Supprimer les IPs autres que celles des devs et les miennes.
-- Bugs admin bloquants : `CategoryType Newscast` save KO, layout catalogue KO, ajout redirection SEO KO, pagination filtres produits KO, modal ajout média (actus) KO, delete media (erreur JS), dropify bloc media « Qui sommes nous ».
+- Bugs admin bloquants : `CategoryType Newscast` save KO, layout catalogue KO, ~~ajout redirection SEO KO~~ (corrigé), pagination filtres produits KO, modal ajout média (actus) KO, delete media (erreur JS), dropify bloc media « Qui sommes nous ».
 - Perf bloquante : `sitemap.xml` trop lent, page security ~1300 ms, mise à jour positions médias trop lente.
 
 ### P1 — Important
@@ -75,7 +75,7 @@ utf8mb4_unicode_ci
 
 - `https://up-animation.local/admin-…/1/websites/edit/1` onglet dev : theme light KO.
 - `https://up-animation.local/admin-…/1/seo/configuration/edit` : onglet langues Axeptio ne fonctionne pas.
-- Ajout d'une redirection SEO ne fonctionne pas.
+- [x] Ajout d'une redirection SEO ne fonctionne pas. → `data-prototype`/`data-index` déplacés du `<table>` vers le `<tbody id="redirections-collection">` ciblé par le bouton (alignement sur le pattern `domains` qui marche).
 - Dropify bloc media page « Qui sommes nous » ne fonctionne pas.
 - Pagination filtres produits KO : `https://up-animation.local/recherche-animations?catalogs=performances`.
 - Scroll menu mobile : items deviennent blancs quand on survole une zone foncée.

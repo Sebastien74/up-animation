@@ -85,7 +85,7 @@
         {%- endmacro -%}
 
         <div class="table-responsive app-table">
-            <table class="table table-striped responsive-cards mb-0 editable-table collection" data-index="{{ form.redirections|length }}" data-prototype="{{ macro.redirection_prototype(form.redirections.vars.prototype)|e('html_attr') }}">
+            <table class="table table-striped responsive-cards mb-0 editable-table">
                 <thead>
                     <tr>
                         <th class="col-locale px-4{%- if allLocales|length <= 1 -%} d-none{% endif %}">{{ "Langue"|trans|raw }}</th>
@@ -103,7 +103,7 @@
                         </th>
                     </tr>
                 </thead>
-                <tbody id="redirections-collection">
+                <tbody id="redirections-collection" class="collection" data-index="{{ form.redirections|length }}" data-prototype="{{ macro.redirection_prototype(form.redirections.vars.prototype)|e('html_attr') }}">
                     {%- for redirection in form.redirections -%}
                         {{ macro.redirection_prototype(redirection) }}
                     {%- endfor -%}
