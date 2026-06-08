@@ -30,9 +30,9 @@
     {%- endfor -%}
 
     {%- for label, urls in archive -%}
-        <div class="card urls-archived-card index-container">
+        <div class="card urls-archived-card index-container{% if not loop.last %} mb-3{% endif %}">
             <div class="card-body pb-2">
-                <h4 class="card-title float-start">
+                <h4 class="card-title float-start w-100">
                     {{ label }}
                     <button class="index-delete-show btn-icon ms-3" data-bs-toggle="tooltip"
                             title="{{"Afficher les cases à cocher de suppression"|trans|striptags }}"
@@ -40,88 +40,90 @@
                             data-hide="{{"Masquer"|trans|striptags }}"><i class="icm-trash"></i></button>
                     <button class="index-delete-submit btn-icon danger ms-3 d-none" data-bs-toggle="tooltip" title="{{"Supprimer la sélection"|trans|striptags }}"><i class="icm-trash"></i></button>
                 </h4>
-                <table class="table table-striped mb-4">
-                    <thead>
-                        <th>{{ "Nom d'administration"|trans|raw }}</th>
-                        <th>{{ "URL code"|trans|raw }}</th>
-                        {%- if 'delete'|moduleActive(configuration) or 'edit'|moduleActive(configuration) -%}
-                            <th class="text-end">
-                                {%- if 'delete'|moduleActive(configuration) -%}
-                                    <div class="delete-index-all-wrap custom-control custom-checkbox float-end ms-3 d-none" data-bs-toggle="tooltip"
-                                         title="{{"Tout cocher"|trans|striptags }}"
-                                         data-checked="{{"Tout cocher"|trans|striptags }}"
-                                         data-unchecked="{{"Tout décocher"|trans|striptags }}">
-                                        <input type="checkbox" class="custom-control-input delete-index-all" id="delete-index-all-{{ loop.index }}">
-                                        <label class="custom-control-label" for="delete-index-all-{{ loop.index }}"></label>
-                                    </div>
-                                {%- endif -%}
-                                {{ "Actions"|trans|raw }}
-                            </th>
-                        {%- endif -%}
-                    </thead>
-                    <tbody>
-                    {%- for url in urls -%}
-                        <tr id="entity-row-{{ url.entity.id }}" class="delete-pack-parent-row">
-                            <td class="align-middle">
-                                {%- if url.entity.adminName is defined and url.entity.adminName -%}
-                                    {{ url.entity.adminName }}
-                                {%- endif -%}
-                            </td>
-                            <td class="align-middle">
-                                <ul class="reset mb-0 ps-3">
-                                    {%- for entityUrl in url.entity.urls -%}
-                                        <li class="italic">
-                                            <small>
-                                                {%- if allLocales|length > 1 -%}
-                                                    <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
-                                                         data-src=" {{ asset('/medias/icons/flags/'~entityUrl.locale~'.svg') }}"
-                                                         data-bs-toggle="tooltip" title="{{ entityUrl.locale|languageName }}"
-                                                         class="img-fluid lazy-load me-2" height="11" width="15">
-                                                {%- endif -%}
-                                                {%- if domains[entityUrl.locale] is defined -%}{{ domains[entityUrl.locale] }}{%- endif -%}{{ url.uri }}
-                                            </small>
-                                        </li>
-                                    {%- endfor -%}
-                                </ul>
-                            </td>
+                <div class="table-responsive app-table mt-3 d-inline-block w-100">
+                    <table class="table table-striped responsive-cards">
+                        <thead>
+                            <th>{{ "Nom d'administration"|trans|raw }}</th>
+                            <th>{{ "URL code"|trans|raw }}</th>
                             {%- if 'delete'|moduleActive(configuration) or 'edit'|moduleActive(configuration) -%}
-                                <td class="align-middle text-end">
-                                    {%- if 'edit'|moduleActive(configuration) -%}
-                                        {%- set path = path('admin_url_archive_restore', {
-                                            website: websiteId(),
-                                            classname: url.interface.classname|url_encode,
-                                            id: url.entity.id
-                                        }) -%}
-                                        <a href="{{ path }}"
-                                           data-bs-toggle="tooltip" title="{{ url.restore|striptags }}"
-                                           data-target="#entity-row-{{ url.entity.id }}">
-                                            <i class="icm-redo-alt"></i>
-                                        </a>
-                                    {%- endif -%}
+                                <th class="text-end">
                                     {%- if 'delete'|moduleActive(configuration) -%}
-                                        {%- set path = path('admin_url_archive_delete', {
-                                            website: websiteId(),
-                                            classname: url.interface.classname|url_encode,
-                                            id: url.entity.id
-                                        }) -%}
-                                        <a href="{{ path }}"
-                                           data-bs-toggle="tooltip" title="{{ url.delete|striptags }}"
-                                           data-target="#entity-row-{{ url.entity.id }}"
-                                           class="swal-delete-link ms-3">
-                                            <i class="icm-trash"></i>
-                                        </a>
-                                        <div class="custom-control custom-checkbox delete-input-index-wrap ms-3 d-none position-relative">
-                                            <input type="checkbox" class="custom-control-input delete-input-index" id="delete-input-{{ url.entity.id }}"
-                                                   data-path="{{ path }}">
-                                            <label class="custom-control-label" for="delete-input-{{ url.entity.id }}"></label>
+                                        <div class="delete-index-all-wrap custom-control custom-checkbox float-end ms-3 d-none" data-bs-toggle="tooltip"
+                                             title="{{"Tout cocher"|trans|striptags }}"
+                                             data-checked="{{"Tout cocher"|trans|striptags }}"
+                                             data-unchecked="{{"Tout décocher"|trans|striptags }}">
+                                            <input type="checkbox" class="custom-control-input delete-index-all" id="delete-index-all-{{ loop.index }}">
+                                            <label class="custom-control-label" for="delete-index-all-{{ loop.index }}"></label>
                                         </div>
                                     {%- endif -%}
-                                </td>
+                                    {{ "Actions"|trans|raw }}
+                                </th>
                             {%- endif -%}
-                        </tr>
-                    {%- endfor -%}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                        {%- for url in urls -%}
+                            <tr id="entity-row-{{ url.entity.id }}" class="delete-pack-parent-row">
+                                <td class="align-middle">
+                                    {%- if url.entity.adminName is defined and url.entity.adminName -%}
+                                        {{ url.entity.adminName }}
+                                    {%- endif -%}
+                                </td>
+                                <td class="align-middle">
+                                    <ul class="list-unstyled mb-0">
+                                        {%- for entityUrl in url.entity.urls -%}
+                                            <li class="italic">
+                                                <small>
+                                                    {%- if allLocales|length > 1 -%}
+                                                        <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+                                                             data-src=" {{ asset('/medias/icons/flags/'~entityUrl.locale~'.svg') }}"
+                                                             data-bs-toggle="tooltip" title="{{ entityUrl.locale|languageName }}"
+                                                             class="img-fluid lazy-load me-2" height="11" width="15">
+                                                    {%- endif -%}
+                                                    {%- if domains[entityUrl.locale] is defined -%}{{ domains[entityUrl.locale] }}{%- endif -%}{{ url.uri }}
+                                                </small>
+                                            </li>
+                                        {%- endfor -%}
+                                    </ul>
+                                </td>
+                                {%- if 'delete'|moduleActive(configuration) or 'edit'|moduleActive(configuration) -%}
+                                    <td class="align-middle text-end">
+                                        {%- if 'edit'|moduleActive(configuration) -%}
+                                            {%- set path = path('admin_url_archive_restore', {
+                                                website: websiteId(),
+                                                classname: url.interface.classname|url_encode,
+                                                id: url.entity.id
+                                            }) -%}
+                                            <a href="{{ path }}"
+                                               data-bs-toggle="tooltip" title="{{ url.restore|striptags }}"
+                                               data-target="#entity-row-{{ url.entity.id }}">
+                                                <i class="icm-redo-alt"></i>
+                                            </a>
+                                        {%- endif -%}
+                                        {%- if 'delete'|moduleActive(configuration) -%}
+                                            {%- set path = path('admin_url_archive_delete', {
+                                                website: websiteId(),
+                                                classname: url.interface.classname|url_encode,
+                                                id: url.entity.id
+                                            }) -%}
+                                            <a href="{{ path }}"
+                                               data-bs-toggle="tooltip" title="{{ url.delete|striptags }}"
+                                               data-target="#entity-row-{{ url.entity.id }}"
+                                               class="swal-delete-link ms-3">
+                                                <i class="icm-trash"></i>
+                                            </a>
+                                            <div class="custom-control custom-checkbox delete-input-index-wrap ms-3 d-none position-relative">
+                                                <input type="checkbox" class="custom-control-input delete-input-index" id="delete-input-{{ url.entity.id }}"
+                                                       data-path="{{ path }}">
+                                                <label class="custom-control-label" for="delete-input-{{ url.entity.id }}"></label>
+                                            </div>
+                                        {%- endif -%}
+                                    </td>
+                                {%- endif -%}
+                            </tr>
+                        {%- endfor -%}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     {%- endfor -%}
