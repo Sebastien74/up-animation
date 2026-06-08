@@ -62,7 +62,7 @@ class RegistrationType extends AbstractType
                 'label' => $this->translator->trans('Nom', [], 'security_cms'),
                 'attr' => [
                     'placeholder' => $this->translator->trans('Saisissez votre nom', [], 'security_cms'),
-                    'autocomplete' => 'off',
+                    'autocomplete' => 'family-name',
                     'autofocus' => false,
                 ],
                 'row_attr' => ['class' => 'col-12 col-lg-6'],
@@ -77,7 +77,7 @@ class RegistrationType extends AbstractType
                 'label' => $this->translator->trans('Prénom', [], 'security_cms'),
                 'attr' => [
                     'placeholder' => $this->translator->trans('Saisissez votre prénom', [], 'security_cms'),
-                    'autocomplete' => 'off',
+                    'autocomplete' => 'given-name',
                     'autofocus' => false,
                 ],
                 'row_attr' => ['class' => 'col-12 col-lg-6'],
@@ -92,7 +92,7 @@ class RegistrationType extends AbstractType
                 'label' => $this->translator->trans("Identifiant", [], 'security_cms'),
                 'attr' => [
                     'placeholder' => $this->translator->trans('Saisissez votre identifiant', [], 'security_cms'),
-                    'autocomplete' => 'off',
+                    'autocomplete' => 'username',
                     'autofocus' => false,
                 ],
                 'row_attr' => ['class' => 'col-12 col-lg-6'],
@@ -108,7 +108,7 @@ class RegistrationType extends AbstractType
                 'label' => $this->translator->trans('Adresse e-mail', [], 'security_cms'),
                 'attr' => [
                     'placeholder' => $this->translator->trans('Saisissez votre adresse e-mail', [], 'security_cms'),
-                    'autocomplete' => 'off',
+                    'autocomplete' => 'email',
                     'autofocus' => false,
                 ],
                 'row_attr' => ['class' => 'col-12 col-lg-6'],
@@ -128,7 +128,7 @@ class RegistrationType extends AbstractType
                     'label' => $this->translator->trans('Mot de passe', [], 'security_cms'),
                     'attr' => [
                         'placeholder' => $this->translator->trans('Saisissez votre mot de passe', [], 'security_cms'),
-                        'autocomplete' => 'off',
+                        'autocomplete' => 'new-password',
                         'autofocus' => false,
                         'class' => 'password-checker',
                     ],
@@ -141,7 +141,7 @@ class RegistrationType extends AbstractType
                     'label' => $this->translator->trans('Confirmation du mot de passe', [], 'security_cms'),
                     'attr' => [
                         'placeholder' => $this->translator->trans('Confirmez votre mot de passe', [], 'security_cms'),
-                        'autocomplete' => 'off',
+                        'autocomplete' => 'new-password',
                         'autofocus' => false,
                     ],
                     'row_attr' => ['class' => 'col-12 col-lg-6'],

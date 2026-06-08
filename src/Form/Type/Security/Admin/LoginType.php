@@ -49,7 +49,7 @@ class LoginType extends AbstractType
             'label' => $loginLabel,
             'attr' => [
                 'placeholder' => $loginPlaceholder,
-                'autocomplete' => 'off',
+                'autocomplete' => 'username',
                 'autofocus' => false,
             ],
             'row_attr' => ['class' => 'col-12 form-floating'],
@@ -60,7 +60,7 @@ class LoginType extends AbstractType
             'label' => $this->translator->trans('Mot de passe', [], 'security_cms'),
             'attr' => [
                 'placeholder' => $this->translator->trans('Saisissez votre mot de passe', [], 'security_cms'),
-                'autocomplete' => 'off',
+                'autocomplete' => 'current-password',
                 'autofocus' => false,
             ],
             'row_attr' => ['class' => 'col-12 form-floating'],

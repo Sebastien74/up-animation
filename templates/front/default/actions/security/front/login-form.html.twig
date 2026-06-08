@@ -53,7 +53,7 @@
                         </div>
                     {%- endif -%}
                 </div>
-                <div class="form-data" data-challenge="{{ path('front_captcha_challenge', {website: websiteId()}) }}"></div>
+                <div class="form-data" data-id="{{ website.security.securityKey }}" data-website="{{ websiteId() }}"></div>
             {{ form_end(form) }}
         {%- else -%}
             {%- set message = masterRequestGet('tpl-form')

@@ -46,7 +46,7 @@ html body form .form-field-none {
             align-items: center;
             background: $card-icon-bg;
             border-color: $card-icon-border;
-            border-radius: $card-icon-radius;
+            border-radius: 50%;
             color: transparentize($white, .5);
             display: flex;
             flex: 0 0 auto;
@@ -188,6 +188,14 @@ html body form .form-field-none {
     &:focus {
         border-bottom: 1px solid $primary;
     }
+}
+
+// Visible keyboard focus on auth inputs: outline ring survives the box-shadow:none override (WCAG 2.4.7 / 1.4.11).
+.form-control:focus-visible,
+.form-select:focus-visible,
+.form-check-input:focus-visible {
+    outline: 2px solid $primary !important;
+    outline-offset: 2px !important;
 }
 
 form {

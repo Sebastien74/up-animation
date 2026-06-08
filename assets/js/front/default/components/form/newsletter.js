@@ -6,7 +6,7 @@
 
 import Modal from '../../../bootstrap/dist/modal';
 import Cookies from 'js-cookie';
-import {generate, onSubmit} from "../../../../vendor/components/recaptcha";
+import {onSubmit} from "../../../../vendor/components/recaptcha";
 
 import('../../../../../scss/front/default/components/form/_newsletter.scss');
 
@@ -109,7 +109,6 @@ export default function () {
                 sendRequest(event, this.closest('form'));
             }
         });
-        generate();
     }
 
     formsEvents();
@@ -118,7 +117,9 @@ export default function () {
 
         event.preventDefault();
 
-        onSubmit(form);
+        import('../../../../vendor/components/recaptcha').then(({onSubmit: OnSubmit}) => {
+            new OnSubmit(form);
+        }).catch(error => console.error(error.message));
 
         let icon = form.querySelector('.newsletter-submit').querySelector('svg');
         let iconSpinner = form.querySelector('.spinner-border');

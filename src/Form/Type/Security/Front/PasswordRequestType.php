@@ -36,7 +36,7 @@ class PasswordRequestType extends AbstractType
             'label' => $this->translator->trans('Adresse e-mail', [], 'security_cms'),
             'attr' => [
                 'placeholder' => $this->translator->trans('Saisissez votre adresse e-mail', [], 'security_cms'),
-                'autocomplete' => 'off',
+                'autocomplete' => 'username',
                 'autofocus' => false,
             ],
             'row_attr' => ['class' => 'col-12 col-lg-12'],
