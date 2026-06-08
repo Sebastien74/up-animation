@@ -1,4 +1,5 @@
 @if ($enable-form) {
+    // Vendor (choices.js): 640px @media breakpoint is the library's own, not the project grid; kept verbatim (CLAUDE.md exception).
 
     .choices {
         position: relative;
