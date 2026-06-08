@@ -546,7 +546,7 @@ class AdminController extends BaseController
             'website' => $website,
             'configuration' => $website->configuration,
             'request' => $request,
-            'entitylocale' => $request->query->get('entitylocale'),
+            'entitylocale' => $request->attributes->get('entitylocale') ?? $request->query->get('entitylocale'),
             'formType' => $this->formType,
             'templateConfig' => $this->templateConfig,
             'formManager' => $this->formManager,
