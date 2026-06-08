@@ -1,0 +1,75 @@
+name: Deploy to OVH
+
+on:
+  push:
+    branches: [main, preprod]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-ovh-${{ github.ref_name }}
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Build and deploy
+    runs-on: ubuntu-latest
+    environment: ${{ github.ref_name == 'main' && 'prod' || 'preprod' }}
+    env:
+      SYMFONY_ENV: ${{ vars.SYMFONY_ENV || 'prod' }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP 8.5
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.5'
+          extensions: ctype, curl, dom, fileinfo, gd, iconv, libxml, openssl, zip
+          tools: composer:v2
+          coverage: none
+
+      - name: Install PHP dependencies
+        run: composer install --no-dev --optimize-autoloader --no-scripts --no-interaction --prefer-dist
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: yarn
+
+      - name: Install JS dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Build assets
+        run: yarn build
+
+      - name: Configure SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.OVH_SSH_KEY }}" > ~/.ssh/id_deploy
+          chmod 600 ~/.ssh/id_deploy
+          ssh-keyscan -p "${{ secrets.OVH_SSH_PORT }}" -H "${{ secrets.OVH_SSH_HOST }}" >> ~/.ssh/known_hosts 2>/dev/null
+
+      - name: Deploy with rsync
+        run: |
+          rsync -az --delete \
+            -e "ssh -i ~/.ssh/id_deploy -p ${{ secrets.OVH_SSH_PORT }}" \
+            --exclude='.git/' \
+            --exclude='.github/' \
+            --exclude='node_modules/' \
+            --exclude='tests/' \
+            --exclude='.env.local' \
+            --exclude='.env.*.local' \
+            --exclude='var/' \
+            --exclude='public/medias/' \
+            ./ "${{ secrets.OVH_SSH_USER }}@${{ secrets.OVH_SSH_HOST }}:${{ secrets.OVH_DEPLOY_PATH }}/"
+
+      - name: Post-deploy commands
+        run: |
+          ssh -i ~/.ssh/id_deploy -p "${{ secrets.OVH_SSH_PORT }}" \
+            "${{ secrets.OVH_SSH_USER }}@${{ secrets.OVH_SSH_HOST }}" \
+            "cd ${{ secrets.OVH_DEPLOY_PATH }} && \
+             php bin/console cache:clear --env=$SYMFONY_ENV --no-debug && \
+             php bin/console assets:install public --env=$SYMFONY_ENV --no-debug && \
+             php bin/console fos:js-routing:dump --env=$SYMFONY_ENV"
