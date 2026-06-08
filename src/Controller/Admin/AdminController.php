@@ -17,6 +17,7 @@ use App\Model\MediasModel;
 use App\Model\ViewModel;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\Query\QueryException;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\Mapping\MappingException;
 use Exception;
 use Knp\Component\Pager\PaginatorInterface;
@@ -41,7 +42,7 @@ class AdminController extends BaseController
 {
     protected ?string $class = null;
     protected bool $forceEntities = false;
-    protected iterable $entities = [];
+    protected iterable|QueryBuilder $entities = [];
     protected mixed $entity = null;
     protected ?string $pageTitle = null;
     protected ?string $formType = null;
