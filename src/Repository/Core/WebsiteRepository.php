@@ -35,8 +35,24 @@ class WebsiteRepository extends ServiceEntityRepository
         private readonly ManagerRegistry $registry,
         private readonly CoreLocatorInterface $coreLocator
     ) {
-        $this->host = $this->coreLocator->request() ? $this->coreLocator->request()->getHost() : null;
+        $this->host = $this->resolveHost();
+
         parent::__construct($this->registry, Website::class);
+    }
+
+    /**
+     * HTTP request host, falling back to the router context host outside a request (CLI).
+     */
+    private function resolveHost(): ?string
+    {
+        $request = $this->coreLocator->request();
+        if ($request) {
+            return $request->getHost();
+        }
+
+        $contextHost = $this->coreLocator->router()->getContext()->getHost();
+
+        return '' !== $contextHost ? $contextHost : null;
     }
 
     /**
@@ -79,7 +95,7 @@ class WebsiteRepository extends ServiceEntityRepository
     public function findOneByHost(?string $host = null, bool $forceByHost = false, bool $asObject = false)
     {
         $host = !empty($host) ? $host : $this->host;
-        $host = $host ? str_replace(['https://', 'http://'], '', $host) : null;
+        $host = $host ? str_replace(['https://', 'http://'], '', $host) : '';
 
         if (!$asObject && !empty($this->cache[$host])) {
             return $this->cache[$host];
