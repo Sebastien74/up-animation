@@ -114,7 +114,7 @@ utf8mb4_unicode_ci
 - Fakefiller form validation : pas de message d'erreur.
 - `col padding` à finir (peut-être générer dans `LayoutRuntime`, plus propre dans le HTML).
 - 11 agences annoncées en France & Suisse mais 8 affichées.
-- PWA (Progressive Web App) affichée alors que désactivée.
+- [x] PWA (Progressive Web App) affichée alors que désactivée. → `progressiveWebApp` gate désormais SW **et** manifest (commit `fix(pwa)`).
 - `https://up-animation.local/robots.txt?preview=true` devrait afficher ce qui est vraiment dans le robots.txt.
 - Page security : Total time 1300ms, c'est bizarre.
 - `https://up-animation.local/sitemap.xml` TROP LENT.
@@ -130,6 +130,22 @@ utf8mb4_unicode_ci
 Migrations à prévoir : `utf8mb4_0900_ai_ci` → `utf8mb4_unicode_ci`.
 
 - Faire une sauvegarde de la DB et supprimer tout ce qui n'est pas `FR`.
+
+### Infra — version serveur SQL (MySQL < 8 déprécié)
+
+Le serveur est en MySQL 5.7 (local : 5.7.44 ; `DB_VERSION=5.7-MySQL`). DBAL 5
+supprimera le support MySQL < 8 (dépréciation informative, pas de rupture en
+DBAL 4). À traiter côté infra, pas applicatif :
+
+- Vérifier la version réelle de la **prod** : `SELECT VERSION();` (phpMyAdmin
+  hébergeur ou `php bin/console dbal:run-sql "SELECT VERSION()"`).
+- Si **MariaDB** : préfixer `DB_VERSION=mariadb-X.Y.Z` (la dépréciation
+  disparaît, MariaDB n'est pas concerné).
+- Si **MySQL 8.0+** : `DB_VERSION=8.0.x`.
+- Si réellement **MySQL 5.7** partout : planifier une migration base vers
+  MySQL 8 / MariaDB 10.x (WAMP en local, hébergeur en prod). Ne JAMAIS forcer
+  `DB_VERSION=8.0` sur un vrai 5.7 (génère du SQL incompatible → erreurs).
+- Nettoyer la chaîne non standard `5.7-MySQL` → version propre (`5.7.44`).
 
 ---
 
@@ -216,6 +232,7 @@ Migrations à prévoir : `utf8mb4_0900_ai_ci` → `utf8mb4_unicode_ci`.
 
 ## Sécurité applicative / 2FA / Login
 
+- [x] **Captcha robuste** : proof-of-work auto-hébergé compatible ALTCHA (pas de tiers, RGPD-friendly) + signature HMAC stateless + time-trap + anti-rejeu + honeypot accessible + RateLimiter IP. `CaptchaService`, gates front/login délégués, SHA-256 JS bit-exact avec PHP. Doc back-office « Captcha ». Reste : valider en navigateur après build CI (Node local v14 trop ancien pour `yarn build`).
 - Doc SchebTwoFactorBundle : <https://symfony.com/bundles/SchebTwoFactorBundle/current/api.html>
 - [x] À une nouvelle connexion back, code chiffré par email (2FA email + onboarding livrés).
 - Mettre les validations sur le formulaire de login.
@@ -356,6 +373,7 @@ Migrations à prévoir : `utf8mb4_0900_ai_ci` → `utf8mb4_unicode_ci`.
 
 ## Frontend — SCSS / CSS / Bootstrap
 
+- Designer les alertes front (messages succès / info / warning / erreur) : styles cohérents, responsive, basés sur les variables et utilities Bootstrap du projet.
 - Pour le tiret sur mots coupés :
   ```scss
   h3.second {
@@ -615,6 +633,7 @@ Classement des meilleures activités. Articles type :
 - Social wall Insta, Facebook (affichage front à finir — la collecte est faite).
 - Connecter Google Trads.
 - GÉNÉRER LES TRADS.
+- [ ] **Tester le système de traduction automatique** (bouton « Tout traduire », page Groupes de traductions) : chaîne DeepL → MyMemory → LibreTranslate avec bascule auto. À vérifier : génération des Translations ET des Intl (champs vides uniquement, depuis la locale par défaut), barre de progression, bascule des providers dans `var/log/translation.log`. Actuellement DeepL est désactivé (`DEEPL_ENABLED=false`) → c'est MyMemory qui doit prendre le relais. Relire les contenus Intl avant diffusion (traductions machine). Doc back-office : « Traduction automatique ».
 
 ---
 
@@ -622,14 +641,14 @@ Classement des meilleures activités. Articles type :
 
 - Faire un tour complet de `src/` pour nettoyer et améliorer les commentaires : retirer les commentaires inutiles (paraphrase du code, debug résiduel), raccourcir ceux trop longs (1 ligne max, WHY non-évident), ajouter ceux qui manquent quand c'est pertinent. Commentaires en anglais (cf. CLAUDE.md).
 - Dépréciations 8.5.
-- Dépréciations (générales).
+- [x] **Dépréciations (générales) — Symfony 7.4** : `Request::get()` (http-foundation) remplacé par `RequestParam::get` (PHP) / `masterRequestGet()` (Twig) ; UrlType/RateLimiter/Voter/TinyMCE réglés (commits `a0b0f4fe`, `e986fb19`). Vérifié 2026-06-04 : crawl 284 URLs + compile-time + scan statique = **0 dépréciation**. Reste hors scope applicatif : DBAL « MySQL < 8 » (infra). Détail : doc back-office « Détection des dépréciations ».
 - `composer.json` : remplacer `sfcms/faker` (`1.0.x-dev`, résolu en `dev-master`) par un tag stable. Utilisé en code runtime (`src/Twig/Content/ComponentRuntime.php`), une branche `-dev` en prod est fragile. Poser un tag stable sur le package puis passer la contrainte en `^1.0`.
-- Remplacer les `app.request.get`.
+- [x] Remplacer les `app.request.get` / `masterRequest().get()` → `masterRequestGet()` (Twig) et `RequestParam::get` (PHP).
 - Retirer tous les `use` non utilisés.
 - Une fois le site terminé : supprimer les objets d'import.
 - Une fois le site terminé : supprimer la propriété `noSeo`.
 - Retirer les « Agence Félix ».
-- Corriger les `request->get` dans breadcrumb back.
+- [x] Corriger les `request->get` (breadcrumb/header back inclus) : balayage complet via `RequestParam::get` / `masterRequestGet()`.
 - Faire un tour pour `->formatDirname`.
 - `dd('Ajouter dans website un etag global et le persister dans Doctrine listener');` — ajouter des exceptions sur l'update (contacts, ajax, etc.).
 - Translator sides :
