@@ -50,8 +50,11 @@ Page **« Pools de cache »** : tuile « Accès rapides » du dashboard + lien s
 
 ## 3. Invalider le cache d'une fiche (édition)
 
-Bouton **« Invalider le cache de cette fiche »** dans la vue d'édition des entités à
-layout (bloc `#layout-grid`, visible si `entity.layout` a au moins une zone).
+Bouton **« Invalider le cache »** dans la vue d'édition **et** la vue
+« Mise en page » des entités à layout (Page, Product, Newscast...), bloc `#layout-grid`,
+visible si `entity.layout` a au moins une zone. Markup factorisé dans le partiel
+`templates/admin/core/layout/cache-invalidate-button.html.twig`, inclus par
+`edit.html.twig` et `layout.html.twig`.
 
 - Route `admin_entity_cache_invalidate` (POST + CSRF, `ROLE_ADMIN`). Garde stricte :
   `hasMetadataFor` (entité Doctrine connue) + `denyUnlessEntityWebsite` (site courant) +
