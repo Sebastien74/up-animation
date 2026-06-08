@@ -30,7 +30,7 @@ class Category extends BaseEntity
     protected static array $interface = [
         'name' => 'gdprcategory',
         'buttons' => [
-            'admin_gdprgroup_index',
+            'gdprgroups' => 'admin_gdprgroup_index',
         ],
     ];
     protected static array $labels = [

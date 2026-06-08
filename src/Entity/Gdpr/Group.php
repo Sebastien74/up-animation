@@ -30,7 +30,7 @@ class Group extends BaseEntity
     protected static array $interface = [
         'name' => 'gdprgroup',
         'buttons' => [
-            'admin_gdprcookie_index',
+            'gdprcookies' => 'admin_gdprcookie_index',
         ],
     ];
     protected static array $labels = [
@@ -139,6 +139,14 @@ class Group extends BaseEntity
         $this->script = $script;
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, GroupMediaRelation>
+     */
+    public function getGdprcookies(): Collection
+    {
+        return $this->gdprcookies;
     }
 
     public function addGdprcooky(Cookie $gdprcooky): static
