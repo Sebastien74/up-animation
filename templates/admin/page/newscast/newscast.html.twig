@@ -81,11 +81,12 @@
                     </span>
                 {%- endif -%}
             </li>
+            {%- if isMainEntity -%}
+                <li>
+                    {%- include 'admin/core/layout/cache-invalidate-button.html.twig' -%}
+                </li>
+            {%- endif -%}
         </ul>
-
-        {%- if isMainEntity -%}
-            {%- include 'admin/core/layout/cache-invalidate-button.html.twig' -%}
-        {%- endif -%}
 
         {%- block entityForm -%}{%- endblock -%}
 

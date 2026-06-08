@@ -1,7 +1,7 @@
 {%- trans_default_domain 'admin' -%}
 
 {%- if entity.layout is defined and interface.classname is defined and entity.id is defined and entity.id -%}
-    <div class="d-flex justify-content-end mb-3">
+    <div class="d-flex justify-content-end no-opacity">
         <form method="post" action="{{ path('admin_entity_cache_invalidate') }}">
             <input type="hidden" name="_token" value="{{ csrf_token('admin_entity_cache_invalidate') }}">
             <input type="hidden" name="class" value="{{ interface.classname }}">

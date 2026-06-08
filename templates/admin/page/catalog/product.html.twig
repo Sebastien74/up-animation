@@ -107,10 +107,10 @@
                     <i class="icm-save"></i><span>{{ "Enregistrer et retourner à la liste"|trans|raw }}</span>
                 </span>
             {%- endif -%}
+            {%- if isMainEntity -%}
+                {%- include 'admin/core/layout/cache-invalidate-button.html.twig' -%}
+            {%- endif -%}
         </nav>
-        {%- if isMainEntity -%}
-            {%- include 'admin/core/layout/cache-invalidate-button.html.twig' -%}
-        {%- endif -%}
         {%- block entityForm -%}{%- endblock -%}
     </div>
 

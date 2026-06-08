@@ -22,7 +22,7 @@
 
     .btn-app {
 
-        &:not(.active):not(.save):not(.back-link) {
+        &:not(.active):not(.save):not(.back-link):not(.no-opacity) {
             opacity: .5;
             transition: opacity $transition-base;
         }
