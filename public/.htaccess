@@ -91,9 +91,8 @@ AddDefaultCharset UTF-8
 </IfModule>
 
 <IfModule mod_deflate.c>
-    <IfModule mod_filter.c>
-        AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript application/x-javascript application/json application/xml application/rss+xml application/atom+xml font/eot font/opentype font/otf font/ttf image/svg+xml image/x-icon image/vnd.microsoft.icon
-    </IfModule>
+    # No inner mod_filter guard: AddOutputFilterByType is valid whenever mod_deflate is loaded, and some shared hosts under-report mod_filter to IfModule (compression then silently skipped).
+    AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript application/x-javascript application/json application/xml application/rss+xml application/atom+xml font/eot font/opentype font/otf font/ttf image/svg+xml image/x-icon image/vnd.microsoft.icon
 </IfModule>
 
 ## HEADER ##
