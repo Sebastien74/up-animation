@@ -151,6 +151,7 @@ DBAL 4). À traiter côté infra, pas applicatif :
 
 ## Performance & Cache
 
+- Faire un test EcoIndex (https://www.ecoindex.fr/) sur les pages clés (home, listing animations, fiche produit) : relever le grade, le poids transféré, le nombre de requêtes et la complexité DOM, puis traiter les points faibles.
 - [x] **Faire le cache comme `PageRepository`** : implémenté (`enableResultCache` clés `page-*`, `pages_action_*`, etc.).
   ```php
   $result = $this->cacheInterface->get($cacheKey, function () use ($website, $urlCode, $locale, $preview) {

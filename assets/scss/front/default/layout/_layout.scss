@@ -18,8 +18,14 @@
    1 ) Core
 -----------------------------------*/
 
-* {
+*:focus:not(:focus-visible) {
     outline: none !important;
+}
+
+// Keyboard focus must stay visible (WCAG 2.4.7); pointer focus stays clean above.
+:focus-visible {
+    outline: 2px solid $focus-color !important;
+    outline-offset: 2px !important;
 }
 
 body {

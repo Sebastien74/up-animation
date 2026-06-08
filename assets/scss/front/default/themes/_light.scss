@@ -35,7 +35,7 @@ $light: $gray-300 !global;
 $lighten: $gray-200 !global;
 $dark: $gray-900 !global;
 $dark-lighten: $gray-800 !global;
-$focus-color: #ff9800 !global;
+$focus-color: $secondary !global; // keyboard focus ring needs >=3:1 on the white light-theme bg (WCAG 1.4.11)
 
 $body-bg: $white !global;
 $body-color: $secondary !global;
