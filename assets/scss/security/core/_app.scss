@@ -170,7 +170,7 @@ a {
    3 ) Responsive
 -----------------------------------*/
 
-@media(max-width: 991px) {
+@include mediaQuery(max-lg) {
 
     body .login-sidebar {
 
