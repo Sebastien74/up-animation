@@ -189,7 +189,7 @@ $container-fluid-side-limit: 'md';
     /** run yarn build:font-fallbacks */
     @font-face {
         font-family: font-fallback;
-        src: url("../../../lib/fonts/Arial/Arial.ttf") format("truetype");
+        src: local("Arial");
         size-adjust: 95.07193974%;
         ascent-override: 100%;
         descent-override: 30.3%;
