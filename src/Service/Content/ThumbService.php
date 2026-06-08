@@ -138,9 +138,10 @@ class ThumbService
             }
         }
 
-        $session = $this->coreLocator->request()->getSession();
+        $request = $this->coreLocator->request();
+        $session = $request && $request->hasSession() ? $request->getSession() : null;
         $sessionKey = 'thumbs_actions_' . $website->uploadDirname;
-        $thumbs = $session->get($sessionKey, []);
+        $thumbs = $session ? $session->get($sessionKey, []) : [];
 
         if (!$thumbs || $bustCache) {
             $thumbs = [];
@@ -162,7 +163,7 @@ class ThumbService
                     array_unshift($thumbs[$thumbAction->getNamespace()], $thumbConfig);
                 }
             }
-            $session->set($sessionKey, $thumbs);
+            $session?->set($sessionKey, $thumbs);
         }
 
         $configurations = [];
