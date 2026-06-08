@@ -48,7 +48,7 @@
     {%- if '.' in property -%}
         {%- set properties = property|split('.') -%}
         {%- set data = attribute(dataValue, properties[0]) -%}
-        <ul class="rlist-unstyled mb-0">
+        <ul class="list-unstyled mb-0">
             {%- if data|isArray or data|isObject and 'PersistentCollection' in data|getClass -%}
                 {%- for value in data -%}
                     <li>{%- include 'core/data-formater.html.twig' with {dataValue: attribute(value, properties[1])} only -%}</li>
