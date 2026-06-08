@@ -239,7 +239,7 @@ body {
             box-shadow: $theme-shadow-md;
         }
 
-        @media (min-width: 992px) {
+        @include mediaQuery(min-lg) {
             &:hover {
                 background: $theme-bg-alt !important;
                 border-color: $theme-border-alt !important;
@@ -2819,7 +2819,7 @@ th.fc-col-header-cell {
 
     li {
 
-        @media (min-width: 992px) {
+        @include mediaQuery(min-lg) {
 
             &:hover .block-row {
                 border-color: $theme-border-alt !important;
@@ -2876,7 +2876,7 @@ th.fc-col-header-cell {
 
     .collapse-icon {
 
-        @media (min-width: 992px) {
+        @include mediaQuery(min-lg) {
 
             &:hover {
                 color: $theme-accent !important;
@@ -2886,7 +2886,7 @@ th.fc-col-header-cell {
 
     .inner {
 
-        @media (min-width: 992px) {
+        @include mediaQuery(min-lg) {
 
             &:hover {
                 background: $theme-accent-bg-soft !important;

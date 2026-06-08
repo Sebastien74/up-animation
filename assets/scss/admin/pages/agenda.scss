@@ -74,6 +74,7 @@
         font-weight: 300;
     }
 
+    // FullCalendar (vendor): --fc-* custom props are the library's theming API, kept verbatim (CLAUDE.md exception).
     button {
         background-color: var(--fc-button-bg-color);
         border-color: $crumb-border;

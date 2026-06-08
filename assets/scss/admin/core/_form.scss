@@ -1155,6 +1155,7 @@ form {
 }
 
 .choices-users-select {
+    // choices.js (vendor): .choices__* selectors are library-generated, not project BEM (CLAUDE.md exception).
     .choices__item {
         color: $dark !important;
     }

@@ -131,7 +131,7 @@
 
                 margin-right: .75rem !important;
 
-                @media (min-width: 576px) {
+                @include mediaQuery(min-sm) {
                     margin-left: $space-2;
                     padding-left: $space-2;
                     border-left: 1px solid $btn-border;

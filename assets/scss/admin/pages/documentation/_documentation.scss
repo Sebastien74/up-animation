@@ -642,7 +642,6 @@ $doc-content-max: 1100px !default;
     blockquote {
         margin-left: 0;
         padding: $space-3 $space-5;
-        border-left: 3px solid $doc-accent;
         border-radius: $radius-sm;
         background: $doc-accent-soft;
         color: $doc-text;
