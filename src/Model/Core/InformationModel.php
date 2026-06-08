@@ -355,7 +355,8 @@ final class InformationModel extends BaseModel
      */
     private static function alerts(IntlModel $intl): array
     {
-        $hideAlerts = self::$coreLocator->request() && true === self::$coreLocator->request()->getSession()->get('front_website_alert_hide');
+        $request = self::$coreLocator->request();
+        $hideAlerts = $request && $request->hasSession() && true === $request->getSession()->get('front_website_alert_hide');
         $message = !$hideAlerts ? self::getContent('placeholder', $intl, true) : [];
         $alerts = [];
 
