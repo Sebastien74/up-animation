@@ -62,6 +62,7 @@ export default function (sliders) {
                     let perMove = slider.dataset.perMove ? parseInt(slider.dataset.perMove) : 1;
                     let itemsLength = slider.dataset.length ? slider.dataset.length : perPage;
                     let autoplay = slider.dataset.autoplay ? parseInt(slider.dataset.autoplay) === 1 : false;
+                    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) autoplay = false;
                     let pauseOnHover = slider.dataset.pause ? parseInt(slider.dataset.pause) === 1 : true;
                     let drag = slider.dataset.drag ? parseInt(slider.dataset.drag) === 1 : true;
                     let pagination = slider.dataset.dots ? parseInt(slider.dataset.dots) === 1 : false;

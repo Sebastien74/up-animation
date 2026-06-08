@@ -5,6 +5,9 @@ export default function () {
 
     import('../../../../scss/front/default/components/_video-scroll.scss');
 
+    // Reduced motion: keep the base layout, skip the scroll-linked full-bleed animation (WCAG 2.3.3).
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
     const nav = document.getElementById('main-navigation');
 
     /**
