@@ -24,6 +24,8 @@ use App\Entity\Module\Table\CellIntl;
 use App\Entity\Media\MediaRelationIntl;
 use App\Entity\Seo\Url;
 use App\Message\InvalidateCacheItems;
+use App\Model\Core\WebsiteModel;
+use App\Service\Core\RenderedCacheKeyResolver;
 use App\Service\Interface\CoreLocatorInterface;
 use DateMalformedStringException;
 use Doctrine\Bundle\DoctrineBundle\Attribute\AsDoctrineListener;
@@ -48,6 +50,7 @@ class CacheInvalidationSubscriber
     public function __construct(
         private readonly CoreLocatorInterface $coreLocator,
         private readonly MessageBusInterface $messageBus,
+        private readonly RenderedCacheKeyResolver $cacheKeyResolver,
     ) {
         $this->propertyAccessor = PropertyAccess::createPropertyAccessor();
     }
@@ -168,62 +171,22 @@ class CacheInvalidationSubscriber
 
     /**
      * Invalidate Result Cache for Action.
-     *
-     * @throws InvalidArgumentException
      */
-    private function invalidateActionResultCache(string $namespace, mixed $entityId, object $website, EntityManagerInterface $em): void
+    private function invalidateActionResultCache(string $namespace, mixed $entityId, WebsiteModel $website, EntityManagerInterface $em): void
     {
         if (!$em->getConfiguration()->getResultCache()) return;
 
-        $idsStr = is_array($entityId) ? implode('_', $entityId) : (string) $entityId;
-        $wId = $website->id;
-        $locales = $website->configuration->allLocales ?? [];
-
-        foreach ($locales as $locale) {
-            $this->itemsToDelete[] = 'pages_action_'.md5($namespace.'_'.$idsStr.'_'.$locale.'_'.$wId);
-            $this->itemsToDelete[] = 'page_action_'.md5($wId.'_'.$locale.'_'.$namespace.'_'.$entityId);
-            $this->itemsToDelete[] = 'pages_action_ids_'.md5($wId.'_'.$locale.'_'.$namespace.'_'.$idsStr);
-            $this->itemsToDelete[] = 'page_action_slug_'.md5($wId.'_'.$locale.'_'.$namespace.'_'.$entityId);
-            $this->itemsToDelete[] = 'pages_action_slug_'.md5($wId.'_'.$locale.'_'.$namespace.'_'.$entityId);
-        }
-
-        if ($locales) {
-            $sortedLocales = $locales;
-            sort($sortedLocales);
-            $this->itemsToDelete[] = 'pages_action_locales_'.md5($namespace.'_'.$idsStr.'_'.implode(',', $sortedLocales).'_'.$wId);
-        }
+        $this->itemsToDelete = array_merge($this->itemsToDelete, $this->cacheKeyResolver->actionKeys($namespace, $entityId, $website));
     }
 
     /**
      * Invalidate Result Cache for Page.
-     *
-     * @throws InvalidArgumentException
      */
-    private function invalidatePageResultCache(Page $page, object $website, EntityManagerInterface $em): void
+    private function invalidatePageResultCache(Page $page, WebsiteModel $website, EntityManagerInterface $em): void
     {
         if (!$em->getConfiguration()->getResultCache()) return;
 
-        foreach ($page->getUrls() as $url) {
-            $locale = $url->getLocale();
-            $urlCode = $url->getCode();
-            if ($page->isAsIndex()) {
-                $this->itemsToDelete[] = 'page-index-'.$website->id.'-'.$locale;
-            } elseif ($urlCode) {
-                $this->itemsToDelete[] = 'page-'.$website->id.'-'.$urlCode.'-'.$locale;
-            }
-            $this->itemsToDelete[] = 'page-url-'.md5($page->getId().'_'.$locale);
-            $this->itemsToDelete[] = 'page_url_id_'.$url->getId().'_'.$locale;
-            $this->itemsToDelete[] = 'pages_index_url_'.md5($page->getId().'_'.$locale);
-            foreach ([0, 1] as $previewFlag) {
-                if ($page->isAsIndex()) {
-                    $this->itemsToDelete[] = 'page-stamp-'.$website->id.'-index-'.$locale.'-'.$previewFlag;
-                }
-                if ($urlCode) {
-                    $this->itemsToDelete[] = 'page-stamp-'.$website->id.'-'.$urlCode.'-'.$locale.'-'.$previewFlag;
-                }
-            }
-        }
-        if ($page->getLayout()) $this->itemsToDelete[] = 'layout_'.$page->getLayout()->getId();
+        $this->itemsToDelete = array_merge($this->itemsToDelete, $this->cacheKeyResolver->pageKeys($page, $website));
     }
 
     /**

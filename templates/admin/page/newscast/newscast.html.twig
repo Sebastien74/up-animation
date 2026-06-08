@@ -83,6 +83,10 @@
             </li>
         </ul>
 
+        {%- if isMainEntity -%}
+            {%- include 'admin/core/layout/cache-invalidate-button.html.twig' -%}
+        {%- endif -%}
+
         {%- block entityForm -%}{%- endblock -%}
 
     </div>

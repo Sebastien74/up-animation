@@ -23,9 +23,9 @@ rendue derrière du cache.
 
 ---
 
-## 1. Vider le cache du site (dashboard)
+## 1. Invalider le cache du site (dashboard)
 
-Bouton **« Vider le cache »** dans le hero du dashboard (à côté de la date).
+Bouton **« Invalider le cache »** dans le hero du dashboard (à côté de la date).
 
 - Route `admin_website_cache_invalidate` (POST + CSRF, `ROLE_ADMIN`).
 - Service `WebsiteCacheInvalidator` : bump de `website.cacheClearDate` (timezone
@@ -50,25 +50,32 @@ Page **« Pools de cache »** : tuile « Accès rapides » du dashboard + lien s
 
 ## 3. Invalider le cache d'une fiche (édition)
 
-Bouton **« Invalider le cache »** dans la vue d'édition **et** la vue
-« Mise en page » des entités à layout (Page, Product, Newscast...), bloc `#layout-grid`,
-visible si `entity.layout` a au moins une zone. Markup factorisé dans le partiel
-`templates/admin/core/layout/cache-invalidate-button.html.twig`, inclus par
-`edit.html.twig` et `layout.html.twig`.
+Bouton **« Invalider le cache »** dans la vue d'édition **et** la vue « Mise en page » des
+entités à layout (Page, Product, Newscast...), visible dès que l'entité expose `getLayout()`
+(layout propre **ou** partagé). Markup factorisé dans le partiel
+`templates/admin/core/layout/cache-invalidate-button.html.twig`, inclus par `edit.html.twig`,
+`layout.html.twig`, et les toolbars d'édition `product.html.twig` / `newscast.html.twig`.
 
 - Route `admin_entity_cache_invalidate` (POST + CSRF, `ROLE_ADMIN`). Garde stricte :
   `hasMetadataFor` (entité Doctrine connue) + `denyUnlessEntityWebsite` (site courant) +
-  `EntityCacheInvalidator::supports()` (layout + zones).
-- Service `EntityCacheInvalidator` : bump `updatedAt` de **tous les blocs** du layout de
-  l'entité, puis `flush`. Combiné au segment `block.updatedAt` de la clé fragment, seuls les
-  fragments de cette entité sont régénérés ; le flush en contexte admin laisse
-  `CacheInvalidationSubscriber` purger le result-cache page/action, comme une édition.
+  `EntityCacheInvalidator::supports()` (entité à layout).
+- Service `EntityCacheInvalidator`, deux temps complémentaires :
+  1. **Layout propre** (Page, ou Product/Newscast en `customLayout`) : bump `updatedAt` de
+     tous les blocs du layout, puis `flush`. Combiné au segment `block.updatedAt` de la clé
+     fragment, les `{% cache %}` de la page de l'entité régénèrent, et le flush laisse
+     `CacheInvalidationSubscriber` purger le result-cache de cette page.
+  2. **Ciblé, layout partagé inclus** : supprime les clés de **result-cache d'action**
+     (`pages_action_*`, namespace = FQCN de l'entité) **et** le result-cache des **pages qui
+     épinglent** l'entité (`PageRepository::findAllByActionForLocales`), via le message
+     `InvalidateCacheItems`. Les actions dynamiques (listings/vues module) passent par le
+     result-cache Doctrine, pas par les fragments `{% cache %}` : purger ces clés suffit.
+- Générateurs de clés mutualisés dans `RenderedCacheKeyResolver` (`pageKeys`, `actionKeys`),
+  **source unique** partagée avec `CacheInvalidationSubscriber` (aucune duplication).
 
-> **Clé fragment enrichie** : `block.updatedAt` a été ajouté à la clé `{% cache %}`
-> (`templates/front/default/include/zone.html.twig`). Changement à portée site (un
-> cache-miss unique au prochain rendu). `cacheClearDate` reste dans la clé : le bouton
-> dashboard (point 1) continue d'invalider **tout** le site, ce bouton n'invalide **qu'une**
-> entité.
+> **Portée** : ce bouton invalide le rendu **de cette fiche** (sa page détail/teaser épinglée
+> + le result-cache de son action). Il ne touche **pas** les listings génériques qui agrègent
+> plusieurs entités (leur fragment dépend de `cacheClearDate`/`block.updatedAt` de la page de
+> listing) : pour ceux-là, utiliser le bouton « Vider le cache » du dashboard (point 1).
 
 ---
 
