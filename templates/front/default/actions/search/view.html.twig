@@ -36,7 +36,7 @@
                                 }}) }}
                                     <div class="input-group">
                                         <label for="search" class="d-flex justify-content-center align-items-center w-100">
-                                            {{ form_widget(form.search) }}
+                                            {{ form_widget(form.search, {attr: {'aria-label': 'Rechercher'|trans|striptags}}) }}
                                             <button type="submit" id="search-engine-submit" class="input-group-text cursor p-0 h-100">
                                                 <i class="icon-search text-secondary"></i>
                                             </button>
@@ -63,7 +63,7 @@
                 "data-component": "webpack-form" }}) }}
                 <div class="input-group p-0">
                     <label for="search" class="fw-600 mb-4 text-center w-100 d-none">{{ "Recherchez"|trans|striptags }}</label>
-                    {{ form_widget(form.search) }}
+                    {{ form_widget(form.search, {attr: {'aria-label': 'Rechercher'|trans|striptags}}) }}
                     <button type="submit" id="search-engine-submit" class="input-group-text bg-warning cursor p-0 d-inline-flex justify-content-center align-items-center">
                         <i class="icon-search"></i>
                     </button>
