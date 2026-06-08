@@ -2240,6 +2240,7 @@ body {
      que le bloc SEO ci-dessus — $crumb-* et statuts sémantiques restent
      aux valeurs dark dans le bundle page, on repasse ici en palette light. ---*/
 
+#translations-domains-index,
 #translations-domains,
 .translations-domain {
 
@@ -2250,7 +2251,10 @@ body {
             background-color: $theme-overlay-soft !important;
 
             .progress-bar {
-                background-color: $theme-accent !important;
+                &.bg-danger { background-color: $danger !important; }
+                &.bg-warning { background-color: $warning !important; }
+                &.bg-info { background-color: $info !important; }
+                &.bg-success { background-color: $success !important; }
             }
         }
     }
@@ -2283,7 +2287,10 @@ body {
         border: 1px solid $theme-border !important;
 
         .progress-bar {
-            background-color: $theme-accent !important;
+            &.bg-danger { background-color: $danger !important; }
+            &.bg-warning { background-color: $warning !important; }
+            &.bg-info { background-color: $info !important; }
+            &.bg-success { background-color: $success !important; }
         }
     }
 }
