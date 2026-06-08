@@ -176,7 +176,8 @@ final class WebsiteModel extends BaseModel
             $link = (new Link('preload', $logo))
                 ->withAttribute('as', 'image')
                 ->withAttribute('fetchpriority', 'high');
-            $ext = strtolower(pathinfo(parse_url($logo, PHP_URL_PATH) ?? $logo, PATHINFO_EXTENSION));
+            $logoPath = parse_url($logo, PHP_URL_PATH);
+            $ext = strtolower(pathinfo(is_string($logoPath) ? $logoPath : $logo, PATHINFO_EXTENSION));
             if ($ext === 'svg') {
                 $link = $link->withAttribute('media', 'all');
             }
