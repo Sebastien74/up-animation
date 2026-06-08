@@ -75,7 +75,10 @@ class Effects implements EffectsInterface, InfoProvider
     public function negative()
     {
         try {
-            $this->imagick->negateImage(false, \Imagick::CHANNEL_ALL);
+            // \Imagick::CHANNEL_ALL includes the alpha channel, so a plain negateImage()
+            // call would invert transparency along with the color (an opaque image would
+            // become fully transparent). Exclude the alpha channel to match the GD driver.
+            $this->imagick->negateImage(false, \Imagick::CHANNEL_ALL & ~\Imagick::CHANNEL_ALPHA);
         } catch (\ImagickException $e) {
             throw new RuntimeException('Failed to negate the image', $e->getCode(), $e);
         }
@@ -92,7 +95,20 @@ class Effects implements EffectsInterface, InfoProvider
     {
         static::getDriverInfo()->requireFeature(DriverInfo::FEATURE_GRAYSCALEEFFECT);
         try {
-            $this->imagick->setImageType(\Imagick::IMGTYPE_GRAYSCALE);
+            // IMGTYPE_GRAYSCALE is an alpha-less image type: ImageMagick deactivates the alpha
+            // channel when switching to it, so transparent pixels would be encoded as opaque
+            // gray. Use the alpha-preserving variant instead, as Image::setColorspace() already
+            // does (the constant was named IMGTYPE_GRAYSCALEMATTE before ImageMagick 7 / Imagick
+            // 3.4.3, and some combinations of Imagick and ImageMagick versions define neither,
+            // hence the hard-coded fallback value).
+            if (defined('\Imagick::IMGTYPE_GRAYSCALEALPHA')) {
+                $grayscaleType = \Imagick::IMGTYPE_GRAYSCALEALPHA;
+            } elseif (defined('\Imagick::IMGTYPE_GRAYSCALEMATTE')) {
+                $grayscaleType = \Imagick::IMGTYPE_GRAYSCALEMATTE;
+            } else {
+                $grayscaleType = 3;
+            }
+            $this->imagick->setImageType($grayscaleType);
         } catch (\ImagickException $e) {
             throw new RuntimeException('Failed to grayscale the image', $e->getCode(), $e);
         }

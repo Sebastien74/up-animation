@@ -1,5 +1,13 @@
 # CHANGELOG
 
+### 1.5.4 (2026-06-04)
+- Fix imagick stale layers (#879, @nlemoine)
+- Fix the Imagick driver deactivating the alpha channel in `effects()->grayscale()` (transparent pixels were encoded as opaque gray); it now uses the alpha-preserving grayscale image type, like `usePalette()` (#880, @nlemoine)
+
+### 1.5.3 (2026-06-03)
+- Fix the Imagick driver painting a "black box" when pasting an image with transparent areas at an alpha lower than 100; the opacity now scales the existing per-pixel alpha instead of overwriting it (#878, @nlemoine)
+- Fix the Imagick driver inverting the alpha channel in `effects()->negative()` (an opaque image became fully transparent); it now excludes the alpha channel, matching the GD driver (#877, @nlemoine)
+
 ### 1.5.2 (2026-01-09)
 - Do not call curl_close on PHP 8.0+ (#875, @dmaicher)
 

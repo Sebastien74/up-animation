@@ -29,7 +29,6 @@ use Imagine\Image\Palette\PaletteInterface;
 use Imagine\Image\Point;
 use Imagine\Image\PointInterface;
 use Imagine\Image\ProfileInterface;
-use Imagine\Utils\ErrorHandling;
 
 /**
  * Image implementation using the Imagick PHP extension.
@@ -127,6 +126,20 @@ final class Image extends AbstractImage implements InfoProvider
     }
 
     /**
+     * Replaces the underlying \Imagick instance, invalidating the cached
+     * layers (if any) since they wrap the replaced instance.
+     *
+     * @param \Imagick $imagick
+     */
+    private function setImagick(\Imagick $imagick)
+    {
+        if ($imagick !== $this->imagick) {
+            $this->imagick = $imagick;
+            $this->layers = null;
+        }
+    }
+
+    /**
      * {@inheritdoc}
      *
      * @see \Imagine\Image\ManipulatorInterface::copy()
@@ -153,13 +166,13 @@ final class Image extends AbstractImage implements InfoProvider
         try {
             if ($this->layers()->count() > 1) {
                 // Crop each layer separately
-                $this->imagick = $this->imagick->coalesceImages();
+                $this->setImagick($this->imagick->coalesceImages());
                 foreach ($this->imagick as $frame) {
                     $frame->cropImage($size->getWidth(), $size->getHeight(), $start->getX(), $start->getY());
                     // Reset canvas for gif format
                     $frame->setImagePage(0, 0, 0, 0);
                 }
-                $this->imagick = $this->imagick->deconstructImages();
+                $this->setImagick($this->imagick->deconstructImages());
             } else {
                 $this->imagick->cropImage($size->getWidth(), $size->getHeight(), $start->getX(), $start->getY());
                 // Reset canvas for gif format
@@ -246,14 +259,14 @@ final class Image extends AbstractImage implements InfoProvider
             $pasteMe = $image->imagick;
         } elseif ($alpha > 0) {
             $pasteMe = $image->cloneImagick();
-            // setImageOpacity was replaced with setImageAlpha in php-imagick v3.4.3
-            if (method_exists($pasteMe, 'setImageAlpha')) {
-                $pasteMe->setImageAlpha($alpha / 100);
-            } else {
-                ErrorHandling::ignoring(E_DEPRECATED, function () use ($pasteMe, $alpha) {
-                    $pasteMe->setImageOpacity($alpha / 100);
-                });
-            }
+            // Scale the existing per-pixel alpha by the opacity factor instead of
+            // overwriting it. setImageAlpha()/setImageOpacity() set every pixel's
+            // alpha to the same value, so transparent areas of $image become a
+            // semi-opaque rectangle - a "black box" painted over the destination.
+            // Multiplying the alpha channel keeps fully-transparent pixels
+            // transparent while still fading the opaque ones.
+            $pasteMe->setImageAlphaChannel(\Imagick::ALPHACHANNEL_ACTIVATE);
+            $pasteMe->evaluateImage(\Imagick::EVALUATE_MULTIPLY, $alpha / 100, \Imagick::CHANNEL_ALPHA);
         } else {
             $pasteMe = null;
         }
@@ -285,11 +298,11 @@ final class Image extends AbstractImage implements InfoProvider
     {
         try {
             if ($this->layers()->count() > 1) {
-                $this->imagick = $this->imagick->coalesceImages();
+                $this->setImagick($this->imagick->coalesceImages());
                 foreach ($this->imagick as $frame) {
                     $frame->resizeImage($size->getWidth(), $size->getHeight(), $this->getFilter($filter), 1);
                 }
-                $this->imagick = $this->imagick->deconstructImages();
+                $this->setImagick($this->imagick->deconstructImages());
             } else {
                 $this->imagick->resizeImage($size->getWidth(), $size->getHeight(), $this->getFilter($filter), 1);
             }
@@ -426,7 +439,7 @@ final class Image extends AbstractImage implements InfoProvider
         } else {
             $this->layers()->merge();
         }
-        $this->imagick = $this->applyImageOptions($this->imagick, $options, $path);
+        $this->setImagick($this->applyImageOptions($this->imagick, $options, $path));
 
         // flatten only if image has multiple layers
         if ((!isset($options['flatten']) || $options['flatten'] === true) && $this->layers()->count() > 1) {
@@ -740,9 +753,9 @@ final class Image extends AbstractImage implements InfoProvider
         // @see https://github.com/mkoppanen/imagick/issues/45
         try {
             if (method_exists($this->imagick, 'mergeImageLayers') && defined('Imagick::LAYERMETHOD_UNDEFINED')) {
-                $this->imagick = $this->imagick->mergeImageLayers(\Imagick::LAYERMETHOD_UNDEFINED);
+                $this->setImagick($this->imagick->mergeImageLayers(\Imagick::LAYERMETHOD_UNDEFINED));
             } elseif (method_exists($this->imagick, 'flattenImages')) {
-                $this->imagick = $this->imagick->flattenImages();
+                $this->setImagick($this->imagick->flattenImages());
             }
         } catch (\ImagickException $e) {
             throw new RuntimeException('Flatten operation failed', $e->getCode(), $e);
