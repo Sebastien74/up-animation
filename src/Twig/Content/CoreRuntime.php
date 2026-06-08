@@ -43,9 +43,14 @@ readonly class CoreRuntime implements RuntimeExtensionInterface
      */
     public function lastRoute(): ?string
     {
-        $lastRoute = preg_match('/\/admin-'.$_ENV['SECURITY_TOKEN'].'/', $this->coreLocator->request()->getUri())
-            ? $this->coreLocator->request()->getSession()->get('last_route_back')
-            : $this->coreLocator->request()->getSession()->get('last_route');
+        $request = $this->coreLocator->request();
+        $session = $request && $request->hasSession() ? $request->getSession() : null;
+        if (!$session) {
+            return null;
+        }
+        $lastRoute = preg_match('/\/admin-'.$_ENV['SECURITY_TOKEN'].'/', $request->getUri())
+            ? $session->get('last_route_back')
+            : $session->get('last_route');
 
         try {
             if (is_object($lastRoute) && property_exists($lastRoute, 'name') && $this->coreLocator->routeExist($lastRoute->name)) {

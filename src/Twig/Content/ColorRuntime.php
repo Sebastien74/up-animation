@@ -49,12 +49,13 @@ class ColorRuntime implements RuntimeExtensionInterface
      */
     public function color(string $category, ?WebsiteModel $website = null, ?string $slug = null, bool $refresh = false): mixed
     {
-        $website = !$website ? $this->coreLocator->em()->getRepository(Website::class)->findOneByHost($this->coreLocator->request()->getHost()) : $website;
+        $request = $this->coreLocator->request();
+        $website = !$website ? $this->coreLocator->em()->getRepository(Website::class)->findOneByHost($request?->getHost()) : $website;
         $configurationId = $website->configuration->id;
-        $session = $this->coreLocator->request()->getSession();
-        $colorsSession = $session->get('website_colors_'.$configurationId) ? $session->get('website_colors_'.$configurationId) : [];
+        $session = $request && $request->hasSession() ? $request->getSession() : null;
+        $colorsSession = $session && $session->get('website_colors_'.$configurationId) ? $session->get('website_colors_'.$configurationId) : [];
         $colors = !$colorsSession && $configurationId ? $this->coreLocator->em()->getRepository(Color::class)->findByConfiguration($configurationId) : $colorsSession;
-        $session->set('website_colors_'.$configurationId, $colors);
+        $session?->set('website_colors_'.$configurationId, $colors);
 
         foreach ($colors as $color) {
             if ($color['category'] === $category && $color['slug'] === $slug) {
@@ -66,7 +67,7 @@ class ColorRuntime implements RuntimeExtensionInterface
         }
 
         if (!$refresh) {
-            $session->remove('website_colors_'.$configurationId);
+            $session?->remove('website_colors_'.$configurationId);
             $this->color($category, $website, $slug, true);
         }
 
