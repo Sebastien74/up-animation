@@ -72,6 +72,42 @@ final class LocationPrepositionRuntime implements RuntimeExtensionInterface
     }
 
     /**
+     * Return the French preposition/prefix to use before a French region name.
+     *
+     * Regions are irregular: "en Bretagne", "dans les Hauts-de-France", "dans le Grand Est",
+     * "à La Réunion". Lookup is name-based (no code system, unlike departments).
+     *
+     * @param string $region Region name (e.g. "Bretagne", "Hauts-de-France")
+     * @param string $type One of self::PREP_*
+     */
+    public function getRegionPreposition(string $region, string $type = self::PREP_DEFAULT): string
+    {
+        $row = $this->getRegions()[$this->normalize($region)] ?? null;
+
+        if (!is_array($row)) {
+            // "en" covers most French regions
+            return ($type === self::PREP_ALL_IN) ? 'dans toute la ' : (($type === self::PREP_ALL) ? 'toute la ' : 'en ');
+        }
+
+        if ($type === self::PREP_DEFAULT) {
+            return $row['prep'];
+        }
+
+        if ($type === self::PREP_IN) {
+            $article = $this->buildDansArticle($row['article']);
+            return !str_contains($article, "'") ? ' '.$article : $article;
+        }
+
+        if ($type === self::PREP_ALL_IN || $type === self::PREP_ALL) {
+            $prefix = $this->buildToutArticle($row['article']);
+            $prefix = !str_contains($prefix, "'") ? ' '.$prefix : $prefix;
+            return ($type === self::PREP_ALL_IN) ? ('dans ' . $prefix) : $prefix;
+        }
+
+        return $row['prep'];
+    }
+
+    /**
      * Return the department code formatted as "(01)" by default.
      *
      * @param string|int $department Department name, department code or postal code.
@@ -280,7 +316,15 @@ final class LocationPrepositionRuntime implements RuntimeExtensionInterface
         $value = str_replace(['’', '\''], ' ', $value);
         $value = str_replace(['-', '_', '/', '\\', '.'], ' ', $value);
 
-        // Remove accents (basic transliteration).
+        // Deterministic accent stripping (iconv //TRANSLIT is locale-dependent).
+        $value = strtr($value, [
+            'à' => 'a', 'â' => 'a', 'ä' => 'a', 'á' => 'a', 'ã' => 'a', 'å' => 'a',
+            'è' => 'e', 'é' => 'e', 'ê' => 'e', 'ë' => 'e',
+            'ì' => 'i', 'î' => 'i', 'ï' => 'i', 'í' => 'i',
+            'ò' => 'o', 'ô' => 'o', 'ö' => 'o', 'ó' => 'o', 'õ' => 'o',
+            'ù' => 'u', 'û' => 'u', 'ü' => 'u', 'ú' => 'u',
+            'ç' => 'c', 'ÿ' => 'y', 'ñ' => 'n', 'œ' => 'oe', 'æ' => 'ae',
+        ]);
         $value = iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $value) ?: $value;
 
         // Keep only alnum + spaces.
@@ -500,5 +544,52 @@ final class LocationPrepositionRuntime implements RuntimeExtensionInterface
         ];
 
         return $departments;
+    }
+
+    /**
+     * Single source of truth: French regions with canonical preposition + article.
+     *
+     * Keyed by normalized name. prep is concatenated directly before the region name,
+     * article feeds "dans le/la/l'/les" and "tout(e)(s)" builders.
+     *
+     * @return array<string, array{prep: string, article: string}>
+     */
+    private function getRegions(): array
+    {
+        static $regions = null;
+
+        if (is_array($regions)) {
+            return $regions;
+        }
+
+        $r = static function (string $prep, string $article): array {
+            return ['prep' => $prep, 'article' => $article];
+        };
+
+        $regions = [
+            'auvergne rhone alpes' => $r('en ', 'la'),
+            'bourgogne franche comte' => $r('en ', 'la'),
+            'bretagne' => $r('en ', 'la'),
+            'centre val de loire' => $r('dans le ', 'le'),
+            'corse' => $r('en ', 'la'),
+            'grand est' => $r('dans le ', 'le'),
+            'hauts de france' => $r('dans les ', 'les'),
+            'ile de france' => $r('en ', 'la'),
+            'normandie' => $r('en ', 'la'),
+            'nouvelle aquitaine' => $r('en ', 'la'),
+            'occitanie' => $r('en ', 'la'),
+            'pays de la loire' => $r('dans les ', 'les'),
+            'provence alpes cote d azur' => $r('en ', 'la'),
+            'guadeloupe' => $r('en ', 'la'),
+            'martinique' => $r('en ', 'la'),
+            'guyane' => $r('en ', 'la'),
+            'la reunion' => $r('à ', 'la'),
+            'mayotte' => $r('à ', 'la'),
+        ];
+
+        $regions['paca'] = $regions['provence alpes cote d azur'];
+        $regions['reunion'] = $regions['la reunion'];
+
+        return $regions;
     }
 }

@@ -36,7 +36,15 @@
             : (url.children is defined and url.children is not empty ? url.children : []) -%}
         {%- set display = not url.isInfill or (url.isInfill and children is not empty) -%}
         {%- if url.agencyEntity is defined and url.agencyEntity -%}
-            {%- set title = title~' à '|trans~url.agencyEntity.city -%}
+            {%- if url.agencyEntity.city -%}
+                {%- set title = title~' à '|trans~url.agencyEntity.city -%}
+            {%- endif -%}
+            {%- if url.agencyEntity.department -%}
+                {%- set title = title~' '~url.agencyEntity.department|deptPreposition~url.agencyEntity.department -%}
+            {%- endif -%}
+            {%- if url.agencyEntity.region -%}
+                {%- set title = title~' '~url.agencyEntity.region|regPreposition~url.agencyEntity.region -%}
+            {%- endif -%}
         {%- endif -%}
         {%- if display -%}
             <li class="d-inline-block align-items-start">

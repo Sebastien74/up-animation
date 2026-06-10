@@ -126,6 +126,7 @@ final class ProductModel extends BaseModel
             'address' => $address,
             'city' => $address ? $address['city'] : false,
             'department' => $address && 'FR' === $address['country'] ? $address['department'] : false,
+            'region' => $address && 'FR' === $address['country'] ? $address['region'] : false,
             'zipcode' => $address && 'FR' === $address['country'] ? $address['zipCode'] : false,
             'country' => $address ? $address['country'] : false,
             'zipcodeSmall' => $address && $address['zipCode'] && 'FR' === $address['country'] ? '('.substr($address['zipCode'], 0 , 2).')' : false,

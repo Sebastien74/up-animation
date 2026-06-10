@@ -2,6 +2,8 @@
 
 {%- set title = pageTitle is defined ? pageTitle : (intl.title is defined ? intl.title : null) -%}
 {%- set city = city is defined ? city : null -%}
+{%- set department = department is defined ? department : null -%}
+{%- set region = region is defined ? region : null -%}
 {%- set disableImage = disableImage is defined ? disableImage : false -%}
 {%- set people = people is defined ? people : false -%}
 {%- set duration = duration is defined ? duration : false -%}
@@ -64,6 +66,16 @@
                                     {{ 'à %city%'|trans({
                                         '%city%': city
                                     })|raw }}
+                                </span>
+                            {%- endif -%}
+                            {%- if department -%}
+                                <span class="department text-primary">
+                                    {{ department|deptPreposition~department }}
+                                </span>
+                            {%- endif -%}
+                            {%- if region -%}
+                                <span class="region text-primary">
+                                    {{ region|regPreposition~region }}
                                 </span>
                             {%- endif -%}
                         </h{{ titleForce }}>
