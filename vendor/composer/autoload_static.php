@@ -2414,6 +2414,7 @@ class ComposerStaticInitb6f039734207b56291bf391c5da7ade3
         'App\\Service\\Core\\LastRouteService' => __DIR__ . '/../..' . '/src/Service/Core/LastRouteService.php',
         'App\\Service\\Core\\MailerService' => __DIR__ . '/../..' . '/src/Service/Core/MailerService.php',
         'App\\Service\\Core\\MessengerWorkerService' => __DIR__ . '/../..' . '/src/Service/Core/MessengerWorkerService.php',
+        'App\\Service\\Core\\RenderedCacheKeyResolver' => __DIR__ . '/../..' . '/src/Service/Core/RenderedCacheKeyResolver.php',
         'App\\Service\\Core\\ScheduledCommandLogReader' => __DIR__ . '/../..' . '/src/Service/Core/ScheduledCommandLogReader.php',
         'App\\Service\\Core\\ScheduledCommandReportService' => __DIR__ . '/../..' . '/src/Service/Core/ScheduledCommandReportService.php',
         'App\\Service\\Core\\SlowRequestStatsService' => __DIR__ . '/../..' . '/src/Service/Core/SlowRequestStatsService.php',

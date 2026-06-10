@@ -1293,6 +1293,7 @@ return array(
     'App\\Service\\Core\\LastRouteService' => $baseDir . '/src/Service/Core/LastRouteService.php',
     'App\\Service\\Core\\MailerService' => $baseDir . '/src/Service/Core/MailerService.php',
     'App\\Service\\Core\\MessengerWorkerService' => $baseDir . '/src/Service/Core/MessengerWorkerService.php',
+    'App\\Service\\Core\\RenderedCacheKeyResolver' => $baseDir . '/src/Service/Core/RenderedCacheKeyResolver.php',
     'App\\Service\\Core\\ScheduledCommandLogReader' => $baseDir . '/src/Service/Core/ScheduledCommandLogReader.php',
     'App\\Service\\Core\\ScheduledCommandReportService' => $baseDir . '/src/Service/Core/ScheduledCommandReportService.php',
     'App\\Service\\Core\\SlowRequestStatsService' => $baseDir . '/src/Service/Core/SlowRequestStatsService.php',
