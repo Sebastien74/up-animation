@@ -20,11 +20,11 @@
                             <span class="newsletter-eyebrow-stroke" aria-hidden="true"></span>
                             <span class="newsletter-eyebrow-text">{{ "Newsletter"|trans }}</span>
                         </div>
-                        <label for="front_newsletter_email{{ idSuffix }}" class="newsletter-title required d-block fw-900 text-white text-uppercase m-0">
+                        <label for="front_newsletter_email{{ idSuffix }}" class="newsletter-title required d-block fw-900 text-secondary text-uppercase m-0">
                             <span class="label-name">{{ "S'inscrire à la newsletter"|trans|raw }}</span>
                         </label>
                         {%- if intro|striptags|length > 0 -%}
-                            <p class="newsletter-intro mb-0 mt-2 mt-md-3 text-white">{{ intro|unescape|raw|nl2br }}</p>
+                            <p class="newsletter-intro mb-0 mt-2 mt-md-3 text-secondary">{{ intro|unescape|raw|nl2br }}</p>
                         {%- endif -%}
                     </div>
                     <div class="refer-group col-12 col-lg-6 col-xl-7">
