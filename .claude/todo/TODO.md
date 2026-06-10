@@ -152,6 +152,7 @@ DBAL 4). À traiter côté infra, pas applicatif :
 ## Performance & Cache
 
 - Faire un test EcoIndex (https://www.ecoindex.fr/) sur les pages clés (home, listing animations, fiche produit) : relever le grade, le poids transféré, le nombre de requêtes et la complexité DOM, puis traiter les points faibles.
+- Refaire un **scan EcoIndex en conditions prod** (build minifié + gzip/brotli actifs) sur home + listing animations + fiche produit, pour obtenir un grade A→G fiable. Audit dev déjà réalisé → `.claude/audit-ecoindex-2026-06-08.md` (DOM ~1500, ~49 requêtes). Leviers : compression serveur Apache, fonte Arial → `local()` (fait), `safari-pinned-tab.svg` 113 Ko, fonds décoratifs page « build ».
 - [x] **Faire le cache comme `PageRepository`** : implémenté (`enableResultCache` clés `page-*`, `pages_action_*`, etc.).
   ```php
   $result = $this->cacheInterface->get($cacheKey, function () use ($website, $urlCode, $locale, $preview) {
