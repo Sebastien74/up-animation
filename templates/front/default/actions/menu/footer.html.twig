@@ -57,7 +57,7 @@
                         <span class="dashed text-white ms-2 me-2{% if not alwaysHorizontal %} d-none d-md-block{% endif %}">-</span>
                     {%- endif -%}
                     {%- if axeptioActive is defined and axeptioActive -%}
-                        <a href="javascript:openAxeptioCookies()" class="text-white text-hover-primary{% if isVertical %} d-inline-block mb-2{% endif %}" rel="nofollow">{{ "Gestion des Cookies"|trans|raw }}</a>
+                        <a href="#" class="open-axeptio-cookies text-white text-hover-primary{% if isVertical %} d-inline-block mb-2{% endif %}" rel="nofollow">{{ "Gestion des Cookies"|trans|raw }}</a>
                     {%- else -%}
                         <span class="open-gdpr-modal cursor text-white text-hover-primary{% if isVertical %} d-inline-block mb-2{% endif %}">{{ "Gestion des Cookies"|trans|raw }}</span>
                     {%- endif -%}

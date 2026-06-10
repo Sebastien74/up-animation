@@ -161,4 +161,26 @@ if (clientId || gtmInjection) {
         script.src = src;
         document.getElementsByTagName('head')[0].appendChild(script);
     }
+
+    /**
+     * Open the Axeptio cookies management panel (consent widget).
+     */
+    function openAxeptioCookies() {
+        if (window.axeptioSDK && typeof window.axeptioSDK.openCookies === 'function') {
+            window.axeptioSDK.openCookies();
+            return;
+        }
+        (window._axcb = window._axcb || []).push(function (sdk) {
+            sdk.openCookies();
+        });
+    }
+
+    // Délégation : remplace l'ancien href="javascript:openAxeptioCookies()" bloqué par la CSP (nonce).
+    document.addEventListener('click', function (event) {
+        let trigger = event.target.closest('.open-axeptio-cookies, a[href^="javascript:openAxeptioCookies"]');
+        if (trigger) {
+            event.preventDefault();
+            openAxeptioCookies();
+        }
+    });
 }

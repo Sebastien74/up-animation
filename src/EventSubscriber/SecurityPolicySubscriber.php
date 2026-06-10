@@ -402,8 +402,11 @@ class SecurityPolicySubscriber implements EventSubscriberInterface
             "'self'",
             'https://www.google-analytics.com',
             'https://*.google-analytics.com',
+            'https://*.analytics.google.com',
             'https://stats.g.doubleclick.net',
+            'https://*.g.doubleclick.net',
             'https://www.googletagmanager.com',
+            'https://*.googletagmanager.com',
             'https://*.googlesyndication.com',
             'https://cdn.matomo.cloud',
             $matomo,
@@ -430,13 +433,17 @@ class SecurityPolicySubscriber implements EventSubscriberInterface
             "'report-sample'",
         ];
 
+        // Axeptio (CMP injecté via GTM) insère dynamiquement de nombreux <style> et une
+        // feuille fonts.axept.io sans pouvoir porter notre nonce. Tant qu'un nonce est présent
+        // dans la directive, 'unsafe-inline' est ignoré (règle CSP3), donc ces styles seraient
+        // bloqués. On bascule les styles sur 'unsafe-inline' (sans nonce) : compromis acceptable
+        // côté style (risque bien moindre que pour les scripts, qui restent verrouillés par nonce).
         $styleSrc = [
             "'self'",
-            $nonce,
             "'unsafe-inline'",
-            "'unsafe-hashes'",   // permet d'autoriser des attributs style="" via hash
             'https://fonts.googleapis.com',
             'https://*.typekit.net',
+            'https://fonts.axept.io',
             "'report-sample'",
         ];
         $styleSrcElem = $styleSrc;
@@ -453,10 +460,14 @@ class SecurityPolicySubscriber implements EventSubscriberInterface
             $matomo,
             'https://cdn.matomo.cloud',
             'https://favicons.axept.io',
+            'https://axeptio.imgix.net',
             'https://*.basemaps.cartocdn.com',
             'https://www.google-analytics.com',
+            'https://*.google-analytics.com',
             'https://www.googletagmanager.com',
             'https://*.googlesyndication.com',
+            'https://stats.g.doubleclick.net',
+            'https://*.g.doubleclick.net',
             'https://www.google.com',
         ];
 
@@ -466,6 +477,7 @@ class SecurityPolicySubscriber implements EventSubscriberInterface
             'https://fonts.gstatic.com',
             'https://fonts.googleapis.com',
             'https://use.typekit.net',
+            'https://fonts.axept.io',
             "'report-sample'",
         ];
 
