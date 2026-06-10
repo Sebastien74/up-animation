@@ -883,7 +883,7 @@ class ImageThumbnail implements ImageThumbnailInterface
                 if ($this->isAvifSupported()) {
                     $newDirname = str_replace('.webp', '.avif', $newDirname);
                 }
-                $newPath = $this->schemeAndHttpHost.str_replace([$this->coreLocator->projectDir(), '\\public', '\\'], ['', '', '/'], $newDirname);
+                $newPath = $this->publicPath($newDirname);
 
                 if ($this->filesystem->exists($newDirname)) {
                     return $newPath;
