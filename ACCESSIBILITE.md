@@ -123,3 +123,36 @@ complet), idéalement gatés sur le même flag `data-accessibility` :
 - Variable CSS : `--a11y-font-scale` (multiplicateur de taille de police).
 - Signal global : `document.documentElement.dataset.accessibility` (`'1'`/`'0'`).
 - Police dyslexie : OpenDyslexic, déclarée via `assets/lib/fonts/dyslexic.scss`.
+
+---
+
+## 6. À valider (non testé dans l'environnement de développement)
+
+> Le code a été validé par `node --check` (JS) et revue ; il n'a **pas** pu être
+> buildé ni exécuté ici (`node_modules` absent, console Symfony indisponible).
+> Les points ci-dessous demandent une **validation humaine** avant diffusion.
+
+**Build / pré-requis**
+- [ ] `yarn build` génère bien les chunks JS/CSS du widget (chunk dédié).
+- [ ] Aucune régression de build (SCSS `accessibility-widget.scss`, import de la
+      police OpenDyslexic).
+
+**Chargement conditionnel**
+- [ ] Module **actif** (`accessibilityStatus`) → widget affiché, chunks chargés.
+- [ ] Module **désactivé** → widget absent **et** chunks NON téléchargés
+      (vérifier l'onglet réseau), Splide en `keyboard: false` (comportement d'origine).
+
+**Widget — rendu & clavier**
+- [ ] Bouton + panneau : rendu visuel, position (bas gauche), responsive mobile.
+- [ ] Ouverture/fermeture, `Échap`, clic extérieur, focus déplacé à l'ouverture,
+      `aria-expanded` à jour.
+- [ ] Chaque réglage produit l'effet attendu (taille texte, contraste, police
+      dyslexie chargée, espacement, soulignement, réduction animations, grand
+      curseur, guide de lecture) et **persiste** entre les pages.
+
+**RGAA / Splide (module actif)**
+- [ ] Navigation clavier des sliders (flèches au focus), `pauseOnFocus`, libellés FR.
+- [ ] Pas de conflit avec le mode dyslexie serveur existant (`as-accessibility`).
+
+**Voir aussi** §4 « Points restant à vérifier » (menus au survol, focus trap de la
+modale de recherche, composants personnalisés) — audit clavier/lecteur d'écran dédié.

@@ -136,11 +136,33 @@ faut pour les réaliser. Aucune n'a été faite « à moitié » : on préfère 
 
 ---
 
-## 6. Validation après déploiement
+## 6. À valider
 
-Après mise en service (cache vidé) :
+> ⚠️ Les templates Twig et le service PHP **n'ont pas pu être lintés/exécutés**
+> dans l'environnement de développement (la console Symfony exige PHP ≥ 8.5,
+> 8.4 ici ; `php -l` OK sur le PHP, équilibre des balises Twig vérifié à la revue).
+> Une **validation humaine** est requise avant diffusion.
 
-- Tester une URL **produit** et une URL **emploi** via le
-  [test des résultats enrichis Google](https://search.google.com/test/rich-results).
-- Vérifier les balises **Open Graph / Twitter** via les *debuggers* X et LinkedIn.
-- Contrôler les **Core Web Vitals** (PageSpeed Insights / Search Console).
+**Build / rendu (après `cache:clear`)**
+- [ ] `lint:twig` passe sur `seo.html.twig`, `microdata.html.twig`,
+      `macros/microdata.html.twig` (à lancer dans un environnement PHP ≥ 8.5).
+- [ ] Les pages se rendent sans erreur (head complet, pas de JSON-LD cassé).
+
+**Données structurées (test des résultats enrichis Google)**
+- [ ] URL **produit** : `Product` + `offers` valides (prix EUR, `availability`).
+- [ ] URL **emploi** : `JobPosting` valide (champs requis présents).
+- [ ] Page courante : `Organization` + `WebSite` sans erreur, pas de doublon.
+- Outil : [test des résultats enrichis Google](https://search.google.com/test/rich-results).
+
+**Open Graph / Twitter**
+- [ ] Aperçus corrects via les *debuggers* X et LinkedIn (image, titre, description).
+- [ ] `og:type=article` + `article:*` uniquement sur les actualités.
+- [ ] `twitter:site`/`creator` : champ par page sinon repli auto sur le réseau
+      social X/Twitter du site (vérifier la normalisation `@handle`).
+
+**Internationalisation (si multilingue)**
+- [ ] `hreflang` par langue + un seul `x-default` pointant vers la langue par défaut.
+
+**robots / Core Web Vitals**
+- [ ] `robots` enrichi sur pages indexables, `noindex` préservé ailleurs.
+- [ ] Core Web Vitals (PageSpeed Insights / Search Console) — référence avant/après.
