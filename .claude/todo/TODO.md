@@ -375,6 +375,8 @@ DBAL 4). À traiter côté infra, pas applicatif :
 
 ## Frontend — SCSS / CSS / Bootstrap
 
+- Vérifier que tout le CSS front est bien en **mobile first** : styles de base pour mobile, montée en gamme via `min-*` (`mediaQuery()`), pas de `max-width` comme valeur par défaut. Repérer les blocs écrits desktop-first à reprendre.
+  - Audit 2026-06-11 (rapport : `.claude/audit-mobile-first-2026-06-11.md`) : front très majoritairement mobile-first (68 blocs `max-*` / 129 `min-*`, quasi tous des overrides mobiles légitimes). **Seule violation desktop-first : `_error.scss:120-128` `.errorStatus`** (`padding-left: 160px` en base appliqué au mobile → passer en `min-lg`). `@media` bruts uniquement dans 3 fichiers vendor (audio/choices/mc-calendar, exception documentée). Reste à relire : ~15 fichiers à `max-*` unique (risque faible).
 - Designer les alertes front (messages succès / info / warning / erreur) : styles cohérents, responsive, basés sur les variables et utilities Bootstrap du projet.
 - Pour le tiret sur mots coupés :
   ```scss
