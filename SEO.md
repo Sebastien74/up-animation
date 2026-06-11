@@ -166,3 +166,50 @@ faut pour les réaliser. Aucune n'a été faite « à moitié » : on préfère 
 **robots / Core Web Vitals**
 - [ ] `robots` enrichi sur pages indexables, `noindex` préservé ailleurs.
 - [ ] Core Web Vitals (PageSpeed Insights / Search Console) — référence avant/après.
+
+---
+
+## 7. Recherche IA (GEO / AEO) — à creuser
+
+Visibilité dans les moteurs génératifs (ChatGPT, Claude, Perplexity, Google AI
+Overviews, Copilot). Domaine émergent : **aucun fournisseur ne publie de
+« classement »**, on raisonne en leviers, pas en garanties.
+
+### Comment ces outils accèdent au contenu
+- **Données d'entraînement** (figées) : non optimisables a posteriori → présence
+  durable uniquement.
+- **Recherche web en direct** : c'est là que le SEO agit. À noter : **ChatGPT et
+  Copilot s'appuient sur l'index Bing** → l'indexation **Bing** compte autant que
+  Google.
+
+### Leviers actionnables (établis)
+- [ ] **Politique des robots IA** dans `RobotsService` (robots.txt dynamique) :
+      décider d'autoriser/bloquer les user-agents — `GPTBot`, `OAI-SearchBot`,
+      `ChatGPT-User`, `ClaudeBot`, `anthropic-ai`, `Claude-Web`, `PerplexityBot`,
+      `Google-Extended`, `CCBot`. **Arbitrage métier/juridique** (visibilité vs
+      usage du contenu), pas seulement technique.
+- [ ] **Indexation Bing** active (Bing Webmaster Tools) — souvent négligée.
+- [ ] **Contenu citable** : format question/réponse, définitions, chiffres
+      **sourcés et datés** (la FAQ / `FAQPage` est idéale ; à étendre).
+- [ ] **Autorité d'entité** : cohérence nom/coordonnées sur tout le web, `sameAs`,
+      présence Wikidata/annuaires, mentions tierces (presse, avis).
+- [ ] **Fraîcheur** : dates de publication/mise à jour exposées
+      (déjà en place via `article:modified_time`).
+- [x] **Données structurées** : socle déjà posé (`Organization`, `WebSite`,
+      `Product`, `JobPosting`, `FAQPage`).
+
+### Hypothèses / émergent (prudence)
+- **`llms.txt`** : standard *proposé* pour guider les LLM ; **peu/pas honoré** à
+  ce jour par les grands acteurs → pari, pas garantie.
+- Le **poids de chaque facteur** n'est documenté nulle part : tout chiffrage de
+  « ranking IA » relève de l'estimation.
+
+### Mesure (indirecte)
+Pas de KPI direct côté IA. Suivre dans Matomo le **trafic référent** depuis
+`chat.openai.com`, `perplexity.ai`, `gemini.google.com`, etc.
+
+### Priorisation suggérée
+1. Décider la politique robots IA (`RobotsService`).
+2. Activer/soigner Bing.
+3. Étendre le contenu en Q/R citables (FAQ).
+4. Renforcer la cohérence d'entité (`sameAs`, annuaires).
