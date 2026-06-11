@@ -6,7 +6,7 @@
 {%- import _self as macro -%}
 
 {%- block microData -%}
-    {{ microdata.view(entity.mainMedia, seo) }}
+    {{ microdata.jobPosting(entity.entity, seo, entity.mainMedia) }}
 {%- endblock -%}
 
 {#{%- import 'core/src-macro.html.twig' as resources -%}#}

@@ -5,7 +5,7 @@
 {%- import 'front/'~websiteTemplate~'/include/macros/microdata.html.twig' as microdata -%}
 
 {%- block microData -%}
-    {{ microdata.view(entity.mainMedia, seo) }}
+    {{ microdata.product(entity.entity, seo, entity.mainMedia) }}
 {%- endblock -%}
 
 {%- block stylesheets -%}

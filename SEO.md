@@ -66,17 +66,56 @@ URL complète (`https://x.com/compte`) : la normalisation est faite à l'afficha
 
 ---
 
-## 4. Pistes SEO restantes (non couvertes ici)
+## 4. Données structurées JSON-LD (résultats enrichis)
 
-À traiter dans un lot dédié — apportent surtout des **résultats enrichis** Google :
+État des types schema.org émis par page :
 
-- **JSON-LD par type de contenu** : `NewsArticle` (newscast — aujourd'hui en
-  microdata uniquement), `Product`/`Offer` (catalogue), `Event` (agenda),
-  `FAQPage` (faq), `JobPosting` (recrutement).
+| Type | Page | État |
+|------|------|------|
+| `Organization` | Toutes | Existant (`include/microdata.html.twig`) — logo, `sameAs`, `contactPoint`, `address` |
+| `FAQPage` | FAQ | Existant (`actions/faq/view.html.twig`) |
+| `ItemList` / `Article` | Liste d'actualités | Existant (`actions/newscast/index/microdata.html.twig`) |
+| `Product` + `Offer`/`AggregateOffer` | Fiche produit catalogue | **Ajouté** |
+| `JobPosting` | Offre d'emploi | **Ajouté** |
+
+### Ce qui a changé
+
+Les fiches **produit** et **offre d'emploi** émettaient jusqu'ici un JSON-LD
+générique de type `Article` (via le macro `microdata.view()`), sémantiquement
+incorrect. Elles utilisent désormais des macros dédiés :
+
+- **`microdata.product(entity, seo, media)`** → `Product` avec `brand`, `sku`
+  (référence), `image`, et `offers` construits à partir des **lots** :
+  - un seul lot tarifé → `Offer` (prix, `availability` selon le statut vendu) ;
+  - plusieurs lots tarifés → `AggregateOffer` (`lowPrice`/`highPrice`/`offerCount`).
+  - Devise : `EUR` (cohérent avec l'affichage des prix du catalogue).
+- **`microdata.jobPosting(entity, seo, media)`** → `JobPosting` (`title`,
+  `description`, `datePosted`, `hiringOrganization`, et `jobLocation` /
+  `validThrough` quand disponibles).
+
+> Les macros reçoivent l'entité réelle (`entity.entity`) car le ViewModel
+> n'expose pas tous les champs (lots, code postal, fin de publication).
+> Toutes les chaînes passent par `json_encode` pour garantir un JSON valide.
+
+Fichiers : `templates/front/default/include/macros/microdata.html.twig`
+(+ branchement dans `actions/catalog/view.html.twig` et
+`actions/recruitment/view.html.twig`).
+
+---
+
+## 5. Pistes SEO restantes (non couvertes ici)
+
+- **JSON-LD `Event`** (agenda) et `NewsArticle` sur la fiche actualité unitaire.
 - **`WebSite` + `SearchAction`** : éligibilité à la *sitelinks search box*
   (la recherche interne existe déjà).
+- **`BreadcrumbList` en JSON-LD** : le fil d'Ariane utilise aujourd'hui des
+  microdata inline (`itemscope`/`itemprop`) — fonctionnel, mais le JSON-LD est
+  préféré par Google.
 - **`og:image:width`/`height`** : nécessite les dimensions du média (objet média,
   non disponible au niveau actuel du template).
 - **Core Web Vitals** : `fetchpriority="high"` sur l'image hero, `preload` des
   polices critiques, `preconnect` vers les domaines tiers (Matomo, Axeptio).
 - **Sitemap** : vérifier `lastmod`, alternates hreflang et images.
+
+> Validation recommandée après déploiement : test des URLs produit / emploi via
+> le [test des résultats enrichis Google](https://search.google.com/test/rich-results).

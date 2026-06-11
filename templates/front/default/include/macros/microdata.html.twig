@@ -54,3 +54,99 @@
         </script>
     {%- endif -%}
 {%- endmacro -%}
+
+{#
+    Product (schema.org/Product) — catalogue.
+    Les prix proviennent des lots (devise EUR, cf. layout produit) : Offer si un
+    seul lot tarifé, AggregateOffer si plusieurs. Toutes les chaînes passent par
+    json_encode pour garantir un JSON valide.
+#}
+{%- macro product(entity, seo, media = null) -%}
+    {%- set displayMedia = media.extension is defined and media.extension not in ['.svg', '.gif', '.mp3'] -%}
+    {%- set pricedLots = [] -%}
+    {%- set lowPrice = null -%}
+    {%- set highPrice = null -%}
+    {%- for lot in entity.lots -%}
+        {%- if lot.price is not null and lot.price > 0 -%}
+            {%- set pricedLots = pricedLots|merge([lot]) -%}
+            {%- if lowPrice is null or lot.price < lowPrice -%}{%- set lowPrice = lot.price -%}{%- endif -%}
+            {%- if highPrice is null or lot.price > highPrice -%}{%- set highPrice = lot.price -%}{%- endif -%}
+        {%- endif -%}
+    {%- endfor -%}
+    <!-- Microdata -->
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "Product",
+            "name": {{ seo.title|json_encode|raw }},
+            "url": {{ seo.canonical|json_encode|raw }},
+            "mainEntityOfPage": {
+                "@type": "WebPage",
+                "@id": {{ seo.canonical|json_encode|raw }}
+            },
+            "brand": {
+                "@type": "Brand",
+                "name": {{ seo.microdata.companyName|json_encode|raw }}
+            }
+            {%- if entity.reference -%}, "sku": {{ entity.reference|json_encode|raw }}{%- endif -%}
+            {%- if seo.description -%}, "description": {{ seo.description|json_encode|raw }}{%- endif -%}
+            {%- if displayMedia -%}, "image": [
+                {{ media|imgFilter('microdata_1x1', true)|json_encode|raw }},
+                {{ media|imgFilter('microdata_4x3', true)|json_encode|raw }},
+                {{ media|imgFilter('microdata_16x9', true)|json_encode|raw }}
+            ]{%- endif -%}
+            {%- if pricedLots|length == 1 -%}, "offers": {
+                "@type": "Offer",
+                "priceCurrency": "EUR",
+                "price": "{{ pricedLots[0].price }}",
+                "availability": "https://schema.org/{{ pricedLots[0].sold ? 'SoldOut' : 'InStock' }}",
+                "url": {{ seo.canonical|json_encode|raw }}
+            }{%- elseif pricedLots|length > 1 -%}, "offers": {
+                "@type": "AggregateOffer",
+                "priceCurrency": "EUR",
+                "lowPrice": "{{ lowPrice }}",
+                "highPrice": "{{ highPrice }}",
+                "offerCount": "{{ pricedLots|length }}",
+                "url": {{ seo.canonical|json_encode|raw }}
+            }{%- endif -%}
+        }
+    </script>
+{%- endmacro -%}
+
+{#
+    JobPosting (schema.org/JobPosting) — recrutement.
+    Champs requis (title, description, datePosted, hiringOrganization) toujours
+    présents ; jobLocation et validThrough ajoutés quand disponibles.
+#}
+{%- macro jobPosting(entity, seo, media = null) -%}
+    {%- set displayMedia = media.extension is defined and media.extension not in ['.svg', '.gif', '.mp3'] -%}
+    <!-- Microdata -->
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "JobPosting",
+            "title": {{ seo.title|json_encode|raw }},
+            "url": {{ seo.canonical|json_encode|raw }},
+            "hiringOrganization": {
+                "@type": "Organization",
+                "name": {{ seo.microdata.companyName|json_encode|raw }},
+                "logo": {{ seo.microdata.companyLogo|json_encode|raw }},
+                "sameAs": {{ app.request.getSchemeAndHttpHost()|json_encode|raw }}
+            }
+            {%- if seo.description -%}, "description": {{ seo.description|json_encode|raw }}{%- endif -%}
+            {%- if entity.date -%}, "datePosted": "{{ entity.date|date('Y-m-d') }}"{%- endif -%}
+            {%- if entity.publicationEnd -%}, "validThrough": "{{ entity.publicationEnd|date('Y-m-d') }}"{%- endif -%}
+            {%- if displayMedia -%}, "image": {{ media|imgFilter('microdata_16x9', true)|json_encode|raw }}{%- endif -%}
+            {%- if entity.place or entity.zipCode -%}, "jobLocation": {
+                "@type": "Place",
+                "address": {
+                    "@type": "PostalAddress"
+                    {%- if entity.place -%}, "addressLocality": {{ entity.place|json_encode|raw }}{%- endif -%}
+                    {%- if entity.zipCode -%}, "postalCode": {{ entity.zipCode|json_encode|raw }}{%- endif -%}
+                    {%- if entity.department -%}, "addressRegion": {{ entity.department|json_encode|raw }}{%- endif -%},
+                    "addressCountry": "FR"
+                }
+            }{%- endif -%}
+        }
+    </script>
+{%- endmacro -%}
