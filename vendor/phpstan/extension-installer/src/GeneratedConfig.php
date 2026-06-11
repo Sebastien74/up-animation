@@ -21,7 +21,7 @@ final class GeneratedConfig
         0 => 'extension.neon',
       ),
     ),
-    'version' => '3.3.2',
+    'version' => '3.4.0',
     'phpstanVersionConstraint' => NULL,
   ),
   'phpstan/phpstan-deprecation-rules' => 
