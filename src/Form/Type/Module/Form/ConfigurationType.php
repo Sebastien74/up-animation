@@ -228,6 +228,15 @@ class ConfigurationType extends AbstractType
                 'attr' => ['class' => 'col-12 w-100', 'data-config' => true],
                 'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
+
+            $builder->add('axonautEnabled', Type\CheckboxType::class, [
+                'required' => false,
+                'display' => 'button',
+                'color' => 'app',
+                'label' => $this->translator->trans('Envoyer les contacts vers Axonaut', [], 'admin'),
+                'attr' => ['class' => 'col-12 w-100', 'data-config' => true],
+                'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
+            ]);
         }
     }
 

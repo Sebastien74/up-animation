@@ -142,6 +142,20 @@ services:
             $translationLogger: '@monolog.logger.translation'
 
     #####################################
+    #            Axonaut CRM            #
+    #####################################
+
+    App\Service\Axonaut\AxonautClient:
+        arguments:
+            $apiKey: '%env(AXONAUT_API_KEY)%'
+            $enabled: '%env(bool:AXONAUT_ENABLED)%'
+            $opportunityPipe: '%env(AXONAUT_OPPORTUNITY_PIPE)%'
+            $opportunityStep: '%env(AXONAUT_OPPORTUNITY_STEP)%'
+            $opportunityAmount: '%env(float:AXONAUT_OPPORTUNITY_AMOUNT)%'
+
+    App\Service\Axonaut\AxonautClientInterface: '@App\Service\Axonaut\AxonautClient'
+
+    #####################################
     #         Form extensions           #
     #####################################
 

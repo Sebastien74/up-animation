@@ -63,6 +63,9 @@ class Configuration
     #[ORM\Column(type: Types::BOOLEAN)]
     private bool $floatingLabels = true;
 
+    #[ORM\Column(type: Types::BOOLEAN)]
+    private bool $axonautEnabled = false;
+
     #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
     private ?string $securityKey = null;
 
@@ -244,6 +247,18 @@ class Configuration
     public function setFloatingLabels(bool $floatingLabels): static
     {
         $this->floatingLabels = $floatingLabels;
+
+        return $this;
+    }
+
+    public function isAxonautEnabled(): ?bool
+    {
+        return $this->axonautEnabled;
+    }
+
+    public function setAxonautEnabled(bool $axonautEnabled): static
+    {
+        $this->axonautEnabled = $axonautEnabled;
 
         return $this;
     }
