@@ -248,7 +248,7 @@ class SeoService implements SeoInterface
             'ogTitle' => $this->getOgTitle(),
             'ogFullTitle' => $this->getOgFullTitle(),
             'ogDescription' => $this->getOgDescription(),
-            'ogType' => 'website',
+            'ogType' => $this->getOgType(),
             'ogTwitterCard' => $this->seo instanceof Seo\Seo ? $this->seo->getMetaOgTwitterCard() : null,
             'ogTwitterHandle' => $this->seo instanceof Seo\Seo ? $this->seo->getMetaOgTwitterHandle() : null,
             'ogImage' => $this->getOgImage(),
@@ -665,6 +665,19 @@ class SeoService implements SeoInterface
     private function getOgFullTitle(): ?string
     {
         return $this->ogTitle ?: $this->fullTitle;
+    }
+
+    /**
+     * Get OG type (mapped from the current interface).
+     *
+     * Editorial contents are exposed as "article" to enable richer social
+     * previews; everything else stays the safe default "website".
+     */
+    private function getOgType(): string
+    {
+        $name = $this->interface['name'] ?? null;
+
+        return 'newscast' === $name ? 'article' : 'website';
     }
 
     /**

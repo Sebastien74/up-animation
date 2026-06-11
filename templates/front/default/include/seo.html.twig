@@ -19,7 +19,8 @@
 
     {%- set seoRobots = seoRobots is defined ? seoRobots : (seo.index is defined ? seo.index : null) -%}
     {%- if seoRobots -%}
-        <meta name="robots" content="{{ seoRobots }}">
+        {%- set isIndexable = 'noindex' not in seoRobots|lower -%}
+        <meta name="robots" content="{{ isIndexable ? 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' : seoRobots }}">
     {%- endif -%}
 
     {%- if seo.canonical is defined -%}
@@ -46,7 +47,20 @@
     {%- if seo.canonical is defined -%}
         <meta property="og:url" content="{{ seo.canonical }}">
     {%- endif -%}
-    <meta property="og:type" content="website">
+    {%- set ogType = seo.ogType is defined and seo.ogType ? seo.ogType : 'website' -%}
+    <meta property="og:type" content="{{ ogType }}">
+
+    {%- if 'article' == ogType -%}
+        {%- if seo.publishedDate is defined and seo.publishedDate -%}
+            <meta property="article:published_time" content="{{ seo.publishedDate|date('c') }}">
+        {%- endif -%}
+        {%- if seo.updatedAt is defined and seo.updatedAt -%}
+            <meta property="article:modified_time" content="{{ seo.updatedAt|date('c') }}">
+        {%- endif -%}
+        {%- if seo.author is defined and seo.author -%}
+            <meta property="article:author" content="{{ seo.author|striptags }}">
+        {%- endif -%}
+    {%- endif -%}
 
     {%- set ogImage = seo.ogImage is defined ? seo.ogImage : null -%}
     {%- set ogImage = not ogImage and logos.share is defined and logos.share ? logos.share : ogImage -%}
@@ -54,6 +68,35 @@
 
     {%- if ogImage -%}
         <meta property="og:image" content="{{ ogImage }}">
+        <meta property="og:image:secure_url" content="{{ ogImage }}">
+        <meta property="og:image:alt" content="{% if seo.ogFullTitle is defined and seo.ogFullTitle %}{{ seo.ogFullTitle|htmlEntities }}{% else %}{{ companyName|striptags }}{% endif %}">
+    {%- endif -%}
+
+    {# ---------- Twitter / X Cards ---------- #}
+    {# Handle administrable par page (SEO > Twitter), avec repli automatique sur le réseau social X/Twitter du site. #}
+    {%- set twitterHandle = seo.ogTwitterHandle is defined and seo.ogTwitterHandle ? seo.ogTwitterHandle : null -%}
+    {%- if not twitterHandle and logos['social-networks'] is defined and logos['social-networks'].twitter is defined and logos['social-networks'].twitter.link is defined -%}
+        {%- set twitterHandle = logos['social-networks'].twitter.link -%}
+    {%- endif -%}
+    {%- if twitterHandle -%}
+        {# Normalisation : accepte "@compte", "compte" ou une URL X/Twitter. #}
+        {%- set twitterHandle = twitterHandle|split('/')|last|trim('@ ') -%}
+        {%- set twitterHandle = twitterHandle ? '@'~twitterHandle : null -%}
+    {%- endif -%}
+    {%- set twitterCard = seo.ogTwitterCard is defined and seo.ogTwitterCard ? seo.ogTwitterCard : (ogImage ? 'summary_large_image' : 'summary') -%}
+    <meta name="twitter:card" content="{{ twitterCard }}">
+    {%- if seo.ogFullTitle is defined and seo.ogFullTitle -%}
+        <meta name="twitter:title" content="{{ seo.ogFullTitle|htmlEntities }}">
+    {%- endif -%}
+    {%- if seo.ogDescription is defined and seo.ogDescription -%}
+        <meta name="twitter:description" content="{{ seo.ogDescription|htmlEntities }}">
+    {%- endif -%}
+    {%- if ogImage -%}
+        <meta name="twitter:image" content="{{ ogImage }}">
+    {%- endif -%}
+    {%- if twitterHandle -%}
+        <meta name="twitter:site" content="{{ twitterHandle }}">
+        <meta name="twitter:creator" content="{{ twitterHandle }}">
     {%- endif -%}
 
 {%- else -%}
