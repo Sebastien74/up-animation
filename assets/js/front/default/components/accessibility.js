@@ -62,7 +62,6 @@ export default function () {
                     if (parentHideWrap) {
                         parentHideWrap.classList.add('focused-el');
                     }
-                    console.log(document.querySelector('.focused-el'));
                     scrollToEL(document.querySelector('.focused-el'));
                 }
 

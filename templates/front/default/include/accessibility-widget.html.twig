@@ -1,0 +1,120 @@
+{%- trans_default_domain 'front_default' -%}
+
+{#
+    Module : Accessibilité (widget visiteur)
+    -----------------------------------------
+    Barre d'outils d'accessibilité côté visiteur (taille du texte, contraste,
+    police lisible, espacement, soulignement des liens, réduction des animations,
+    grand curseur, guide de lecture).
+
+    Les préférences sont appliquées et persistées côté client (localStorage) par
+    le module JS `components/accessibility-widget.js`. Ce template ne contient
+    aucun script en ligne (compatible CSP).
+#}
+
+<div id="a11y-widget" class="a11y-widget" data-a11y-storage-key="a11y-prefs">
+
+    <button type="button"
+            id="a11y-toggle"
+            class="a11y-toggle"
+            aria-haspopup="dialog"
+            aria-expanded="false"
+            aria-controls="a11y-panel"
+            aria-label="{{ "Ouvrir les options d’accessibilité"|trans|striptags }}"
+            title="{{ "Options d’accessibilité"|trans|striptags }}">
+        <svg class="a11y-icon" width="26" height="26" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path fill="currentColor" d="M12 2a2 2 0 1 1 0 4 2 2 0 0 1 0-4Zm9 5.5c0 .6-.5 1-1 1.1l-4.6.7v3.1l1.8 6.4a1.1 1.1 0 1 1-2.1.6L13.2 14h-2.4l-1.8 6.4a1.1 1.1 0 1 1-2.1-.6l1.8-6.4V9.3L4 8.6A1.1 1.1 0 0 1 4.4 6.4l6 .9a9 9 0 0 0 3.2 0l6-.9c.6-.1 1.4.4 1.4 1.1Z"/>
+        </svg>
+    </button>
+
+    <div id="a11y-panel"
+         class="a11y-panel"
+         role="dialog"
+         aria-modal="false"
+         aria-labelledby="a11y-panel-title"
+         hidden>
+
+        <div class="a11y-panel-head">
+            <h2 id="a11y-panel-title" class="a11y-panel-title">{{ "Accessibilité"|trans|striptags }}</h2>
+            <button type="button"
+                    id="a11y-close"
+                    class="a11y-close"
+                    aria-label="{{ "Fermer"|trans|striptags }}">
+                <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <path fill="currentColor" d="M18.3 5.7a1 1 0 0 0-1.4 0L12 10.6 7.1 5.7a1 1 0 1 0-1.4 1.4L10.6 12l-4.9 4.9a1 1 0 1 0 1.4 1.4L12 13.4l4.9 4.9a1 1 0 0 0 1.4-1.4L13.4 12l4.9-4.9a1 1 0 0 0 0-1.4Z"/>
+                </svg>
+            </button>
+        </div>
+
+        <div class="a11y-panel-body">
+
+            <fieldset class="a11y-group">
+                <legend class="a11y-legend">{{ "Taille du texte"|trans|striptags }}</legend>
+                <div class="a11y-steps" role="group" aria-label="{{ "Taille du texte"|trans|striptags }}">
+                    <button type="button" class="a11y-step" data-a11y-action="font-down" aria-label="{{ "Réduire la taille du texte"|trans|striptags }}">A−</button>
+                    <span class="a11y-step-value" data-a11y-font-value aria-live="polite">100%</span>
+                    <button type="button" class="a11y-step" data-a11y-action="font-up" aria-label="{{ "Augmenter la taille du texte"|trans|striptags }}">A+</button>
+                </div>
+            </fieldset>
+
+            <fieldset class="a11y-group">
+                <legend class="a11y-legend">{{ "Aides à la lecture"|trans|striptags }}</legend>
+                <ul class="a11y-options">
+                    <li>
+                        <label class="a11y-option">
+                            <input type="checkbox" data-a11y-toggle="contrast">
+                            <span class="a11y-option-label">{{ "Contraste élevé"|trans|striptags }}</span>
+                        </label>
+                    </li>
+                    <li>
+                        <label class="a11y-option">
+                            <input type="checkbox" data-a11y-toggle="readable-font">
+                            <span class="a11y-option-label">{{ "Police lisible (dyslexie)"|trans|striptags }}</span>
+                        </label>
+                    </li>
+                    <li>
+                        <label class="a11y-option">
+                            <input type="checkbox" data-a11y-toggle="spacing">
+                            <span class="a11y-option-label">{{ "Espacement du texte"|trans|striptags }}</span>
+                        </label>
+                    </li>
+                    <li>
+                        <label class="a11y-option">
+                            <input type="checkbox" data-a11y-toggle="underline-links">
+                            <span class="a11y-option-label">{{ "Souligner les liens"|trans|striptags }}</span>
+                        </label>
+                    </li>
+                </ul>
+            </fieldset>
+
+            <fieldset class="a11y-group">
+                <legend class="a11y-legend">{{ "Confort de navigation"|trans|striptags }}</legend>
+                <ul class="a11y-options">
+                    <li>
+                        <label class="a11y-option">
+                            <input type="checkbox" data-a11y-toggle="reduce-motion">
+                            <span class="a11y-option-label">{{ "Réduire les animations"|trans|striptags }}</span>
+                        </label>
+                    </li>
+                    <li>
+                        <label class="a11y-option">
+                            <input type="checkbox" data-a11y-toggle="big-cursor">
+                            <span class="a11y-option-label">{{ "Grand curseur"|trans|striptags }}</span>
+                        </label>
+                    </li>
+                    <li>
+                        <label class="a11y-option">
+                            <input type="checkbox" data-a11y-toggle="reading-guide">
+                            <span class="a11y-option-label">{{ "Guide de lecture"|trans|striptags }}</span>
+                        </label>
+                    </li>
+                </ul>
+            </fieldset>
+
+            <button type="button" id="a11y-reset" class="a11y-reset" data-a11y-action="reset">
+                {{ "Réinitialiser les réglages"|trans|striptags }}
+            </button>
+
+        </div>
+    </div>
+</div>

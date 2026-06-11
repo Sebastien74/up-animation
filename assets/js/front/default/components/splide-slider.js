@@ -9,6 +9,9 @@ import {isInViewport} from "../functions";
  */
 export default function (sliders) {
 
+    /** RGAA enhancements (keyboard + screen-reader labels) only when the accessibility module is active. */
+    const a11yEnabled = document.documentElement.dataset.accessibility === '1';
+
     if (sliders.length > 0) {
         import('../../../../scss/vendor/components/_splide.scss');
         // Splide overrides (.btn-vertical, .with-thumbnails...) live in _carousel.scss,
@@ -157,11 +160,31 @@ export default function (sliders) {
                         pauseOnHover: pauseOnHover,
                         drag: drag && items.length > 1,
                         pagination: pagination,
-                        keyboard: false,
+                        /** RGAA : flèches actives au focus du slider (sans accaparer le scroll) + pause au focus. Activé uniquement si le module accessibilité est en place. */
+                        keyboard: a11yEnabled ? 'focused' : false,
+                        pauseOnFocus: a11yEnabled && autoplay,
                         rewind: true,
                         interval: interval,
                         lazyLoad: lazyLoad,
                     };
+
+                    if (a11yEnabled) {
+                        /** Libellés lecteur d'écran en français (RGAA 1.x / 9.x). */
+                        configBase.i18n = {
+                            prev: 'Diapositive précédente',
+                            next: 'Diapositive suivante',
+                            first: 'Première diapositive',
+                            last: 'Dernière diapositive',
+                            slideX: 'Aller à la diapositive %s',
+                            pageX: 'Aller à la page %s',
+                            slide: 'diapositive',
+                            slideLabel: '%s sur %s',
+                            select: 'Sélectionner une diapositive à afficher',
+                            carousel: 'carrousel',
+                            play: 'Lancer le défilement automatique',
+                            pause: 'Suspendre le défilement automatique',
+                        };
+                    }
 
                     function getConfig() {
                         let perPageScreen;

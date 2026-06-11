@@ -13,6 +13,7 @@
       dir="{{ readingDirection(app.request.locale) }}"
       data-debug="{{ isDebug }}"
       data-cache="{{ cacheClearDate }}"
+      data-accessibility="{{ configuration.accessibilityStatus ? '1' : '0' }}"
       data-nonce="{{ csp_nonce() }}">
 
     {%- set trans_domain = 'front_default' -%}
@@ -310,6 +311,10 @@
 
         {%- if not onlyBody -%}
             {%- include 'front/'~websiteTemplate~'/include/favorites-btn.html.twig' -%}
+        {%- endif -%}
+
+        {%- if not onlyBody and configuration.accessibilityStatus -%}
+            {%- include 'front/'~websiteTemplate~'/include/accessibility-widget.html.twig' only -%}
         {%- endif -%}
 
         {{ component('WebmasterBox', {

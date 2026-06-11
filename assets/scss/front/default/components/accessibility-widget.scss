@@ -1,0 +1,354 @@
+@charset "UTF-8";
+
+/* ------------------------------------------------------------------------------------------
+
+    Module : Accessibility widget (visitor toolbar)
+    Copyright : 2026
+    Licensed under MIT (https://github.com/Sebastien74/MIT-LICENSE/blob/main/LICENSE.md)
+    Author : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+    1 ) Fonts (dyslexia)
+    2 ) Widget UI (button + panel)
+    3 ) Visitor preference classes (applied on <html>)
+
+------------------------------------------------------------------------------------------ */
+
+/*-----------------------------------
+   1 ) Fonts (dyslexia)
+-----------------------------------*/
+
+@import "../../../../lib/fonts/dyslexic";
+
+/*-----------------------------------
+   2 ) Widget UI (button + panel)
+-----------------------------------*/
+
+$a11y-z: 1080;
+$a11y-primary: #22254e;
+$a11y-accent: #ff7100;
+$a11y-radius: 12px;
+
+.a11y-widget {
+    position: fixed;
+    left: 18px;
+    bottom: 18px;
+    z-index: $a11y-z;
+
+    *, *::before, *::after {
+        box-sizing: border-box;
+    }
+}
+
+.a11y-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 52px;
+    padding: 0;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    background-color: $a11y-primary;
+    color: #fff;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, .25);
+    transition: transform .2s ease, background-color .2s ease;
+
+    &:hover,
+    &:focus-visible {
+        background-color: $a11y-accent;
+        transform: scale(1.06);
+    }
+
+    &:focus-visible {
+        outline: 3px solid $a11y-accent;
+        outline-offset: 3px;
+    }
+
+    .a11y-icon {
+        display: block;
+    }
+}
+
+.a11y-panel {
+    position: absolute;
+    left: 0;
+    bottom: calc(100% + 12px);
+    width: 320px;
+    max-width: calc(100vw - 36px);
+    max-height: calc(100vh - 90px);
+    overflow-y: auto;
+    padding: 0;
+    border-radius: $a11y-radius;
+    background-color: #fff;
+    color: #1d1d1d;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, .28);
+
+    &[hidden] {
+        display: none;
+    }
+}
+
+.a11y-panel-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px;
+    background-color: $a11y-primary;
+    color: #fff;
+    border-radius: $a11y-radius $a11y-radius 0 0;
+}
+
+.a11y-panel-title {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.a11y-close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: #fff;
+    cursor: pointer;
+
+    &:hover,
+    &:focus-visible {
+        background-color: rgba(255, 255, 255, .18);
+    }
+
+    &:focus-visible {
+        outline: 2px solid #fff;
+        outline-offset: 2px;
+    }
+}
+
+.a11y-panel-body {
+    padding: 16px;
+}
+
+.a11y-group {
+    margin: 0 0 18px;
+    padding: 0;
+    border: 0;
+
+    &:last-of-type {
+        margin-bottom: 12px;
+    }
+}
+
+.a11y-legend {
+    width: 100%;
+    margin: 0 0 10px;
+    padding: 0;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    color: $a11y-primary;
+}
+
+.a11y-steps {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.a11y-step {
+    flex: 0 0 auto;
+    min-width: 48px;
+    height: 40px;
+    padding: 0 12px;
+    border: 1px solid #d0d0d6;
+    border-radius: 8px;
+    background-color: #f5f5f7;
+    color: #1d1d1d;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+
+    &:hover,
+    &:focus-visible {
+        border-color: $a11y-primary;
+        background-color: #ececf2;
+    }
+
+    &:focus-visible {
+        outline: 2px solid $a11y-accent;
+        outline-offset: 2px;
+    }
+}
+
+.a11y-step-value {
+    flex: 1 1 auto;
+    text-align: center;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.a11y-options {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    li + li {
+        margin-top: 6px;
+    }
+}
+
+.a11y-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+
+    &:hover {
+        background-color: #f5f5f7;
+    }
+
+    input[type="checkbox"] {
+        width: 20px;
+        height: 20px;
+        flex: 0 0 auto;
+        accent-color: $a11y-accent;
+        cursor: pointer;
+    }
+}
+
+.a11y-option-label {
+    font-size: 15px;
+    line-height: 1.3;
+}
+
+.a11y-reset {
+    display: block;
+    width: 100%;
+    margin-top: 4px;
+    padding: 11px 14px;
+    border: 1px solid $a11y-primary;
+    border-radius: 8px;
+    background-color: #fff;
+    color: $a11y-primary;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+
+    &:hover,
+    &:focus-visible {
+        background-color: $a11y-primary;
+        color: #fff;
+    }
+
+    &:focus-visible {
+        outline: 2px solid $a11y-accent;
+        outline-offset: 2px;
+    }
+}
+
+/*-----------------------------------
+   3 ) Visitor preference classes (on <html>)
+-----------------------------------*/
+
+/** Text scaling — root font-size scale respects rem-based theme sizing. */
+html.a11y-font-scaled {
+    font-size: calc(100% * var(--a11y-font-scale, 1)) !important;
+}
+
+/** High contrast. */
+html.a11y-contrast {
+    body {
+        background-color: #fff !important;
+        color: #000 !important;
+    }
+
+    p, span, li, td, th, dd, dt, h1, h2, h3, h4, h5, h6,
+    .body, .introduction {
+        color: #000 !important;
+    }
+
+    a:not(.btn) {
+        color: #0b3d91 !important;
+        text-decoration: underline !important;
+    }
+
+    .btn {
+        border: 2px solid #000 !important;
+    }
+
+    *:focus-visible {
+        outline: 3px solid #0b3d91 !important;
+        outline-offset: 2px !important;
+    }
+}
+
+/** Readable / dyslexia-friendly font. */
+html.a11y-readable-font {
+    body, p, span, li, td, th, dd, dt, a, label, input, textarea, select, button,
+    h1, h2, h3, h4, h5, h6, .body, .introduction, .ff-primary, .ff-secondary {
+        font-family: 'Opendyslexic', 'Comic Sans MS', sans-serif !important;
+        letter-spacing: .03em !important;
+        line-height: 1.6 !important;
+    }
+}
+
+/** Increased text spacing (WCAG 2.1 — 1.4.12 Text Spacing). */
+html.a11y-spacing {
+    body, p, span, li, td, th, dd, dt, a, label,
+    h1, h2, h3, h4, h5, h6, .body, .introduction {
+        line-height: 1.6 !important;
+        letter-spacing: .12em !important;
+        word-spacing: .16em !important;
+    }
+
+    p, li {
+        margin-bottom: 1.2em !important;
+    }
+}
+
+/** Underline all links for clearer affordance. */
+html.a11y-underline-links {
+    a {
+        text-decoration: underline !important;
+    }
+}
+
+/** Reduce motion: neutralise animations and transitions. */
+html.a11y-reduce-motion {
+    *, *::before, *::after {
+        animation-duration: .001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .001ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/** Enlarged cursor. */
+html.a11y-big-cursor,
+html.a11y-big-cursor * {
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'%3E%3Cpath fill='%23000' stroke='%23fff' stroke-width='2' d='M6 3l30 18-13 3 8 15-6 3-8-15-11 9z'/%3E%3C/svg%3E"), auto !important;
+}
+
+/** Reading guide: horizontal ruler that follows the pointer. */
+.a11y-reading-guide-bar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 38px;
+    margin-top: -19px;
+    background-color: rgba(34, 37, 78, .14);
+    border-top: 2px solid rgba(34, 37, 78, .6);
+    border-bottom: 2px solid rgba(34, 37, 78, .6);
+    pointer-events: none;
+    z-index: $a11y-z - 1;
+    will-change: transform;
+}

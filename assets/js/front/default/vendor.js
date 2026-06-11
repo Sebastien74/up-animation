@@ -312,6 +312,13 @@ document.addEventListener('DOMContentLoaded', function () {
         new Accessibility();
     }).catch(error => console.error(error.message));
 
+    /** Loaded only when the accessibility module is active (widget rendered server-side). */
+    if (document.getElementById('a11y-widget')) {
+        import('./components/accessibility-widget').then(({default: AccessibilityWidget}) => {
+            new AccessibilityWidget();
+        }).catch(error => console.error(error.message));
+    }
+
     import('../../vendor/components/log-errors').then(({default: Log}) => {
         new Log();
     }).catch(error => console.error(error.message));
