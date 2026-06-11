@@ -8,6 +8,7 @@ use App\Entity\Layout\Block;
 use App\Entity\Layout\BlockIntl;
 use App\Entity\Layout\FieldConfiguration;
 use App\Entity\Module\Form;
+use App\Message\Axonaut\PushContactToAxonaut;
 use App\Message\SendEmail;
 use App\Model\Core\WebsiteModel;
 use App\Model\EntityModel;
@@ -171,6 +172,10 @@ class FormManager
 
         $contact = $this->addContact($form);
         $this->setAttachments($form, $contact);
+
+        if ($contact && $configuration->isAxonautEnabled()) {
+            $this->pushToAxonaut($form, $contact);
+        }
 
         if (!$haveCalendars) {
             $this->sendEmail($website, $form, $intl);
@@ -501,6 +506,51 @@ class FormManager
         }
 
         return null;
+    }
+
+    /**
+     * Push the contact to Axonaut CRM (async) when enabled on the form configuration.
+     *
+     * Fields are mapped by their slug; email and phone are taken from the
+     * persisted contact (already resolved during addContact()).
+     *
+     * @throws ExceptionInterface
+     */
+    private function pushToAxonaut(Form\StepForm|Form\Form $form, Form\ContactForm|Form\ContactStepForm $contact): void
+    {
+        $slugMap = [
+            'firstname' => ['firstname', 'first-name', 'first_name', 'prenom', 'prénom'],
+            'lastname' => ['lastname', 'last-name', 'last_name', 'nom', 'name'],
+            'company' => ['company', 'societe', 'société', 'entreprise', 'organisation', 'organization'],
+            'message' => ['message', 'comment', 'comments', 'commentaire', 'demande'],
+        ];
+        $values = ['firstname' => null, 'lastname' => null, 'company' => null, 'message' => null];
+
+        foreach ($this->fields as $field) {
+            $slug = strtolower((string) ($field['slug'] ?? ''));
+            $value = is_string($field['valueIntl']) ? $field['valueIntl'] : (is_string($field['value']) ? $field['value'] : null);
+            if (!$slug || null === $value || '' === trim($value)) {
+                continue;
+            }
+            foreach ($slugMap as $key => $candidates) {
+                if (null === $values[$key] && in_array($slug, $candidates, true)) {
+                    $values[$key] = trim($value);
+                }
+            }
+        }
+
+        $message = new PushContactToAxonaut(
+            firstname: $values['firstname'],
+            lastname: $values['lastname'],
+            email: $contact->getEmail() ?: ($this->senderInForm ? $this->sender : null),
+            phone: $contact->getPhone() ?: $this->phone,
+            company: $values['company'],
+            opportunityName: $form->getAdminName(),
+            comments: $values['message'],
+        );
+
+        $this->bus->dispatch($message);
+        $this->messengerWorkerService->workerInBackground();
     }
 
     /**

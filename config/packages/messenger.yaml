@@ -28,3 +28,4 @@ framework:
             App\Message\SendEmail: async
             App\Message\InvalidateCacheItems: sync
             App\Message\Analytics\TrackEventMessage: async
+            App\Message\Axonaut\PushContactToAxonaut: async
