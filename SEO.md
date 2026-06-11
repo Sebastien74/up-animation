@@ -73,10 +73,12 @@ URL complète (`https://x.com/compte`) : la normalisation est faite à l'afficha
 | Type | Page | État |
 |------|------|------|
 | `Organization` | Toutes | Existant (`include/microdata.html.twig`) — logo, `sameAs`, `contactPoint`, `address` |
+| `WebSite` | Toutes | **Ajouté** — nom, URL racine, `inLanguage` |
 | `FAQPage` | FAQ | Existant (`actions/faq/view.html.twig`) |
 | `ItemList` / `Article` | Liste d'actualités | Existant (`actions/newscast/index/microdata.html.twig`) |
 | `Product` + `Offer`/`AggregateOffer` | Fiche produit catalogue | **Ajouté** |
 | `JobPosting` | Offre d'emploi | **Ajouté** |
+| `BreadcrumbList` | Fil d'Ariane | Existant en microdata inline (`include/breadcrumb.html.twig`) |
 
 ### Ce qui a changé
 
@@ -103,14 +105,25 @@ Fichiers : `templates/front/default/include/macros/microdata.html.twig`
 
 ---
 
+## 4.bis Internationalisation
+
+- **`hreflang="x-default"`** : ajouté dans les liens alternates
+  (`include/seo.html.twig`), pointant vers la version de la **langue par défaut**
+  du site (`configuration.locale`). Recommandé par Google pour les sites
+  multilingues (rendu uniquement si plusieurs langues).
+
+---
+
 ## 5. Pistes SEO restantes (non couvertes ici)
 
 - **JSON-LD `Event`** (agenda) et `NewsArticle` sur la fiche actualité unitaire.
-- **`WebSite` + `SearchAction`** : éligibilité à la *sitelinks search box*
-  (la recherche interne existe déjà).
-- **`BreadcrumbList` en JSON-LD** : le fil d'Ariane utilise aujourd'hui des
-  microdata inline (`itemscope`/`itemprop`) — fonctionnel, mais le JSON-LD est
-  préféré par Google.
+  *(Agenda non traité : les dates disponibles sont des dates de publication,
+  ambiguës vis-à-vis des dates d'événement — un `Event` correct nécessite une
+  clarification du modèle.)*
+- **`SearchAction`** (*sitelinks search box*) : **non implémenté** car la
+  recherche s'appuie sur une page de résultats configurable par moteur, sans URL
+  de recherche globale fiable (`?search=`) à exposer en `target`. Le `WebSite`
+  est néanmoins déclaré (sans `potentialAction`).
 - **`og:image:width`/`height`** : nécessite les dimensions du média (objet média,
   non disponible au niveau actuel du template).
 - **Core Web Vitals** : `fetchpriority="high"` sur l'image hero, `preload` des

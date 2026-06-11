@@ -30,8 +30,12 @@
 
     {%- if seo.localesAlternate is defined and seo.localesAlternate|length > 1 -%}
         <!-- Alternates links -->
+        {%- set defaultLocale = configuration.locale is defined ? configuration.locale : null -%}
         {%- for localeAlternate, alternate in seo.localesAlternate -%}
             <link rel="alternate" hreflang="{{ localeAlternate }}" href="{{ alternate }}">
+            {%- if defaultLocale and localeAlternate == defaultLocale -%}
+                <link rel="alternate" hreflang="x-default" href="{{ alternate }}">
+            {%- endif -%}
         {%- endfor -%}
     {%- endif -%}
 

@@ -32,6 +32,18 @@
         }{%- endif -%}
         }
     </script>
+    {# WebSite : déclare l'entité site (nom, URL racine, langue) pour aider Google
+       à identifier le site. Pas de SearchAction : la recherche dépend d'une page
+       de résultats configurable, sans URL globale fiable à exposer. #}
+    <script type="application/ld+json">
+        {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": {{ microdata.companyName|default(microdata.name)|striptags|json_encode|raw }},
+        "url": "{{ app.request.getSchemeAndHttpHost() }}/",
+        "inLanguage": "{{ app.request.locale }}"
+        }
+    </script>
     {%- if microdata.script is defined and microdata.script -%}
         <!-- Microdata script -->
         <script type="application/ld+json">
