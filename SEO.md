@@ -114,21 +114,33 @@ Fichiers : `templates/front/default/include/macros/microdata.html.twig`
 
 ---
 
-## 5. Pistes SEO restantes (non couvertes ici)
+## 5. Préconisations NON implémentées
 
-- **JSON-LD `Event`** (agenda) et `NewsArticle` sur la fiche actualité unitaire.
-  *(Agenda non traité : les dates disponibles sont des dates de publication,
-  ambiguës vis-à-vis des dates d'événement — un `Event` correct nécessite une
-  clarification du modèle.)*
-- **`SearchAction`** (*sitelinks search box*) : **non implémenté** car la
-  recherche s'appuie sur une page de résultats configurable par moteur, sans URL
-  de recherche globale fiable (`?search=`) à exposer en `target`. Le `WebSite`
-  est néanmoins déclaré (sans `potentialAction`).
-- **`og:image:width`/`height`** : nécessite les dimensions du média (objet média,
-  non disponible au niveau actuel du template).
-- **Core Web Vitals** : `fetchpriority="high"` sur l'image hero, `preload` des
-  polices critiques, `preconnect` vers les domaines tiers (Matomo, Axeptio).
-- **Sitemap** : vérifier `lastmod`, alternates hreflang et images.
+Recommandations volontairement écartées de ce lot, avec la raison et ce qu'il
+faut pour les réaliser. Aucune n'a été faite « à moitié » : on préfère ne rien
+émettre plutôt qu'un balisage faux qui serait pénalisé.
 
-> Validation recommandée après déploiement : test des URLs produit / emploi via
-> le [test des résultats enrichis Google](https://search.google.com/test/rich-results).
+| Préconisation | Valeur SEO | Pourquoi non faite | Prérequis pour la faire |
+|---|---|---|---|
+| **`SearchAction`** (*sitelinks search box*) | Moyenne | La recherche s'appuie sur une page de résultats **configurable par moteur** (param `?search=`) : pas d'URL de recherche globale fiable à exposer en `target`. Un `target` erroné est signalé par Google. `WebSite` est déclaré sans `potentialAction`. | Définir/exposer une URL de résultats canonique site-wide (ex. `/recherche?search={q}`). |
+| **`Event` (agenda)** | Élevée (résultats Événements) | Les seules dates disponibles (`Period.publicationStart/End`) sont des dates de **publication**, ambiguës vis-à-vis des dates d'**événement**. Un `Event` incorrect induit Google en erreur. | Clarifier le modèle agenda (date de début/fin réelle, lieu) puis macro `event()`. |
+| **`NewsArticle` (actu unitaire)** | Moyenne | Pas de template de vue unitaire newscast identifié (rendu via mécanisme générique). La **liste** d'actus émet déjà `ItemList`/`Article`. | Localiser le point de rendu de l'actu unitaire et y brancher un macro `article()`. |
+| **`BreadcrumbList` en JSON-LD** | Faible | Le fil d'Ariane fournit **déjà** des microdata inline valides (`itemscope`/`itemprop`) ; un JSON-LD ferait doublon. | Aucun (optionnel : migrer l'inline vers JSON-LD si on veut homogénéiser). |
+| **`og:image:width` / `height`** | Faible/Moyenne | L'image OG est une URL au niveau du template ; les dimensions ne sont pas disponibles sans l'objet média. | Exposer les dimensions du média OG dans le service SEO. |
+| **Core Web Vitals — `fetchpriority="high"` sur l'image LCP** | Élevée (signal de classement) | Le rendu d'images passe par un helper global `|file` ; ajouter l'attribut à la seule image hero est trop invasif/risqué sans tests. | Threader une option `fetchpriority`/`loading=eager` dans le helper d'image, ciblée hero. |
+| **Préchargement des polices critiques** (`preload` woff2) | Moyenne | Les `preload` de polices sont présents mais **commentés** dans `base.html.twig` ; activer sans connaître les polices réellement critiques peut nuire (préchargements inutiles). | Identifier les 1–2 polices du *above-the-fold* puis décommenter/adapter. |
+| **Sitemap — `lastmod`, hreflang, images** | Moyenne | Sitemap généré dynamiquement, non audité dans ce lot. | Vérifier `SitemapService` : `lastmod`, `xhtml:link` (alternates) et `image:image`. |
+
+> **À noter :** `preconnect`/`dns-prefetch` vers Matomo et Axeptio sont **déjà**
+> en place dans `base.html.twig` (rien à faire).
+
+---
+
+## 6. Validation après déploiement
+
+Après mise en service (cache vidé) :
+
+- Tester une URL **produit** et une URL **emploi** via le
+  [test des résultats enrichis Google](https://search.google.com/test/rich-results).
+- Vérifier les balises **Open Graph / Twitter** via les *debuggers* X et LinkedIn.
+- Contrôler les **Core Web Vitals** (PageSpeed Insights / Search Console).
