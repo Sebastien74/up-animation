@@ -19,14 +19,34 @@ export default function () {
         return;
     }
 
-    /** Styles are bundled in a dedicated chunk, loaded only when the module is active. */
-    import('../../../../scss/front/default/components/accessibility-widget.scss');
+    /** Widget UI styles (button/panel): always needed when the widget is present.
+        The widget stays hidden (d-none) until the chunk is applied, to avoid a flash
+        of the unstyled button at the bottom of the page during load. */
+    const reveal = () => widget.classList.remove('d-none');
+    import('../../../../scss/front/default/components/accessibility-widget.scss')
+        .then(reveal)
+        .catch(reveal);
+
+    /** Preference application styles (contrast, dyslexic font, spacing, grayscale…):
+        loaded only once, and only when at least one preference is actually active, so
+        nothing extra is shipped to visitors who never use the widget. */
+    let prefsCssLoaded = false;
+    function ensurePrefsCss() {
+        if (prefsCssLoaded) {
+            return;
+        }
+        prefsCssLoaded = true;
+        import('../../../../scss/front/default/components/accessibility-prefs.scss');
+    }
 
     const html = document.documentElement;
     const toggleBtn = widget.querySelector('#a11y-toggle');
     const closeBtn = widget.querySelector('#a11y-close');
     const panel = widget.querySelector('#a11y-panel');
     const fontValueEl = widget.querySelector('[data-a11y-font-value]');
+    const fontDownBtn = widget.querySelector('[data-a11y-action="font-down"]');
+    const fontUpBtn = widget.querySelector('[data-a11y-action="font-up"]');
+    const resetBtn = widget.querySelector('#a11y-reset');
     const storageKey = widget.dataset.a11yStorageKey || 'a11y-prefs';
 
     /** Boolean toggles, mapped to the class added on <html>. */
@@ -35,7 +55,9 @@ export default function () {
         'readable-font': 'a11y-readable-font',
         'spacing': 'a11y-spacing',
         'underline-links': 'a11y-underline-links',
+        'text-left': 'a11y-text-left',
         'reduce-motion': 'a11y-reduce-motion',
+        'desaturate': 'a11y-desaturate',
         'big-cursor': 'a11y-big-cursor',
         'reading-guide': 'a11y-reading-guide',
     };
@@ -47,7 +69,9 @@ export default function () {
         'readable-font': false,
         spacing: false,
         'underline-links': false,
+        'text-left': false,
         'reduce-motion': false,
+        'desaturate': false,
         'big-cursor': false,
         'reading-guide': false,
     };
@@ -89,6 +113,12 @@ export default function () {
         if (fontValueEl) {
             fontValueEl.textContent = FONT_STEPS[step] + '%';
         }
+        if (fontDownBtn) {
+            fontDownBtn.disabled = step <= 0;
+        }
+        if (fontUpBtn) {
+            fontUpBtn.disabled = step >= FONT_STEPS.length - 1;
+        }
 
         // Boolean toggles
         Object.keys(TOGGLES).forEach((key) => {
@@ -96,6 +126,44 @@ export default function () {
         });
 
         toggleReadingGuide(!!prefs['reading-guide']);
+        applyMotionPause(!!prefs['reduce-motion']);
+        updateResetState();
+
+        if (hasNonThemeSettings() || document.body.classList.contains('as-accessibility')) {
+            ensurePrefsCss();
+        }
+    }
+
+    /** True when a non-theme preference differs from default (zoom or a toggle). */
+    function hasNonThemeSettings() {
+        return prefs.fontStep > 0 || Object.keys(TOGGLES).some((key) => !!prefs[key]);
+    }
+
+    /** True when at least one preference differs from default, or the site is in
+        dark mode (which the reset would also revert). */
+    function hasActiveSettings() {
+        return hasNonThemeSettings()
+            || !!(resetBtn && resetBtn.dataset.a11yResetLightUrl && html.dataset.theme === 'dark');
+    }
+
+    /** Dim / disable the reset button when there is nothing to reset. */
+    function updateResetState() {
+        if (resetBtn) {
+            resetBtn.disabled = !hasActiveSettings();
+        }
+    }
+
+    /** Pause / resume auto-playing media. Carousels and sliders listen to the
+        `a11y:motion` event (CSS animations are paused via the html class). */
+    function applyMotionPause(paused) {
+        if (paused) {
+            document.querySelectorAll('video, audio').forEach((media) => {
+                if (!media.paused) {
+                    media.pause();
+                }
+            });
+        }
+        document.dispatchEvent(new CustomEvent('a11y:motion', { detail: { paused } }));
     }
 
     /** Reflect the current preferences in the panel controls. */
@@ -127,8 +195,20 @@ export default function () {
         }
     }
 
+    /** Collapse every accordion group (compact panel on each open). */
+    function collapseAccordions() {
+        widget.querySelectorAll('.a11y-accordion-toggle').forEach((btn) => {
+            btn.setAttribute('aria-expanded', 'false');
+            const accordionPanel = document.getElementById(btn.getAttribute('aria-controls'));
+            if (accordionPanel) {
+                accordionPanel.hidden = true;
+            }
+        });
+    }
+
     /** Open / close the panel. */
     function openPanel() {
+        collapseAccordions();
         panel.hidden = false;
         widget.classList.add('a11y-open');
         toggleBtn.setAttribute('aria-expanded', 'true');
@@ -163,12 +243,19 @@ export default function () {
         }
     }
 
-    /** Reset everything to defaults. */
+    /** Reset everything to defaults. Also returns the site to the light theme
+        (default) when it is currently in dark mode, via the existing mechanism. */
     function reset() {
         prefs = Object.assign({}, defaults);
         save();
         apply();
         syncControls();
+        const resetBtn = widget.querySelector('#a11y-reset');
+        const lightUrl = resetBtn ? resetBtn.dataset.a11yResetLightUrl : null;
+        if (lightUrl && html.dataset.theme === 'dark') {
+            widget.classList.add('a11y-busy');
+            window.location.href = lightUrl;
+        }
     }
 
     // --- Wiring -------------------------------------------------------------
@@ -182,6 +269,18 @@ export default function () {
     });
 
     closeBtn.addEventListener('click', () => closePanel());
+
+    /** Collapsible groups (accordions). */
+    widget.querySelectorAll('.a11y-accordion-toggle').forEach((btn) => {
+        btn.addEventListener('click', () => {
+            const panel = document.getElementById(btn.getAttribute('aria-controls'));
+            const expanded = btn.getAttribute('aria-expanded') === 'true';
+            btn.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+            if (panel) {
+                panel.hidden = expanded;
+            }
+        });
+    });
 
     widget.querySelectorAll('[data-a11y-action]').forEach((btn) => {
         btn.addEventListener('click', () => {
@@ -206,6 +305,25 @@ export default function () {
             apply();
         });
     });
+
+    /** Dark mode delegates to the existing server-side theme mechanism (FRONT_THEME
+        cookie + dedicated CSS bundle): the change navigates, it is not a client class. */
+    const themeInput = widget.querySelector('[data-a11y-theme-url]');
+    if (themeInput) {
+        themeInput.addEventListener('change', () => {
+            /* Instant feedback before the reload: enabling dark activates the reset,
+               disabling it dims the reset again unless another setting is active. */
+            if (resetBtn) {
+                resetBtn.disabled = !(themeInput.checked || hasNonThemeSettings());
+            }
+            const option = themeInput.closest('.a11y-option');
+            if (option) {
+                option.classList.add('a11y-loading');
+            }
+            widget.classList.add('a11y-busy');
+            window.location.href = themeInput.dataset.a11yThemeUrl;
+        });
+    }
 
     // --- Init ---------------------------------------------------------------
 

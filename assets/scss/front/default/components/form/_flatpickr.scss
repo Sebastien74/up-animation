@@ -1013,4 +1013,76 @@ span.flatpickr-day.nextMonthDay.selected {
     }
 }
 
+/* Dark theme skin (scoped, inert in light). */
+html[data-theme="dark"] {
+
+    .flatpickr-calendar {
+        background: #1f1f24;
+        color: #e8e8ea;
+        box-shadow: 0 3px 13px rgba(0, 0, 0, .5);
+    }
+
+    .flatpickr-months .flatpickr-month,
+    .flatpickr-current-month,
+    .flatpickr-current-month input.cur-year,
+    .flatpickr-monthDropdown-months {
+        color: #e8e8ea;
+        background: transparent;
+    }
+
+    .flatpickr-weekday {
+        color: #9a9aa3;
+    }
+
+    .flatpickr-day {
+        color: #e8e8ea;
+    }
+
+    .flatpickr-day:hover,
+    .flatpickr-day:focus {
+        background: #2a2a31;
+        border-color: #2a2a31;
+    }
+
+    .flatpickr-day.selected,
+    .flatpickr-day.startRange,
+    .flatpickr-day.endRange {
+        background: #ff7100;
+        border-color: #ff7100;
+        color: #fff;
+    }
+
+    .flatpickr-day.today {
+        border-color: #ff7100;
+    }
+
+    .flatpickr-day.flatpickr-disabled,
+    .flatpickr-day.prevMonthDay,
+    .flatpickr-day.nextMonthDay {
+        color: #5a5a62;
+    }
+
+    span.flatpickr-day,
+    span.flatpickr-day.prevMonthDay,
+    span.flatpickr-day.nextMonthDay {
+        border-color: #3a3a42;
+        border-right-color: transparent;
+    }
+
+    .flatpickr-months .flatpickr-prev-month svg,
+    .flatpickr-months .flatpickr-next-month svg {
+        fill: #e8e8ea;
+    }
+
+    .flatpickr-calendar.arrowTop:before,
+    .flatpickr-calendar.arrowTop:after {
+        border-bottom-color: #1f1f24;
+    }
+
+    .flatpickr-calendar.arrowBottom:before,
+    .flatpickr-calendar.arrowBottom:after {
+        border-top-color: #1f1f24;
+    }
+}
+
 /*! purgecss end ignore */

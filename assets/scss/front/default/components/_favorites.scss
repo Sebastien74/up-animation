@@ -81,7 +81,7 @@
 .favorites-fixed-btn {
 
     position: fixed;
-    bottom: 30px;
+    bottom: 100px;
     right: 30px;
     z-index: 998;
     width: 54px;
@@ -94,10 +94,15 @@
     transition: $transition-base;
 
     @include mediaQuery(max-lg) {
-        bottom: 70px;
+        bottom: 82px;
         right: 20px;
         width: 48px;
         height: 48px;
+    }
+
+    /** Stay above the accessibility widget once it clears the mobile social bar. */
+    @include mediaQuery(max-md) {
+        bottom: 129px;
     }
 
     i {
@@ -138,13 +143,6 @@
 
     &:focus-visible {
         box-shadow: 0 0 0 3px rgba($primary, 0.35), 0 4px 12px 0 rgba(0, 0, 0, 0.22);
-    }
-}
-
-@include mediaQuery(min-lg) {
-
-    #scroll-top-btn.show ~ #favorites-fixed-btn {
-        bottom: 86px;
     }
 }
 

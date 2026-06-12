@@ -23,7 +23,7 @@
 
             position: fixed;
             bottom: 30px;
-            right: 30px;
+            right: 37px;
             transition: all .4s ease-in-out;
             opacity: 0;
             visibility: hidden;
@@ -68,6 +68,19 @@
                 fill: $primary;
                 color: $primary;
             }
+        }
+    }
+
+    /** When the scroll-top button appears, lift the accessibility and favorites
+        buttons above it (scroll-top stays anchored in the corner). */
+    @include mediaQuery(min-lg) {
+
+        #scroll-top-btn.show ~ #a11y-widget {
+            bottom: 86px;
+        }
+
+        #scroll-top-btn.show ~ #favorites-fixed-btn {
+            bottom: 156px;
         }
     }
 }

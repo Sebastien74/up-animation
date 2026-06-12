@@ -648,5 +648,43 @@
         border-top-right-radius: 0
     }
 
+    /* Dark theme skin (scoped, inert in light). */
+    html[data-theme="dark"] {
+
+        .ts-control,
+        .ts-wrapper.single .ts-control {
+            background: #1f1f24;
+            border-color: #3a3a42;
+            color: #e8e8ea;
+        }
+
+        .ts-control > input,
+        .ts-control > input::placeholder {
+            color: #e8e8ea;
+        }
+
+        .ts-dropdown {
+            background: #1f1f24;
+            border-color: #3a3a42;
+            color: #e8e8ea;
+        }
+
+        .ts-dropdown .option,
+        .ts-dropdown .create,
+        .ts-dropdown .no-results {
+            color: #e8e8ea;
+        }
+
+        .ts-dropdown .optgroup-header,
+        .ts-dropdown [data-disabled] {
+            color: #9a9aa3;
+        }
+
+        .ts-dropdown .active {
+            background: #2a2a31;
+            color: #e8e8ea;
+        }
+    }
+
     /*! purgecss end ignore */
 }

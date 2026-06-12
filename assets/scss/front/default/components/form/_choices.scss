@@ -313,4 +313,42 @@
     .choices__placeholder {
         opacity: .5
     }
+
+    /* Dark theme skin (scoped, inert in light). */
+    html[data-theme="dark"] {
+
+        .choices__inner,
+        .choices__input,
+        .choices[data-type*=select-one] .choices__input {
+            background-color: #1f1f24;
+            border-color: #3a3a42;
+            color: #e8e8ea;
+        }
+
+        .choices__list--dropdown,
+        .choices__list[aria-expanded] {
+            background-color: #1f1f24;
+            border-color: #3a3a42;
+            color: #e8e8ea;
+        }
+
+        .choices__list--single .choices__item,
+        .choices__list--dropdown .choices__item,
+        .choices__list[aria-expanded] .choices__item {
+            color: #e8e8ea;
+        }
+
+        .choices__list--dropdown .choices__item--selectable.is-highlighted,
+        .choices__list[aria-expanded] .choices__item--selectable.is-highlighted {
+            background-color: #2a2a31;
+        }
+
+        .choices[data-type*=select-one]::after {
+            border-color: #e8e8ea transparent transparent;
+        }
+
+        .choices[data-type*=select-one].is-open::after {
+            border-color: transparent transparent #e8e8ea;
+        }
+    }
 }

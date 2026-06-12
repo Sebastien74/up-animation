@@ -1,0 +1,162 @@
+@charset "UTF-8";
+
+/* ------------------------------------------------------------------------------------------
+
+    Module : Accessibility — visitor preference application classes
+    Copyright : 2026
+    Author : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+    Page-level styles applied through the `html.a11y-*` classes (and the dyslexic font
+    faces). Split out of accessibility-widget.scss and loaded by the JS module ONLY when
+    at least one preference is active (or the legacy `as-accessibility` mode), so the bulk
+    (font faces, contrast, spacing, grayscale…) is never shipped to visitors who don't use
+    the widget. The widget UI (floating button + panel) stays in accessibility-widget.scss,
+    which is always loaded.
+
+------------------------------------------------------------------------------------------ */
+
+@import "../../../../lib/fonts/dyslexic";
+@import "../variables";
+
+$a11y-z: 4100;
+
+/** Text scaling — root font-size scale respects rem-based theme sizing. */
+html.a11y-font-scaled {
+    font-size: calc(100% * var(--a11y-font-scale, 1)) !important;
+}
+
+/** High contrast. */
+html.a11y-contrast {
+    body {
+        background-color: $white !important;
+        color: #000 !important;
+    }
+
+    p, span, li, td, th, dd, dt, h1, h2, h3, h4, h5, h6,
+    .body, .introduction {
+        color: #000 !important;
+    }
+
+    a:not(.btn) {
+        color: #0b3d91 !important;
+        text-decoration: underline !important;
+    }
+
+    .btn {
+        border: 2px solid #000 !important;
+    }
+
+    *:focus-visible {
+        outline: 3px solid #0b3d91 !important;
+        outline-offset: 2px !important;
+    }
+}
+
+/** Readable / dyslexia-friendly font. */
+html.a11y-readable-font {
+    body, p, span, li, td, th, dd, dt, a, label, input, textarea, select, button,
+    h1, h2, h3, h4, h5, h6, .body, .introduction, .ff-primary, .ff-secondary {
+        font-family: 'Opendyslexic', 'Comic Sans MS', sans-serif !important;
+        letter-spacing: .03em !important;
+        line-height: 1.6 !important;
+    }
+}
+
+/** Increased text spacing (WCAG 2.1 — 1.4.12 Text Spacing). */
+html.a11y-spacing {
+    body, p, span, li, td, th, dd, dt, a, label,
+    h1, h2, h3, h4, h5, h6, .body, .introduction {
+        line-height: 1.6 !important;
+        letter-spacing: .12em !important;
+        word-spacing: .16em !important;
+    }
+
+    p, li {
+        margin-bottom: 1.2em !important;
+    }
+}
+
+/** Underline all links for clearer affordance. */
+html.a11y-underline-links {
+    a {
+        text-decoration: underline !important;
+    }
+}
+
+/** Left-align text (disable justified text, hard to read for some users). */
+html.a11y-text-left {
+    /* text-align is inherited, so the content text containers are targeted (not each
+       inline node); covers headings, body, cards and table cells. The centred / right
+       Bootstrap utilities are also neutralised so inherited centring is forced left.
+       The widget uses none of these classes, so its own layout is untouched. */
+    p, li, dd, dt, dl, blockquote,
+    h1, h2, h3, h4, h5, h6,
+    .title, .sub-title, .caption-title, .baseline,
+    .body, .introduction, .text-block, .card-text, .body-card, .card-body,
+    figcaption, td, th,
+    .text-center, .text-sm-center, .text-md-center, .text-lg-center, .text-xl-center, .text-xxl-center,
+    .text-end, .text-sm-end, .text-md-end, .text-lg-end, .text-xl-end, .text-xxl-end {
+        text-align: left !important;
+    }
+
+    /* The page builder forces every descendant of a centred zone/column to the centre
+       with `.layout-col.text-center * { text-align:center!important }` (specificity 0,2,0).
+       Override it for the content elements only (each `.layout-col.text-center <el>` is at
+       least 0,2,1 > 0,2,0). Buttons and badges are deliberately not listed, so their
+       labels keep their centred alignment. */
+    .layout-col.text-center,
+    .layout-zone.text-center {
+        p, li, dd, dt, dl, blockquote,
+        h1, h2, h3, h4, h5, h6,
+        .title, .sub-title, .caption-title, .baseline,
+        .body, .introduction, .text-block, .card-text, .body-card, .card-body,
+        figcaption, td, th {
+            text-align: left !important;
+        }
+    }
+}
+
+/** Desaturate the whole page (grayscale), header and floating controls included.
+    The filter is applied on the root <html>: a filter creates a containing block for
+    fixed descendants, but on the root the reference stays the viewport, so fixed
+    elements (sticky header, mobile social bar, widget, favorites) keep their position
+    — verified in Chrome. Applying it on a non-root ancestor (e.g. <header>) would
+    instead re-anchor its fixed children, so it must stay on <html>. */
+html.a11y-desaturate {
+    filter: grayscale(1) !important;
+}
+
+/** Reduce motion: neutralise transitions and animations, and freeze CSS keyframe
+    animations. Auto-playing carousels / sliders / videos are stopped in JS through
+    the `a11y:motion` event dispatched by the widget. */
+html.a11y-reduce-motion {
+    *, *::before, *::after {
+        animation-duration: .001ms !important;
+        animation-iteration-count: 1 !important;
+        animation-play-state: paused !important;
+        transition-duration: .001ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/** Enlarged cursor. */
+html.a11y-big-cursor,
+html.a11y-big-cursor * {
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'%3E%3Cpath fill='%23000' stroke='%23fff' stroke-width='2' d='M6 3l30 18-13 3 8 15-6 3-8-15-11 9z'/%3E%3C/svg%3E"), auto !important;
+}
+
+/** Reading guide: horizontal ruler that follows the pointer. */
+.a11y-reading-guide-bar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 38px;
+    margin-top: -19px;
+    background-color: rgba($primary, .12);
+    border-top: 2px solid rgba($primary, .55);
+    border-bottom: 2px solid rgba($primary, .55);
+    pointer-events: none;
+    z-index: $a11y-z - 1;
+    will-change: transform;
+}

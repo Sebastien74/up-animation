@@ -65,3 +65,9 @@ $breakpoint: 'all';
 @each $suffix, $config in $buttons {
     @include button($suffix, $config, $screens);
 }
+
+/*-----------------------------------
+   5 ) Dark section surfaces (overrides .bg-* + wave fills, dark bundle only)
+-----------------------------------*/
+
+@import '_dark-surfaces';

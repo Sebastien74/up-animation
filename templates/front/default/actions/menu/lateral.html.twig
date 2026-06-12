@@ -21,6 +21,7 @@
 {%- set newsPageUrl = mainPages.newscasts.code is defined ? mainPages.newscasts.code : null -%}
 {%- set aboutPageUrl = mainPages.about.code is defined ? mainPages.about.code : null -%}
 {%- set notExpanded = false -%}
+{%- set displayThemeBtn = false -%}
 
 {%- macro element(link, tree, companyName, logo, microDataActive, expand, dropdownHover, dropdownItem, isLast, websiteTemplate, notExpanded, haveIcons = false, isHeader = false) -%}
     {%- set dropdownBack = false -%}
@@ -256,7 +257,7 @@
                     {%- endif -%}
                     {%- set isDarkTheme = frontTheme() == 'dark' -%}
                     {%- set themeParam = isDarkTheme ? 'front_light_theme' : 'front_dark_theme' -%}
-                    {%- if configuration.darkTheme -%}
+                    {%- if displayThemeBtn and configuration.darkTheme -%}
                         <a class="btn btn-circle btn-primary"
                            href="{{ replaceRequestParam(themeParam, 1) }}"
                            aria-label="{{ 'Changer de thème'|trans }}"

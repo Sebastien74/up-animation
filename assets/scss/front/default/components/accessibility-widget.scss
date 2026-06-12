@@ -2,37 +2,48 @@
 
 /* ------------------------------------------------------------------------------------------
 
-    Module : Accessibility widget (visitor toolbar)
+    Module : Accessibility widget (visitor toolbar UI)
     Copyright : 2026
     Licensed under MIT (https://github.com/Sebastien74/MIT-LICENSE/blob/main/LICENSE.md)
     Author : Sébastien FOURNIER <fournier.sebastien@outlook.com>
 
-    1 ) Fonts (dyslexia)
+    Widget UI only (always loaded for the floating button/panel). The page-level
+    preference application classes (`html.a11y-*`, dyslexic font) live in
+    accessibility-prefs.scss, loaded only when a preference is active.
+
     2 ) Widget UI (button + panel)
-    3 ) Visitor preference classes (applied on <html>)
+    4 ) Isolation from accessibility preferences
+    5 ) Dark theme variant
 
 ------------------------------------------------------------------------------------------ */
 
-/*-----------------------------------
-   1 ) Fonts (dyslexia)
------------------------------------*/
-
-@import "../../../../lib/fonts/dyslexic";
+@import "../variables";
+@import "../utilities/mixins";
 
 /*-----------------------------------
    2 ) Widget UI (button + panel)
 -----------------------------------*/
 
-$a11y-z: 1080;
-$a11y-primary: #22254e;
-$a11y-accent: #ff7100;
+$a11y-z: 4100;
 $a11y-radius: 12px;
 
+/** Bottom-right corner, aligned with the favorites / scroll-top column. */
 .a11y-widget {
     position: fixed;
-    left: 18px;
-    bottom: 18px;
+    right: 30px;
+    bottom: 30px;
     z-index: $a11y-z;
+    transition: bottom .4s ease-in-out;
+
+    @include mediaQuery(max-lg) {
+        right: 20px;
+        bottom: 20px;
+    }
+
+    /** Clear the fixed mobile social bar (.socials-list, 55px) on small screens. */
+    @include mediaQuery(max-md) {
+        bottom: 67px;
+    }
 
     *, *::before, *::after {
         box-sizing: border-box;
@@ -43,25 +54,30 @@ $a11y-radius: 12px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 52px;
-    height: 52px;
+    width: 54px;
+    height: 54px;
     padding: 0;
-    border: 2px solid #fff;
+    border: 2px solid $white;
     border-radius: 50%;
-    background-color: $a11y-primary;
-    color: #fff;
+    background-color: $secondary;
+    color: $white;
     cursor: pointer;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, .25);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, .22);
     transition: transform .2s ease, background-color .2s ease;
+
+    @include mediaQuery(max-lg) {
+        width: 48px;
+        height: 48px;
+    }
 
     &:hover,
     &:focus-visible {
-        background-color: $a11y-accent;
-        transform: scale(1.06);
+        background-color: $primary;
+        transform: scale(1.05);
     }
 
     &:focus-visible {
-        outline: 3px solid $a11y-accent;
+        outline: 3px solid $primary;
         outline-offset: 3px;
     }
 
@@ -72,15 +88,19 @@ $a11y-radius: 12px;
 
 .a11y-panel {
     position: absolute;
-    left: 0;
+    right: 0;
+    left: auto;
     bottom: calc(100% + 12px);
+    display: flex;
+    flex-direction: column;
     width: 320px;
-    max-width: calc(100vw - 36px);
-    max-height: calc(100vh - 90px);
-    overflow-y: auto;
+    max-width: calc(100vw - 40px);
+    /* Fits above the toggle (lifted up to ~152px when the scroll-top button shows)
+       and never exceeds the viewport; dvh keeps it correct under mobile browser UI. */
+    max-height: calc(100dvh - 160px);
+    overflow: hidden;
     padding: 0;
     border-radius: $a11y-radius;
-    background-color: #fff;
     color: #1d1d1d;
     box-shadow: 0 10px 40px rgba(0, 0, 0, .28);
 
@@ -90,12 +110,13 @@ $a11y-radius: 12px;
 }
 
 .a11y-panel-head {
+    flex: 0 0 auto;
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 14px 16px;
-    background-color: $a11y-primary;
-    color: #fff;
+    background-color: $secondary;
+    color: $white;
     border-radius: $a11y-radius $a11y-radius 0 0;
 }
 
@@ -104,6 +125,7 @@ $a11y-radius: 12px;
     font-size: 18px;
     font-weight: 700;
     line-height: 1.2;
+    color: $white;
 }
 
 .a11y-close {
@@ -116,7 +138,7 @@ $a11y-radius: 12px;
     border: 0;
     border-radius: 50%;
     background: transparent;
-    color: #fff;
+    color: $white;
     cursor: pointer;
 
     &:hover,
@@ -125,13 +147,16 @@ $a11y-radius: 12px;
     }
 
     &:focus-visible {
-        outline: 2px solid #fff;
+        outline: 2px solid $white;
         outline-offset: 2px;
     }
 }
 
 .a11y-panel-body {
+    flex: 1 1 auto;
+    overflow-y: auto;
     padding: 16px;
+    background-color: $white;
 }
 
 .a11y-group {
@@ -152,7 +177,54 @@ $a11y-radius: 12px;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: .04em;
-    color: $a11y-primary;
+    color: $secondary;
+}
+
+.a11y-accordion {
+    margin: 0;
+    border-top: 1px solid #e3e3ea;
+}
+
+.a11y-accordion-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin: 0;
+    padding: 12px 0;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+    text-align: left;
+
+    &::after {
+        content: "";
+        flex: 0 0 auto;
+        width: 8px;
+        height: 8px;
+        margin-left: 10px;
+        border-right: 2px solid currentColor;
+        border-bottom: 2px solid currentColor;
+        transform: rotate(45deg);
+        transition: transform .2s ease;
+    }
+
+    &[aria-expanded="true"]::after {
+        transform: rotate(-135deg);
+    }
+
+    &:focus-visible {
+        outline: 2px solid $primary;
+        outline-offset: 2px;
+    }
+}
+
+.a11y-accordion-panel {
+    padding-bottom: 6px;
+
+    &[hidden] {
+        display: none;
+    }
 }
 
 .a11y-steps {
@@ -173,16 +245,22 @@ $a11y-radius: 12px;
     font-size: 16px;
     font-weight: 700;
     cursor: pointer;
+    transition: opacity .2s ease, border-color .2s ease, background-color .2s ease;
 
-    &:hover,
-    &:focus-visible {
-        border-color: $a11y-primary;
+    &:not([disabled]):hover,
+    &:not([disabled]):focus-visible {
+        border-color: $secondary;
         background-color: #ececf2;
     }
 
     &:focus-visible {
-        outline: 2px solid $a11y-accent;
+        outline: 2px solid $primary;
         outline-offset: 2px;
+    }
+
+    &[disabled] {
+        opacity: .35;
+        cursor: not-allowed;
     }
 }
 
@@ -219,7 +297,7 @@ $a11y-radius: 12px;
         width: 20px;
         height: 20px;
         flex: 0 0 auto;
-        accent-color: $a11y-accent;
+        accent-color: $primary;
         cursor: pointer;
     }
 }
@@ -229,126 +307,207 @@ $a11y-radius: 12px;
     line-height: 1.3;
 }
 
+/** Loading feedback for an option that triggers a page reload (e.g. theme switch),
+    so the visitor sees that something is happening while the page navigates. */
+.a11y-option.a11y-loading {
+    pointer-events: none;
+    opacity: .75;
+
+    &::after {
+        content: "";
+        flex: 0 0 auto;
+        width: 16px;
+        height: 16px;
+        margin-left: auto;
+        border: 2px solid rgba($primary, .25);
+        border-top-color: $primary;
+        border-radius: 50%;
+        animation: a11y-spin .6s linear infinite;
+    }
+}
+
+@keyframes a11y-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
 .a11y-reset {
     display: block;
     width: 100%;
-    margin-top: 4px;
+    margin-top: 14px;
     padding: 11px 14px;
-    border: 1px solid $a11y-primary;
+    border: 1px solid $secondary;
     border-radius: 8px;
-    background-color: #fff;
-    color: $a11y-primary;
+    background-color: $white;
+    color: $secondary;
     font-size: 14px;
     font-weight: 700;
     cursor: pointer;
+    transition: opacity .2s ease, background-color .2s ease, color .2s ease;
 
-    &:hover,
-    &:focus-visible {
-        background-color: $a11y-primary;
-        color: #fff;
+    &:not(:disabled):hover,
+    &:not(:disabled):focus-visible {
+        background-color: $secondary;
+        color: $white;
     }
 
     &:focus-visible {
-        outline: 2px solid $a11y-accent;
+        outline: 2px solid $primary;
+        outline-offset: 2px;
+    }
+
+    &:disabled {
+        opacity: .45;
+        cursor: default;
+    }
+}
+
+.a11y-exit-mode {
+    display: block;
+    margin: 0 0 18px;
+    padding: 12px 14px;
+    border: 0;
+    border-radius: 8px;
+    background-color: $primary;
+    color: $white;
+    font-size: 14px;
+    font-weight: 700;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color .2s ease;
+
+    &:hover,
+    &:focus-visible {
+        background-color: $secondary;
+        color: $white;
+    }
+
+    &:focus-visible {
+        outline: 2px solid $primary;
         outline-offset: 2px;
     }
 }
 
 /*-----------------------------------
-   3 ) Visitor preference classes (on <html>)
+   4 ) Isolation — the widget keeps its own styling regardless of any visitor
+       accessibility preference (legacy `body.as-accessibility` or `html.a11y-*`).
+       ID-scoped so it overrides the global `!important` preference rules.
 -----------------------------------*/
 
-/** Text scaling — root font-size scale respects rem-based theme sizing. */
-html.a11y-font-scaled {
-    font-size: calc(100% * var(--a11y-font-scale, 1)) !important;
+#a11y-widget,
+#a11y-widget * {
+    font-family: $font-primary !important;
+    letter-spacing: normal !important;
+    word-spacing: normal !important;
+    line-height: 1.3 !important;
+    text-transform: none !important;
 }
 
-/** High contrast. */
-html.a11y-contrast {
-    body {
-        background-color: #fff !important;
-        color: #000 !important;
-    }
+#a11y-widget {
 
-    p, span, li, td, th, dd, dt, h1, h2, h3, h4, h5, h6,
-    .body, .introduction {
-        color: #000 !important;
-    }
-
-    a:not(.btn) {
-        color: #0b3d91 !important;
-        text-decoration: underline !important;
-    }
-
-    .btn {
-        border: 2px solid #000 !important;
-    }
-
-    *:focus-visible {
-        outline: 3px solid #0b3d91 !important;
-        outline-offset: 2px !important;
-    }
-}
-
-/** Readable / dyslexia-friendly font. */
-html.a11y-readable-font {
-    body, p, span, li, td, th, dd, dt, a, label, input, textarea, select, button,
-    h1, h2, h3, h4, h5, h6, .body, .introduction, .ff-primary, .ff-secondary {
-        font-family: 'Opendyslexic', 'Comic Sans MS', sans-serif !important;
-        letter-spacing: .03em !important;
-        line-height: 1.6 !important;
-    }
-}
-
-/** Increased text spacing (WCAG 2.1 — 1.4.12 Text Spacing). */
-html.a11y-spacing {
-    body, p, span, li, td, th, dd, dt, a, label,
-    h1, h2, h3, h4, h5, h6, .body, .introduction {
-        line-height: 1.6 !important;
-        letter-spacing: .12em !important;
-        word-spacing: .16em !important;
-    }
-
+    /* override: cancel the a11y-spacing paragraph/list margins inside the panel */
     p, li {
-        margin-bottom: 1.2em !important;
+        margin-bottom: 0 !important;
+    }
+
+    /* override: keep header text / exit button readable on dark header vs contrast & legacy modes */
+    .a11y-panel-head,
+    .a11y-panel-title,
+    .a11y-close,
+    .a11y-exit-mode {
+        color: $white !important;
+    }
+
+    /** Panel body text keeps its own colour whatever the active theme (e.g. dark mode
+        would otherwise lighten the inherited label colour on the white panel). */
+    .a11y-step,
+    .a11y-step-value,
+    .a11y-option-label {
+        color: #1d1d1d !important;
+    }
+
+    .a11y-legend {
+        color: $secondary !important;
+    }
+
+    .a11y-panel-title {
+        font-size: 18px !important;
+        line-height: 1.2 !important;
+    }
+
+    .a11y-legend {
+        text-transform: uppercase !important;
+    }
+
+    .a11y-exit-mode {
+        text-decoration: none !important;
     }
 }
 
-/** Underline all links for clearer affordance. */
-html.a11y-underline-links {
-    a {
-        text-decoration: underline !important;
+/*-----------------------------------
+   5 ) Dark theme variant — follows the site FRONT_THEME (data-theme="dark").
+       The widget chunk ships with the light variables, so the dark surfaces are
+       defined locally here (aligned with the project dark palette). $primary and
+       $secondary are identical in both themes and reused as-is.
+-----------------------------------*/
+
+$a11y-dark-surface: #1f1f24;
+$a11y-dark-surface-2: #2a2a31;
+$a11y-dark-surface-3: #34343c;
+$a11y-dark-border: #3a3a42;
+$a11y-dark-text: #e8e8ea;
+$a11y-dark-muted: #b6b6bf;
+
+html[data-theme="dark"] #a11y-widget {
+
+    .a11y-panel {
+        color: $a11y-dark-text;
     }
-}
 
-/** Reduce motion: neutralise animations and transitions. */
-html.a11y-reduce-motion {
-    *, *::before, *::after {
-        animation-duration: .001ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: .001ms !important;
-        scroll-behavior: auto !important;
+    .a11y-panel-body {
+        background-color: $a11y-dark-surface;
     }
-}
 
-/** Enlarged cursor. */
-html.a11y-big-cursor,
-html.a11y-big-cursor * {
-    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'%3E%3Cpath fill='%23000' stroke='%23fff' stroke-width='2' d='M6 3l30 18-13 3 8 15-6 3-8-15-11 9z'/%3E%3C/svg%3E"), auto !important;
-}
+    .a11y-step,
+    .a11y-step-value,
+    .a11y-option-label {
+        color: $a11y-dark-text !important;
+    }
 
-/** Reading guide: horizontal ruler that follows the pointer. */
-.a11y-reading-guide-bar {
-    position: fixed;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 38px;
-    margin-top: -19px;
-    background-color: rgba(34, 37, 78, .14);
-    border-top: 2px solid rgba(34, 37, 78, .6);
-    border-bottom: 2px solid rgba(34, 37, 78, .6);
-    pointer-events: none;
-    z-index: $a11y-z - 1;
-    will-change: transform;
+    .a11y-legend {
+        color: $a11y-dark-muted !important;
+    }
+
+    .a11y-accordion {
+        border-top-color: rgba(255, 255, 255, .08);
+    }
+
+    .a11y-step {
+        background-color: $a11y-dark-surface-2;
+        border-color: $a11y-dark-border;
+    }
+
+    .a11y-step:not([disabled]):hover,
+    .a11y-step:not([disabled]):focus-visible {
+        background-color: $a11y-dark-surface-3;
+        border-color: $primary;
+    }
+
+    .a11y-option:hover {
+        background-color: $a11y-dark-surface-2;
+    }
+
+    .a11y-reset {
+        background-color: transparent;
+        border-color: $a11y-dark-text;
+        color: $a11y-dark-text;
+    }
+
+    .a11y-reset:hover,
+    .a11y-reset:focus-visible {
+        background-color: $a11y-dark-text;
+        color: $a11y-dark-surface;
+    }
 }

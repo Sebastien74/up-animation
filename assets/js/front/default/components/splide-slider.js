@@ -12,6 +12,21 @@ export default function (sliders) {
     /** RGAA enhancements (keyboard + screen-reader labels) only when the accessibility module is active. */
     const a11yEnabled = document.documentElement.dataset.accessibility === '1';
 
+    /** Pause / resume autoplay sliders when the accessibility widget toggles motion. */
+    document.addEventListener('a11y:motion', (event) => {
+        document.querySelectorAll('.splide').forEach((el) => {
+            const instance = el._splide;
+            if (!instance || !instance.options || !instance.options.autoplay) {
+                return;
+            }
+            const autoplayComponent = instance.Components && instance.Components.Autoplay;
+            if (!autoplayComponent) {
+                return;
+            }
+            event.detail.paused ? autoplayComponent.pause() : autoplayComponent.play();
+        });
+    });
+
     if (sliders.length > 0) {
         import('../../../../scss/vendor/components/_splide.scss');
         // Splide overrides (.btn-vertical, .with-thumbnails...) live in _carousel.scss,
@@ -66,6 +81,7 @@ export default function (sliders) {
                     let itemsLength = slider.dataset.length ? slider.dataset.length : perPage;
                     let autoplay = slider.dataset.autoplay ? parseInt(slider.dataset.autoplay) === 1 : false;
                     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) autoplay = false;
+                    if (document.documentElement.classList.contains('a11y-reduce-motion')) autoplay = false;
                     let pauseOnHover = slider.dataset.pause ? parseInt(slider.dataset.pause) === 1 : true;
                     let drag = slider.dataset.drag ? parseInt(slider.dataset.drag) === 1 : true;
                     let pagination = slider.dataset.dots ? parseInt(slider.dataset.dots) === 1 : false;

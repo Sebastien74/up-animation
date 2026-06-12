@@ -56,6 +56,7 @@ export default function () {
             const ride = parseInt(carousel.dataset.bsRide) === 0 || carousel.dataset.bsRide === 'false' ? false : (autoplay ? 'carousel' : false);
             const pause = parseInt(carousel.dataset.bsPause) === 1 ? 'hover'
                 : (parseInt(carousel.dataset.bsPause) === 0 || carousel.dataset.bsPause === 'false' ? false : 'hover');
+            const a11yPaused = document.documentElement.classList.contains('a11y-reduce-motion');
             const hasMultiplePerSlide = carousel.classList.contains('multiple-carousel');
             const items = carousel.querySelectorAll('.carousel .carousel-item');
             const activeBg = false;
@@ -135,10 +136,10 @@ export default function () {
 
             let bootstrapCarousel = new Carousel(carousel, {
                 interval: interval,
-                ride: ride,
+                ride: a11yPaused ? false : ride,
                 keyboard: true,
                 touch: true,
-                slide: autoplay, /** autoplay */
+                slide: autoplay && !a11yPaused, /** autoplay */
                 pause: pause, /** hover or false */
             });
 
@@ -436,13 +437,33 @@ export default function () {
 
             if (carouselIndicators.length > 0) {
                 updateIndicators(1);
-                if (hasProgress) fillCarouselIndicator(1);
+                if (hasProgress && !a11yPaused) fillCarouselIndicator(1);
 
                 ['slide.bs.carousel', 'slid.bs.carousel'].forEach(event => {
                     carousel.addEventListener(event, (e) => {
                         const index = e.to + 1;
                         hasProgress ? fillCarouselIndicator(index) : updateIndicators(index);
                     });
+                });
+            }
+
+            /** Pause / resume when the accessibility widget toggles motion (bound once). */
+            if (!carousel.dataset.a11yMotionBound) {
+                carousel.dataset.a11yMotionBound = '1';
+                document.addEventListener('a11y:motion', (e) => {
+                    const instance = Carousel.getInstance(carousel) || bootstrapCarousel;
+                    if (e.detail.paused) {
+                        clearInterval(intervalID);
+                        if (instance) instance.pause();
+                    } else if (autoplay) {
+                        if (hasProgress) {
+                            const items = Array.from(carousel.querySelectorAll('.carousel-item'));
+                            const activeIndex = items.findIndex(item => item.classList.contains('active'));
+                            fillCarouselIndicator((activeIndex < 0 ? 0 : activeIndex) + 1);
+                        } else if (instance) {
+                            instance.cycle();
+                        }
+                    }
                 });
             }
         });

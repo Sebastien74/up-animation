@@ -40,17 +40,6 @@
             {%- endif -%}
         {%- endfor -%}
         {%- if isFooter -%}
-            {%- if accessibilityActive -%}
-                {%- set asAccessibility = app.request.cookies.get('USER_ACCESSIBILITY') -%}
-                {%- set accessibilityParam = asAccessibility ? 'user_accessibility_initial' : 'user_accessibility' -%}
-                {%- set accessibilityLabel = asAccessibility ? "Désactiver le mode accessibilité"|trans : "Activer le mode accessibilité"|trans -%}
-                <li id="item-footer-accessibility" class="mb-2 mb-md-0{% if isHorizontal %} d-flex align-items-center justify-content-center{% endif %}">
-                    {%- if isHorizontal and dashed -%}
-                        <span class="dashed text-white ms-2 me-2{% if not alwaysHorizontal %} d-none d-md-block{% endif %}">-</span>
-                    {%- endif -%}
-                    <a href="{{ '?'~accessibilityParam~'=true' }}" class="text-white text-hover-primary{% if isVertical %} d-inline-block mb-2{% endif %}">{{ accessibilityLabel|raw }}</a>
-                </li>
-            {%- endif -%}
             {%- if gdprActive -%}
                 <li id="item-footer-gdpr" class="mb-2 mb-md-0{% if isHorizontal %} d-flex align-items-center justify-content-center{% endif %}">
                     {%- if isHorizontal and dashed -%}

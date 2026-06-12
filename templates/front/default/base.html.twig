@@ -314,7 +314,7 @@
         {%- endif -%}
 
         {%- if not onlyBody and configuration.accessibilityStatus -%}
-            {%- include 'front/'~websiteTemplate~'/include/accessibility-widget.html.twig' only -%}
+            {%- include 'front/'~websiteTemplate~'/include/accessibility-widget.html.twig' with {darkThemeEnabled: configuration.darkTheme} only -%}
         {%- endif -%}
 
         {{ component('WebmasterBox', {

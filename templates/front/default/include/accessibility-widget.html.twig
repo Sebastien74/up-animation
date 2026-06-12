@@ -1,5 +1,7 @@
 {%- trans_default_domain 'front_default' -%}
 
+{%- set asAccessibility = app.request.cookies.get('USER_ACCESSIBILITY') -%}
+
 {#
     Module : Accessibilité (widget visiteur)
     -----------------------------------------
@@ -12,7 +14,7 @@
     aucun script en ligne (compatible CSP).
 #}
 
-<div id="a11y-widget" class="a11y-widget" data-a11y-storage-key="a11y-prefs">
+<div id="a11y-widget" class="a11y-widget d-none" data-a11y-storage-key="a11y-prefs">
 
     <button type="button"
             id="a11y-toggle"
@@ -48,6 +50,12 @@
 
         <div class="a11y-panel-body">
 
+            {%- if asAccessibility -%}
+                <a href="{{ app.request.pathInfo }}?user_accessibility_initial=1" class="a11y-exit-mode">
+                    {{ "Revenir au site en mode normal"|trans|striptags }}
+                </a>
+            {%- endif -%}
+
             <fieldset class="a11y-group">
                 <legend class="a11y-legend">{{ "Taille du texte"|trans|striptags }}</legend>
                 <div class="a11y-steps" role="group" aria-label="{{ "Taille du texte"|trans|striptags }}">
@@ -57,61 +65,103 @@
                 </div>
             </fieldset>
 
-            <fieldset class="a11y-group">
-                <legend class="a11y-legend">{{ "Aides à la lecture"|trans|striptags }}</legend>
-                <ul class="a11y-options">
-                    <li>
-                        <label class="a11y-option">
-                            <input type="checkbox" data-a11y-toggle="contrast">
-                            <span class="a11y-option-label">{{ "Contraste élevé"|trans|striptags }}</span>
-                        </label>
-                    </li>
-                    <li>
-                        <label class="a11y-option">
-                            <input type="checkbox" data-a11y-toggle="readable-font">
-                            <span class="a11y-option-label">{{ "Police lisible (dyslexie)"|trans|striptags }}</span>
-                        </label>
-                    </li>
-                    <li>
-                        <label class="a11y-option">
-                            <input type="checkbox" data-a11y-toggle="spacing">
-                            <span class="a11y-option-label">{{ "Espacement du texte"|trans|striptags }}</span>
-                        </label>
-                    </li>
-                    <li>
-                        <label class="a11y-option">
-                            <input type="checkbox" data-a11y-toggle="underline-links">
-                            <span class="a11y-option-label">{{ "Souligner les liens"|trans|striptags }}</span>
-                        </label>
-                    </li>
-                </ul>
-            </fieldset>
+            <div class="a11y-group a11y-accordion">
+                <button type="button" class="a11y-legend a11y-accordion-toggle" aria-expanded="false" aria-controls="a11y-acc-reading">
+                    {{ "Aides à la lecture"|trans|striptags }}
+                </button>
+                <div id="a11y-acc-reading" class="a11y-accordion-panel" role="group" aria-label="{{ "Aides à la lecture"|trans|striptags }}" hidden>
+                    <ul class="a11y-options">
+                        <li>
+                            <label class="a11y-option">
+                                <input type="checkbox" data-a11y-toggle="contrast">
+                                <span class="a11y-option-label">{{ "Contraste élevé"|trans|striptags }}</span>
+                            </label>
+                        </li>
+                        <li>
+                            <label class="a11y-option">
+                                <input type="checkbox" data-a11y-toggle="readable-font">
+                                <span class="a11y-option-label">{{ "Police lisible (dyslexie)"|trans|striptags }}</span>
+                            </label>
+                        </li>
+                        <li>
+                            <label class="a11y-option">
+                                <input type="checkbox" data-a11y-toggle="spacing">
+                                <span class="a11y-option-label">{{ "Espacement du texte"|trans|striptags }}</span>
+                            </label>
+                        </li>
+                        <li>
+                            <label class="a11y-option">
+                                <input type="checkbox" data-a11y-toggle="underline-links">
+                                <span class="a11y-option-label">{{ "Souligner les liens"|trans|striptags }}</span>
+                            </label>
+                        </li>
+                        <li>
+                            <label class="a11y-option">
+                                <input type="checkbox" data-a11y-toggle="text-left">
+                                <span class="a11y-option-label">{{ "Aligner le texte à gauche"|trans|striptags }}</span>
+                            </label>
+                        </li>
+                    </ul>
+                </div>
+            </div>
 
-            <fieldset class="a11y-group">
-                <legend class="a11y-legend">{{ "Confort de navigation"|trans|striptags }}</legend>
-                <ul class="a11y-options">
-                    <li>
-                        <label class="a11y-option">
-                            <input type="checkbox" data-a11y-toggle="reduce-motion">
-                            <span class="a11y-option-label">{{ "Réduire les animations"|trans|striptags }}</span>
-                        </label>
-                    </li>
-                    <li>
-                        <label class="a11y-option">
-                            <input type="checkbox" data-a11y-toggle="big-cursor">
-                            <span class="a11y-option-label">{{ "Grand curseur"|trans|striptags }}</span>
-                        </label>
-                    </li>
-                    <li>
-                        <label class="a11y-option">
-                            <input type="checkbox" data-a11y-toggle="reading-guide">
-                            <span class="a11y-option-label">{{ "Guide de lecture"|trans|striptags }}</span>
-                        </label>
-                    </li>
-                </ul>
-            </fieldset>
+            <div class="a11y-group a11y-accordion">
+                <button type="button" class="a11y-legend a11y-accordion-toggle" aria-expanded="false" aria-controls="a11y-acc-comfort">
+                    {{ "Confort de navigation"|trans|striptags }}
+                </button>
+                <div id="a11y-acc-comfort" class="a11y-accordion-panel" role="group" aria-label="{{ "Confort de navigation"|trans|striptags }}" hidden>
+                    <ul class="a11y-options">
+                        <li>
+                            <label class="a11y-option">
+                                <input type="checkbox" data-a11y-toggle="reduce-motion">
+                                <span class="a11y-option-label">{{ "Réduire les animations"|trans|striptags }}</span>
+                            </label>
+                        </li>
+                        <li>
+                            <label class="a11y-option">
+                                <input type="checkbox" data-a11y-toggle="big-cursor">
+                                <span class="a11y-option-label">{{ "Grand curseur"|trans|striptags }}</span>
+                            </label>
+                        </li>
+                        <li>
+                            <label class="a11y-option">
+                                <input type="checkbox" data-a11y-toggle="reading-guide">
+                                <span class="a11y-option-label">{{ "Guide de lecture"|trans|striptags }}</span>
+                            </label>
+                        </li>
+                        <li>
+                            <label class="a11y-option">
+                                <input type="checkbox" data-a11y-toggle="desaturate">
+                                <span class="a11y-option-label">{{ "Niveaux de gris"|trans|striptags }}</span>
+                            </label>
+                        </li>
+                    </ul>
+                </div>
+            </div>
 
-            <button type="button" id="a11y-reset" class="a11y-reset" data-a11y-action="reset">
+            {%- if darkThemeEnabled is defined and darkThemeEnabled -%}
+                {%- set isDark = frontTheme() == 'dark' -%}
+                <div class="a11y-group a11y-accordion">
+                    <button type="button" class="a11y-legend a11y-accordion-toggle" aria-expanded="false" aria-controls="a11y-acc-display">
+                        {{ "Affichage"|trans|striptags }}
+                    </button>
+                    <div id="a11y-acc-display" class="a11y-accordion-panel" role="group" aria-label="{{ "Affichage"|trans|striptags }}" hidden>
+                        <ul class="a11y-options">
+                            <li>
+                                <label class="a11y-option">
+                                    <input type="checkbox"
+                                           data-a11y-theme-url="{{ replaceRequestParam(isDark ? 'front_light_theme' : 'front_dark_theme', 1) }}"
+                                           {% if isDark %}checked{% endif %}>
+                                    <span class="a11y-option-label">{{ "Mode sombre"|trans|striptags }}</span>
+                                </label>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            {%- endif -%}
+
+            <button type="button" id="a11y-reset" class="a11y-reset" data-a11y-action="reset"
+                    {% if darkThemeEnabled is defined and darkThemeEnabled %}data-a11y-reset-light-url="{{ replaceRequestParam('front_light_theme', 1) }}"{% endif %}>
                 {{ "Réinitialiser les réglages"|trans|striptags }}
             </button>
 

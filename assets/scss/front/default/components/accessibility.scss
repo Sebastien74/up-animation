@@ -165,4 +165,19 @@ html body.as-accessibility {
     @each $suffix, $color in $theme-colors {
         @include svg($suffix, $color);
     }
+
+    /** Enlarged uppercase text must wrap and fit instead of overflowing buttons
+        and horizontal menus. */
+    .btn {
+        min-width: 0 !important;
+        height: auto !important;
+        white-space: normal !important;
+        overflow-wrap: anywhere !important;
+    }
+
+    .menu-container ul,
+    .navbar-nav,
+    ul.navbar-nav {
+        flex-wrap: wrap !important;
+    }
 }

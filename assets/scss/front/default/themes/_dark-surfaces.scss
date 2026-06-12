@@ -1,0 +1,95 @@
+@charset "UTF-8";
+
+/* -----------------------------------------------------------------
+    Front - Dark theme : section surfaces
+    Copyright : 2026
+    Author : Sébastien FOURNIER <fournier.sebastien@outlook.com>
+
+    These surfaces cannot be inverted through $theme-colors because each colour
+    token feeds .bg-X, .text-X and .border-X at once (inverting 'white' would
+    also break every .text-white, 'secondary-lighten' the .text-secondary-lighten
+    labels, etc.). So the section / card backgrounds are remapped here, in the
+    dark bundle only, while the text utilities keep their token values.
+
+    Hue-preserving dark tints keep the page rhythm, and the wave / curve fills are
+    realigned on the same surfaces so the dividers stay seamless. Loaded last in
+    the dark bundle so it wins over the generated .bg-* utilities.
+------------------------------------------------------------------ */
+
+$dark-surfaces: (
+    'white': #1e1e1e,
+    'beige': #211c14,
+    'secondary-lighten': #191c2e,
+    'info-lighten': #122a31,
+    'info-light': #0f3540,
+);
+
+@each $name, $color in $dark-surfaces {
+
+    .bg-#{$name} {
+        background-color: $color !important;
+    }
+
+    /* Top wave / bottom-left curve are filled with the zone's own surface. */
+    .layout-zone.bg-#{$name} {
+        .wave-divider-top .shape-fill,
+        .curve-divider-bottom-left .shape-fill {
+            fill: $color !important;
+        }
+    }
+
+    /* Bottom wave is filled with the next zone's surface. */
+    .layout-zone.next-bg-#{$name} {
+        .wave-divider-bottom .shape-fill {
+            fill: $color !important;
+        }
+    }
+}
+
+/* -----------------------------------------------------------------
+    Dark-on-dark text utilities
+
+    On the dark theme nearly every surface is dark, so the navy / black text
+    utilities (text-secondary, text-dark, text-black) must read light. Dark text
+    is re-asserted only where the surface stays light: the primary / warning
+    accents and the white contact icon.
+------------------------------------------------------------------ */
+
+.text-secondary,
+.text-dark,
+.text-black,
+.form-label,
+.label-wrap,
+.form-check-label,
+.form-floating .form-label,
+.form-floating .form-label span {
+    color: $body-color !important;
+}
+
+.bg-primary .text-secondary,
+.bg-primary .text-dark,
+.bg-primary .text-black,
+.bg-primary .form-label,
+.bg-primary .label-wrap,
+.bg-primary .form-check-label,
+.bg-primary .form-floating .form-label,
+.bg-primary .form-floating .form-label span,
+.bg-warning .text-secondary,
+.bg-warning .text-dark,
+.bg-warning .text-black,
+.contact-icon .text-secondary {
+    color: $secondary !important;
+}
+
+/* Secondary-coloured text buttons (blur / glass / outline) default to navy, unreadable
+   on the now-dark surfaces — switch their label and border to light in dark. */
+.btn-blur-secondary,
+.btn-blur-secondary .link-label,
+.btn-glass-secondary,
+.btn-outline-secondary {
+    color: $body-color !important;
+}
+
+.btn-outline-secondary {
+    border-color: $body-color !important;
+}
