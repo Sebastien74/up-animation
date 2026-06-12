@@ -57,14 +57,14 @@ Commits concernés sur `main` :
 
 - [ ] **Sites existants** (n'ont pas les tâches IG/TikTok ni les tâches cache en base) :
       `php bin/console app:scheduler:install --env=prod`
-      Pose les **6 livrées par défaut** : 5 actives (`app:analytics:rollup`,
+      Pose les **7 livrées par défaut** : 6 actives (`app:analytics:rollup`,
       `app:analytics:purge`, `cache:pool:prune`, `app:instagram:refresh-token`,
-      `app:tiktok:refresh-token`) **plus** `app:cache:reclaim` posée **inactive**
+      `app:tiktok:refresh-token`, `app:cache:warmup`) **plus** `app:cache:reclaim` posée **inactive**
       (grand ménage hebdomadaire, opt-in - cf. section 5). Sur **tous** les sites,
       idempotent (skip ce qui existe déjà).
 - [ ] Variantes utiles :
   - Un seul site : `app:scheduler:install --website=ID --env=prod`
-  - Toutes les définitions (10, avec leur état d'origine) : `--all`
+  - Toutes les définitions (11, avec leur état d'origine) : `--all`
   - Créées inactives (activation manuelle en admin ensuite) : `--disabled`
 - [ ] **`app:cache:reclaim` est donc déjà activable en admin** sans `--all` : l'install
       standard la provisionne (inactive). Ne l'activer que si la pression disque le
@@ -89,6 +89,12 @@ Commits concernés sur `main` :
       du trafic).
 - [ ] `security:password:expire` et `app:feed:sync` (social wall) : inactives par défaut,
       activer en admin seulement si besoin sur l'env.
+- [ ] **`app:cache:warmup`** (`0 5 * * *`, active) : rien à trancher, **non destructive**.
+      Rejoue en HTTP les URLs du `sitemap.xml` de chaque site (récupérées à la volée, pas
+      d'hydratation) pour reconstruire les caches front (result-cache, fragments `{% cache %}`)
+      avant qu'une visite réelle ne paie le coût à froid « après quelques jours d'inactivité ».
+      Bornée par `--max-urls` (300) et un budget temps `--max-seconds` (50, arrêt gracieux,
+      compatible mutualisé). Échec d'un site (domaine injoignable) -> log, on continue.
 - [ ] **`cache:pool:prune`** (`45 3 * * *`, active) : rien à trancher, **non destructive**.
       C'est la « rotation » du cache : supprime uniquement les entrées **expirées** (TTL
       dépassé) des pools filesystem (`cache.app`, `doctrine.result_cache_pool`, ...). Ne

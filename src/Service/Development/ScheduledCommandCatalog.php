@@ -33,6 +33,7 @@ final class ScheduledCommandCatalog
             new ScheduledCommandDefinition('Grand ménage du cache (hebdomadaire)', 'app:cache:reclaim', '0 4 * * 0', "Vide cache.app pour récupérer les entrées versionnées orphelines (fragments, result-cache). Vague de cache-miss assumée : dimanche 4H, inactive par défaut, à activer en admin uniquement si la pression disque le justifie", false, true),
             new ScheduledCommandDefinition('Refresh token Instagram', 'app:instagram:refresh-token', '0 4 * * 1', 'Renouvelle les tokens Instagram avant expiration (60 jours)', true),
             new ScheduledCommandDefinition('Refresh token TikTok', 'app:tiktok:refresh-token', '0 */6 * * *', 'Renouvelle les tokens TikTok avant expiration (24 heures)', true),
+            new ScheduledCommandDefinition('Préchauffage du cache des pages', 'app:cache:warmup', '0 5 * * *', 'Rejoue les URLs du sitemap en HTTP pour reconstruire les caches front (result-cache, fragments Twig) avant expiration, tous les jours à 5H', true),
         ];
     }
 
