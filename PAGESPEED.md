@@ -4,7 +4,9 @@
 > Rapport de référence : PageSpeed Insights, profils **mobile + bureau**, locale `fr`
 > (`pagespeed.web.dev/analysis/.../z8gmtijwc5`).
 >
-> **TL;DR — Perf/A11y/Bonnes pratiques au vert ; le seul chantier réel est le SEO (69).**
+> **TL;DR — Perf/A11y/Bonnes pratiques au vert. Le SEO (69) est normal : le site est
+> volontairement désindexé (confirmé). Aucun chantier P1 ; restent des optimisations
+> mineures (P2/P3) facultatives.**
 
 ---
 
@@ -45,25 +47,33 @@ liste des audits en échec (les lignes rouges/orange). J'identifie alors le corr
 ## 1. Synthèse exécutive
 
 **Opinion.** Performance, accessibilité et bonnes pratiques sont au vert ou proches : le
-front implémente nativement la quasi-totalité des leviers Lighthouse (cf. §2). **Le seul
-chantier réel est le SEO (69)**, identique mobile/bureau.
+front implémente nativement la quasi-totalité des leviers Lighthouse (cf. §2). Le SEO (69)
+est **normal** — site volontairement désindexé (cf. §1bis). **Il ne reste donc aucun
+chantier prioritaire**, seulement des optimisations facultatives.
 
 | # | Levier Lighthouse | État | Sévérité | Statut |
 |---|-------------------|------|----------|--------|
-| 1 | **SEO 69** — `is-crawlable` (page bloquée à l'indexation) | meta robots = champ admin par URL | **P1** | **Hypothèse n°1** |
-| 2 | SEO — meta description / hreflang / canonical / liens | dépend du contenu CMS de la home | P1 | Hypothèse |
-| 3 | Perf bureau 87 (vs mobile 98) | LCP/CSS bloquant sur la courbe desktop | P2 | Hypothèse |
-| 4 | CSS framework bloquant le rendu | `<link rel=stylesheet>` synchrone (`base:158`) | P2 | Fait |
-| 5 | Préchargement des fontes (woff2) | preload commenté / TODO ouvert | P3 | Fait |
-| 6 | Images nouvelle génération | **WebP actif** (`ALWAYS_WEBP=true`), AVIF off | P3 | Fait |
-| 7 | Bug `<meta og:url>` repli + type MIME picture | `base:111` + espace `image-loader:79` | P3 | Fait |
-| 8 | Transitions sur propriétés de layout | `max-height`/`margin` animés (13×) | P3 | Fait |
+| 1 | **SEO 69** — page en `noindex` | **désindexation volontaire** | — | ✅ Normal, sans objet |
+| 2 | Perf bureau 87 (vs mobile 98) | LCP/CSS bloquant sur la courbe desktop | P2 | Hypothèse |
+| 3 | CSS framework bloquant le rendu | `<link rel=stylesheet>` synchrone (`base:158`) | P2 | Fait |
+| 4 | Préchargement des fontes (woff2) | preload commenté / TODO ouvert | P3 | Fait |
+| 5 | Images nouvelle génération | **WebP actif** (`ALWAYS_WEBP=true`), AVIF off | P3 | Fait |
+| 6 | Bug `<meta og:url>` repli + type MIME picture | `base:111` + espace `image-loader:79` | P3 | Fait |
+| 7 | Transitions sur propriétés de layout | `max-height`/`margin` animés (13×) | P3 | Fait |
 
-**Répartition :** P0 = 0 · **P1 = 2 (SEO)** · P2 = 2 · P3 = 4.
+**Répartition :** P0 = 0 · **P1 = 0** · P2 = 2 · P3 = 4.
 
 ---
 
-## 1bis. Chantier SEO (69) — diagnostic *(le vrai sujet)*
+## 1bis. Chantier SEO (69) — ✅ RÉSOLU : désindexation volontaire *(fait confirmé)*
+
+> **Confirmé par l'éditeur (2026-06-12) : le site est volontairement désindexé.**
+> Le score SEO de 69 est donc **normal et attendu** — l'audit `is-crawlable` échoue par
+> conception (`<meta name="robots">` en `noindex`). **Aucun correctif à faire.** Le 69
+> remontera mécaniquement à ~90+ le jour où l'indexation sera activée en admin (champ SEO
+> de l'URL / `seoStatus`). À ré-auditer **après** mise en ligne publique.
+
+L'analyse de diagnostic ci-dessous est conservée pour mémoire / future mise en ligne.
 
 **Problème.** SEO 69 **identique** sur mobile et bureau. En scoring Lighthouse, un 69 avec
 tout le reste au vert correspond presque toujours à **un seul audit à forte pondération en
@@ -248,8 +258,7 @@ Le SEO (69) est le seul vrai chantier ; le reste est de l'optimisation marginale
 
 | Ordre | Chantier | Action | Effort | Impact | Pré-requis |
 |-------|----------|--------|--------|--------|------------|
-| **1** | **SEO** | Lire le `<meta robots>` de la home → si `noindex`, corriger l'indexation de l'URL en admin | faible | **SEO 69 → ~90+** | confirmer que la home doit être indexée |
-| **2** | **SEO** | Traiter les audits SEO résiduels (description, hreflang, alt, liens) | faible/moyen | SEO ↑ | détail des audits PSI |
+| ~~1~~ | ~~SEO~~ | ✅ **Sans objet — site volontairement désindexé** (confirmé). Ré-auditer après mise en ligne. | — | — | — |
 | 3 | Perf | Re-tester le bureau 2-3× + inspecter le LCP bureau | trivial | confirme/écarte l'anomalie | — |
 | 4 | Propreté | Corriger `og:url` repli (`base:111`) + type MIME (`image-loader:79`) | trivial | bonnes pratiques | — |
 | 5 | Perf | Supprimer AddThis (service Oracle arrêté en 2023) | faible | requête tierce ↓ | valider usage social |
