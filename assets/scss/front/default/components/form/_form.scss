@@ -364,6 +364,9 @@
         flex-shrink: 0;
         float: none;
         margin: 0 !important;
+        /* WCAG 2.5.8 (target size) : cible ≥ 24px (override de la base Bootstrap 1em) */
+        width: 1.5rem !important;
+        height: 1.5rem !important;
 
         &:checked {
             background-color: $primary;
