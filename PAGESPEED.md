@@ -272,13 +272,104 @@ Le SEO (69) est le seul vrai chantier ; le reste est de l'optimisation marginale
 
 ---
 
-## 5. Prochaine étape
+## 5. Plan d'exécution — remonter le **bureau de 87 → ≥ 95**
 
-1. **Dépliez la catégorie SEO** du rapport et envoyez la liste des audits en échec (ou
-   collez le `<meta name="robots">` de la home en prod). → j'isole la cause exacte du 69.
-2. Confirmez que la page d'accueil **doit** être indexée (vs préprod volontairement masquée).
-3. Je peux alors **implémenter** sur cette branche les correctifs à faible risque (4, 5, 6),
-   et vous guider sur le point SEO (souvent une action de contenu en admin, pas de code).
+> Objectif : score Performance **bureau ≥ 95**, sans régression mobile (98) ni FOUC.
+> Méthode : **diagnostic d'abord** (la cible dépend de la métrique fautive), **un seul
+> levier à la fois**, **mesure avant/après** sur PSI à chaque étape.
+
+### Étape 0 — Cadrer la cause (pré-requis, ~10 min)
+
+On ne touche au code qu'après avoir lu **la métrique fautive**. Le score Performance est une
+moyenne pondérée ; sur desktop les poids sont ≈ : **LCP 25 %, TBT 30 %, CLS 25 %, FCP 10 %,
+Speed Index 10 %**. 87 = ~13 pts perdus → concentrés sur 1 à 2 métriques.
+
+1. Ouvrir le rapport **Bureau** → relever les 5 métriques (FCP, LCP, TBT, CLS, Speed Index)
+   et noter celles en orange/rouge.
+2. Relever l'**élément LCP** (PSI le nomme : image d'en-tête ? titre H1 ? bloc texte ?).
+3. Lire les **Diagnostics** : « Éliminer les ressources qui bloquent le rendu », « Réduire
+   le temps de réponse du serveur (TTFB) », « Diffuser des images de taille adaptée », etc.
+4. **Re-lancer 2-3 fois** : les tests labo varient (CrUX « Aucune donnée »). Si le score
+   oscille 87↔95, c'est de la **variance**, pas un défaut → ne rien faire.
+
+> **Arbre de décision** (selon la métrique orange/rouge identifiée à l'étape 0) :
+> - **LCP élevé** → branche A (image) et/ou C (CSS bloquant) et/ou D (TTFB).
+> - **FCP / Speed Index élevés** → branche C (CSS bloquant) en priorité.
+> - **TBT élevé en desktop alors qu'OK en mobile** → branche E (tierces parties), atypique.
+> - **CLS > 0** → branche F (décalages), peu probable (anti-CLS déjà en place).
+
+### Branche A — Image LCP (si LCP = image d'en-tête)
+
+- **Problème.** En desktop, c'est la variante 1920 px qui est préchargée (`base:184-197`,
+  `media="(min-width:1400px)"`). Un visuel d'accueil lourd, même en WebP, plombe le LCP.
+- **Actions.** 1) Vérifier le **poids réel** de l'image servie en desktop (cible < 200 Ko) ;
+  2) baisser la qualité WebP du filtre concerné si > 80 ; 3) **activer AVIF**
+  (`ImageThumbnail.php:33` `ACTIVE_AVIF=true`, négociation `Accept` déjà prête) ; 4) vérifier
+  que le `preload fetchpriority=high` cible bien LA variante affichée (pas plus grande).
+- **Effort** : faible. **Risque** : faible (régénération thumbnails + warmup).
+- **KPI** : LCP bureau < 1,2 s ; octets image ↓.
+
+### Branche B — LCP = texte/titre
+
+- **Problème.** Si le LCP est un H1/bloc texte, il dépend de la **fonte** : le CSS des fontes
+  est async (`base:139`), woff2 non préchargés (TODO `REGARDER ISACAR`, `base:128-138`).
+- **Actions.** Précharger la **seule graisse** du H1 above-the-fold (`<link rel=preload
+  as=font crossorigin nonce>`). Fallback Arial déjà métriqué → gain surtout sur LCP-texte.
+- **Effort** : faible. **Risque** : nul (ajout de preload ciblé).
+- **KPI** : LCP bureau < 1,2 s ; « text remains visible during webfont load » au vert.
+
+### Branche C — CSS framework bloquant le rendu *(suspect n°1)*
+
+- **Problème.** `base:158` : `encore_entry_link_tags(... frontTheme)` = `<link
+  rel="stylesheet">` **synchrone**. Sur la courbe desktop, ce blocage domine FCP/LCP.
+- **Actions (graduées).**
+  1. **Mesurer** la taille du CSS framework buildé (`public/build/front/default/front-default-light*.css`).
+  2. **Critical CSS** : extraire le CSS above-the-fold de la home (`template-page`), l'inliner
+     dans `<head>` (avec `nonce`), passer le reste du framework en
+     `rel=preload onload→stylesheet` + repli `<noscript>` (le pattern existe déjà pour
+     fontes/print/GDPR, `base:159-167` → le réutiliser).
+  3. **Garde-fou FOUC** : valider visuellement la home + une page CMS avant/après ; le
+     `data-theme` anti-FOUC (`base:64-66`) reste en place.
+- **Effort** : moyen/élevé (génération + QA critical CSS). **Risque** : moyen (FOUC si
+  critical CSS incomplet) → **ne lancer que si l'étape 0 confirme un FCP/LCP dégradé par ce CSS.**
+- **KPI** : « Render-blocking resources » = 0 ms ; FCP bureau < 0,9 s.
+
+### Branche D — TTFB serveur
+
+- **Problème.** Un TTFB élevé pénalise proportionnellement plus le desktop. Atténuations
+  déjà présentes : cache pages + tâche de **warmup** (préchauffage) déjà en place.
+- **Actions.** Vérifier le TTFB du rapport ; si > 0,6 s : contrôler que le cache HTTP de page
+  est bien actif en prod (pas de `no-cache` involontaire sur le HTML — cf. `.htaccess:133-135`
+  qui met `no-store` sur `.html/.php` : à challenger si la home est servie ainsi), état du
+  cache OPcache/APCu, et la fraîcheur du warmup.
+- **Effort** : variable (infra). **Risque** : moyen (toucher au cache HTML) → **escalade /
+  validation avant** tout changement de `Cache-Control` sur le HTML.
+- **KPI** : TTFB < 0,4 s (desktop).
+
+### Branche E — Tierces parties (atypique en desktop)
+
+- **Note.** Peu probable (mobile à 98 = TBT bon). Si TBT desktop ressort quand même :
+  supprimer **AddThis** (service Oracle arrêté en 2023, `base:304`) et différer la CMP.
+- **Effort** : faible. **Risque** : faible (AddThis) / RGPD (CMP → validation).
+
+### Séquencement recommandé
+
+| Ordre | Étape | Condition de déclenchement | Risque |
+|-------|-------|----------------------------|--------|
+| 1 | Étape 0 — diagnostic + 3 re-runs | toujours | nul |
+| 2 | Branche A ou B (selon élément LCP) | LCP orange/rouge | faible |
+| 3 | Branche C — critical CSS | FCP/SI dégradés par le CSS | moyen (FOUC) |
+| 4 | Branche D — TTFB | TTFB > 0,6 s | moyen (cache HTML) |
+| 5 | Branche E — AddThis/CMP | TBT desktop dégradé | faible/RGPD |
+
+> **Principe.** Après **chaque** étape : re-tester PSI bureau **et** mobile. On s'arrête dès
+> que le bureau atteint ≥ 95 sans régression mobile. Les branches C et D ne se lancent **que
+> si** l'étape 0 les désigne — pour éviter un chantier (et un risque FOUC/cache) injustifié.
+
+### Données nécessaires pour démarrer l'étape 0
+
+Une seule capture suffit : le rapport **Bureau**, section **métriques** (les 5 chiffres) +
+**élément LCP** + **Diagnostics**. Avec ça, je transforme cet arbre en **une** action ciblée.
 
 ---
 
