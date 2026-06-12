@@ -25,11 +25,14 @@ class DocumentationController extends AdminController
     /**
      * Documentation dashboard.
      */
+    private const string FEATURED_SLUG = 'mise-en-production';
+
     #[Route('', name: 'admin_documentation', methods: 'GET')]
     public function dashboard(DocumentationProvider $documentation): Response
     {
         return $this->render('admin/page/documentation/dashboard.html.twig', [
             'pages' => $documentation->pages(),
+            'featured' => $documentation->page(self::FEATURED_SLUG),
             'externalResources' => [
                 [
                     'route' => 'app.swagger_ui',

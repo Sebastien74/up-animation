@@ -7,6 +7,22 @@
 {%- block title -%}{{ "Documentation"|trans|striptags }}{%- endblock -%}
 
 {%- block body -%}
+    {%- if featured -%}
+        <section class="doc-feature" aria-labelledby="doc-feature-title">
+            <div class="doc-feature-head">
+                <span class="doc-feature-badge"><i class="icm-rocket" aria-hidden="true"></i></span>
+                <div>
+                    <p class="doc-feature-kicker">{{ "Avant tout déploiement"|trans|raw }}</p>
+                    <h2 class="doc-feature-title" id="doc-feature-title">{{ featured.title }}</h2>
+                </div>
+                <a class="doc-feature-link" href="{{ path('admin_documentation_page', {slug: featured.slug}) }}">
+                    {{ "Ouvrir la page"|trans|raw }}<i class="icm-chevron-right" aria-hidden="true"></i>
+                </a>
+            </div>
+            <div class="doc-content doc-feature-content">{{ featured.markdown|markdown_to_html }}</div>
+        </section>
+    {%- endif -%}
+
     <div class="doc-hero">
         <span class="doc-hero-badge"><i class="icm-book-open" aria-hidden="true"></i></span>
         <h1 class="doc-hero-title">{{ "Documentation technique"|trans|raw }}</h1>
@@ -17,7 +33,7 @@
         <div class="doc-empty">{{ "Aucune documentation disponible pour le moment."|trans|raw }}</div>
     {%- else -%}
         <div class="doc-grid">
-            {%- for page in navPages -%}
+            {%- for page in navPages|filter(page => not (featured and page.slug == featured.slug)) -%}
                 <a class="doc-tile" href="{{ path('admin_documentation_page', {slug: page.slug}) }}">
                     <span class="doc-tile-head">
                         <span class="doc-tile-icon"><i class="icm-{{ docNavIcons[loop.index0 % docNavIcons|length] }}" aria-hidden="true"></i></span>
