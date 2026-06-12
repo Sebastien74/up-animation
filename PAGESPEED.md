@@ -1,50 +1,114 @@
 # ⚡ Audit PageSpeed Insights — front `up-animation` (home + CMS)
 
 > Branche : `claude/pagespeed-audit-fixes-7rtf5y` — généré le 2026-06-12.
-> Rapport de référence : PageSpeed Insights, profil **desktop**, locale `fr`
+> Rapport de référence : PageSpeed Insights, profils **mobile + bureau**, locale `fr`
 > (`pagespeed.web.dev/analysis/.../z8gmtijwc5`).
+>
+> **TL;DR — Perf/A11y/Bonnes pratiques au vert ; le seul chantier réel est le SEO (69).**
 
 ---
 
-## ⚠️ Limite de méthode (à lire avant tout)
+## 0. Scores réels du rapport *(faits — captures du 2026-06-12)*
 
-**Les chiffres du rapport PSI n'ont pas pu être récupérés automatiquement** depuis cet
-environnement : le domaine du site n'est pas résolu par le réseau (politique réseau de
-l'environnement) et l'API PageSpeed Insights publique renvoie un quota à zéro
-(`RESOURCE_EXHAUSTED`). Cet audit est donc **statique** : il croise le code réellement
-servi (`templates/front/default`, `templates/core`, `src/Twig/Content`,
+| Catégorie | Mobile | Bureau | Lecture |
+|-----------|:------:|:------:|---------|
+| **Performances** | **98** 🟢 | **87** 🟠 | Bon ; anomalie bureau < mobile (cf. §3.0) |
+| **Accessibilité** | **97** 🟢 | **97** 🟢 | Excellent |
+| **Bonnes pratiques** | **100** 🟢 | **100** 🟢 | Parfait |
+| **SEO** | **69** 🟠 | **69** 🟠 | **Point faible n°1** — identique sur les 2 profils |
+
+> CrUX : « Aucune donnée » → pas de données terrain (trafic faible / site récent) ;
+> les scores sont **en laboratoire** (variables d'un run à l'autre).
+
+**Conséquence directe sur la priorisation :** la performance est bonne, **l'effort doit
+porter sur le SEO (69)**. C'est l'inverse de l'intuition « PageSpeed = vitesse ».
+
+---
+
+## ⚠️ Limite de méthode
+
+Les **scores** ci-dessus sont des faits (captures d'écran). En revanche, le **détail des
+audits SEO qui échouent** n'est pas encore visible : le domaine n'est pas résolu par le
+réseau de cet environnement et l'API PSI renvoie un quota à zéro. Le reste de l'audit croise
+donc le code servi (`templates/front/default`, `templates/core`, `src/Twig/Content`,
 `src/Service/Content`, `webpack.config.js`, `public/.htaccess`) avec les critères Lighthouse.
 
-Conséquence, en suivant la règle « faits / hypothèses / opinions » :
-
-- **Fait vérifié** = constaté dans le code de ce dépôt (référence `fichier:ligne`).
-- **Hypothèse** = mécanisme Lighthouse plausible, **à confirmer avec les chiffres réels** du rapport.
+- **Fait vérifié** = score capturé, ou code constaté (référence `fichier:ligne`).
+- **Hypothèse** = mécanisme Lighthouse plausible, à confirmer avec le détail des audits.
 - **Opinion** = recommandation de priorisation.
 
-👉 **Pour transformer les hypothèses en faits**, collez ici les sections du rapport
-(scores des 4 catégories, Core Web Vitals, et surtout la liste « Opportunités » /
-« Diagnostics » avec leurs gains estimés). L'audit sera alors recalé sur les vrais postes.
+👉 **Pour pinpointer le SEO**, dépliez dans le rapport la catégorie **SEO** et envoyez la
+liste des audits en échec (les lignes rouges/orange). J'identifie alors le correctif exact.
 
 ---
 
 ## 1. Synthèse exécutive
 
-**Opinion.** Le front est **déjà fortement optimisé** : il implémente nativement la
-quasi-totalité des leviers à fort impact de Lighthouse. Les marges de progression restantes
-sont **ciblées** (tierces parties, CSS framework bloquant, AVIF, fontes) et non structurelles.
+**Opinion.** Performance, accessibilité et bonnes pratiques sont au vert ou proches : le
+front implémente nativement la quasi-totalité des leviers Lighthouse (cf. §2). **Le seul
+chantier réel est le SEO (69)**, identique mobile/bureau.
 
-| # | Levier Lighthouse | État dans le code | Sévérité | Statut |
-|---|-------------------|-------------------|----------|--------|
-| 1 | Images formats nouvelle génération | **WebP actif** (`ALWAYS_WEBP=true`), AVIF désactivé | P2 | Fait |
-| 2 | JS tierces parties (CMP, Matomo, AddThis, Tawk) | defer/async + preconnect, mais bloc TBT probable | P1 | Hypothèse |
-| 3 | CSS framework bloquant le rendu | `<link rel=stylesheet>` synchrone (`base:158`) | P2 | Fait |
-| 4 | Préchargement des fontes (woff2) | preload commenté / TODO ouvert | P2 | Fait |
-| 5 | LCP : preload image + fetchpriority | **déjà en place**, media-scopé | — | Fait (à préserver) |
-| 6 | CLS : width/height + aspect-ratio | **déjà en place** sur `<picture>` | — | Fait (à préserver) |
-| 7 | Transitions sur propriétés de layout | `max-height`/`margin` animés (13×) | P3 | Fait |
-| 8 | Bugs mineurs `<meta og:url>` / type MIME picture | repli `base:111` + espace `image-loader:79` | P3 | Fait |
+| # | Levier Lighthouse | État | Sévérité | Statut |
+|---|-------------------|------|----------|--------|
+| 1 | **SEO 69** — `is-crawlable` (page bloquée à l'indexation) | meta robots = champ admin par URL | **P1** | **Hypothèse n°1** |
+| 2 | SEO — meta description / hreflang / canonical / liens | dépend du contenu CMS de la home | P1 | Hypothèse |
+| 3 | Perf bureau 87 (vs mobile 98) | LCP/CSS bloquant sur la courbe desktop | P2 | Hypothèse |
+| 4 | CSS framework bloquant le rendu | `<link rel=stylesheet>` synchrone (`base:158`) | P2 | Fait |
+| 5 | Préchargement des fontes (woff2) | preload commenté / TODO ouvert | P3 | Fait |
+| 6 | Images nouvelle génération | **WebP actif** (`ALWAYS_WEBP=true`), AVIF off | P3 | Fait |
+| 7 | Bug `<meta og:url>` repli + type MIME picture | `base:111` + espace `image-loader:79` | P3 | Fait |
+| 8 | Transitions sur propriétés de layout | `max-height`/`margin` animés (13×) | P3 | Fait |
 
-**Répartition :** P0 = 0 · P1 = 1 (hypothèse) · P2 = 3 · P3 = 2.
+**Répartition :** P0 = 0 · **P1 = 2 (SEO)** · P2 = 2 · P3 = 4.
+
+---
+
+## 1bis. Chantier SEO (69) — diagnostic *(le vrai sujet)*
+
+**Problème.** SEO 69 **identique** sur mobile et bureau. En scoring Lighthouse, un 69 avec
+tout le reste au vert correspond presque toujours à **un seul audit à forte pondération en
+échec, indépendant du profil**. Le candidat n°1 est `is-crawlable` (« La page est bloquée
+pour l'indexation »), qui pèse à lui seul ~30 % de la catégorie → fait chuter exactement
+vers ~70.
+
+**Ce que le code permet d'écarter ou de retenir :**
+
+- ❌ **`.htaccess`** : `X-Robots-Tag: noindex` ne vise que `.doc/.docx/.pdf`
+  (`public/.htaccess:142-144`) — **pas** les pages HTML. Écarté.
+- ❌ **robots.txt** : `Disallow: /` uniquement si `seoStatus` désactivé
+  (`src/Service/Content/RobotsService.php:46`). Sur un site de prod indexé, non déclenché.
+- ⚠️ **meta robots de la page** : la valeur `index`/`noindex` provient du **champ SEO par
+  URL géré en admin** (`templates/front/default/include/seo.html.twig:18-23`, `seo.index`).
+  → **Hypothèse n°1 :** la page d'accueil est réglée sur **`noindex`** côté CMS
+  (SEO > indexation de l'URL). Vérification : `<meta name="robots">` de la home en prod ;
+  si `noindex` présent, c'est la cause unique du 69.
+- ⚠️ Si SEO global désactivé (`configuration.seoStatus = false`), `seo.html.twig:80-83`
+  sort `<title>[SEO Désactivé]…` + `robots = noIndex` **et** robots.txt en `Disallow: /`.
+  → à vérifier en second.
+
+**Autres audits SEO possibles (si `is-crawlable` passe)** — à confirmer avec le détail :
+
+| Audit Lighthouse | Cause probable côté CMS | Où vérifier |
+|------------------|-------------------------|-------------|
+| Meta description manquante | champ « description » SEO de la home vide | admin SEO de l'URL home |
+| `hreflang` invalide | alternate mal formé si multi-langue | `seo.html.twig:33-43` |
+| Liens sans texte explicite | boutons icône-only / « en savoir plus » | blocs `link`, header/footer |
+| Images sans `alt` | médias home/gallery sans titre renseigné | `image.html.twig:104` (alt = `intlTitle`) |
+| Liens non explorables | ancres en `role=button`/JS sans `href` | menu, CTA |
+
+**Enjeu.** Le SEO conditionne l'indexation et la visibilité organique — bénéfice client
+direct, bien plus structurant qu'un point de performance.
+
+**Dispositif.** 1) Lire le `<meta name="robots">` de la home en prod (ou le détail PSI) ;
+2) si `noindex` → corriger l'indexation de l'URL en admin (action de contenu, pas de code) ;
+3) sinon, traiter les audits listés un par un.
+
+**KPI.** SEO ≥ 90 ; audit `is-crawlable` au vert ; page présente dans l'index Google
+(Search Console).
+
+> **Garde-fou.** Si la home est volontairement en `noindex` (préprod, site pas encore
+> lancé), alors **le 69 est normal et attendu** — aucun correctif à faire. À confirmer
+> avec vous avant toute modification d'indexation.
 
 ---
 
@@ -81,9 +145,25 @@ Les lister évite de proposer des correctifs inutiles.
 
 ---
 
-## 3. Pistes de correctifs (problème → enjeu → réponse → dispositif → KPI)
+## 3. Pistes de correctifs performance (problème → enjeu → réponse → dispositif → KPI)
 
-### [P1] Tierces parties — premier suspect du TBT / « Réduire le JS inutilisé » *(hypothèse)*
+### [P2] Anomalie : perf bureau 87 < mobile 98 *(hypothèse)*
+
+- **Problème.** Inhabituel — le bureau score généralement plus haut que le mobile. Deux
+  explications plausibles : (a) variance de run en labo (CrUX « Aucune donnée », donc pas de
+  lissage terrain), ou (b) un **élément LCP plus lourd en bureau** (image d'en-tête servie en
+  grande résolution) ou le **CSS framework bloquant** (`base:158`) qui pèse davantage sur la
+  courbe de notation desktop.
+- **Enjeu.** Score Performance bureau ; pas de gain métier majeur (98/87 = déjà bon).
+- **Réponse.** 1) **Re-tester 2-3 fois** pour écarter la variance ; 2) si stable, identifier
+  l'élément LCP bureau dans le rapport (section « Largest Contentful Paint ») et vérifier la
+  variante d'image servie (`<picture>` desktop) + le preload `media="(min-width:1400px)"`
+  (`base:191`).
+- **Dispositif.** Re-runs PSI ; inspection de l'élément LCP.
+- **KPI.** Perf bureau ≥ 90 ; LCP bureau < 2,5 s.
+- **Opinion.** Priorité basse : 87 reste un bon score ; ne pas sur-investir.
+
+### [P2] Tierces parties — TBT / « Réduire le JS inutilisé » *(hypothèse)*
 
 - **Problème.** CMP (Axeptio), Matomo, AddThis, Tawk.to, et potentiellement GA/GTM
   s'exécutent au chargement. Sur desktop, le poste qui plombe le plus souvent Performance
@@ -164,28 +244,32 @@ Les lister évite de proposer des correctifs inutiles.
 
 ## 4. Plan d'action recommandé (par ROI)
 
-| Ordre | Action | Effort | Impact attendu | Pré-requis |
-|-------|--------|--------|----------------|------------|
-| 1 | Supprimer AddThis (service mort) | faible | requête tierce en moins | valider usage social |
-| 2 | Différer/optimiser CMP + tierces | moyen | **TBT** ↓ | chiffres PSI + conformité RGPD |
-| 3 | Précharger woff2 above-the-fold | faible | LCP-texte ↓ | identifier graisses LCP |
-| 4 | Corriger `og:url` repli + type MIME | trivial | propreté | — |
-| 5 | Activer AVIF | moyen | octets images ↓ | `imageavif` dispo + warmup |
-| 6 | Critical CSS home (si chiffré) | élevé | FCP ↓ | rapport confirmant le blocage |
-| 7 | Transitions non-layout | moyen | jank ↓ | — |
+Le SEO (69) est le seul vrai chantier ; le reste est de l'optimisation marginale.
 
-> **Garde-fou conformité.** La CMP relève du consentement RGPD : toute modification de son
-> déclenchement doit être **validée** (le consentement doit rester recueilli avant tout dépôt
-> non essentiel). Les correctifs 1, 3, 4 sont les plus sûrs pour une première itération.
+| Ordre | Chantier | Action | Effort | Impact | Pré-requis |
+|-------|----------|--------|--------|--------|------------|
+| **1** | **SEO** | Lire le `<meta robots>` de la home → si `noindex`, corriger l'indexation de l'URL en admin | faible | **SEO 69 → ~90+** | confirmer que la home doit être indexée |
+| **2** | **SEO** | Traiter les audits SEO résiduels (description, hreflang, alt, liens) | faible/moyen | SEO ↑ | détail des audits PSI |
+| 3 | Perf | Re-tester le bureau 2-3× + inspecter le LCP bureau | trivial | confirme/écarte l'anomalie | — |
+| 4 | Propreté | Corriger `og:url` repli (`base:111`) + type MIME (`image-loader:79`) | trivial | bonnes pratiques | — |
+| 5 | Perf | Supprimer AddThis (service Oracle arrêté en 2023) | faible | requête tierce ↓ | valider usage social |
+| 6 | Perf | Précharger woff2 above-the-fold (lever les TODO) | faible | LCP-texte ↓ | identifier graisses LCP |
+| 7 | Perf | Différer la CMP / tierces | moyen | TBT ↓ | conformité RGPD |
+| 8 | Perf | Activer AVIF / Critical CSS home | moyen/élevé | octets/FCP ↓ | mesure préalable |
+
+> **Garde-fou conformité.** (a) Ne pas rendre une page indexable si elle est volontairement
+> en `noindex` (préprod) — à confirmer avec vous. (b) Toute modification du déclenchement de
+> la CMP relève du consentement RGPD et doit être validée.
 
 ---
 
 ## 5. Prochaine étape
 
-1. Collez les **chiffres réels** du rapport (scores + Core Web Vitals + Opportunités/Diagnostics).
-2. Je recale cet audit (faits/hypothèses) et je peux **implémenter** les correctifs 1/3/4
-   (faibles risques) sur cette branche, avec validation humaine avant tout changement touchant
-   la CMP ou le CSS critique.
+1. **Dépliez la catégorie SEO** du rapport et envoyez la liste des audits en échec (ou
+   collez le `<meta name="robots">` de la home en prod). → j'isole la cause exacte du 69.
+2. Confirmez que la page d'accueil **doit** être indexée (vs préprod volontairement masquée).
+3. Je peux alors **implémenter** sur cette branche les correctifs à faible risque (4, 5, 6),
+   et vous guider sur le point SEO (souvent une action de contenu en admin, pas de code).
 
 ---
 
