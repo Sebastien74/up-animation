@@ -77,6 +77,41 @@
                         <span class="badge {{ severities.low.badge }}">{{ summary.low }} {{ "mineurs"|trans }}</span>
                     </div>
 
+                    {# History of the indicative score #}
+                    {%- if history is defined and history|length > 1 -%}
+                        <div class="mb-4">
+                            <h3 class="fs-6 fw-700 border-bottom pb-2 mb-2">{{ "Évolution de l'indice"|trans }}</h3>
+                            <div class="d-flex align-items-end gap-1 mb-2" style="height: 48px;">
+                                {%- for snap in history|reverse -%}
+                                    {%- set s = snap.score is null ? 0 : snap.score -%}
+                                    <div class="flex-fill rounded-top {{ s >= 90 ? 'bg-success' : (s >= 60 ? 'bg-warning' : 'bg-danger') }}"
+                                         style="height: {{ (s * 0.46)|round }}px; min-height: 2px;"
+                                         data-bs-toggle="tooltip"
+                                         title="{{ snap.createdAt ? snap.createdAt|date('d/m/Y H:i') : '' }} — {{ snap.score is null ? 'N/A' : snap.score }}"></div>
+                                {%- endfor -%}
+                            </div>
+                            <ul class="list-group list-group-flush small">
+                                {%- for snap in history|slice(0, 5) -%}
+                                    {%- set prev = history[loop.index] is defined ? history[loop.index] : null -%}
+                                    {%- set delta = (snap.score is not null and prev and prev.score is not null) ? snap.score - prev.score : null -%}
+                                    {%- set sc = snap.score is null ? 0 : snap.score -%}
+                                    <li class="list-group-item d-flex align-items-center justify-content-between px-0 py-1">
+                                        <span class="text-muted">
+                                            {{ snap.createdAt ? snap.createdAt|date('d/m/Y H:i') : '' }}
+                                            {%- if loop.first %} · {{ "actuel"|trans }}{% endif -%}
+                                        </span>
+                                        <span class="d-inline-flex align-items-center gap-2">
+                                            {%- if delta is not null and delta != 0 -%}
+                                                <span class="{{ delta > 0 ? 'text-success' : 'text-danger' }}">{{ delta > 0 ? '+' : '' }}{{ delta }}</span>
+                                            {%- endif -%}
+                                            <span class="badge {{ sc >= 90 ? 'bg-success' : (sc >= 60 ? 'bg-warning' : 'bg-danger') }}">{{ snap.score is null ? 'N/A' : snap.score }}</span>
+                                        </span>
+                                    </li>
+                                {%- endfor -%}
+                            </ul>
+                        </div>
+                    {%- endif -%}
+
                     {# Grouped findings #}
                     {%- for group in report.groups -%}
                         {%- set issues = group.counts.high + group.counts.medium + group.counts.low -%}

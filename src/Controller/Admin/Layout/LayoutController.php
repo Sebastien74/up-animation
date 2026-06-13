@@ -7,7 +7,9 @@ namespace App\Controller\Admin\Layout;
 use App\Controller\Admin\AdminController;
 use App\Entity\Core\Website;
 use App\Entity\Layout\Layout;
+use App\Entity\Seo\PageAnalysis;
 use App\Entity\Seo\Url;
+use App\Repository\Seo\PageAnalysisRepository;
 use App\Service\Admin\LayoutServiceInterface;
 use App\Service\Admin\PageAnalyzerInterface;
 use Doctrine\ORM\PersistentCollection;
@@ -94,9 +96,10 @@ class LayoutController extends AdminController
      */
     #[IsGranted('ROLE_ADMIN')]
     #[Route('/analyze/{url}', name: 'admin_layout_analyze', methods: 'GET')]
-    public function analyze(Request $request, Website $website, Url $url, PageAnalyzerInterface $analyzer): JsonResponse
+    public function analyze(Request $request, Website $website, Url $url, PageAnalyzerInterface $analyzer, PageAnalysisRepository $analysisRepository): JsonResponse
     {
         $request->setLocale($url->getLocale());
+        $history = [];
 
         try {
             $start = microtime(true);
@@ -107,6 +110,8 @@ class LayoutController extends AdminController
             ]);
             $report = $analyzer->analyze((string) $response->getContent(), $url->getCode());
             $report['meta']['renderMs'] = (int) round((microtime(true) - $start) * 1000);
+            $this->saveSnapshot($analysisRepository, $website, $url, $report);
+            $history = $analysisRepository->findLatestSnapshots($website, $url->getCode(), $url->getLocale(), 12);
         } catch (\Throwable $e) {
             $report = [
                 'meta' => ['urlCode' => $url->getCode(), 'bytes' => 0, 'kb' => 0, 'dom' => 0, 'images' => 0, 'scripts' => 0, 'requests' => 0],
@@ -141,7 +146,43 @@ class LayoutController extends AdminController
             'url' => $url,
             'previewUrl' => $previewUrl,
             'analyzeUrl' => $analyzeUrl,
+            'history' => $history,
         ])]);
+    }
+
+    /**
+     * Persist a page analysis snapshot to historize the indicative score over time.
+     *
+     * @param array<string, mixed> $report
+     */
+    private function saveSnapshot(PageAnalysisRepository $analysisRepository, Website $website, Url $url, array $report): void
+    {
+        try {
+            $meta = $report['meta'] ?? [];
+            $summary = $report['summary'] ?? [];
+            $snapshot = (new PageAnalysis())
+                ->setWebsite($website)
+                ->setUrlCode((string) $url->getCode())
+                ->setLocale((string) $url->getLocale())
+                ->setScore($report['score'] ?? null)
+                ->setHtmlKb((int) ($meta['kb'] ?? 0))
+                ->setDomCount((int) ($meta['dom'] ?? 0))
+                ->setImagesCount((int) ($meta['images'] ?? 0))
+                ->setRequests((int) ($meta['requests'] ?? 0))
+                ->setRenderMs(isset($meta['renderMs']) ? (int) $meta['renderMs'] : null)
+                ->setExternalDomains((int) ($meta['externalDomains'] ?? 0))
+                ->setSeverityHigh((int) ($summary['high'] ?? 0))
+                ->setSeverityMedium((int) ($summary['medium'] ?? 0))
+                ->setSeverityLow((int) ($summary['low'] ?? 0));
+
+            $em = $this->coreLocator->em();
+            $em->persist($snapshot);
+            $em->flush();
+
+            $analysisRepository->pruneOldSnapshots($website, $url->getCode(), $url->getLocale(), 20);
+        } catch (\Throwable) {
+            // Historization is best-effort: never block the analysis report on a persistence error.
+        }
     }
 
     /**
