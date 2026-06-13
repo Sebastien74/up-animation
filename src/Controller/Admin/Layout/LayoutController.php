@@ -5,8 +5,11 @@ declare(strict_types=1);
 namespace App\Controller\Admin\Layout;
 
 use App\Controller\Admin\AdminController;
+use App\Entity\Core\Website;
 use App\Entity\Layout\Layout;
+use App\Entity\Seo\Url;
 use App\Service\Admin\LayoutServiceInterface;
+use App\Service\Admin\PageAnalyzerInterface;
 use Doctrine\ORM\PersistentCollection;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -80,6 +83,42 @@ class LayoutController extends AdminController
         $this->denyUnlessEntityWebsite($layout);
 
         return $service->standardizeLayoutMargins($layout);
+    }
+
+    /**
+     * Analyze the front rendering of the page: renders it internally (preview mode),
+     * parses the HTML and returns a performance/rendering report for an admin modal.
+     */
+    #[Route('/analyze/{url}', name: 'admin_layout_analyze', methods: 'GET')]
+    public function analyze(Request $request, Website $website, Url $url, PageAnalyzerInterface $analyzer): JsonResponse
+    {
+        $request->setLocale($url->getLocale());
+
+        try {
+            $response = $this->forward('App\Controller\Front\IndexController::view', [
+                'url' => $url->getCode(),
+                'website' => $website,
+                'preview' => true,
+            ]);
+            $report = $analyzer->analyze((string) $response->getContent(), $url->getCode());
+        } catch (\Throwable $e) {
+            $report = [
+                'meta' => ['urlCode' => $url->getCode(), 'bytes' => 0, 'kb' => 0],
+                'score' => null,
+                'findings' => [[
+                    'id' => 'error',
+                    'severity' => 'high',
+                    'label' => 'Analyse impossible',
+                    'value' => 'Erreur de rendu',
+                    'reco' => $this->coreLocator->isDebug() ? $e->getMessage() : "La page n'a pas pu être rendue pour analyse.",
+                ]],
+            ];
+        }
+
+        return new JsonResponse(['html' => $this->renderView('admin/core/layout/page-analysis.html.twig', [
+            'report' => $report,
+            'url' => $url,
+        ])]);
     }
 
     /**

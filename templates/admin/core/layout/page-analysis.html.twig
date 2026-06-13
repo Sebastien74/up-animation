@@ -1,0 +1,79 @@
+{%- trans_default_domain 'admin' -%}
+
+{%- set severities = {
+    high:   {label: "Critique"|trans, badge: 'bg-danger',    icon: 'icm-warning'},
+    medium: {label: "Moyen"|trans,    badge: 'bg-warning',    icon: 'icm-exclamation-triangle'},
+    low:    {label: "Mineur"|trans,   badge: 'bg-secondary',  icon: 'icm-info'},
+    info:   {label: "Info"|trans,     badge: 'bg-info',       icon: 'icm-info'},
+    ok:     {label: "OK"|trans,       badge: 'bg-success',    icon: 'icm-check'}
+} -%}
+{%- set score = report.score -%}
+{%- set scoreBadge = score is null ? 'bg-secondary' : (score >= 90 ? 'bg-success' : (score >= 60 ? 'bg-warning' : 'bg-danger')) -%}
+
+<div class="modal-wrapper">
+    <div class="modal fade modal-page-analysis layout-modal"
+         id="modal-page-analysis" tabindex="-1" role="dialog"
+         aria-labelledby="modal-page-analysis-label" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" role="document">
+            <div class="modal-content border">
+                <div class="modal-header flex-column align-items-center text-center border-0 pb-0">
+                    <span class="modal-icon w-100">
+                        <span class="icon-wrap">
+                            <i class="icm-tachometer"></i>
+                        </span>
+                    </span>
+                    <h2 id="modal-page-analysis-label" class="modal-title fw-700 mt-3 mb-0">{{ "Analyse de la page"|trans|raw }}</h2>
+                    <button type="button" class="btn-close btn-icon position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="{{ "Fermer"|trans|raw }}">
+                        <i class="icm-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body pt-4 px-3 px-md-4 pb-4">
+
+                    <p class="text-center small text-muted mb-4">
+                        {{ "Analyse statique du rendu front (perf & affichage). Indice indicatif, pas une mesure Lighthouse."|trans|raw }}
+                    </p>
+
+                    <div class="row g-3 text-center mb-4">
+                        <div class="col-6 col-md-3">
+                            <div class="badge {{ scoreBadge }} fs-5 w-100 py-2">{{ score is null ? 'N/A' : score ~ '/100' }}</div>
+                            <small class="d-block mt-1">{{ "Indice"|trans }}</small>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <div class="badge bg-light text-dark fs-6 w-100 py-2">{{ report.meta.kb }} Ko</div>
+                            <small class="d-block mt-1">{{ "Poids HTML"|trans }}</small>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <div class="badge bg-light text-dark fs-6 w-100 py-2">{{ url.code is defined and url.code ? url.code : '/' }}</div>
+                            <small class="d-block mt-1">{{ "URL"|trans }}</small>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <div class="badge bg-light text-dark fs-6 w-100 py-2">{{ url.locale|upper }}</div>
+                            <small class="d-block mt-1">{{ "Langue"|trans }}</small>
+                        </div>
+                    </div>
+
+                    <ul class="list-group">
+                        {%- for finding in report.findings -%}
+                            {%- set sev = severities[finding.severity] ?? severities.info -%}
+                            <li class="list-group-item d-flex flex-column gap-1 py-3">
+                                <div class="d-flex align-items-center justify-content-between gap-2">
+                                    <span class="fw-600">
+                                        <i class="{{ sev.icon }} me-1"></i>{{ finding.label }}
+                                    </span>
+                                    <span class="d-inline-flex align-items-center gap-2 flex-shrink-0">
+                                        <span class="text-muted small">{{ finding.value }}</span>
+                                        <span class="badge {{ sev.badge }}">{{ sev.label }}</span>
+                                    </span>
+                                </div>
+                                {%- if finding.reco -%}
+                                    <small class="text-muted">{{ finding.reco }}</small>
+                                {%- endif -%}
+                            </li>
+                        {%- endfor -%}
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

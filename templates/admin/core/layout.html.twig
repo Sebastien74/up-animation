@@ -28,7 +28,25 @@
     {%- if not infill and (layout and interface.name == 'page' or layout and granted('ROLE_LAYOUT_'~interface.name|upper)) -%}
         <div id="layout-grid" class="mb-4">
             {%- include 'admin/core/layout/cache-invalidate-button.html.twig' -%}
-            <div class="d-flex justify-content-end mb-2">
+            {%- set analyzeUrl = null -%}
+            {%- if entity.urls is defined and entity.urls|length -%}
+                {%- for u in entity.urls -%}
+                    {%- if analyzeUrl is null and u.locale == app.request.locale -%}{%- set analyzeUrl = u -%}{%- endif -%}
+                {%- endfor -%}
+                {%- if analyzeUrl is null -%}{%- set analyzeUrl = entity.urls|first -%}{%- endif -%}
+            {%- endif -%}
+            <div class="d-flex justify-content-end gap-2 mb-2">
+                {%- if analyzeUrl -%}
+                    <span class="analyze-page btn-app small d-inline-flex align-items-center gap-2 cursor"
+                          data-bs-toggle="tooltip"
+                          href="{{ path('admin_layout_analyze', {
+                              website: website.id,
+                              url: analyzeUrl.id,
+                          }) }}"
+                          title="{{ "Analyse la performance et le rendu de la page front (preview)"|trans|striptags }}">
+                        <i class="icm-tachometer"></i><span>{{ "Analyser la page"|trans|raw }}</span>
+                    </span>
+                {%- endif -%}
                 <span class="standardize-margins-page btn-app small d-inline-flex align-items-center gap-2 cursor"
                       data-bs-toggle="tooltip"
                       href="{{ path('admin_layout_standardize_margins', {
