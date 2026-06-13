@@ -88,7 +88,11 @@ class LayoutController extends AdminController
     /**
      * Analyze the front rendering of the page: renders it internally (preview mode),
      * parses the HTML and returns a performance/rendering report for an admin modal.
+     *
+     * Admin/preview only: rendered with preview=true and gated by ROLE_ADMIN, it never
+     * runs during public front navigation.
      */
+    #[IsGranted('ROLE_ADMIN')]
     #[Route('/analyze/{url}', name: 'admin_layout_analyze', methods: 'GET')]
     public function analyze(Request $request, Website $website, Url $url, PageAnalyzerInterface $analyzer): JsonResponse
     {
@@ -103,14 +107,20 @@ class LayoutController extends AdminController
             $report = $analyzer->analyze((string) $response->getContent(), $url->getCode());
         } catch (\Throwable $e) {
             $report = [
-                'meta' => ['urlCode' => $url->getCode(), 'bytes' => 0, 'kb' => 0],
+                'meta' => ['urlCode' => $url->getCode(), 'bytes' => 0, 'kb' => 0, 'dom' => 0, 'images' => 0, 'scripts' => 0, 'requests' => 0],
                 'score' => null,
-                'findings' => [[
+                'summary' => ['high' => 1, 'medium' => 0, 'low' => 0],
+                'groups' => [[
                     'id' => 'error',
-                    'severity' => 'high',
-                    'label' => 'Analyse impossible',
-                    'value' => 'Erreur de rendu',
-                    'reco' => $this->coreLocator->isDebug() ? $e->getMessage() : "La page n'a pas pu être rendue pour analyse.",
+                    'label' => 'Erreur',
+                    'counts' => ['high' => 1, 'medium' => 0, 'low' => 0],
+                    'findings' => [[
+                        'id' => 'error',
+                        'severity' => 'high',
+                        'label' => 'Analyse impossible',
+                        'value' => 'Erreur de rendu',
+                        'reco' => $this->coreLocator->isDebug() ? $e->getMessage() : "La page n'a pas pu être rendue pour analyse.",
+                    ]],
                 ]],
             ];
         }

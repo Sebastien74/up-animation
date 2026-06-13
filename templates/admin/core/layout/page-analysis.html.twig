@@ -9,6 +9,7 @@
 } -%}
 {%- set score = report.score -%}
 {%- set scoreBadge = score is null ? 'bg-secondary' : (score >= 90 ? 'bg-success' : (score >= 60 ? 'bg-warning' : 'bg-danger')) -%}
+{%- set summary = report.summary -%}
 
 <div class="modal-wrapper">
     <div class="modal fade modal-page-analysis layout-modal"
@@ -30,47 +31,77 @@
                 <div class="modal-body pt-4 px-3 px-md-4 pb-4">
 
                     <p class="text-center small text-muted mb-4">
-                        {{ "Analyse statique du rendu front (perf & affichage). Indice indicatif, pas une mesure Lighthouse."|trans|raw }}
+                        {{ "Analyse statique du rendu front en preview (perf, rendu, SEO, accessibilité, bonnes pratiques). Indice indicatif, pas une mesure Lighthouse."|trans|raw }}
                     </p>
 
-                    <div class="row g-3 text-center mb-4">
-                        <div class="col-6 col-md-3">
-                            <div class="badge {{ scoreBadge }} fs-5 w-100 py-2">{{ score is null ? 'N/A' : score ~ '/100' }}</div>
+                    {# Key metrics #}
+                    <div class="row g-2 text-center mb-3">
+                        <div class="col-4 col-md-2">
+                            <div class="badge {{ scoreBadge }} fs-6 w-100 py-2">{{ score is null ? 'N/A' : score ~ '/100' }}</div>
                             <small class="d-block mt-1">{{ "Indice"|trans }}</small>
                         </div>
-                        <div class="col-6 col-md-3">
+                        <div class="col-4 col-md-2">
                             <div class="badge bg-light text-dark fs-6 w-100 py-2">{{ report.meta.kb }} Ko</div>
                             <small class="d-block mt-1">{{ "Poids HTML"|trans }}</small>
                         </div>
-                        <div class="col-6 col-md-3">
-                            <div class="badge bg-light text-dark fs-6 w-100 py-2">{{ url.code is defined and url.code ? url.code : '/' }}</div>
-                            <small class="d-block mt-1">{{ "URL"|trans }}</small>
+                        <div class="col-4 col-md-2">
+                            <div class="badge bg-light text-dark fs-6 w-100 py-2">{{ report.meta.requests }}</div>
+                            <small class="d-block mt-1">{{ "Requêtes"|trans }}</small>
                         </div>
-                        <div class="col-6 col-md-3">
-                            <div class="badge bg-light text-dark fs-6 w-100 py-2">{{ url.locale|upper }}</div>
+                        <div class="col-4 col-md-2">
+                            <div class="badge bg-light text-dark fs-6 w-100 py-2">{{ report.meta.dom }}</div>
+                            <small class="d-block mt-1">{{ "Éléments DOM"|trans }}</small>
+                        </div>
+                        <div class="col-4 col-md-2">
+                            <div class="badge bg-light text-dark fs-6 w-100 py-2">{{ report.meta.images }}</div>
+                            <small class="d-block mt-1">{{ "Images"|trans }}</small>
+                        </div>
+                        <div class="col-4 col-md-2">
+                            <div class="badge bg-light text-dark fs-6 w-100 py-2">{{ url.locale|default('')|upper }}</div>
                             <small class="d-block mt-1">{{ "Langue"|trans }}</small>
                         </div>
                     </div>
 
-                    <ul class="list-group">
-                        {%- for finding in report.findings -%}
-                            {%- set sev = severities[finding.severity] ?? severities.info -%}
-                            <li class="list-group-item d-flex flex-column gap-1 py-3">
-                                <div class="d-flex align-items-center justify-content-between gap-2">
-                                    <span class="fw-600">
-                                        <i class="{{ sev.icon }} me-1"></i>{{ finding.label }}
-                                    </span>
-                                    <span class="d-inline-flex align-items-center gap-2 flex-shrink-0">
-                                        <span class="text-muted small">{{ finding.value }}</span>
-                                        <span class="badge {{ sev.badge }}">{{ sev.label }}</span>
-                                    </span>
-                                </div>
-                                {%- if finding.reco -%}
-                                    <small class="text-muted">{{ finding.reco }}</small>
+                    {# Global summary #}
+                    <div class="d-flex justify-content-center gap-2 mb-4">
+                        <span class="badge {{ severities.high.badge }}">{{ summary.high }} {{ "critiques"|trans }}</span>
+                        <span class="badge {{ severities.medium.badge }}">{{ summary.medium }} {{ "moyens"|trans }}</span>
+                        <span class="badge {{ severities.low.badge }}">{{ summary.low }} {{ "mineurs"|trans }}</span>
+                    </div>
+
+                    {# Grouped findings #}
+                    {%- for group in report.groups -%}
+                        {%- set issues = group.counts.high + group.counts.medium + group.counts.low -%}
+                        <div class="mb-4">
+                            <h3 class="fs-6 fw-700 d-flex align-items-center justify-content-between border-bottom pb-2 mb-2">
+                                <span>{{ group.label|trans }}</span>
+                                {%- if issues > 0 -%}
+                                    <span class="badge {{ group.counts.high > 0 ? severities.high.badge : (group.counts.medium > 0 ? severities.medium.badge : severities.low.badge) }}">{{ issues }}</span>
+                                {%- else -%}
+                                    <span class="badge {{ severities.ok.badge }}"><i class="icm-check"></i></span>
                                 {%- endif -%}
-                            </li>
-                        {%- endfor -%}
-                    </ul>
+                            </h3>
+                            <ul class="list-group list-group-flush">
+                                {%- for finding in group.findings -%}
+                                    {%- set sev = severities[finding.severity] ?? severities.info -%}
+                                    <li class="list-group-item d-flex flex-column gap-1 px-0 py-2">
+                                        <div class="d-flex align-items-center justify-content-between gap-2">
+                                            <span class="fw-600">
+                                                <i class="{{ sev.icon }} me-1"></i>{{ finding.label }}
+                                            </span>
+                                            <span class="d-inline-flex align-items-center gap-2 flex-shrink-0">
+                                                <span class="text-muted small">{{ finding.value }}</span>
+                                                <span class="badge {{ sev.badge }}">{{ sev.label }}</span>
+                                            </span>
+                                        </div>
+                                        {%- if finding.reco -%}
+                                            <small class="text-muted">{{ finding.reco }}</small>
+                                        {%- endif -%}
+                                    </li>
+                                {%- endfor -%}
+                            </ul>
+                        </div>
+                    {%- endfor -%}
 
                 </div>
             </div>
