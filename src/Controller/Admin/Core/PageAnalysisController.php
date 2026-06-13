@@ -80,9 +80,9 @@ class PageAnalysisController extends AdminController
                             : ((string) $url->getCode() ?: '/'),
                         'code' => (string) $url->getCode(),
                         'locale' => (string) $url->getLocale(),
-                        'score' => $snapshot?->getScore(),
-                        'kb' => $snapshot?->getHtmlKb(),
-                        'date' => $snapshot?->getCreatedAt(),
+                        'score' => $snapshot['score'] ?? null,
+                        'kb' => $snapshot['kb'] ?? null,
+                        'date' => $snapshot['date'] ?? null,
                         'runUrl' => $router->generate('admin_page_analysis_run', [
                             'website' => $website->getId(),
                             'url' => $url->getId(),

@@ -68,6 +68,15 @@ class PageAnalysis
     #[ORM\Column(type: Types::INTEGER)]
     private int $severityLow = 0;
 
+    /**
+     * Full structured analysis report (meta, score, summary, grouped findings) for
+     * later processing.
+     *
+     * @var array<string, mixed>|null
+     */
+    #[ORM\Column(type: Types::JSON, nullable: true)]
+    private ?array $report = null;
+
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
     private ?\DateTimeImmutable $createdAt = null;
 
@@ -236,6 +245,24 @@ class PageAnalysis
     public function setSeverityLow(int $severityLow): static
     {
         $this->severityLow = $severityLow;
+
+        return $this;
+    }
+
+    /**
+     * @return array<string, mixed>|null
+     */
+    public function getReport(): ?array
+    {
+        return $this->report;
+    }
+
+    /**
+     * @param array<string, mixed>|null $report
+     */
+    public function setReport(?array $report): static
+    {
+        $this->report = $report;
 
         return $this;
     }

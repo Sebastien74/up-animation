@@ -45,25 +45,27 @@ class PageAnalysisRepository extends ServiceEntityRepository
     }
 
     /**
-     * Latest snapshot per page (keyed by "code|locale") for a whole website.
+     * Latest snapshot scalars per page (keyed by "code|locale") for a whole website.
+     * Only lightweight fields are selected (the full JSON report is not loaded here).
      *
-     * @return array<string, PageAnalysis>
+     * @return array<string, array{code: ?string, locale: ?string, score: ?int, kb: int, date: ?\DateTimeInterface}>
      */
     public function findLatestPerPage(Website $website): array
     {
-        $snapshots = $this->createQueryBuilder('s')
+        $rows = $this->createQueryBuilder('s')
+            ->select('s.urlCode AS code', 's.locale AS locale', 's.score AS score', 's.htmlKb AS kb', 's.createdAt AS date')
             ->andWhere('s.website = :website')
             ->orderBy('s.createdAt', 'DESC')
             ->addOrderBy('s.id', 'DESC')
             ->setParameter('website', $website)
             ->getQuery()
-            ->getResult();
+            ->getArrayResult();
 
         $latest = [];
-        foreach ($snapshots as $snapshot) {
-            $key = ((string) $snapshot->getUrlCode()).'|'.((string) $snapshot->getLocale());
+        foreach ($rows as $row) {
+            $key = ((string) $row['code']).'|'.((string) $row['locale']);
             if (!isset($latest[$key])) {
-                $latest[$key] = $snapshot;
+                $latest[$key] = $row;
             }
         }
 

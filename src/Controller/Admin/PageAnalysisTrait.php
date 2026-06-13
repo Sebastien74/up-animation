@@ -100,7 +100,8 @@ trait PageAnalysisTrait
                 ->setExternalDomains((int) ($meta['externalDomains'] ?? 0))
                 ->setSeverityHigh((int) ($summary['high'] ?? 0))
                 ->setSeverityMedium((int) ($summary['medium'] ?? 0))
-                ->setSeverityLow((int) ($summary['low'] ?? 0));
+                ->setSeverityLow((int) ($summary['low'] ?? 0))
+                ->setReport($report);
 
             $em = $this->coreLocator->em();
             $em->persist($snapshot);
