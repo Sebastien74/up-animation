@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Service\Admin;
 
+use App\Entity\Layout\Layout;
 use App\Entity\Layout\Zone;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -16,5 +17,7 @@ interface LayoutServiceInterface
 {
     public function resetMargins(Zone $zone): JsonResponse;
 
-    public function standardizeMargins(Zone $zone): JsonResponse;
+    public function standardizeMarginsEL(mixed $entity): JsonResponse;
+
+    public function standardizeLayoutMargins(Layout $layout): JsonResponse;
 }

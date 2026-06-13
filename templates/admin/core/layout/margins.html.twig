@@ -3,28 +3,30 @@
 <h2 class="main-subtitle small w-100 text-center mb-3 position-relative">
     <i class="icm-border-outer"></i>
     {{ "Marges"|trans|raw }}
-    {%- if interface.name is defined and 'zone' == interface.name -%}
+    {%- if interface.name is defined and interface.name in ['zone', 'col', 'block'] -%}
         <span class="standardize-margins ms-auto d-inline-flex justify-content-center align-items-center cursor"
-              href="{{ path('admin_zone_standardize_margins', {
+              href="{{ path('admin_'~interface.name~'_standardize_margins', {
                   website: website.id,
-                  zone: entity.id,
+                  (interface.name): entity.id,
               }) }}"
               aria-label="{{"Standardiser les marges"|trans|striptags }}"
               title="{{"Standardiser les marges (recopie les marges et paddings de l'ordinateur sur les autres écrans)"|trans|striptags }}">
             <i class="icm-phone-laptop"></i>
         </span>
-        <span class="reset-margins d-inline-flex justify-content-center align-items-center cursor"
-              data-post-form="0"
-              data-type="stay"
-              data-target=".layout-modal"
-              href="{{ path('admin_zone_reset_margins', {
-                  website: website.id,
-                  zone: entity.id,
-              }) }}"
-              aria-label="{{"Réinitialiser les marges"|trans|striptags }}"
-              title="{{"Réinitialiser les marges"|trans|striptags }}">
-            <i class="icm-sync"></i>
-        </span>
+        {%- if 'zone' == interface.name -%}
+            <span class="reset-margins d-inline-flex justify-content-center align-items-center cursor"
+                  data-post-form="0"
+                  data-type="stay"
+                  data-target=".layout-modal"
+                  href="{{ path('admin_zone_reset_margins', {
+                      website: website.id,
+                      zone: entity.id,
+                  }) }}"
+                  aria-label="{{"Réinitialiser les marges"|trans|striptags }}"
+                  title="{{"Réinitialiser les marges"|trans|striptags }}">
+                <i class="icm-sync"></i>
+            </span>
+        {%- endif -%}
     {%- endif -%}
 </h2>
 

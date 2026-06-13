@@ -16,6 +16,7 @@ use App\Form\Type\Layout\Management\BackgroundColorBlockType;
 use App\Form\Type\Layout\Management\BlockConfigurationType;
 use App\Repository\Layout\BlockRepository;
 use App\Repository\Layout\ColRepository;
+use App\Service\Admin\LayoutServiceInterface;
 use App\Service\Interface\AdminLocatorInterface;
 use App\Service\Interface\CoreLocatorInterface;
 use Doctrine\ORM\Mapping\MappingException;
@@ -286,6 +287,19 @@ class BlockController extends AdminController
         $block->setSize($size);
         $this->coreLocator->em()->persist($block);
         $this->coreLocator->em()->flush();
+
+        return new JsonResponse(['success' => true]);
+    }
+
+    /**
+     * Standardize Block margins: copy desktop margins/paddings to the other screens.
+     */
+    #[IsGranted('ROLE_EDIT')]
+    #[Route('/standardize-margins/{block}', name: 'admin_block_standardize_margins', methods: 'DELETE')]
+    public function standardizeMargins(LayoutServiceInterface $service, Layout\Block $block): JsonResponse
+    {
+        $this->denyUnlessEntityWebsite($block);
+        $service->standardizeMarginsEL($block);
 
         return new JsonResponse(['success' => true]);
     }

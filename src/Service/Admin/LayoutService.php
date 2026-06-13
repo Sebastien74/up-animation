@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Service\Admin;
 
 use App\Entity\Layout\Block;
+use App\Entity\Layout\Layout;
 use App\Entity\Layout\Zone;
 use App\Service\Interface\CoreLocatorInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -65,13 +66,15 @@ class LayoutService implements LayoutServiceInterface
         return new JsonResponse(['success' => true]);
     }
 
-    public function standardizeMargins(Zone $zone): JsonResponse
+    public function standardizeLayoutMargins(Layout $layout): JsonResponse
     {
-        $this->standardizeMarginsEL($zone);
-        foreach ($zone->getCols() as $col) {
-            $this->standardizeMarginsEL($col);
-            foreach ($col->getBlocks() as $block) {
-                $this->standardizeMarginsEL($block);
+        foreach ($layout->getZones() as $zone) {
+            $this->standardizeMarginsEL($zone);
+            foreach ($zone->getCols() as $col) {
+                $this->standardizeMarginsEL($col);
+                foreach ($col->getBlocks() as $block) {
+                    $this->standardizeMarginsEL($block);
+                }
             }
         }
 

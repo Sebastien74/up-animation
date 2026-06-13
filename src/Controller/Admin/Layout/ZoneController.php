@@ -208,7 +208,7 @@ class ZoneController extends AdminController
     {
         $this->denyUnlessEntityWebsite($zone);
 
-        return $service->standardizeMargins($zone);
+        return $service->standardizeMarginsEL($zone);
     }
 
     /**

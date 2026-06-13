@@ -6,6 +6,7 @@ namespace App\Controller\Admin\Layout;
 
 use App\Controller\Admin\AdminController;
 use App\Entity\Layout\Layout;
+use App\Service\Admin\LayoutServiceInterface;
 use Doctrine\ORM\PersistentCollection;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -66,6 +67,19 @@ class LayoutController extends AdminController
             'website' => $this->getWebsite()->id,
             $mappedEntityInfos->interface['name'] => $mappedEntityInfos->entity->getId(),
         ]);
+    }
+
+    /**
+     * Standardize all the layout margins: copy desktop margins/paddings to the other
+     * screens for every zone, col and block of the layout.
+     */
+    #[IsGranted('ROLE_EDIT')]
+    #[Route('/standardize-margins/{layout}', name: 'admin_layout_standardize_margins', methods: 'DELETE')]
+    public function standardizeMargins(LayoutServiceInterface $service, Layout $layout): JsonResponse
+    {
+        $this->denyUnlessEntityWebsite($layout);
+
+        return $service->standardizeLayoutMargins($layout);
     }
 
     /**

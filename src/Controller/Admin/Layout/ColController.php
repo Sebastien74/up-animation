@@ -10,6 +10,7 @@ use App\Entity\Layout\Zone;
 use App\Form\Interface\LayoutFormFormManagerLocator;
 use App\Form\Type\Layout\Management as FormType;
 use App\Repository\Layout\ColRepository;
+use App\Service\Admin\LayoutServiceInterface;
 use App\Service\Interface\AdminLocatorInterface;
 use App\Service\Interface\CoreLocatorInterface;
 use Doctrine\ORM\Mapping\MappingException;
@@ -116,6 +117,18 @@ class ColController extends AdminController
         $this->adminLocator->layoutManager()->setGridZone($col->getZone()->getLayout());
 
         return new JsonResponse(['success' => true]);
+    }
+
+    /**
+     * Standardize Col margins: copy desktop margins/paddings to the other screens.
+     */
+    #[IsGranted('ROLE_EDIT')]
+    #[Route('/standardize-margins/{col}', name: 'admin_col_standardize_margins', methods: 'DELETE')]
+    public function standardizeMargins(LayoutServiceInterface $service, Col $col): JsonResponse
+    {
+        $this->denyUnlessEntityWebsite($col);
+
+        return $service->standardizeMarginsEL($col);
     }
 
     /**

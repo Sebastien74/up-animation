@@ -28,6 +28,17 @@
     {%- if not infill and (layout and interface.name == 'page' or layout and granted('ROLE_LAYOUT_'~interface.name|upper)) -%}
         <div id="layout-grid" class="mb-4">
             {%- include 'admin/core/layout/cache-invalidate-button.html.twig' -%}
+            <div class="d-flex justify-content-end mb-2">
+                <span class="standardize-margins-page btn-app small d-inline-flex align-items-center gap-2 cursor"
+                      data-bs-toggle="tooltip"
+                      href="{{ path('admin_layout_standardize_margins', {
+                          website: website.id,
+                          layout: layout.id,
+                      }) }}"
+                      title="{{ "Recopie les marges et paddings « ordinateur » de toute la page (zones, colonnes et blocs) sur les écrans portable, tablette et mobile"|trans|striptags }}">
+                    <i class="icm-phone-laptop"></i><span>{{ "Standardiser les marges"|trans|raw }}</span>
+                </span>
+            </div>
             {%- include 'admin/core/layout/zones.html.twig' -%}
         </div>
     {%- endif -%}

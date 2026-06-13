@@ -30,6 +30,21 @@ export default function (Routing) {
     };
 
     /**
+     * On standardize all the page margins (layout-level button, outside modals)
+     */
+    let standardizeLayout = function () {
+        document.body.addEventListener('click', function (e) {
+            let btn = e.target.closest('.standardize-margins-page');
+            if (btn) {
+                e.preventDefault();
+                import('./../../plugins/standardize-margins').then(({default: standardizeMargins}) => {
+                    new standardizeMargins(e, btn);
+                }).catch(error => console.error(error.message));
+            }
+        });
+    };
+
+    /**
      * On submitting
      */
     let submit = function () {
@@ -273,6 +288,7 @@ export default function (Routing) {
 
     if (!window.editElementInitialized) {
         showSubmit();
+        standardizeLayout();
         submit();
         backgroundModal();
         copyClass();
