@@ -36,27 +36,35 @@
 
                     {# Key metrics #}
                     <div class="row g-2 text-center mb-3">
-                        <div class="col-4 col-md-2">
+                        <div class="col-4 col-md-3">
                             <div class="badge {{ scoreBadge }} fs-6 w-100 py-2">{{ score is null ? 'N/A' : score ~ '/100' }}</div>
                             <small class="d-block mt-1">{{ "Indice"|trans }}</small>
                         </div>
-                        <div class="col-4 col-md-2">
+                        <div class="col-4 col-md-3">
                             <div class="badge bg-light text-dark fs-6 w-100 py-2">{{ report.meta.kb }} Ko</div>
                             <small class="d-block mt-1">{{ "Poids HTML"|trans }}</small>
                         </div>
-                        <div class="col-4 col-md-2">
+                        <div class="col-4 col-md-3">
                             <div class="badge bg-light text-dark fs-6 w-100 py-2">{{ report.meta.requests }}</div>
                             <small class="d-block mt-1">{{ "Requêtes"|trans }}</small>
                         </div>
-                        <div class="col-4 col-md-2">
+                        <div class="col-4 col-md-3">
+                            <div class="badge bg-light text-dark fs-6 w-100 py-2">{{ report.meta.renderMs|default(0) }} ms</div>
+                            <small class="d-block mt-1">{{ "Temps de rendu"|trans }}</small>
+                        </div>
+                        <div class="col-4 col-md-3">
                             <div class="badge bg-light text-dark fs-6 w-100 py-2">{{ report.meta.dom }}</div>
                             <small class="d-block mt-1">{{ "Éléments DOM"|trans }}</small>
                         </div>
-                        <div class="col-4 col-md-2">
+                        <div class="col-4 col-md-3">
                             <div class="badge bg-light text-dark fs-6 w-100 py-2">{{ report.meta.images }}</div>
                             <small class="d-block mt-1">{{ "Images"|trans }}</small>
                         </div>
-                        <div class="col-4 col-md-2">
+                        <div class="col-4 col-md-3">
+                            <div class="badge bg-light text-dark fs-6 w-100 py-2">{{ report.meta.externalDomains|default(0) }}</div>
+                            <small class="d-block mt-1">{{ "Domaines tiers"|trans }}</small>
+                        </div>
+                        <div class="col-4 col-md-3">
                             <div class="badge bg-light text-dark fs-6 w-100 py-2">{{ url.locale|default('')|upper }}</div>
                             <small class="d-block mt-1">{{ "Langue"|trans }}</small>
                         </div>
@@ -104,6 +112,28 @@
                     {%- endfor -%}
 
                 </div>
+                <div class="modal-footer border-0 d-flex flex-wrap justify-content-center gap-2 pt-0 pb-4">
+                    {%- if previewUrl is defined and previewUrl -%}
+                        <a href="{{ previewUrl }}" target="_blank" rel="noopener"
+                           class="btn-app small d-inline-flex align-items-center gap-2">
+                            <i class="icm-eye"></i><span>{{ "Ouvrir la preview"|trans|raw }}</span>
+                        </a>
+                    {%- endif -%}
+                    <button type="button" class="analyze-rerun btn-app small d-inline-flex align-items-center gap-2"
+                            data-href="{{ analyzeUrl|default('') }}">
+                        <i class="icm-loop"></i><span>{{ "Relancer l'analyse"|trans|raw }}</span>
+                    </button>
+                    <button type="button" class="analyze-copy btn-app small d-inline-flex align-items-center gap-2"
+                            data-copied-label="{{ "Copié !"|trans|striptags }}">
+                        <i class="icm-copy"></i><span>{{ "Copier le rapport"|trans|raw }}</span>
+                    </button>
+                </div>
+                <script type="application/json" id="page-analysis-data">{{ {
+                    score: report.score,
+                    meta: report.meta,
+                    url: {code: url.code, locale: url.locale},
+                    groups: report.groups
+                }|json_encode|raw }}</script>
             </div>
         </div>
     </div>

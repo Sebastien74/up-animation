@@ -99,12 +99,14 @@ class LayoutController extends AdminController
         $request->setLocale($url->getLocale());
 
         try {
+            $start = microtime(true);
             $response = $this->forward('App\Controller\Front\IndexController::view', [
                 'url' => $url->getCode(),
                 'website' => $website,
                 'preview' => true,
             ]);
             $report = $analyzer->analyze((string) $response->getContent(), $url->getCode());
+            $report['meta']['renderMs'] = (int) round((microtime(true) - $start) * 1000);
         } catch (\Throwable $e) {
             $report = [
                 'meta' => ['urlCode' => $url->getCode(), 'bytes' => 0, 'kb' => 0, 'dom' => 0, 'images' => 0, 'scripts' => 0, 'requests' => 0],
@@ -125,9 +127,20 @@ class LayoutController extends AdminController
             ];
         }
 
+        $previewUrl = $this->coreLocator->router()->generate('front_page_preview', [
+            'website' => $website->getId(),
+            'url' => $url->getId(),
+        ]);
+        $analyzeUrl = $this->coreLocator->router()->generate('admin_layout_analyze', [
+            'website' => $website->getId(),
+            'url' => $url->getId(),
+        ]);
+
         return new JsonResponse(['html' => $this->renderView('admin/core/layout/page-analysis.html.twig', [
             'report' => $report,
             'url' => $url,
+            'previewUrl' => $previewUrl,
+            'analyzeUrl' => $analyzeUrl,
         ])]);
     }
 
