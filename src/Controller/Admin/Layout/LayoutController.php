@@ -11,6 +11,7 @@ use App\Entity\Layout\Layout;
 use App\Entity\Seo\Url;
 use App\Repository\Seo\PageAnalysisRepository;
 use App\Service\Admin\LayoutServiceInterface;
+use App\Service\Admin\PageAnalysisRecorder;
 use App\Service\Admin\PageAnalyzerInterface;
 use Doctrine\ORM\PersistentCollection;
 use Knp\Component\Pager\PaginatorInterface;
@@ -98,13 +99,13 @@ class LayoutController extends AdminController
      */
     #[IsGranted('ROLE_ADMIN')]
     #[Route('/analyze/{url}', name: 'admin_layout_analyze', methods: 'GET')]
-    public function analyze(Request $request, Website $website, Url $url, PageAnalyzerInterface $analyzer, PageAnalysisRepository $analysisRepository): JsonResponse
+    public function analyze(Request $request, Website $website, Url $url, PageAnalyzerInterface $analyzer, PageAnalysisRecorder $recorder, PageAnalysisRepository $analysisRepository): JsonResponse
     {
         $interface = (string) $request->query->get('interface', 'page');
         $history = [];
 
         try {
-            $report = $this->analyzePreview($analyzer, $analysisRepository, $interface, $website, $url);
+            $report = $this->analyzePreview($analyzer, $recorder, $interface, $website, $url);
             $history = $analysisRepository->findLatestSnapshots($website, $url->getCode(), $url->getLocale(), 12);
         } catch (\Throwable $e) {
             $report = [

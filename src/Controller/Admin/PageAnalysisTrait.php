@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace App\Controller\Admin;
 
 use App\Entity\Core\Website;
-use App\Entity\Seo\PageAnalysis;
 use App\Entity\Seo\Url;
-use App\Repository\Seo\PageAnalysisRepository;
+use App\Service\Admin\PageAnalysisRecorder;
 use App\Service\Admin\PageAnalyzerInterface;
 
 /**
@@ -44,7 +43,7 @@ trait PageAnalysisTrait
      *
      * @return array{meta: array<string, mixed>, score: int|null, summary: array<string, int>, groups: array<int, array<string, mixed>>}
      */
-    private function analyzePreview(PageAnalyzerInterface $analyzer, PageAnalysisRepository $repository, string $interface, Website $website, Url $url): array
+    private function analyzePreview(PageAnalyzerInterface $analyzer, PageAnalysisRecorder $recorder, string $interface, Website $website, Url $url): array
     {
         $request = $this->coreLocator->request();
         if ($request) {
@@ -59,7 +58,7 @@ trait PageAnalysisTrait
         $report = $analyzer->analyze((string) $response->getContent(), $url->getCode());
         $report['meta']['renderMs'] = (int) round((microtime(true) - $start) * 1000);
 
-        $this->saveSnapshot($repository, $website, $url, $report);
+        $recorder->record($website, $url->getCode(), $url->getLocale(), $report);
 
         return $report;
     }
@@ -75,41 +74,5 @@ trait PageAnalysisTrait
             : ['url' => $url->getId()];
 
         return $this->coreLocator->router()->generate($route, $params);
-    }
-
-    /**
-     * Persist a page analysis snapshot. Best-effort: never blocks the report on a DB error.
-     *
-     * @param array<string, mixed> $report
-     */
-    private function saveSnapshot(PageAnalysisRepository $repository, Website $website, Url $url, array $report): void
-    {
-        try {
-            $meta = $report['meta'] ?? [];
-            $summary = $report['summary'] ?? [];
-            $snapshot = (new PageAnalysis())
-                ->setWebsite($website)
-                ->setUrlCode((string) $url->getCode())
-                ->setLocale((string) $url->getLocale())
-                ->setScore($report['score'] ?? null)
-                ->setHtmlKb((int) ($meta['kb'] ?? 0))
-                ->setDomCount((int) ($meta['dom'] ?? 0))
-                ->setImagesCount((int) ($meta['images'] ?? 0))
-                ->setRequests((int) ($meta['requests'] ?? 0))
-                ->setRenderMs(isset($meta['renderMs']) ? (int) $meta['renderMs'] : null)
-                ->setExternalDomains((int) ($meta['externalDomains'] ?? 0))
-                ->setSeverityHigh((int) ($summary['high'] ?? 0))
-                ->setSeverityMedium((int) ($summary['medium'] ?? 0))
-                ->setSeverityLow((int) ($summary['low'] ?? 0))
-                ->setReport($report);
-
-            $em = $this->coreLocator->em();
-            $em->persist($snapshot);
-            $em->flush();
-
-            $repository->pruneOldSnapshots($website, $url->getCode(), $url->getLocale(), 20);
-        } catch (\Throwable) {
-            // Historization is best-effort.
-        }
     }
 }

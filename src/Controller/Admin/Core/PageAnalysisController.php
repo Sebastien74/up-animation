@@ -9,6 +9,7 @@ use App\Controller\Admin\PageAnalysisTrait;
 use App\Entity\Core\Website;
 use App\Entity\Seo\Url;
 use App\Repository\Seo\PageAnalysisRepository;
+use App\Service\Admin\PageAnalysisRecorder;
 use App\Service\Admin\PageAnalyzerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -103,12 +104,12 @@ class PageAnalysisController extends AdminController
      * Run the analysis for a single page (AJAX) and return its metrics as JSON.
      */
     #[Route('/run/{url}', name: 'admin_page_analysis_run', methods: 'GET')]
-    public function run(Request $request, Website $website, Url $url, PageAnalyzerInterface $analyzer, PageAnalysisRepository $analysisRepository): JsonResponse
+    public function run(Request $request, Website $website, Url $url, PageAnalyzerInterface $analyzer, PageAnalysisRecorder $recorder): JsonResponse
     {
         $interface = (string) $request->query->get('interface', 'page');
 
         try {
-            $report = $this->analyzePreview($analyzer, $analysisRepository, $interface, $website, $url);
+            $report = $this->analyzePreview($analyzer, $recorder, $interface, $website, $url);
 
             return new JsonResponse([
                 'ok' => true,
