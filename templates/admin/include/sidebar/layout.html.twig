@@ -43,6 +43,9 @@
                 {%- set domain = app.user.locale is defined ? app.user.locale|domain() : null -%}
                 {%- set scheme = not domain ? path('front_index') : domain -%}
                 <li><a href="{{ path('admin_dashboard') }}"{% if app.request.attributes.get('_route') == 'admin_dashboard' %} class="active" {% endif %}><span class="btn-icon small me-3"><i class="icm-tachometer"></i></span>{{ "Tableau de bord"|trans|raw }}</a></li>
+                {%- if granted('ROLE_ADMIN') -%}
+                    <li><a href="{{ path('admin_page_analysis_dashboard', {website: websiteId()}) }}"{% if app.request.attributes.get('_route') == 'admin_page_analysis_dashboard' %} class="active" {% endif %}><span class="btn-icon small me-3"><i class="icm-rocket"></i></span>{{ "Analyse des pages"|trans|raw }}</a></li>
+                {%- endif -%}
                 <li><a href="{{ scheme }}" target="_blank"><span class="btn-icon small me-3"><i class="icm-desktop"></i></span>{{ "Accéder au site"|trans|raw }}</a></li>
                 <li class="d-lg-none"><a href="{{ path('app_logout') }}"><span class="btn-icon danger small me-3"><i class="icm-power-off"></i></span>{{ "Déconnexion"|trans|raw }}</a></li>
             </ul>

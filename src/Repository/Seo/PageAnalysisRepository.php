@@ -45,6 +45,32 @@ class PageAnalysisRepository extends ServiceEntityRepository
     }
 
     /**
+     * Latest snapshot per page (keyed by "code|locale") for a whole website.
+     *
+     * @return array<string, PageAnalysis>
+     */
+    public function findLatestPerPage(Website $website): array
+    {
+        $snapshots = $this->createQueryBuilder('s')
+            ->andWhere('s.website = :website')
+            ->orderBy('s.createdAt', 'DESC')
+            ->addOrderBy('s.id', 'DESC')
+            ->setParameter('website', $website)
+            ->getQuery()
+            ->getResult();
+
+        $latest = [];
+        foreach ($snapshots as $snapshot) {
+            $key = ((string) $snapshot->getUrlCode()).'|'.((string) $snapshot->getLocale());
+            if (!isset($latest[$key])) {
+                $latest[$key] = $snapshot;
+            }
+        }
+
+        return $latest;
+    }
+
+    /**
      * Keep only the most recent $keep snapshots for a page, delete the older ones.
      */
     public function pruneOldSnapshots(Website $website, ?string $code, ?string $locale, int $keep = 20): void

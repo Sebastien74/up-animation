@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Controller\Admin\Layout;
 
 use App\Controller\Admin\AdminController;
+use App\Controller\Admin\PageAnalysisTrait;
 use App\Entity\Core\Website;
 use App\Entity\Layout\Layout;
-use App\Entity\Seo\PageAnalysis;
 use App\Entity\Seo\Url;
 use App\Repository\Seo\PageAnalysisRepository;
 use App\Service\Admin\LayoutServiceInterface;
@@ -31,6 +31,8 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route('/admin-%security_token%/{website}/layouts', schemes: '%protocol%')]
 class LayoutController extends AdminController
 {
+    use PageAnalysisTrait;
+
     protected ?string $class = Layout::class;
 
     /**
@@ -98,19 +100,11 @@ class LayoutController extends AdminController
     #[Route('/analyze/{url}', name: 'admin_layout_analyze', methods: 'GET')]
     public function analyze(Request $request, Website $website, Url $url, PageAnalyzerInterface $analyzer, PageAnalysisRepository $analysisRepository): JsonResponse
     {
-        $request->setLocale($url->getLocale());
+        $interface = (string) $request->query->get('interface', 'page');
         $history = [];
 
         try {
-            $start = microtime(true);
-            $response = $this->forward('App\Controller\Front\IndexController::view', [
-                'url' => $url->getCode(),
-                'website' => $website,
-                'preview' => true,
-            ]);
-            $report = $analyzer->analyze((string) $response->getContent(), $url->getCode());
-            $report['meta']['renderMs'] = (int) round((microtime(true) - $start) * 1000);
-            $this->saveSnapshot($analysisRepository, $website, $url, $report);
+            $report = $this->analyzePreview($analyzer, $analysisRepository, $interface, $website, $url);
             $history = $analysisRepository->findLatestSnapshots($website, $url->getCode(), $url->getLocale(), 12);
         } catch (\Throwable $e) {
             $report = [
@@ -132,13 +126,11 @@ class LayoutController extends AdminController
             ];
         }
 
-        $previewUrl = $this->coreLocator->router()->generate('front_page_preview', [
-            'website' => $website->getId(),
-            'url' => $url->getId(),
-        ]);
+        $previewUrl = $this->previewUrlFor($interface, $website, $url);
         $analyzeUrl = $this->coreLocator->router()->generate('admin_layout_analyze', [
             'website' => $website->getId(),
             'url' => $url->getId(),
+            'interface' => $interface,
         ]);
 
         return new JsonResponse(['html' => $this->renderView('admin/core/layout/page-analysis.html.twig', [
@@ -148,41 +140,6 @@ class LayoutController extends AdminController
             'analyzeUrl' => $analyzeUrl,
             'history' => $history,
         ])]);
-    }
-
-    /**
-     * Persist a page analysis snapshot to historize the indicative score over time.
-     *
-     * @param array<string, mixed> $report
-     */
-    private function saveSnapshot(PageAnalysisRepository $analysisRepository, Website $website, Url $url, array $report): void
-    {
-        try {
-            $meta = $report['meta'] ?? [];
-            $summary = $report['summary'] ?? [];
-            $snapshot = (new PageAnalysis())
-                ->setWebsite($website)
-                ->setUrlCode((string) $url->getCode())
-                ->setLocale((string) $url->getLocale())
-                ->setScore($report['score'] ?? null)
-                ->setHtmlKb((int) ($meta['kb'] ?? 0))
-                ->setDomCount((int) ($meta['dom'] ?? 0))
-                ->setImagesCount((int) ($meta['images'] ?? 0))
-                ->setRequests((int) ($meta['requests'] ?? 0))
-                ->setRenderMs(isset($meta['renderMs']) ? (int) $meta['renderMs'] : null)
-                ->setExternalDomains((int) ($meta['externalDomains'] ?? 0))
-                ->setSeverityHigh((int) ($summary['high'] ?? 0))
-                ->setSeverityMedium((int) ($summary['medium'] ?? 0))
-                ->setSeverityLow((int) ($summary['low'] ?? 0));
-
-            $em = $this->coreLocator->em();
-            $em->persist($snapshot);
-            $em->flush();
-
-            $analysisRepository->pruneOldSnapshots($website, $url->getCode(), $url->getLocale(), 20);
-        } catch (\Throwable) {
-            // Historization is best-effort: never block the analysis report on a persistence error.
-        }
     }
 
     /**

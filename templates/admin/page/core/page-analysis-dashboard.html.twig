@@ -1,0 +1,89 @@
+{%- extends "admin/base.html.twig" -%}
+
+{%- trans_default_domain 'admin' -%}
+
+{%- set pageIcon = 'rocket' -%}
+{%- set pageTitle = "Analyse des pages"|trans -%}
+
+{%- block title -%}{{ pageTitle|htmlEntities }}{%- endblock -%}
+{%- block pageTitle -%}{{ pageTitle }}{%- endblock -%}
+
+{%- block javascripts -%}
+    {{ encore_entry_script_tags('admin-page-analysis', null, 'admin', {defer: true}) }}
+    {{ parent() }}
+{%- endblock -%}
+
+{%- block body -%}
+
+    {%- set labels = {page: "Pages"|trans, newscast: "Actualités"|trans, catalogproduct: "Produits"|trans} -%}
+
+    <div id="page-analysis" class="container-fluid pb-5">
+
+        <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-3">
+            <div>
+                <h1 class="h4 fw-700 mb-1">{{ pageTitle }}</h1>
+                <p class="text-muted small mb-0">
+                    {{ "Analyse en preview des pages, actualités et produits (perf & rendu). Indice indicatif, pas une mesure Lighthouse."|trans }}
+                </p>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+                <input type="search" class="form-control form-control-sm pa-filter" style="max-width: 220px;" placeholder="{{ "Filtrer…"|trans|striptags }}">
+                <button type="button" class="pa-run-all btn-app small d-inline-flex align-items-center gap-2">
+                    <i class="icm-rocket"></i><span>{{ "Tout analyser"|trans|raw }} ({{ rows|length }})</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="progress mb-3 d-none pa-progress-wrap" style="height: 6px;">
+            <div class="progress-bar pa-progress" role="progressbar" style="width: 0;"></div>
+        </div>
+        <p class="small text-muted pa-status mb-3"></p>
+
+        {%- if rows is empty -%}
+            <div class="alert alert-info">{{ "Aucune page en ligne à analyser."|trans }}</div>
+        {%- else -%}
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th>{{ "Type"|trans }}</th>
+                            <th>{{ "Page"|trans }}</th>
+                            <th class="text-center">{{ "Langue"|trans }}</th>
+                            <th class="text-center">{{ "Indice"|trans }}</th>
+                            <th class="text-center">{{ "Poids"|trans }}</th>
+                            <th class="text-center">{{ "Problèmes"|trans }}</th>
+                            <th>{{ "Dernière analyse"|trans }}</th>
+                            <th class="text-end">{{ "Action"|trans }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {%- for row in rows -%}
+                            {%- set s = row.score -%}
+                            <tr class="pa-row" data-run-url="{{ row.runUrl }}" data-search="{{ (row.title ~ ' ' ~ row.code ~ ' ' ~ labels[row.interface]|default(row.interface))|lower }}">
+                                <td><span class="badge bg-light text-dark">{{ labels[row.interface]|default(row.interface) }}</span></td>
+                                <td>
+                                    <span class="fw-600 d-block text-truncate" style="max-width: 320px;">{{ row.title }}</span>
+                                    <a href="{{ row.previewUrl }}" target="_blank" rel="noopener" class="small text-muted text-truncate d-inline-block" style="max-width: 320px;">/{{ row.code }}</a>
+                                </td>
+                                <td class="text-center">{{ row.locale|upper }}</td>
+                                <td class="text-center">
+                                    <span class="badge pa-score {{ s is null ? 'bg-secondary' : (s >= 90 ? 'bg-success' : (s >= 60 ? 'bg-warning' : 'bg-danger')) }}">{{ s is null ? '—' : s }}</span>
+                                </td>
+                                <td class="text-center pa-kb text-muted small">{{ row.kb is null ? '—' : row.kb ~ ' Ko' }}</td>
+                                <td class="text-center pa-issues text-muted small">—</td>
+                                <td class="pa-date text-muted small">{{ row.date ? row.date|date('d/m/Y H:i') : '—' }}</td>
+                                <td class="text-end">
+                                    <button type="button" class="pa-run btn-app small d-inline-flex align-items-center gap-1">
+                                        <i class="icm-rocket"></i><span>{{ "Analyser"|trans|raw }}</span>
+                                    </button>
+                                </td>
+                            </tr>
+                        {%- endfor -%}
+                    </tbody>
+                </table>
+            </div>
+        {%- endif -%}
+
+    </div>
+
+{%- endblock -%}
