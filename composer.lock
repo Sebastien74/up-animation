@@ -5089,7 +5089,7 @@
         },
         {
             "name": "scheb/2fa-backup-code",
-            "version": "v8.5.0",
+            "version": "v8.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/scheb/2fa-backup-code.git",
@@ -5132,22 +5132,22 @@
                 "two-step"
             ],
             "support": {
-                "source": "https://github.com/scheb/2fa-backup-code/tree/v8.5.0"
+                "source": "https://github.com/scheb/2fa-backup-code/tree/v8.6.0"
             },
             "time": "2026-01-24T13:26:10+00:00"
         },
         {
             "name": "scheb/2fa-bundle",
-            "version": "v8.5.0",
+            "version": "v8.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/scheb/2fa-bundle.git",
-                "reference": "ae26ae91723685e3a8622f2f3b9119016de23e20"
+                "reference": "e5f8793a8180d874d8a96b600cd6b95b25bd098f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/scheb/2fa-bundle/zipball/ae26ae91723685e3a8622f2f3b9119016de23e20",
-                "reference": "ae26ae91723685e3a8622f2f3b9119016de23e20",
+                "url": "https://api.github.com/repos/scheb/2fa-bundle/zipball/e5f8793a8180d874d8a96b600cd6b95b25bd098f",
+                "reference": "e5f8793a8180d874d8a96b600cd6b95b25bd098f",
                 "shasum": ""
             },
             "require": {
@@ -5200,22 +5200,22 @@
                 "two-step"
             ],
             "support": {
-                "source": "https://github.com/scheb/2fa-bundle/tree/v8.5.0"
+                "source": "https://github.com/scheb/2fa-bundle/tree/v8.6.0"
             },
-            "time": "2026-03-24T18:33:45+00:00"
+            "time": "2026-06-12T18:24:27+00:00"
         },
         {
             "name": "scheb/2fa-email",
-            "version": "v8.5.0",
+            "version": "v8.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/scheb/2fa-email.git",
-                "reference": "6deee3e397c3c189738fd063011f1a512667eb13"
+                "reference": "7abeebe75193a57ea36961c5b751b451608c4e18"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/scheb/2fa-email/zipball/6deee3e397c3c189738fd063011f1a512667eb13",
-                "reference": "6deee3e397c3c189738fd063011f1a512667eb13",
+                "url": "https://api.github.com/repos/scheb/2fa-email/zipball/7abeebe75193a57ea36961c5b751b451608c4e18",
+                "reference": "7abeebe75193a57ea36961c5b751b451608c4e18",
                 "shasum": ""
             },
             "require": {
@@ -5252,13 +5252,13 @@
                 "two-step"
             ],
             "support": {
-                "source": "https://github.com/scheb/2fa-email/tree/v8.5.0"
+                "source": "https://github.com/scheb/2fa-email/tree/v8.6.0"
             },
-            "time": "2026-01-24T13:26:10+00:00"
+            "time": "2026-06-02T20:21:59+00:00"
         },
         {
             "name": "scheb/2fa-google-authenticator",
-            "version": "v8.5.0",
+            "version": "v8.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/scheb/2fa-google-authenticator.git",
@@ -5305,7 +5305,7 @@
                 "two-step"
             ],
             "support": {
-                "source": "https://github.com/scheb/2fa-google-authenticator/tree/v8.5.0"
+                "source": "https://github.com/scheb/2fa-google-authenticator/tree/v8.6.0"
             },
             "time": "2026-01-24T13:27:55+00:00"
         },

@@ -29,17 +29,22 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Badge\RememberMeBadge
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\Service\ResetInterface;
 use function assert;
 use function class_exists;
+use function count;
+use function spl_object_hash;
 
 /**
  * @final
  */
-class TwoFactorAuthenticator implements AuthenticatorInterface, InteractiveAuthenticatorInterface
+class TwoFactorAuthenticator implements AuthenticatorInterface, InteractiveAuthenticatorInterface, ResetInterface
 {
     public const string FLAG_2FA_COMPLETE = '2fa_complete';
 
     private readonly LoggerInterface $logger;
+    /** @var TwoFactorTokenInterface[] */
+    private array $onCompleteTokens = [];
 
     public function __construct(
         private readonly TwoFactorFirewallConfig $twoFactorFirewallConfig,
@@ -51,6 +56,11 @@ class TwoFactorAuthenticator implements AuthenticatorInterface, InteractiveAuthe
         LoggerInterface|null $logger = null,
     ) {
         $this->logger = $logger ?? new NullLogger();
+    }
+
+    public function reset(): void
+    {
+        $this->onCompleteTokens = [];
     }
 
     public function supports(Request $request): bool|null
@@ -114,6 +124,10 @@ class TwoFactorAuthenticator implements AuthenticatorInterface, InteractiveAuthe
             $authenticatedToken = $twoFactorToken->getAuthenticatedToken(); // Authentication complete, unwrap the token
             $authenticatedToken->setAttribute(self::FLAG_2FA_COMPLETE, true);
 
+            // Backwards compatibility for bundle version <=8
+            // Remember the token to set the provider complete in onAuthenticationSuccess
+            $this->onCompleteTokens[spl_object_hash($authenticatedToken)] = $twoFactorToken;
+
             return $authenticatedToken;
         }
 
@@ -122,7 +136,10 @@ class TwoFactorAuthenticator implements AuthenticatorInterface, InteractiveAuthe
 
     private function isAuthenticationComplete(TwoFactorTokenInterface $token): bool
     {
-        return !$this->twoFactorFirewallConfig->isMultiFactor() || $token->allTwoFactorProvidersAuthenticated();
+        return !$this->twoFactorFirewallConfig->isMultiFactor()
+            || $token->allTwoFactorProvidersAuthenticated()
+            // The current provider is the last provider. It will be completed in onAuthenticationSuccess.
+            || 1 === count($token->getTwoFactorProviders());
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): Response|null
@@ -132,9 +149,27 @@ class TwoFactorAuthenticator implements AuthenticatorInterface, InteractiveAuthe
 
         // When it's still a TwoFactorTokenInterface, keep showing the auth form
         if ($token instanceof TwoFactorTokenInterface) {
+            $currentProvider = $token->getCurrentTwoFactorProvider();
+            if (null !== $currentProvider) {
+                $token->setTwoFactorProviderComplete($currentProvider);
+            }
+
             $this->dispatchTwoFactorAuthenticationEvent(TwoFactorAuthenticationEvents::REQUIRE, $request, $token);
 
             return $this->authenticationRequiredHandler->onAuthenticationRequired($request, $token);
+        }
+
+        // Backwards compatibility for bundle version <=8
+        // In case the two-factor process was completed, $token is no longer a TwoFactorToken
+        // Set the provider completed on the remembered TwoFactorToken
+        $twoFactorToken = $this->onCompleteTokens[spl_object_hash($token)] ?? null;
+        if (null !== $twoFactorToken) {
+            $currentProvider = $twoFactorToken->getCurrentTwoFactorProvider();
+            if (null !== $currentProvider) {
+                $twoFactorToken->setTwoFactorProviderComplete($currentProvider);
+            }
+
+            unset($this->onCompleteTokens[spl_object_hash($token)]);
         }
 
         $this->dispatchTwoFactorAuthenticationEvent(TwoFactorAuthenticationEvents::COMPLETE, $request, $token);
