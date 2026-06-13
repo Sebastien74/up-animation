@@ -71,13 +71,14 @@ final class PageAnalysisRunCommand extends Command
         $totalFailed = 0;
 
         foreach ($this->resolveWebsites($input) as $website) {
-            $baseUrl = $this->baseUrl($website);
-            if (null === $baseUrl) {
-                $io->warning(sprintf('Website #%d has no default domain, skipped.', $website->getId()));
+            $baseUrls = $this->baseUrls($website);
+            $defaultBase = $baseUrls['_default'] ?? null;
+            if (null === $defaultBase) {
+                $io->warning(sprintf('Website #%d has no domain, skipped.', $website->getId()));
                 continue;
             }
 
-            $io->section($baseUrl);
+            $io->section($defaultBase);
 
             $urls = $this->entityManager->getRepository(Url::class)->findOnlineForCrawl((int) $website->getId());
             $urls = array_slice($urls, 0, $maxUrls);
@@ -95,7 +96,9 @@ final class PageAnalysisRunCommand extends Command
             foreach ($urls as $row) {
                 $code = $row['code'] ?? null;
                 $locale = $row['locale'] ?? null;
-                $report = $this->analyzeUrl($baseUrl, (string) $code, $timeout, $userAgent);
+                // Fetch each page on the domain matching its locale (fallback: default domain).
+                $base = $baseUrls[(string) $locale] ?? $defaultBase;
+                $report = $this->analyzeUrl($base, (string) $code, $timeout, $userAgent);
 
                 if (null === $report) {
                     ++$failed;
@@ -178,12 +181,32 @@ final class PageAnalysisRunCommand extends Command
         return $repository->findAll();
     }
 
-    private function baseUrl(Website $website): ?string
+    /**
+     * Base URLs keyed by locale (for multi-domain-per-locale sites), plus a '_default'
+     * fallback (the default domain, or the first one found).
+     *
+     * @return array<string, string|null>
+     */
+    private function baseUrls(Website $website): array
     {
-        $domain = $this->entityManager->getRepository(Domain::class)
-            ->findOneBy(['configuration' => $website->getConfiguration(), 'asDefault' => true]);
-        $name = $domain?->getName();
+        $domains = $this->entityManager->getRepository(Domain::class)
+            ->findBy(['configuration' => $website->getConfiguration()]);
 
-        return $name ? $this->appProtocol.'://'.$name : null;
+        $map = ['_default' => null];
+        foreach ($domains as $domain) {
+            $name = $domain->getName();
+            if (!$name) {
+                continue;
+            }
+            $url = $this->appProtocol.'://'.$name;
+            if ($domain->getLocale()) {
+                $map[$domain->getLocale()] = $url;
+            }
+            if ($domain->isAsDefault() || null === $map['_default']) {
+                $map['_default'] = $url;
+            }
+        }
+
+        return $map;
     }
 }
