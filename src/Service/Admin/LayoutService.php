@@ -64,4 +64,44 @@ class LayoutService implements LayoutServiceInterface
 
         return new JsonResponse(['success' => true]);
     }
+
+    public function standardizeMargins(Zone $zone): JsonResponse
+    {
+        $this->standardizeMarginsEL($zone);
+        foreach ($zone->getCols() as $col) {
+            $this->standardizeMarginsEL($col);
+            foreach ($col->getBlocks() as $block) {
+                $this->standardizeMarginsEL($block);
+            }
+        }
+
+        return new JsonResponse(['success' => true]);
+    }
+
+    public function standardizeMarginsEL(mixed $entity): JsonResponse
+    {
+        foreach (self::SIDES as $side) {
+            foreach (['margin', 'padding'] as $type) {
+                $getter = 'get'.ucfirst($type).ucfirst($side);
+                if (!method_exists($entity, $getter)) {
+                    continue;
+                }
+                $desktopValue = $entity->$getter();
+                foreach (self::SCREENS as $screen) {
+                    if ('' === $screen) {
+                        continue;
+                    }
+                    $setter = 'set'.ucfirst($type).ucfirst($side).ucfirst($screen);
+                    if (method_exists($entity, $setter)) {
+                        $entity->$setter($desktopValue);
+                    }
+                }
+            }
+        }
+
+        $this->coreLocator->em()->persist($entity);
+        $this->coreLocator->em()->flush();
+
+        return new JsonResponse(['success' => true]);
+    }
 }

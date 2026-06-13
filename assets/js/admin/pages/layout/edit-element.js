@@ -243,6 +243,13 @@ export default function (Routing) {
                                         new sweetAlert(e, resetBtn);
                                     }).catch(error => console.error(error.message));
                                 }
+                                let standardizeBtn = e.target.closest('.standardize-margins');
+                                if (standardizeBtn) {
+                                    e.preventDefault();
+                                    import('./../../plugins/standardize-margins').then(({default: standardizeMargins}) => {
+                                        new standardizeMargins(e, standardizeBtn);
+                                    }).catch(error => console.error(error.message));
+                                }
                             });
 
                             modalEl.addEventListener('hide.bs.modal', function () {

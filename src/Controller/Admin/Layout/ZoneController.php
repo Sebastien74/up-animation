@@ -200,6 +200,18 @@ class ZoneController extends AdminController
     }
 
     /**
+     * Standardize Zone margins: copy desktop margins/paddings to the other screens.
+     */
+    #[IsGranted('ROLE_EDIT')]
+    #[Route('/standardize-margins/{zone}', name: 'admin_zone_standardize_margins', methods: 'DELETE')]
+    public function standardizeMargins(LayoutServiceInterface $service, Zone $zone): JsonResponse
+    {
+        $this->denyUnlessEntityWebsite($zone);
+
+        return $service->standardizeMargins($zone);
+    }
+
+    /**
      * To set breadcrumb.
      */
     protected function breadcrumb(Request $request, array $items = []): void

@@ -15,4 +15,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 interface LayoutServiceInterface
 {
     public function resetMargins(Zone $zone): JsonResponse;
+
+    public function standardizeMargins(Zone $zone): JsonResponse;
 }
