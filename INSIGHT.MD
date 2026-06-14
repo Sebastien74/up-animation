@@ -125,6 +125,10 @@ proposer les corrections nécessaires (en code, via PR validée humainement).
   aujourd'hui le détail n'est visible que dans la modale layout.
 
 ### 4.3 Qualité de l'analyse
+- [x] **Score calibré** : l'indice est désormais une **moyenne pondérée par
+  catégorie** (perf 30, ressources/images/seo 15, structure/a11y 10, best 5),
+  chaque catégorie perdant de la « santé » par constat (capée à 0). Évite qu'une
+  catégorie bruyante effondre le score. Pondérations dans `PageAnalyzer::SCORE_WEIGHTS`.
 - [ ] **Mesures réelles** (LCP/TBT/CLS) : intégrer Lighthouse / PageSpeed /
   Web Vitals pour compléter l'analyse statique par des métriques mesurées.
 - [x] **Cohérence preview vs live** : l'admin analyse le rendu *preview*
@@ -136,10 +140,18 @@ proposer les corrections nécessaires (en code, via PR validée humainement).
   site réel multi-domaines.
 
 ### 4.4 Industrialisation
-- [ ] **Tests** (unitaires `PageAnalyzer`, fonctionnels endpoints/commande).
-- [ ] **i18n** : nombreuses chaînes FR en dur (labels/reco) → clés de traduction.
-- [ ] **Volumétrie** : « Tout analyser » et le cron sont séquentiels ;
-  pour gros catalogues, prévoir lots / file d'attente (Messenger).
+- [x] **Tests** unitaires `PageAnalyzer` (`tests/Service/Admin/PageAnalyzerTest.php`) :
+  page vide, détection images sans dimensions, exclusion de l'hôte propre, score
+  calibré (page propre > page dégradée). *Reste : tests fonctionnels endpoints/commande.*
+- [x] **i18n** : labels et recommandations des constats sont **traduits** via le
+  domaine `admin` (texte FR utilisé comme clé) dans `PageAnalyzer::f()` — un
+  catalogue d'autres langues peut être ajouté sans toucher au code. *Reste :
+  quelques valeurs (`value`) restent en FR (données).*
+- [x] **Perf dashboard** : suppression du N+1 — une requête DQL scalaire avec JOIN
+  par interface (plus d'hydratation d'entités/collections).
+- [ ] **Volumétrie** : « Tout analyser » et le cron restent séquentiels ; le cron
+  fait un `flush()` par URL (acceptable en job hebdo off-peak). Pour gros
+  catalogues, prévoir lots / file d'attente (Messenger).
 - [ ] **Seuils configurables** : les seuils de sévérité sont en dur dans
   `PageAnalyzer` → rendre configurables.
 

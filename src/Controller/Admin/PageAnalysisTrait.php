@@ -68,10 +68,18 @@ trait PageAnalysisTrait
      */
     private function previewUrlFor(string $interface, Website $website, Url $url): string
     {
+        return $this->previewUrlForId($interface, $website, (int) $url->getId());
+    }
+
+    /**
+     * Generate the public preview URL from a Url id (avoids hydrating the entity).
+     */
+    private function previewUrlForId(string $interface, Website $website, int $urlId): string
+    {
         $route = self::PREVIEW_ROUTES[$interface] ?? self::PREVIEW_ROUTES['page'];
         $params = 'page' === $interface
-            ? ['website' => $website->getId(), 'url' => $url->getId()]
-            : ['url' => $url->getId()];
+            ? ['website' => $website->getId(), 'url' => $urlId]
+            : ['url' => $urlId];
 
         return $this->coreLocator->router()->generate($route, $params);
     }

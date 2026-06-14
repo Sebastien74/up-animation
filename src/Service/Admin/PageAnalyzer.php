@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Service\Admin;
 
+use Symfony\Contracts\Translation\TranslatorInterface;
+
 /**
  * PageAnalyzer.
  *
@@ -16,6 +18,28 @@ namespace App\Service\Admin;
  */
 class PageAnalyzer implements PageAnalyzerInterface
 {
+    /**
+     * Category weights for the calibrated score (sum is normalized).
+     */
+    private const SCORE_WEIGHTS = [
+        'perf' => 30,
+        'resources' => 15,
+        'images' => 15,
+        'seo' => 15,
+        'structure' => 10,
+        'a11y' => 10,
+        'best' => 5,
+    ];
+
+    /**
+     * Per-finding health penalty inside a category (capped at 0 per category).
+     */
+    private const HEALTH_PENALTY = ['high' => 0.34, 'medium' => 0.15, 'low' => 0.05];
+
+    public function __construct(private readonly TranslatorInterface $translator)
+    {
+    }
+
     public function analyze(string $html, ?string $urlCode = null, ?string $ownHost = null): array
     {
         $bytes = strlen($html);
@@ -80,7 +104,7 @@ class PageAnalyzer implements PageAnalyzerInterface
 
         return [
             'meta' => $meta,
-            'score' => $this->score($all),
+            'score' => $this->score($groups),
             'summary' => $this->groupCounts($all),
             'groups' => $groups,
         ];
@@ -544,11 +568,20 @@ class PageAnalyzer implements PageAnalyzerInterface
     }
 
     /**
+     * Build a finding. Labels and recommendations are translated via the 'admin'
+     * domain (the French text is used as the translation key).
+     *
      * @return array<string, mixed>
      */
     private function f(string $id, string $severity, string $label, string $value, string $reco): array
     {
-        return ['id' => $id, 'severity' => $severity, 'label' => $label, 'value' => $value, 'reco' => $reco];
+        return [
+            'id' => $id,
+            'severity' => $severity,
+            'label' => $this->translator->trans($label, [], 'admin'),
+            'value' => $value,
+            'reco' => '' === $reco ? '' : $this->translator->trans($reco, [], 'admin'),
+        ];
     }
 
     /**
@@ -569,19 +602,33 @@ class PageAnalyzer implements PageAnalyzerInterface
     }
 
     /**
-     * Indicative heuristic score (0-100), NOT a measured Lighthouse score.
+     * Calibrated indicative score (0-100), NOT a measured Lighthouse score.
      *
-     * @param array<int, array<string, mixed>> $findings
+     * Weighted average of per-category "health" ratios: each category starts at 1.0
+     * and loses health per finding (capped at 0), so a single noisy category cannot
+     * sink the whole score, and categories are weighted by importance.
+     *
+     * @param array<int, array<string, mixed>> $groups
      */
-    private function score(array $findings): int
+    private function score(array $groups): int
     {
-        $penalty = ['high' => 12, 'medium' => 5, 'low' => 1, 'ok' => 0, 'info' => 0];
-        $score = 100;
-        foreach ($findings as $finding) {
-            $score -= $penalty[$finding['severity']] ?? 0;
+        $weightedSum = 0.0;
+        $weightTotal = 0;
+
+        foreach ($groups as $group) {
+            $weight = self::SCORE_WEIGHTS[$group['id']] ?? 0;
+            if (0 === $weight) {
+                continue;
+            }
+            $health = 1.0;
+            foreach ($group['findings'] as $finding) {
+                $health -= self::HEALTH_PENALTY[$finding['severity']] ?? 0;
+            }
+            $weightedSum += $weight * max(0.0, $health);
+            $weightTotal += $weight;
         }
 
-        return max(0, min(100, $score));
+        return $weightTotal > 0 ? (int) round($weightedSum / $weightTotal * 100) : 100;
     }
 
     /**

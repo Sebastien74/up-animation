@@ -60,38 +60,43 @@ class PageAnalysisController extends AdminController
             }
 
             try {
-                $entities = $em->getRepository($class)->findBy(['website' => $website], ['id' => 'DESC'], self::MAX_PER_INTERFACE);
+                // One scalar query per interface (JOIN on urls), no entity/collection
+                // hydration and no N+1.
+                $records = $em->createQuery(
+                    sprintf(
+                        'SELECT e.adminName AS title, u.code AS code, u.locale AS locale, u.id AS urlId '
+                        .'FROM %s e JOIN e.urls u WHERE e.website = :website AND u.online = true ORDER BY e.id DESC',
+                        $class,
+                    )
+                )
+                    ->setParameter('website', $website)
+                    ->setMaxResults(self::MAX_PER_INTERFACE)
+                    ->getArrayResult();
             } catch (\Throwable) {
                 continue;
             }
 
-            foreach ($entities as $entity) {
-                if (!method_exists($entity, 'getUrls')) {
-                    continue;
-                }
-                foreach ($entity->getUrls() as $url) {
-                    if (!$url instanceof Url || !$url->isOnline()) {
-                        continue;
-                    }
-                    $snapshot = $latest[((string) $url->getCode()).'|'.((string) $url->getLocale())] ?? null;
-                    $rows[] = [
+            foreach ($records as $record) {
+                $code = (string) $record['code'];
+                $locale = (string) $record['locale'];
+                $urlId = (int) $record['urlId'];
+                $snapshot = $latest[$code.'|'.$locale] ?? null;
+                $title = ltrim((string) $record['title'], '_');
+                $rows[] = [
+                    'interface' => $name,
+                    'title' => '' !== $title ? $title : ($code ?: '/'),
+                    'code' => $code,
+                    'locale' => $locale,
+                    'score' => $snapshot['score'] ?? null,
+                    'kb' => $snapshot['kb'] ?? null,
+                    'date' => $snapshot['date'] ?? null,
+                    'runUrl' => $router->generate('admin_page_analysis_run', [
+                        'website' => $website->getId(),
+                        'url' => $urlId,
                         'interface' => $name,
-                        'title' => method_exists($entity, 'getAdminName') && $entity->getAdminName()
-                            ? $entity->getAdminName()
-                            : ((string) $url->getCode() ?: '/'),
-                        'code' => (string) $url->getCode(),
-                        'locale' => (string) $url->getLocale(),
-                        'score' => $snapshot['score'] ?? null,
-                        'kb' => $snapshot['kb'] ?? null,
-                        'date' => $snapshot['date'] ?? null,
-                        'runUrl' => $router->generate('admin_page_analysis_run', [
-                            'website' => $website->getId(),
-                            'url' => $url->getId(),
-                            'interface' => $name,
-                        ]),
-                        'previewUrl' => $this->previewUrlFor($name, $website, $url),
-                    ];
-                }
+                    ]),
+                    'previewUrl' => $this->previewUrlForId($name, $website, $urlId),
+                ];
             }
         }
 
