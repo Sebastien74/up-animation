@@ -255,6 +255,21 @@ accélérer l'exploitation.
   - **[Fait]** s'appuie sur la bibliothèque média existante et la pipeline d'upload.
   - ⚠️ Si génération d'`alt` par IA : **validation humaine** + transparence IA.
 
+### Conversion & engagement
+- [ ] **Form builder avancé + analytics de formulaire** : suivi du **taux de
+  complétion** et des abandons par champ, anti-spam, conformité RGPD, et **push
+  CRM automatique** des contacts. **[Fait]** `AxonautClient` déjà intégré →
+  automations / création d'opportunités.
+  - *KPI : taux de complétion, nb leads poussés au CRM, taux de spam bloqué.*
+- [ ] **Bannières / pop-ups ciblées** (par page, source, langue, segment),
+  **respectant le consentement**. **[Fait]** injecteurs GDPR (GTM/GA/Pixel) en
+  place. ⚠️ déclenchement conditionné au consentement.
+  - *KPI : taux d'affichage, taux de clic/conversion.*
+- [ ] **Call-to-action & A/B testing de contenu** (variantes de landing/bloc).
+  **[Hyp.]** *KPI : taux de conversion par variante.*
+  - ⚠️ Tout contenu publicitaire destiné à publication : **validation humaine** +
+    **transparence IA** (AI Act art. 50) si généré.
+
 ---
 *Toute correction issue de ce module passe par le cycle normal : branche →
 modification → revue humaine → déploiement. Pas d'intervention automatique en
