@@ -96,12 +96,21 @@ proposer les corrections nécessaires (en code, via PR validée humainement).
 
 ## 4. Ce qui MANQUE pour une analyse complète & la boucle de correction
 
-### 4.1 Bloquant pour que Claude exploite les données (priorité haute)
-- [ ] **Pont d'export** : commande `app:page-analysis:export` (JSON/CSV,
-  filtrable par site / indice / sévérité / interface) produisant un fichier
-  exploitable en session. Sans ça, **je n'ai pas accès à la BDD de production**
-  depuis l'environnement éphémère et je ne peux pas lire les données remontées.
-- [ ] (Alternative) Accès en lecture / API dédiée aux snapshots.
+### 4.1 Accès aux données pour exploitation par Claude
+> **Mode retenu** : l'analyse/correction se fera dans l'**environnement local**
+> de l'équipe, **BDD connectée**. Claude Code, exécuté en local, peut alors lire
+> directement les snapshots (Doctrine / SQL sur `upa_seo_page_analysis`,
+> y compris la colonne JSON `report`). Le pont d'export ci-dessous devient donc
+> **optionnel** (partage / CI / hors-ligne), **pas un prérequis** de la boucle locale.
+
+- [ ] (Optionnel) **Commande d'export** `app:page-analysis:export` (JSON/CSV,
+  filtrable par site / indice / sévérité / interface) pour partager les données
+  hors environnement local ou alimenter un pipeline.
+- [ ] (Optionnel) Helper de lecture (ex. `app:page-analysis:report` affichant en
+  console les pires pages / constats fréquents) pour accélérer l'exploitation.
+
+> Rappel : depuis une session distante éphémère (Claude Code on the web), il n'y
+> a **pas** d'accès à la BDD de prod — d'où l'usage en local décrit ci-dessus.
 
 ### 4.2 Pour rendre les corrections actionnables
 - [ ] **Mapping symptôme → code** : le rapport décrit des symptômes
@@ -140,8 +149,11 @@ proposer les corrections nécessaires (en code, via PR validée humainement).
 5. Test manuel : `php bin/console app:page-analysis:run --website=1 --max-urls=20`.
 
 ## 6. Prochaine étape recommandée
-Démarrer par **4.1 (commande d'export)** pour enclencher réellement la boucle
-analyse → correction, puis **4.2 (synthèse priorisée + mapping)**.
+L'exploitation se faisant **en local avec la BDD connectée** (cf. 4.1), la boucle
+analyse → correction est déjà possible (lecture directe des snapshots). Démarrer
+par **4.2** : synthèse priorisée (pires pages / problèmes fréquents) + amorce du
+mapping symptôme → code. Un helper console de lecture (4.1, optionnel) peut
+accélérer l'exploitation.
 
 ---
 *Toute correction issue de ce module passe par le cycle normal : branche →
