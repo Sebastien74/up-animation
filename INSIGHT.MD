@@ -155,6 +155,70 @@ par **4.2** : synthèse priorisée (pires pages / problèmes fréquents) + amorc
 mapping symptôme → code. Un helper console de lecture (4.1, optionnel) peut
 accélérer l'exploitation.
 
+## 7. Idées d'outils complémentaires (backlog)
+
+> Le module actuel couvre le **rendu front (HTML statique)**. Ci-dessous, d'autres
+> outils pour identifier les points faibles du CMS, en privilégiant la
+> **réutilisation de l'infra existante**. Légende : **[Fait]** = infra déjà
+> présente dans le code / **[Hyp.]** = à concevoir.
+
+### Axe 1 — Santé SEO & maillage
+- [ ] **Audit SEO consolidé** : titres/descriptions manquants ou **dupliqués**,
+  H1 multiples, canonicals, `noindex` involontaires, alt manquants, contenu
+  trop court. **[Fait]** s'appuie sur `CrawlMetasCommand`, `noSeoCounts`, et les
+  constats SEO de `PageAnalyzer`. *KPI : % pages conformes.*
+- [ ] **Liens cassés** internes + sortants (4xx/5xx). **[Fait]** extension de
+  `CrawlInternalUrlsCommand`. *KPI : nb liens cassés.*
+- [ ] **Pages orphelines / profondeur excessive**. **[Fait]** via
+  `CrawlContentsMapCommand`. *KPI : nb orphelines.*
+- [ ] **Top 404 + suggestions de redirection**. **[Fait]** entité
+  `seo_not_found_url` existante, vue d'exploitation à créer. *KPI : 404 traitées.*
+
+### Axe 2 — Performance backend & base de données
+- [ ] **Vue requêtes lentes par route + détection N+1**. **[Fait]**
+  `SlowRequestSubscriber` + `QueryProfiler` + `performanceStats` existent ;
+  manque la vue d'analyse (top routes, p95, requêtes répétées). *KPI : p95,
+  nb N+1.*
+- [ ] **Santé du cache** : fragments Twig non cachés, hit/miss du result-cache.
+  **[Hyp.]** *KPI : ratio de hit.*
+- [ ] **Coût DB par page** : corréler `PageAnalysis` (front) avec le profiler
+  (back). **[Hyp.]**
+
+### Axe 3 — Sécurité & conformité
+- [ ] **Audit des en-têtes de réponse** (CSP, HSTS, X-Frame-Options, cookies
+  `Secure`/`SameSite`). **[Hyp.]** nécessite de capter les *headers* dans le cron
+  (aujourd'hui seul le HTML est stocké).
+- [ ] **Dépendances vulnérables** : `composer audit` + `npm audit` planifiés et
+  historisés. **[Hyp.]** *KPI : nb CVE.*
+- [ ] **Hygiène comptes/permissions** : comptes inactifs, rôles trop larges,
+  mots de passe expirés. **[Fait]** `security:password:expire` existe → rapport.
+- [ ] **Trackers tiers / RGPD** : extension de `externalDomains`. **[Hyp.]**
+
+### Axe 4 — Dette technique & gains concrets
+- [ ] **Détecteur d'orphelins** : blocs/templates/médias jamais référencés,
+  traductions manquantes par langue. **[Hyp.]** *KPI : Mo récupérables, % i18n.*
+- [ ] **Médias non optimisés** (poids/format) au niveau de la bibliothèque média.
+  **[Hyp.]** *KPI : Mo économisables.*
+- [ ] **Santé du planificateur** : jobs en échec / derniers runs. **[Fait]**
+  via `ScheduledCommand` + logs scheduler.
+
+### Axe 5 — Disponibilité & erreurs
+- [ ] **Agrégation des erreurs 500/exceptions** par fréquence et route. **[Fait]**
+  `ExceptionListener` existe → manque l'agrégation. *KPI : erreurs/jour.*
+- [ ] **Accessibilité poussée** (contraste, focus) : nécessite un rendu
+  navigateur headless. **[Hyp.]**
+
+### Top 3 recommandé (valeur / effort)
+1. **Vue requêtes lentes & N+1 par route** (Axe 2) — donnée déjà collectée,
+   seule l'exploitation manque ; couvre le back là où `PageAnalyzer` couvre le front.
+2. **Audit SEO consolidé + liens cassés + 404** (Axe 1) — réutilise crawlers et
+   `NotFoundUrl` ; impact visibilité direct.
+3. **Détecteur d'orphelins + médias non optimisés** (Axe 4) — dette technique,
+   gains de poids mesurables.
+
+> Tous suivent le même pattern que le module d'analyse : collecte → historisation
+> → dashboard → boucle d'analyse/correction en local.
+
 ---
 *Toute correction issue de ce module passe par le cycle normal : branche →
 modification → revue humaine → déploiement. Pas d'intervention automatique en
