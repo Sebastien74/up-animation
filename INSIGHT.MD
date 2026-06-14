@@ -240,6 +240,21 @@ accélérer l'exploitation.
 > Tous suivent le même pattern que le module d'analyse : collecte → historisation
 > → dashboard → boucle d'analyse/correction en local.
 
+## 8. Idées produit CMS (backlog)
+
+### Optimisation média automatique à l'upload ⭐
+- [ ] **Optimiser les images dès l'upload** dans la bibliothèque média :
+  - conversion / déclinaison en **formats modernes** (WebP/AVIF) avec repli ;
+  - génération de **variantes responsive** (`srcset`/`sizes`) ;
+  - compression adaptative + **focal point / recadrage intelligent** ;
+  - (option) **`alt` auto** assisté + tags IA. **[Hyp.]**
+  - *Bénéfice : performance et gain de temps éditeur. Corrige **à la source** les
+    constats remontés par le module d'analyse (« images sans dimensions »,
+    « formats anciens », poids), au lieu de les détecter a posteriori.*
+  - *KPI : % d'images servies en format moderne, Mo économisés, impact CLS/LCP.*
+  - **[Fait]** s'appuie sur la bibliothèque média existante et la pipeline d'upload.
+  - ⚠️ Si génération d'`alt` par IA : **validation humaine** + transparence IA.
+
 ---
 *Toute correction issue de ce module passe par le cycle normal : branche →
 modification → revue humaine → déploiement. Pas d'intervention automatique en
