@@ -38,6 +38,12 @@ class PageAnalysis
     #[ORM\Column(type: Types::STRING, length: 10, nullable: true)]
     private ?string $locale = null;
 
+    /**
+     * How the snapshot was produced: 'manual' (admin tools, preview) or 'cron' (live).
+     */
+    #[ORM\Column(type: Types::STRING, length: 20)]
+    private string $source = 'manual';
+
     #[ORM\Column(type: Types::INTEGER, nullable: true)]
     private ?int $score = null;
 
@@ -125,6 +131,18 @@ class PageAnalysis
     public function setLocale(?string $locale): static
     {
         $this->locale = $locale;
+
+        return $this;
+    }
+
+    public function getSource(): string
+    {
+        return $this->source;
+    }
+
+    public function setSource(string $source): static
+    {
+        $this->source = $source;
 
         return $this;
     }

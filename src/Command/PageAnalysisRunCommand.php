@@ -103,7 +103,7 @@ final class PageAnalysisRunCommand extends Command
                 if (null === $report) {
                     ++$failed;
                 } else {
-                    $this->recorder->record($website, $code, $locale, $report);
+                    $this->recorder->record($website, $code, $locale, $report, 'cron');
                     ++$ok;
                 }
 
@@ -159,7 +159,8 @@ final class PageAnalysisRunCommand extends Command
             return null;
         }
 
-        $report = $this->analyzer->analyze($html, $code);
+        $ownHost = parse_url($fullUrl, PHP_URL_HOST);
+        $report = $this->analyzer->analyze($html, $code, is_string($ownHost) ? $ownHost : null);
         $report['meta']['renderMs'] = $renderMs;
 
         return $report;

@@ -58,7 +58,7 @@ trait PageAnalysisTrait
         $report = $analyzer->analyze((string) $response->getContent(), $url->getCode());
         $report['meta']['renderMs'] = (int) round((microtime(true) - $start) * 1000);
 
-        $recorder->record($website, $url->getCode(), $url->getLocale(), $report);
+        $recorder->record($website, $url->getCode(), $url->getLocale(), $report, 'manual');
 
         return $report;
     }

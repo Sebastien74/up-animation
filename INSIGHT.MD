@@ -88,6 +88,7 @@ proposer les corrections nécessaires (en code, via PR validée humainement).
 | Champ | Description |
 |---|---|
 | `website_id`, `urlCode`, `locale` | clé logique de la page |
+| `source` | origine du relevé : `manual` (outils admin / preview) ou `cron` (live) |
 | `score` | indice indicatif 0-100 (nullable) |
 | `htmlKb`, `domCount`, `imagesCount`, `requests`, `renderMs`, `externalDomains` | agrégats |
 | `severityHigh/Medium/Low` | compteurs de constats par sévérité |
@@ -126,9 +127,11 @@ proposer les corrections nécessaires (en code, via PR validée humainement).
 ### 4.3 Qualité de l'analyse
 - [ ] **Mesures réelles** (LCP/TBT/CLS) : intégrer Lighthouse / PageSpeed /
   Web Vitals pour compléter l'analyse statique par des métriques mesurées.
-- [ ] **Cohérence preview vs live** : l'admin analyse le rendu *preview*
-  (y compris non publié), le cron le rendu *live publié*. À documenter /
-  uniformiser si besoin de comparabilité stricte.
+- [x] **Cohérence preview vs live** : l'admin analyse le rendu *preview*
+  (y compris non publié), le cron le rendu *live publié*. Les relevés sont
+  désormais **étiquetés** par la colonne `source` (`manual`/`cron`) pour les
+  filtrer/comparer. (Uniformisation complète : si besoin un jour de comparabilité
+  stricte, faire analyser le cron en preview.)
 - [ ] **Multi-domaine par langue** : géré (repli défaut), mais à valider sur un
   site réel multi-domaines.
 
@@ -141,7 +144,8 @@ proposer les corrections nécessaires (en code, via PR validée humainement).
   `PageAnalyzer` → rendre configurables.
 
 ## 5. Notes de déploiement (rappel)
-1. `php bin/console doctrine:migrations:migrate` (2 migrations).
+1. `php bin/console doctrine:migrations:migrate` (3 migrations : table, colonne
+   `report`, colonne `source`).
 2. `php bin/console app:scheduler:install` (cron sur sites existants).
 3. Recompiler les assets (Encore) — entrée `admin-page-analysis` + JS modale.
 4. Vérifier la **politique réseau** : le serveur doit pouvoir requêter ses

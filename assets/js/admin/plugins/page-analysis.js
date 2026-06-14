@@ -126,7 +126,7 @@ let run = function (href) {
     toggleLoader(true);
     let url = href + (href.indexOf('?') > -1 ? '&ajax=true' : '?ajax=true');
 
-    fetch(url, {headers: {'X-Requested-With': 'XMLHttpRequest'}})
+    fetch(url, {method: 'POST', headers: {'X-Requested-With': 'XMLHttpRequest'}})
         .then(function (response) {
             if (!response.ok) {
                 return response.text().then(function (text) {

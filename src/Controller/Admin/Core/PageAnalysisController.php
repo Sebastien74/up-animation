@@ -103,7 +103,7 @@ class PageAnalysisController extends AdminController
     /**
      * Run the analysis for a single page (AJAX) and return its metrics as JSON.
      */
-    #[Route('/run/{url}', name: 'admin_page_analysis_run', methods: 'GET')]
+    #[Route('/run/{url}', name: 'admin_page_analysis_run', methods: 'POST')]
     public function run(Request $request, Website $website, Url $url, PageAnalyzerInterface $analyzer, PageAnalysisRecorder $recorder): JsonResponse
     {
         $interface = (string) $request->query->get('interface', 'page');

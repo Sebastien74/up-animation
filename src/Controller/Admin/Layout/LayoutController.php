@@ -98,7 +98,7 @@ class LayoutController extends AdminController
      * runs during public front navigation.
      */
     #[IsGranted('ROLE_ADMIN')]
-    #[Route('/analyze/{url}', name: 'admin_layout_analyze', methods: 'GET')]
+    #[Route('/analyze/{url}', name: 'admin_layout_analyze', methods: 'POST')]
     public function analyze(Request $request, Website $website, Url $url, PageAnalyzerInterface $analyzer, PageAnalysisRecorder $recorder, PageAnalysisRepository $analysisRepository): JsonResponse
     {
         $interface = (string) $request->query->get('interface', 'page');

@@ -62,7 +62,7 @@ if (container) {
         }
         row.classList.add('opacity-75');
 
-        return fetch(url, {headers: {'X-Requested-With': 'XMLHttpRequest'}})
+        return fetch(url, {method: 'POST', headers: {'X-Requested-With': 'XMLHttpRequest'}})
             .then(response => response.ok ? response.json() : {ok: false})
             .then(data => updateRow(row, data))
             .catch(() => updateRow(row, {ok: false}))

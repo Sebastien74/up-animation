@@ -29,8 +29,9 @@ class PageAnalysisRecorder
      * Best-effort: never throws, returns null on persistence failure.
      *
      * @param array<string, mixed> $report
+     * @param string               $source 'manual' (admin tools) or 'cron'
      */
-    public function record(Website $website, ?string $code, ?string $locale, array $report, int $keep = 20): ?PageAnalysis
+    public function record(Website $website, ?string $code, ?string $locale, array $report, string $source = 'manual', int $keep = 20): ?PageAnalysis
     {
         try {
             $meta = $report['meta'] ?? [];
@@ -39,6 +40,7 @@ class PageAnalysisRecorder
                 ->setWebsite($website)
                 ->setUrlCode((string) $code)
                 ->setLocale((string) $locale)
+                ->setSource($source)
                 ->setScore($report['score'] ?? null)
                 ->setHtmlKb((int) ($meta['kb'] ?? 0))
                 ->setDomCount((int) ($meta['dom'] ?? 0))

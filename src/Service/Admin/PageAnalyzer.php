@@ -16,7 +16,7 @@ namespace App\Service\Admin;
  */
 class PageAnalyzer implements PageAnalyzerInterface
 {
-    public function analyze(string $html, ?string $urlCode = null): array
+    public function analyze(string $html, ?string $urlCode = null, ?string $ownHost = null): array
     {
         $bytes = strlen($html);
         $meta = [
@@ -52,16 +52,17 @@ class PageAnalyzer implements PageAnalyzerInterface
 
         [$maxDepth, $maxChildren] = $this->domShape($dom);
         $domCount = $this->count($xpath, '//body//*');
+        $ownHost = $ownHost ? strtolower($ownHost) : $this->ownHostFromHtml($xpath);
 
         $meta['dom'] = $domCount;
         $meta['images'] = $this->count($xpath, '//img');
         $meta['scripts'] = $this->count($xpath, '//script[@src]');
         $meta['requests'] = $this->requestCount($xpath);
-        $meta['externalDomains'] = count($this->externalHosts($xpath));
+        $meta['externalDomains'] = count($this->externalHosts($xpath, $ownHost));
 
         $groups = [
             ['id' => 'perf', 'label' => 'Performance & rendu', 'findings' => $this->perf($xpath, $html, $bytes, $domCount, $maxDepth, $maxChildren)],
-            ['id' => 'resources', 'label' => 'Ressources & chargement', 'findings' => $this->resources($xpath, $html)],
+            ['id' => 'resources', 'label' => 'Ressources & chargement', 'findings' => $this->resources($xpath, $html, $ownHost)],
             ['id' => 'images', 'label' => 'Images & médias', 'findings' => $this->images($xpath, $html)],
             ['id' => 'structure', 'label' => 'Structure & DOM', 'findings' => $this->structure($xpath, $maxDepth, $maxChildren)],
             ['id' => 'seo', 'label' => 'SEO & métadonnées', 'findings' => $this->seo($xpath)],
@@ -146,7 +147,7 @@ class PageAnalyzer implements PageAnalyzerInterface
      *
      * @return array<int, array<string, mixed>>
      */
-    private function resources(\DOMXPath $xpath, string $html): array
+    private function resources(\DOMXPath $xpath, string $html, ?string $ownHost = null): array
     {
         $totalScripts = $this->count($xpath, '//script[@src]');
         $deferAsync = $this->count($xpath, '//script[@src][@defer or @async]');
@@ -155,7 +156,7 @@ class PageAnalyzer implements PageAnalyzerInterface
         $dnsPrefetch = $this->count($xpath, '//head//link[@rel="dns-prefetch"]');
         $preload = $this->count($xpath, '//head//link[@rel="preload"]');
         $preloadFont = $this->count($xpath, '//head//link[@rel="preload"][@as="font"]');
-        $external = $this->externalHosts($xpath);
+        $external = $this->externalHosts($xpath, $ownHost);
 
         return [
             $this->f('ext-domains', $this->sev(count($external), 4, 10), 'Domaines tiers contactés', (string) count($external),
@@ -455,24 +456,50 @@ class PageAnalyzer implements PageAnalyzerInterface
     }
 
     /**
-     * Distinct external hosts referenced by src/href absolute URLs.
+     * Distinct external hosts referenced by src/href absolute URLs, excluding the
+     * page's own host.
      *
      * @return array<int, string>
      */
-    private function externalHosts(\DOMXPath $xpath): array
+    private function externalHosts(\DOMXPath $xpath, ?string $ownHost = null): array
     {
+        $stripWww = static fn (string $host): string => str_starts_with($host, 'www.') ? substr($host, 4) : $host;
+        $own = $ownHost ? $stripWww(strtolower($ownHost)) : null;
         $hosts = [];
         foreach ($xpath->query('//*[@src]/@src | //*[@href]/@href') as $attr) {
             $value = trim($attr->nodeValue);
             if (1 === preg_match('#^https?://#i', $value)) {
                 $host = parse_url($value, PHP_URL_HOST);
                 if (is_string($host) && '' !== $host) {
-                    $hosts[strtolower($host)] = true;
+                    $host = strtolower($host);
+                    // Exclude the page's own host (ignoring a leading "www.").
+                    if (null !== $own && $stripWww($host) === $own) {
+                        continue;
+                    }
+                    $hosts[$host] = true;
                 }
             }
         }
 
         return array_keys($hosts);
+    }
+
+    /**
+     * Derive the page's own host from its canonical link or og:url.
+     */
+    private function ownHostFromHtml(\DOMXPath $xpath): ?string
+    {
+        foreach (['//head/link[@rel="canonical"]/@href', '//head/meta[@property="og:url"]/@content'] as $query) {
+            $value = $this->attr($xpath, $query);
+            if ('' !== $value) {
+                $host = parse_url($value, PHP_URL_HOST);
+                if (is_string($host) && '' !== $host) {
+                    return strtolower($host);
+                }
+            }
+        }
+
+        return null;
     }
 
     private function count(\DOMXPath $xpath, string $query): int
