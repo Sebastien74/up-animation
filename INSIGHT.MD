@@ -208,6 +208,22 @@ accélérer l'exploitation.
 - [ ] **Accessibilité poussée** (contraste, focus) : nécessite un rendu
   navigateur headless. **[Hyp.]**
 
+### Axe 6 — Dashboard « Santé du site » (vue consolidée) ⭐
+- [ ] **Tableau de bord unique « Santé du site »** agrégeant tous les signaux
+  d'audit en une vue d'ensemble : indice de **performance front** (`PageAnalysis`),
+  **perf backend** (requêtes lentes / N+1), **SEO** (conformité, liens cassés,
+  404), **sécurité** (en-têtes, CVE, comptes), **erreurs** (500/exceptions),
+  **planificateur** (jobs en échec), **dette** (orphelins, médias). **[Hyp.]**
+  - Objectif : un **score de santé global** + des **indicateurs par domaine**
+    (vert/orange/rouge), avec tendance dans le temps et accès en 1 clic au détail
+    de chaque outil.
+  - Sert de **point d'entrée** au-dessus des outils des axes 1→5 : chaque outil
+    alimente un indicateur ; le dashboard santé les synthétise et **priorise**
+    les actions (pires domaines / pires pages en premier).
+  - *KPI : score de santé global, nb d'alertes par domaine, évolution.*
+  - Réutilise le dashboard admin existant (`admin_dashboard`) et la sidebar
+    (`ROLE_ADMIN`) ; même pattern collecte → historisation → synthèse.
+
 ### Top 3 recommandé (valeur / effort)
 1. **Vue requêtes lentes & N+1 par route** (Axe 2) — donnée déjà collectée,
    seule l'exploitation manque ; couvre le back là où `PageAnalyzer` couvre le front.
@@ -215,6 +231,11 @@ accélérer l'exploitation.
    `NotFoundUrl` ; impact visibilité direct.
 3. **Détecteur d'orphelins + médias non optimisés** (Axe 4) — dette technique,
    gains de poids mesurables.
+
+> **Vision cible** : le **dashboard « Santé du site » (Axe 6)** est la couche de
+> synthèse au-dessus de tous ces outils. Stratégie conseillée : développer 1 ou 2
+> outils des axes 1→5 (qui produisent des indicateurs), puis brancher le dashboard
+> santé qui les agrège ; chaque nouvel outil vient enrichir la vue consolidée.
 
 > Tous suivent le même pattern que le module d'analyse : collecte → historisation
 > → dashboard → boucle d'analyse/correction en local.
