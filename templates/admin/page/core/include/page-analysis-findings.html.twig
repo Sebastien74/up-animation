@@ -44,10 +44,15 @@
                             <span class="pa-finding-reco">{{ finding.reco }}</span>
                         {%- endif -%}
                         {%- if finding.samples is defined and finding.samples|length -%}
+                            {%- set shown = finding.samples|length -%}
+                            {%- set extra = finding.affected is defined ? finding.affected - shown : 0 -%}
                             <ul class="pa-finding-samples reset">
                                 {%- for sample in finding.samples -%}
                                     <li><code title="{{ sample }}">{{ sample }}</code></li>
                                 {%- endfor -%}
+                                {%- if extra > 0 -%}
+                                    <li class="pa-finding-more">+{{ extra }} {{ "autres"|trans }}</li>
+                                {%- endif -%}
                             </ul>
                         {%- endif -%}
                     </div>

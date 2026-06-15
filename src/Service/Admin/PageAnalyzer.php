@@ -192,9 +192,9 @@ class PageAnalyzer implements PageAnalyzerInterface
             $this->f('requests', $this->sev($requests, 40, 80), 'Requêtes estimées', (string) $requests.' ressources',
                 $requests > 40 ? 'Beaucoup de ressources : regroupez/différez scripts et styles, activez le cache et le lazy-load.' : ''),
             $this->f('scripts-blocking', $blockingScripts > 0 ? 'high' : 'ok', 'Scripts bloquants dans le <head>', $blockingScripts.' / '.$totalScripts,
-                $blockingScripts > 0 ? 'Ajoutez defer/async ou déplacez ces scripts en fin de <body> (réduit le TBT).' : '', $blockingScriptEls),
+                $blockingScripts > 0 ? 'Ajoutez defer/async ou déplacez ces scripts en fin de <body> (réduit le TBT).' : '', $blockingScriptEls, $blockingScripts),
             $this->f('css-blocking', $this->sev($blockingCss, 1, 3), 'Feuilles de style bloquantes', (string) $blockingCss,
-                $blockingCss > 1 ? 'Inlinez le CSS critique et chargez le reste en asynchrone (preload + onload).' : '', $blockingCssEls),
+                $blockingCss > 1 ? 'Inlinez le CSS critique et chargez le reste en asynchrone (preload + onload).' : '', $blockingCssEls, $blockingCss),
             $this->f('inline-js', $this->sev($inlineJsBytes, 30 * 1024, 80 * 1024), 'JavaScript inline', $this->kb($inlineJsBytes),
                 $inlineJsBytes > 30 * 1024 ? 'Externalisez le JS inline volumineux pour profiter du cache navigateur.' : ''),
             $this->f('inline-css', $this->sev($inlineCssBytes, 30 * 1024, 80 * 1024), 'CSS inline (<style>)', $this->kb($inlineCssBytes),
@@ -225,7 +225,7 @@ class PageAnalyzer implements PageAnalyzerInterface
         return [
             $this->f('ext-domains', $this->sev(count($external), 4, 10), 'Domaines tiers contactés', (string) count($external),
                 count($external) > 4 ? 'Chaque domaine tiers ajoute une résolution DNS + handshake : limitez-les ou préconnectez-vous.' : '',
-                array_slice($external, 0, self::MAX_SAMPLES)),
+                array_slice($external, 0, self::MAX_SAMPLES), count($external)),
             $this->f('scripts-total', 'info', 'Scripts externes', (string) $totalScripts, ''),
             $this->f('scripts-defer', 'info', 'Scripts différés (defer/async)', $deferAsync.' / '.$totalScripts,
                 $totalScripts > 0 && $deferAsync < $totalScripts ? 'Privilégiez defer/async sur les scripts non critiques.' : ''),
@@ -289,13 +289,13 @@ class PageAnalyzer implements PageAnalyzerInterface
 
         return [
             $this->f('img-dimensions', $noDim > 0 ? 'high' : 'ok', 'Images sans dimensions (width/height)', $noDim.' / '.$total,
-                $noDim > 0 ? 'Ajoutez width/height (ou aspect-ratio) pour éviter les décalages de mise en page (CLS).' : '', $noDimEls),
+                $noDim > 0 ? 'Ajoutez width/height (ou aspect-ratio) pour éviter les décalages de mise en page (CLS).' : '', $noDimEls, $noDim),
             $this->f('img-lazy', $this->sev($noLazy, 0, 3), 'Images sans lazy-load', $noLazy.' / '.$total,
-                $noLazy > 0 ? 'Activez loading="lazy" sur les images hors écran (sauf visuel principal de la 1ʳᵉ zone).' : '', $noLazyEls),
+                $noLazy > 0 ? 'Activez loading="lazy" sur les images hors écran (sauf visuel principal de la 1ʳᵉ zone).' : '', $noLazyEls, $noLazy),
             $this->f('img-format', $legacy > 0 ? 'medium' : 'ok', 'Formats anciens (jpg/png/gif)', $legacy.' / '.$total,
-                $legacy > 0 ? 'Servez des formats modernes (WebP/AVIF) pour réduire le poids.' : '', $legacyEls),
+                $legacy > 0 ? 'Servez des formats modernes (WebP/AVIF) pour réduire le poids.' : '', $legacyEls, $legacy),
             $this->f('img-alt', $noAlt > 0 ? 'medium' : 'ok', "Images sans attribut alt", $noAlt.' / '.$total,
-                $noAlt > 0 ? 'Ajoutez un attribut alt (vide si décoratif) pour le SEO et l’accessibilité.' : '', $noAltEls),
+                $noAlt > 0 ? 'Ajoutez un attribut alt (vide si décoratif) pour le SEO et l’accessibilité.' : '', $noAltEls, $noAlt),
             $this->f('img-srcset', 'info', 'Images responsive (srcset)', $srcset.' / '.$total,
                 $total > 0 && 0 === $srcset ? 'Utilisez srcset/sizes pour servir des tailles adaptées à chaque écran.' : ''),
             $this->f('img-decoding', 'info', 'Décodage asynchrone (decoding="async")', $asyncDecode.' / '.$total, ''),
@@ -303,7 +303,7 @@ class PageAnalyzer implements PageAnalyzerInterface
             $this->f('bg-images', 'info', 'Images de fond inline (background-image)', (string) $bgImages,
                 $bgImages > 5 ? 'Nombreuses images de fond inline : elles ne bénéficient ni du lazy-load ni du srcset.' : ''),
             $this->f('iframe-lazy', $iframeNoLazy > 0 ? 'medium' : 'ok', 'Iframes sans lazy-load', (string) $iframeNoLazy,
-                $iframeNoLazy > 0 ? 'Ajoutez loading="lazy" sur les iframes (vidéos, cartes).' : '', $iframeEls),
+                $iframeNoLazy > 0 ? 'Ajoutez loading="lazy" sur les iframes (vidéos, cartes).' : '', $iframeEls, $iframeNoLazy),
         ];
     }
 
@@ -338,7 +338,7 @@ class PageAnalyzer implements PageAnalyzerInterface
             $this->f('dom-children', $this->sev($maxChildren, 40, 60), 'Enfants max sur un même élément', (string) $maxChildren,
                 $maxChildren > 40 ? 'Un élément a beaucoup d’enfants directs : paginez ou virtualisez les longues listes.' : ''),
             $this->f('deprecated', $deprecated > 0 ? 'medium' : 'ok', 'Balises obsolètes', (string) $deprecated,
-                $deprecated > 0 ? 'Supprimez les balises obsolètes (center, font, marquee…) au profit du CSS.' : '', $deprecatedEls),
+                $deprecated > 0 ? 'Supprimez les balises obsolètes (center, font, marquee…) au profit du CSS.' : '', $deprecatedEls, $deprecated),
             $this->f('empty-containers', $this->sev($emptyContainers, 10, 30), 'Conteneurs vides (div/span)', (string) $emptyContainers,
                 $emptyContainers > 10 ? 'Nombreux conteneurs vides : nettoyez le markup généré pour alléger le DOM.' : ''),
         ];
@@ -432,11 +432,11 @@ class PageAnalyzer implements PageAnalyzerInterface
             $this->f('lang', '' !== $lang ? 'ok' : 'high', 'Langue du document (<html lang>)', '' !== $lang ? $lang : 'absente',
                 '' === $lang ? 'Ajoutez l’attribut lang sur <html> pour les lecteurs d’écran et le SEO.' : ''),
             $this->f('empty-links', $emptyLinks > 0 ? 'medium' : 'ok', 'Liens sans intitulé', (string) $emptyLinks,
-                $emptyLinks > 0 ? 'Ajoutez un texte visible ou un aria-label sur ces liens.' : '', $emptyLinkEls),
+                $emptyLinks > 0 ? 'Ajoutez un texte visible ou un aria-label sur ces liens.' : '', $emptyLinkEls, $emptyLinks),
             $this->f('empty-buttons', $emptyButtons > 0 ? 'medium' : 'ok', 'Boutons sans intitulé', (string) $emptyButtons,
-                $emptyButtons > 0 ? 'Ajoutez un texte ou un aria-label sur ces boutons (icônes seules).' : '', $emptyButtonEls),
+                $emptyButtons > 0 ? 'Ajoutez un texte ou un aria-label sur ces boutons (icônes seules).' : '', $emptyButtonEls, $emptyButtons),
             $this->f('unlabeled-fields', $unlabeled > 0 ? 'medium' : 'ok', 'Champs de formulaire sans label', (string) $unlabeled,
-                $unlabeled > 0 ? 'Associez un <label for> ou un aria-label à chaque champ.' : '', $unlabeledEls),
+                $unlabeled > 0 ? 'Associez un <label for> ou un aria-label à chaque champ.' : '', $unlabeledEls, $unlabeled),
             $this->f('tabindex', $tabindexHigh > 0 ? 'low' : 'ok', 'tabindex positifs', (string) $tabindexHigh,
                 $tabindexHigh > 0 ? 'Évitez tabindex > 0 : il casse l’ordre naturel de navigation au clavier.' : ''),
             $this->f('landmarks', $landmarks > 0 ? 'ok' : 'low', 'Repères de structure (main/nav/header/footer)', (string) $landmarks,
@@ -491,11 +491,11 @@ class PageAnalyzer implements PageAnalyzerInterface
             $this->f('favicon', $favicon > 0 ? 'ok' : 'low', 'Favicon', $favicon > 0 ? 'présent' : 'absent',
                 0 === $favicon ? 'Ajoutez un favicon (link rel="icon").' : ''),
             $this->f('inline-styles', $this->sev($inlineStyles, 30, 80), 'Styles inline (attribut style)', (string) $inlineStyles,
-                $inlineStyles > 30 ? 'Nombreux styles inline : préférez des classes (HTML plus léger, meilleur cache, CSP).' : '', $inlineStyleEls),
+                $inlineStyles > 30 ? 'Nombreux styles inline : préférez des classes (HTML plus léger, meilleur cache, CSP).' : '', $inlineStyleEls, $inlineStyles),
             $this->f('inline-handlers', $inlineHandlers > 0 ? 'medium' : 'ok', 'Gestionnaires d’événements inline (onclick…)', (string) $inlineHandlers,
-                $inlineHandlers > 0 ? 'Déportez les handlers en JS : meilleur pour la maintenance et une CSP stricte.' : '', $inlineHandlerEls),
+                $inlineHandlers > 0 ? 'Déportez les handlers en JS : meilleur pour la maintenance et une CSP stricte.' : '', $inlineHandlerEls, $inlineHandlers),
             $this->f('blank-noopener', $blankUnsafe > 0 ? 'medium' : 'ok', 'Liens target="_blank" sans rel="noopener"', (string) $blankUnsafe,
-                $blankUnsafe > 0 ? 'Ajoutez rel="noopener" (sécurité, évite l’accès à window.opener).' : '', $blankUnsafeEls),
+                $blankUnsafe > 0 ? 'Ajoutez rel="noopener" (sécurité, évite l’accès à window.opener).' : '', $blankUnsafeEls, $blankUnsafe),
             $this->f('http-assets', $httpAssets > 0 ? 'high' : 'ok', 'Ressources en HTTP (non sécurisé)', (string) $httpAssets,
                 $httpAssets > 0 ? 'Servez toutes les ressources en HTTPS pour éviter le contenu mixte (mixed content).' : ''),
             $this->f('document-write', $documentWrite > 0 ? 'medium' : 'ok', 'Usage de document.write()', (string) $documentWrite,
@@ -648,9 +648,9 @@ class PageAnalyzer implements PageAnalyzerInterface
      *
      * @return array<string, mixed>
      */
-    private function f(string $id, string $severity, string $label, string $value, string $reco, array $samples = []): array
+    private function f(string $id, string $severity, string $label, string $value, string $reco, array $samples = [], ?int $affected = null): array
     {
-        return [
+        $finding = [
             'id' => $id,
             'severity' => $severity,
             'label' => $this->translator->trans($label, [], 'admin'),
@@ -658,6 +658,11 @@ class PageAnalyzer implements PageAnalyzerInterface
             'reco' => '' === $reco ? '' : $this->translator->trans($reco, [], 'admin'),
             'samples' => array_values($samples),
         ];
+        if (null !== $affected) {
+            $finding['affected'] = $affected;
+        }
+
+        return $finding;
     }
 
     /**

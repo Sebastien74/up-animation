@@ -30,7 +30,10 @@
         <div class="perf-inspector-head pa-detail-head mb-4">
             <div class="pa-detail-headline">
                 <span class="pa-type-pill">{{ typeLabel }}</span>
-                <h1 class="perf-inspector-title mt-2">/{{ pageCode }}</h1>
+                <h1 class="perf-inspector-title mt-2">{{ name is defined and name ? name : '/'~pageCode }}</h1>
+                {%- if name is defined and name -%}
+                    <a href="{{ previewUrl }}" target="_blank" rel="noopener" class="pa-page-url d-inline-block mt-1">/{{ pageCode }}</a>
+                {%- endif -%}
                 <p class="perf-inspector-desc">
                     {{ "Détail de la dernière analyse en preview. Indice indicatif, ce n'est pas une mesure Lighthouse."|trans|raw }}
                 </p>
@@ -92,7 +95,7 @@
                 <div class="perf-summary-tile">
                     <span class="tile-label">{{ "Problèmes"|trans|raw }}</span>
                     <span class="tile-value">{{ latest.severityHigh + latest.severityMedium + latest.severityLow }}</span>
-                    <span class="tile-sub">{{ latest.severityHigh }} {{ "critiques"|trans|raw }} · {{ latest.severityMedium }} {{ "à surveiller"|trans|raw }}</span>
+                    <span class="tile-sub">{{ latest.severityHigh }} {{ "critiques"|trans|raw }} · {{ latest.severityMedium }} {{ "à surveiller"|trans|raw }} · {{ latest.severityLow }} {{ "mineurs"|trans|raw }}</span>
                 </div>
                 <div class="perf-summary-tile">
                     <span class="tile-label">{{ "Poids HTML"|trans|raw }}</span>
@@ -110,9 +113,12 @@
                 <div class="perf-summary-tile">
                     <span class="tile-label">{{ "Rendu"|trans|raw }}</span>
                     <span class="tile-value">{{ latest.renderMs is not null ? latest.renderMs ~ ' ms' : '—' }}</span>
-                    <span class="tile-sub">{{ latest.createdAt ? latest.createdAt|date('d/m/Y H:i') : '' }}</span>
                 </div>
             </div>
+
+            {%- if latest.createdAt -%}
+                <p class="perf-inspector-desc mb-4">{{ "Dernière analyse :"|trans }} {{ latest.createdAt|date('d/m/Y H:i') }}</p>
+            {%- endif -%}
 
             {%- include 'admin/page/core/include/page-analysis-findings.html.twig' with {groups: report.groups} only -%}
 

@@ -133,6 +133,7 @@ class PageAnalysisController extends AdminController
         $interface = (string) $request->query->get('interface', 'page');
         $history = $analysisRepository->findLatestSnapshots($website, $url->getCode(), $url->getLocale(), 12);
         $latest = $history[0] ?? null;
+        $name = $this->pageNameForUrl($interface, (int) $url->getId());
 
         $detailUrl = $this->coreLocator->router()->generate('admin_page_analysis_detail', [
             'website' => $website->getId(),
@@ -147,6 +148,7 @@ class PageAnalysisController extends AdminController
         return $this->render('admin/page/core/page-analysis-detail.html.twig', array_merge($this->arguments, [
             'url' => $url,
             'interface' => $interface,
+            'name' => $name,
             'latest' => $latest,
             'history' => $history,
             'previewUrl' => $this->previewUrlFor($interface, $website, $url),
@@ -192,6 +194,32 @@ class PageAnalysisController extends AdminController
         $this->addFlash('success', $translator->trans('%count% analyse(s) supprimée(s).', ['%count%' => $deleted], 'admin'));
 
         return $this->redirectToRoute('admin_page_analysis_dashboard', ['website' => $website->getId()]);
+    }
+
+    /**
+     * Human admin name of the page owning a url (scalar query, no entity hydration).
+     */
+    private function pageNameForUrl(string $interface, int $urlId): ?string
+    {
+        $class = self::INTERFACES[$interface] ?? null;
+        if (null === $class || !class_exists($class)) {
+            return null;
+        }
+
+        try {
+            $rows = $this->coreLocator->em()->createQuery(
+                sprintf('SELECT e.adminName AS title FROM %s e JOIN e.urls u WHERE u.id = :url', $class)
+            )
+                ->setParameter('url', $urlId)
+                ->setMaxResults(1)
+                ->getArrayResult();
+        } catch (\Throwable) {
+            return null;
+        }
+
+        $title = isset($rows[0]['title']) ? ltrim((string) $rows[0]['title'], '_') : '';
+
+        return '' !== $title ? $title : null;
     }
 
     /**

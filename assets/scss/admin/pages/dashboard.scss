@@ -2545,6 +2545,13 @@
         }
     }
 
+    .pa-finding-more {
+        align-self: center;
+        font-size: 11px;
+        font-weight: 600;
+        color: $crumb-muted;
+    }
+
     .pa-finding-value {
         flex-shrink: 0;
         font-size: 12px;
