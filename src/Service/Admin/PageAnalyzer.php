@@ -36,6 +36,12 @@ class PageAnalyzer implements PageAnalyzerInterface
      */
     private const HEALTH_PENALTY = ['high' => 0.34, 'medium' => 0.15, 'low' => 0.05];
 
+    /**
+     * Max example elements collected per finding (to point the admin at the exact
+     * offending nodes without bloating the stored report).
+     */
+    private const MAX_SAMPLES = 6;
+
     public function __construct(private readonly TranslatorInterface $translator)
     {
     }
@@ -148,19 +154,23 @@ class PageAnalyzer implements PageAnalyzerInterface
     private function perf(\DOMXPath $xpath, string $html, int $bytes, int $domCount, int $maxDepth, int $maxChildren): array
     {
         $blockingScripts = 0;
+        $blockingScriptEls = [];
         foreach ($xpath->query('//head//script[@src]') as $script) {
             /** @var \DOMElement $script */
             if (!$script->hasAttribute('async') && !$script->hasAttribute('defer') && 'module' !== strtolower($script->getAttribute('type'))) {
                 ++$blockingScripts;
+                $this->sample($blockingScriptEls, $script);
             }
         }
         $totalScripts = $this->count($xpath, '//script[@src]');
 
         $blockingCss = 0;
+        $blockingCssEls = [];
         foreach ($xpath->query('//head//link[@rel="stylesheet"]') as $link) {
             /** @var \DOMElement $link */
             if ('print' !== strtolower($link->getAttribute('media'))) {
                 ++$blockingCss;
+                $this->sample($blockingCssEls, $link);
             }
         }
 
@@ -182,9 +192,9 @@ class PageAnalyzer implements PageAnalyzerInterface
             $this->f('requests', $this->sev($requests, 40, 80), 'Requêtes estimées', (string) $requests.' ressources',
                 $requests > 40 ? 'Beaucoup de ressources : regroupez/différez scripts et styles, activez le cache et le lazy-load.' : ''),
             $this->f('scripts-blocking', $blockingScripts > 0 ? 'high' : 'ok', 'Scripts bloquants dans le <head>', $blockingScripts.' / '.$totalScripts,
-                $blockingScripts > 0 ? 'Ajoutez defer/async ou déplacez ces scripts en fin de <body> (réduit le TBT).' : ''),
+                $blockingScripts > 0 ? 'Ajoutez defer/async ou déplacez ces scripts en fin de <body> (réduit le TBT).' : '', $blockingScriptEls),
             $this->f('css-blocking', $this->sev($blockingCss, 1, 3), 'Feuilles de style bloquantes', (string) $blockingCss,
-                $blockingCss > 1 ? 'Inlinez le CSS critique et chargez le reste en asynchrone (preload + onload).' : ''),
+                $blockingCss > 1 ? 'Inlinez le CSS critique et chargez le reste en asynchrone (preload + onload).' : '', $blockingCssEls),
             $this->f('inline-js', $this->sev($inlineJsBytes, 30 * 1024, 80 * 1024), 'JavaScript inline', $this->kb($inlineJsBytes),
                 $inlineJsBytes > 30 * 1024 ? 'Externalisez le JS inline volumineux pour profiter du cache navigateur.' : ''),
             $this->f('inline-css', $this->sev($inlineCssBytes, 30 * 1024, 80 * 1024), 'CSS inline (<style>)', $this->kb($inlineCssBytes),
@@ -214,7 +224,8 @@ class PageAnalyzer implements PageAnalyzerInterface
 
         return [
             $this->f('ext-domains', $this->sev(count($external), 4, 10), 'Domaines tiers contactés', (string) count($external),
-                count($external) > 4 ? 'Chaque domaine tiers ajoute une résolution DNS + handshake : limitez-les ou préconnectez-vous.' : ''),
+                count($external) > 4 ? 'Chaque domaine tiers ajoute une résolution DNS + handshake : limitez-les ou préconnectez-vous.' : '',
+                array_slice($external, 0, self::MAX_SAMPLES)),
             $this->f('scripts-total', 'info', 'Scripts externes', (string) $totalScripts, ''),
             $this->f('scripts-defer', 'info', 'Scripts différés (defer/async)', $deferAsync.' / '.$totalScripts,
                 $totalScripts > 0 && $deferAsync < $totalScripts ? 'Privilégiez defer/async sur les scripts non critiques.' : ''),
@@ -238,19 +249,24 @@ class PageAnalyzer implements PageAnalyzerInterface
         $images = $xpath->query('//img');
         $total = $images->length;
         $noDim = $noLazy = $legacy = $noAlt = $srcset = $asyncDecode = 0;
+        $noDimEls = $noLazyEls = $legacyEls = $noAltEls = [];
         foreach ($images as $img) {
             /** @var \DOMElement $img */
             if ('' === $img->getAttribute('width') || '' === $img->getAttribute('height')) {
                 ++$noDim;
+                $this->sample($noDimEls, $img);
             }
             if ('lazy' !== strtolower($img->getAttribute('loading'))) {
                 ++$noLazy;
+                $this->sample($noLazyEls, $img);
             }
             if (preg_match('/\.(jpe?g|png|gif)(\?.*)?$/i', $img->getAttribute('src'))) {
                 ++$legacy;
+                $this->sample($legacyEls, $img);
             }
             if (!$img->hasAttribute('alt')) {
                 ++$noAlt;
+                $this->sample($noAltEls, $img);
             }
             if ($img->hasAttribute('srcset')) {
                 ++$srcset;
@@ -261,23 +277,25 @@ class PageAnalyzer implements PageAnalyzerInterface
         }
         $picture = $this->count($xpath, '//picture');
         $iframeNoLazy = 0;
+        $iframeEls = [];
         foreach ($xpath->query('//iframe') as $iframe) {
             /** @var \DOMElement $iframe */
             if ('lazy' !== strtolower($iframe->getAttribute('loading'))) {
                 ++$iframeNoLazy;
+                $this->sample($iframeEls, $iframe);
             }
         }
         $bgImages = preg_match_all('/background-image\s*:\s*url\(/i', $html);
 
         return [
             $this->f('img-dimensions', $noDim > 0 ? 'high' : 'ok', 'Images sans dimensions (width/height)', $noDim.' / '.$total,
-                $noDim > 0 ? 'Ajoutez width/height (ou aspect-ratio) pour éviter les décalages de mise en page (CLS).' : ''),
+                $noDim > 0 ? 'Ajoutez width/height (ou aspect-ratio) pour éviter les décalages de mise en page (CLS).' : '', $noDimEls),
             $this->f('img-lazy', $this->sev($noLazy, 0, 3), 'Images sans lazy-load', $noLazy.' / '.$total,
-                $noLazy > 0 ? 'Activez loading="lazy" sur les images hors écran (sauf visuel principal de la 1ʳᵉ zone).' : ''),
+                $noLazy > 0 ? 'Activez loading="lazy" sur les images hors écran (sauf visuel principal de la 1ʳᵉ zone).' : '', $noLazyEls),
             $this->f('img-format', $legacy > 0 ? 'medium' : 'ok', 'Formats anciens (jpg/png/gif)', $legacy.' / '.$total,
-                $legacy > 0 ? 'Servez des formats modernes (WebP/AVIF) pour réduire le poids.' : ''),
+                $legacy > 0 ? 'Servez des formats modernes (WebP/AVIF) pour réduire le poids.' : '', $legacyEls),
             $this->f('img-alt', $noAlt > 0 ? 'medium' : 'ok', "Images sans attribut alt", $noAlt.' / '.$total,
-                $noAlt > 0 ? 'Ajoutez un attribut alt (vide si décoratif) pour le SEO et l’accessibilité.' : ''),
+                $noAlt > 0 ? 'Ajoutez un attribut alt (vide si décoratif) pour le SEO et l’accessibilité.' : '', $noAltEls),
             $this->f('img-srcset', 'info', 'Images responsive (srcset)', $srcset.' / '.$total,
                 $total > 0 && 0 === $srcset ? 'Utilisez srcset/sizes pour servir des tailles adaptées à chaque écran.' : ''),
             $this->f('img-decoding', 'info', 'Décodage asynchrone (decoding="async")', $asyncDecode.' / '.$total, ''),
@@ -285,7 +303,7 @@ class PageAnalyzer implements PageAnalyzerInterface
             $this->f('bg-images', 'info', 'Images de fond inline (background-image)', (string) $bgImages,
                 $bgImages > 5 ? 'Nombreuses images de fond inline : elles ne bénéficient ni du lazy-load ni du srcset.' : ''),
             $this->f('iframe-lazy', $iframeNoLazy > 0 ? 'medium' : 'ok', 'Iframes sans lazy-load', (string) $iframeNoLazy,
-                $iframeNoLazy > 0 ? 'Ajoutez loading="lazy" sur les iframes (vidéos, cartes).' : ''),
+                $iframeNoLazy > 0 ? 'Ajoutez loading="lazy" sur les iframes (vidéos, cartes).' : '', $iframeEls),
         ];
     }
 
@@ -302,7 +320,13 @@ class PageAnalyzer implements PageAnalyzerInterface
             $headings[$tag] = $this->count($xpath, '//'.$tag);
         }
         $headingResume = implode(' · ', array_map(static fn ($t, $n) => strtoupper($t).':'.$n, array_keys($headings), $headings));
-        $deprecated = $this->count($xpath, '//center | //font | //marquee | //blink | //big | //tt');
+        $deprecated = 0;
+        $deprecatedEls = [];
+        foreach ($xpath->query('//center | //font | //marquee | //blink | //big | //tt') as $node) {
+            /** @var \DOMElement $node */
+            ++$deprecated;
+            $this->sample($deprecatedEls, $node);
+        }
         $emptyContainers = $this->count($xpath, '//div[not(node())] | //span[not(node())]');
 
         return [
@@ -314,7 +338,7 @@ class PageAnalyzer implements PageAnalyzerInterface
             $this->f('dom-children', $this->sev($maxChildren, 40, 60), 'Enfants max sur un même élément', (string) $maxChildren,
                 $maxChildren > 40 ? 'Un élément a beaucoup d’enfants directs : paginez ou virtualisez les longues listes.' : ''),
             $this->f('deprecated', $deprecated > 0 ? 'medium' : 'ok', 'Balises obsolètes', (string) $deprecated,
-                $deprecated > 0 ? 'Supprimez les balises obsolètes (center, font, marquee…) au profit du CSS.' : ''),
+                $deprecated > 0 ? 'Supprimez les balises obsolètes (center, font, marquee…) au profit du CSS.' : '', $deprecatedEls),
             $this->f('empty-containers', $this->sev($emptyContainers, 10, 30), 'Conteneurs vides (div/span)', (string) $emptyContainers,
                 $emptyContainers > 10 ? 'Nombreux conteneurs vides : nettoyez le markup généré pour alléger le DOM.' : ''),
         ];
@@ -372,27 +396,33 @@ class PageAnalyzer implements PageAnalyzerInterface
     {
         $lang = $this->attr($xpath, '//html/@lang');
         $emptyLinks = 0;
+        $emptyLinkEls = [];
         foreach ($xpath->query('//a[@href]') as $a) {
             /** @var \DOMElement $a */
             if ('' === trim($a->textContent) && '' === $a->getAttribute('aria-label') && '' === $a->getAttribute('title')
                 && 0 === $xpath->query('.//img[@alt!=""] | .//*[@aria-label]', $a)->length) {
                 ++$emptyLinks;
+                $this->sample($emptyLinkEls, $a);
             }
         }
         $emptyButtons = 0;
+        $emptyButtonEls = [];
         foreach ($xpath->query('//button') as $b) {
             /** @var \DOMElement $b */
             if ('' === trim($b->textContent) && '' === $b->getAttribute('aria-label') && '' === $b->getAttribute('title')) {
                 ++$emptyButtons;
+                $this->sample($emptyButtonEls, $b);
             }
         }
         $unlabeled = 0;
+        $unlabeledEls = [];
         foreach ($xpath->query('//input[not(@type="hidden") and not(@type="submit") and not(@type="button")] | //select | //textarea') as $field) {
             /** @var \DOMElement $field */
             $id = $field->getAttribute('id');
             $hasLabel = '' !== $id && $xpath->query(sprintf('//label[@for="%s"]', $id))->length > 0;
             if (!$hasLabel && '' === $field->getAttribute('aria-label') && '' === $field->getAttribute('aria-labelledby') && '' === $field->getAttribute('title')) {
                 ++$unlabeled;
+                $this->sample($unlabeledEls, $field);
             }
         }
         $tabindexHigh = $this->count($xpath, '//*[@tabindex > 0]');
@@ -402,11 +432,11 @@ class PageAnalyzer implements PageAnalyzerInterface
             $this->f('lang', '' !== $lang ? 'ok' : 'high', 'Langue du document (<html lang>)', '' !== $lang ? $lang : 'absente',
                 '' === $lang ? 'Ajoutez l’attribut lang sur <html> pour les lecteurs d’écran et le SEO.' : ''),
             $this->f('empty-links', $emptyLinks > 0 ? 'medium' : 'ok', 'Liens sans intitulé', (string) $emptyLinks,
-                $emptyLinks > 0 ? 'Ajoutez un texte visible ou un aria-label sur ces liens.' : ''),
+                $emptyLinks > 0 ? 'Ajoutez un texte visible ou un aria-label sur ces liens.' : '', $emptyLinkEls),
             $this->f('empty-buttons', $emptyButtons > 0 ? 'medium' : 'ok', 'Boutons sans intitulé', (string) $emptyButtons,
-                $emptyButtons > 0 ? 'Ajoutez un texte ou un aria-label sur ces boutons (icônes seules).' : ''),
+                $emptyButtons > 0 ? 'Ajoutez un texte ou un aria-label sur ces boutons (icônes seules).' : '', $emptyButtonEls),
             $this->f('unlabeled-fields', $unlabeled > 0 ? 'medium' : 'ok', 'Champs de formulaire sans label', (string) $unlabeled,
-                $unlabeled > 0 ? 'Associez un <label for> ou un aria-label à chaque champ.' : ''),
+                $unlabeled > 0 ? 'Associez un <label for> ou un aria-label à chaque champ.' : '', $unlabeledEls),
             $this->f('tabindex', $tabindexHigh > 0 ? 'low' : 'ok', 'tabindex positifs', (string) $tabindexHigh,
                 $tabindexHigh > 0 ? 'Évitez tabindex > 0 : il casse l’ordre naturel de navigation au clavier.' : ''),
             $this->f('landmarks', $landmarks > 0 ? 'ok' : 'low', 'Repères de structure (main/nav/header/footer)', (string) $landmarks,
@@ -424,15 +454,30 @@ class PageAnalyzer implements PageAnalyzerInterface
         $viewport = $this->count($xpath, '//head/meta[@name="viewport"]');
         $charset = $this->count($xpath, '//head/meta[@charset] | //head/meta[contains(translate(@http-equiv,"CT","ct"),"content-type")]');
         $favicon = $this->count($xpath, '//head/link[contains(@rel,"icon")]');
-        $inlineHandlers = $this->count($xpath, '//*[@onclick or @onload or @onchange or @onsubmit or @onmouseover or @onerror or @onkeydown or @onkeyup or @onfocus or @onblur]');
-        $inlineStyles = $this->count($xpath, '//*[@style]');
+
+        $inlineHandlers = 0;
+        $inlineHandlerEls = [];
+        foreach ($xpath->query('//*[@onclick or @onload or @onchange or @onsubmit or @onmouseover or @onerror or @onkeydown or @onkeyup or @onfocus or @onblur]') as $node) {
+            /** @var \DOMElement $node */
+            ++$inlineHandlers;
+            $this->sample($inlineHandlerEls, $node);
+        }
+        $inlineStyles = 0;
+        $inlineStyleEls = [];
+        foreach ($xpath->query('//*[@style]') as $node) {
+            /** @var \DOMElement $node */
+            ++$inlineStyles;
+            $this->sample($inlineStyleEls, $node);
+        }
 
         $blankUnsafe = 0;
+        $blankUnsafeEls = [];
         foreach ($xpath->query('//a[@target="_blank"]') as $a) {
             /** @var \DOMElement $a */
             $rel = strtolower($a->getAttribute('rel'));
             if (!str_contains($rel, 'noopener') && !str_contains($rel, 'noreferrer')) {
                 ++$blankUnsafe;
+                $this->sample($blankUnsafeEls, $a);
             }
         }
         $httpAssets = preg_match_all('#(?:src|href)\s*=\s*["\']http://#i', $html);
@@ -446,11 +491,11 @@ class PageAnalyzer implements PageAnalyzerInterface
             $this->f('favicon', $favicon > 0 ? 'ok' : 'low', 'Favicon', $favicon > 0 ? 'présent' : 'absent',
                 0 === $favicon ? 'Ajoutez un favicon (link rel="icon").' : ''),
             $this->f('inline-styles', $this->sev($inlineStyles, 30, 80), 'Styles inline (attribut style)', (string) $inlineStyles,
-                $inlineStyles > 30 ? 'Nombreux styles inline : préférez des classes (HTML plus léger, meilleur cache, CSP).' : ''),
+                $inlineStyles > 30 ? 'Nombreux styles inline : préférez des classes (HTML plus léger, meilleur cache, CSP).' : '', $inlineStyleEls),
             $this->f('inline-handlers', $inlineHandlers > 0 ? 'medium' : 'ok', 'Gestionnaires d’événements inline (onclick…)', (string) $inlineHandlers,
-                $inlineHandlers > 0 ? 'Déportez les handlers en JS : meilleur pour la maintenance et une CSP stricte.' : ''),
+                $inlineHandlers > 0 ? 'Déportez les handlers en JS : meilleur pour la maintenance et une CSP stricte.' : '', $inlineHandlerEls),
             $this->f('blank-noopener', $blankUnsafe > 0 ? 'medium' : 'ok', 'Liens target="_blank" sans rel="noopener"', (string) $blankUnsafe,
-                $blankUnsafe > 0 ? 'Ajoutez rel="noopener" (sécurité, évite l’accès à window.opener).' : ''),
+                $blankUnsafe > 0 ? 'Ajoutez rel="noopener" (sécurité, évite l’accès à window.opener).' : '', $blankUnsafeEls),
             $this->f('http-assets', $httpAssets > 0 ? 'high' : 'ok', 'Ressources en HTTP (non sécurisé)', (string) $httpAssets,
                 $httpAssets > 0 ? 'Servez toutes les ressources en HTTPS pour éviter le contenu mixte (mixed content).' : ''),
             $this->f('document-write', $documentWrite > 0 ? 'medium' : 'ok', 'Usage de document.write()', (string) $documentWrite,
@@ -603,7 +648,7 @@ class PageAnalyzer implements PageAnalyzerInterface
      *
      * @return array<string, mixed>
      */
-    private function f(string $id, string $severity, string $label, string $value, string $reco): array
+    private function f(string $id, string $severity, string $label, string $value, string $reco, array $samples = []): array
     {
         return [
             'id' => $id,
@@ -611,7 +656,40 @@ class PageAnalyzer implements PageAnalyzerInterface
             'label' => $this->translator->trans($label, [], 'admin'),
             'value' => $value,
             'reco' => '' === $reco ? '' : $this->translator->trans($reco, [], 'admin'),
+            'samples' => array_values($samples),
         ];
+    }
+
+    /**
+     * Compact, human-readable identifier for a DOM element (tag + the most telling
+     * attribute or its text), so a finding can point at the exact offending node.
+     */
+    private function describe(\DOMElement $el): string
+    {
+        $tag = strtolower($el->nodeName);
+        foreach (['src', 'href', 'name', 'id', 'class'] as $name) {
+            if ($el->hasAttribute($name) && '' !== trim($el->getAttribute($name))) {
+                return '<'.$tag.' '.$name.'="'.$this->clip(trim($el->getAttribute($name)), 60).'">';
+            }
+        }
+        $text = trim(preg_replace('/\s+/', ' ', (string) $el->textContent));
+
+        return '' !== $text ? '<'.$tag.'> '.$this->clip($text, 50) : '<'.$tag.'>';
+    }
+
+    private function clip(string $value, int $max): string
+    {
+        return mb_strlen($value) > $max ? mb_substr($value, 0, $max - 1).'…' : $value;
+    }
+
+    /**
+     * Append a sample identifier to $bucket while it is below the cap.
+     */
+    private function sample(array &$bucket, \DOMElement $el): void
+    {
+        if (count($bucket) < self::MAX_SAMPLES) {
+            $bucket[] = $this->describe($el);
+        }
     }
 
     /**

@@ -2297,6 +2297,12 @@ body {
         color: $theme-text-muted !important;
     }
 
+    .pa-finding-samples code {
+        color: $theme-text-muted !important;
+        background: $theme-card-bg !important;
+        border-color: $theme-border-subtle !important;
+    }
+
     .pa-finding-dot {
         background: $theme-border !important;
     }

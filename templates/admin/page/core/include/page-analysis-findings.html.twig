@@ -43,6 +43,13 @@
                         {%- if finding.reco -%}
                             <span class="pa-finding-reco">{{ finding.reco }}</span>
                         {%- endif -%}
+                        {%- if finding.samples is defined and finding.samples|length -%}
+                            <ul class="pa-finding-samples reset">
+                                {%- for sample in finding.samples -%}
+                                    <li><code title="{{ sample }}">{{ sample }}</code></li>
+                                {%- endfor -%}
+                            </ul>
+                        {%- endif -%}
                     </div>
                     <span class="pa-finding-value">{{ finding.value }}</span>
                     {{ pa.sevPill(finding.severity) }}

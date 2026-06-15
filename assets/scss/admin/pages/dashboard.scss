@@ -2516,6 +2516,35 @@
         color: $crumb-muted;
     }
 
+    .pa-finding-samples {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px 6px;
+        margin: 4px 0 0;
+        padding: 0;
+        list-style: none;
+
+        li {
+            min-width: 0;
+            max-width: 100%;
+        }
+
+        code {
+            display: inline-block;
+            max-width: 100%;
+            overflow: hidden;
+            padding: 1px 6px;
+            font-size: 11px;
+            border-radius: $radius-xs;
+            color: $crumb-muted;
+            background: $crumb-surface;
+            border: 1px solid $crumb-border;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            vertical-align: bottom;
+        }
+    }
+
     .pa-finding-value {
         flex-shrink: 0;
         font-size: 12px;
