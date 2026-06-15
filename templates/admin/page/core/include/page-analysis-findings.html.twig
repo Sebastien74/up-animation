@@ -1,0 +1,53 @@
+{%- trans_default_domain 'admin' -%}
+
+{#
+   Shared grouped-findings renderer for the analysis surfaces (detail page + layout
+   modal). Expects `groups` (report.groups) and an optional `titleTag` (h2 by default,
+   h3 inside a modal where the dialog title is already an h2).
+#}
+
+{%- set titleTag = titleTag|default('h2') -%}
+
+{%- macro sevPill(severity) -%}
+    {%- set map = {
+        high: {label: "Critique"|trans, cls: 'sev-high'},
+        medium: {label: "À surveiller"|trans, cls: 'sev-medium'},
+        low: {label: "Mineur"|trans, cls: 'sev-low'},
+        info: {label: "Info"|trans, cls: 'sev-info'},
+        ok: {label: "Conforme"|trans, cls: 'sev-ok'},
+    } -%}
+    {%- set s = map[severity]|default(map.info) -%}
+    <span class="pa-sev-pill {{ s.cls }}">{{ s.label }}</span>
+{%- endmacro -%}
+
+{%- import _self as pa -%}
+
+{%- for group in groups|default([]) -%}
+    {%- set counts = group.counts|default({high: 0, medium: 0, low: 0}) -%}
+    {%- set problems = counts.high + counts.medium + counts.low -%}
+    <section class="pa-group mb-3">
+        <header class="pa-group-head">
+            <{{ titleTag }} class="pa-group-title">{{ group.label }}</{{ titleTag }}>
+            {%- if problems > 0 -%}
+                <span class="pa-group-count has-problems">{{ problems }} {{ problems > 1 ? "problèmes"|trans|raw : "problème"|trans|raw }}</span>
+            {%- else -%}
+                <span class="pa-group-count is-clean"><i class="icm-check" aria-hidden="true"></i> {{ "Conforme"|trans|raw }}</span>
+            {%- endif -%}
+        </header>
+        <ul class="pa-findings reset">
+            {%- for finding in group.findings|default([]) -%}
+                <li class="pa-finding sev-{{ finding.severity }}">
+                    <span class="pa-finding-dot" aria-hidden="true"></span>
+                    <div class="pa-finding-main">
+                        <span class="pa-finding-label">{{ finding.label }}</span>
+                        {%- if finding.reco -%}
+                            <span class="pa-finding-reco">{{ finding.reco }}</span>
+                        {%- endif -%}
+                    </div>
+                    <span class="pa-finding-value">{{ finding.value }}</span>
+                    {{ pa.sevPill(finding.severity) }}
+                </li>
+            {%- endfor -%}
+        </ul>
+    </section>
+{%- endfor -%}

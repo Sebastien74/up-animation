@@ -1,0 +1,32 @@
+{%- trans_default_domain 'admin' -%}
+
+<div class="modal fade" id="pa-delete-modal" tabindex="-1" role="dialog"
+     aria-labelledby="pa-delete-modal-label" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content border pb-3">
+            <div class="modal-header flex-column align-items-center text-center border-0 pb-0">
+                <span class="modal-icon is-danger w-100">
+                    <span class="icon-wrap"><i class="icm-trash"></i></span>
+                </span>
+                <h2 id="pa-delete-modal-label" class="modal-title fw-bold mt-3 mb-0">{{ "Supprimer les analyses"|trans|raw }}</h2>
+                <button type="button" class="btn-close btn-icon position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="{{ "Fermer"|trans|striptags }}">
+                    <i class="icm-times"></i>
+                </button>
+            </div>
+            <div class="modal-body px-3 px-md-5">
+                <p class="text-center pa-delete-text mb-0">{{ "Cette action est irréversible."|trans|raw }}</p>
+                <form method="post" action="" class="pa-delete-form">
+                    <input type="hidden" name="_token" value="{{ csrf_token('pa-delete') }}">
+                    <div class="modal-buttons mt-4 d-flex flex-wrap justify-content-center gap-2">
+                        <button type="button" class="btn-app muted d-inline-flex align-items-center gap-2" data-bs-dismiss="modal">
+                            <i class="icm-ban"></i><span>{{ "Annuler"|trans|raw }}</span>
+                        </button>
+                        <button type="submit" class="btn-app danger d-inline-flex align-items-center gap-2">
+                            <i class="icm-trash"></i><span>{{ "Supprimer"|trans|raw }}</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

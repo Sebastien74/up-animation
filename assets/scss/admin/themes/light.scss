@@ -2138,7 +2138,9 @@ body {
 /*--- Performance inspector page + mail-log pages (shared layout) ---*/
 
 #performance-inspector,
-#mail-log-show {
+#mail-log-show,
+#page-analysis,
+#page-analysis-detail {
 
     .perf-back-link {
         color: $theme-text-muted !important;
@@ -2186,6 +2188,119 @@ body {
 
     .legend-swatch.is-front {
         background: $theme-accent !important;
+    }
+}
+
+/*--- Page analysis dashboard + detail ---*/
+
+#page-analysis,
+#page-analysis-detail {
+
+    .pa-progress-wrap {
+        background: $theme-overlay-soft !important;
+
+        .pa-progress {
+            background: $theme-accent !important;
+        }
+    }
+
+    .pa-type-pill {
+        color: $theme-text-muted !important;
+        background: $theme-card-bg !important;
+        border-color: $theme-border-subtle !important;
+    }
+
+    .pa-page-title {
+        color: $theme-text !important;
+    }
+
+    .pa-page-url {
+        color: $theme-text-muted !important;
+
+        &:hover,
+        &:focus-visible {
+            color: $theme-accent !important;
+        }
+    }
+
+    .pa-flag {
+        box-shadow: 0 0 0 1px $theme-border-subtle !important;
+    }
+
+    .pa-kb {
+        color: $theme-text !important;
+    }
+
+    .pa-date,
+    .pa-issue-empty {
+        color: $theme-text-muted !important;
+    }
+
+    .score-pill.is-none {
+        color: $theme-text-muted !important;
+        background: $theme-card-bg !important;
+    }
+
+    .issue-chip.is-low {
+        color: $theme-text-muted !important;
+        background: $theme-card-bg !important;
+    }
+
+    .score-pill.is-warn,
+    .issue-chip.is-medium {
+        color: darken(rgba($warning, 1), 28%) !important;
+        background: rgba($warning, .24) !important;
+    }
+}
+
+/*--- Page analysis detail ---*/
+
+#page-analysis-detail {
+
+    .pa-sev-pill.sev-medium {
+        color: darken(rgba($warning, 1), 28%) !important;
+        background: rgba($warning, .24) !important;
+    }
+
+    .pa-finding.sev-medium .pa-finding-dot {
+        background: darken(rgba($warning, 1), 14%) !important;
+    }
+
+    .pa-group {
+        background: $theme-card-bg !important;
+        border-color: $theme-border-subtle !important;
+    }
+
+    .pa-group-head {
+        background: $theme-surface !important;
+        border-bottom-color: $theme-border-subtle !important;
+    }
+
+    .pa-group-title,
+    .pa-finding-label,
+    .pa-finding-value {
+        color: $theme-text !important;
+    }
+
+    .pa-group-count {
+        color: $theme-text-muted !important;
+    }
+
+    .pa-finding + .pa-finding {
+        border-top-color: $theme-border-subtle !important;
+    }
+
+    .pa-finding-reco {
+        color: $theme-text-muted !important;
+    }
+
+    .pa-finding-dot {
+        background: $theme-border !important;
+    }
+
+    .pa-sev-pill.sev-info {
+        color: $theme-text-muted !important;
+        background: $theme-card-bg !important;
     }
 }
 

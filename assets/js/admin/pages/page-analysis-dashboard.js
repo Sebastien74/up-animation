@@ -9,17 +9,39 @@ const container = document.getElementById('page-analysis');
 
 if (container) {
 
-    const scoreClass = function (score) {
+    const scoreState = function (score) {
         if (score === null || score === undefined) {
-            return 'bg-secondary';
+            return 'is-none';
         }
         if (score >= 90) {
-            return 'bg-success';
+            return 'is-good';
         }
         if (score >= 60) {
-            return 'bg-warning';
+            return 'is-warn';
         }
-        return 'bg-danger';
+        return 'is-bad';
+    };
+
+    const issuesHtml = function (high, medium, low) {
+        high = high | 0;
+        medium = medium | 0;
+        low = low | 0;
+        if ((high + medium + low) === 0) {
+            return '<span class="pa-issue-clean"><i class="icm-check" aria-hidden="true"></i>'
+                + '<span class="visually-hidden">Aucun problème</span></span>';
+        }
+        const summary = high + ' critiques, ' + medium + ' à surveiller, ' + low + ' mineurs';
+        let html = '<span class="pa-issues-set" role="img" aria-label="' + summary + '">';
+        if (high > 0) {
+            html += '<span class="issue-chip is-high" title="Critiques" aria-hidden="true">' + high + '</span>';
+        }
+        if (medium > 0) {
+            html += '<span class="issue-chip is-medium" title="À surveiller" aria-hidden="true">' + medium + '</span>';
+        }
+        if (low > 0) {
+            html += '<span class="issue-chip is-low" title="Mineurs" aria-hidden="true">' + low + '</span>';
+        }
+        return html + '</span>';
     };
 
     const updateRow = function (row, data) {
@@ -30,23 +52,53 @@ if (container) {
 
         if (!data.ok) {
             if (scoreEl) {
-                scoreEl.className = 'badge pa-score bg-danger';
+                scoreEl.className = 'score-pill pa-score is-bad';
                 scoreEl.textContent = 'KO';
             }
             return;
         }
         if (scoreEl) {
-            scoreEl.className = 'badge pa-score ' + scoreClass(data.score);
-            scoreEl.textContent = data.score === null ? '—' : data.score;
+            if (data.httpStatus && data.httpStatus >= 400) {
+                scoreEl.className = 'score-pill pa-score is-bad';
+                scoreEl.textContent = 'Err ' + data.httpStatus;
+                scoreEl.title = 'Erreur HTTP ' + data.httpStatus;
+            } else {
+                scoreEl.className = 'score-pill pa-score ' + scoreState(data.score);
+                scoreEl.textContent = data.score === null ? '—' : data.score;
+            }
         }
         if (kbEl) {
             kbEl.textContent = (data.kb || 0) + ' Ko';
         }
         if (issuesEl) {
-            issuesEl.textContent = (data.high || 0) + ' / ' + (data.medium || 0) + ' / ' + (data.low || 0);
+            issuesEl.innerHTML = issuesHtml(data.high || 0, data.medium || 0, data.low || 0);
         }
         if (dateEl) {
-            dateEl.textContent = data.date || '';
+            const dateSpan = dateEl.querySelector('.text-nowrap') || dateEl;
+            dateSpan.textContent = data.date || '';
+        }
+    };
+
+    const setButtonLoading = function (button, loading) {
+        if (!button) {
+            return;
+        }
+        const icon = button.querySelector('i, .spinner-border');
+        if (loading) {
+            button.disabled = true;
+            button.classList.add('disabled');
+            if (icon && !icon.classList.contains('spinner-border')) {
+                icon.dataset.iconClass = icon.className;
+                icon.className = 'spinner-border spinner-border-sm';
+                icon.setAttribute('role', 'status');
+            }
+            return;
+        }
+        button.disabled = false;
+        button.classList.remove('disabled');
+        if (icon && icon.classList.contains('spinner-border') && icon.dataset.iconClass) {
+            icon.className = icon.dataset.iconClass;
+            icon.removeAttribute('role');
         }
     };
 
@@ -56,22 +108,16 @@ if (container) {
         if (!url) {
             return Promise.resolve();
         }
-        if (button) {
-            button.disabled = true;
-            button.classList.add('disabled');
-        }
-        row.classList.add('opacity-75');
+        setButtonLoading(button, true);
+        row.classList.add('pa-running');
 
         return fetch(url, {method: 'POST', headers: {'X-Requested-With': 'XMLHttpRequest'}})
             .then(response => response.ok ? response.json() : {ok: false})
             .then(data => updateRow(row, data))
             .catch(() => updateRow(row, {ok: false}))
             .finally(() => {
-                row.classList.remove('opacity-75');
-                if (button) {
-                    button.disabled = false;
-                    button.classList.remove('disabled');
-                }
+                row.classList.remove('pa-running');
+                setButtonLoading(button, false);
             });
     };
 
@@ -108,6 +154,14 @@ if (container) {
 
             let done = 0;
             const total = rows.length;
+            const rowLabel = function (row) {
+                const title = row.querySelector('.pa-page-title');
+                const url = row.querySelector('.pa-page-url');
+                if (title && title.textContent.trim()) {
+                    return title.textContent.trim();
+                }
+                return url && url.textContent.trim() ? url.textContent.trim() : '';
+            };
             const next = function () {
                 if (!rows.length) {
                     if (statusEl) {
@@ -119,7 +173,8 @@ if (container) {
                 }
                 const row = rows.shift();
                 if (statusEl) {
-                    statusEl.textContent = 'Analyse ' + (done + 1) + ' / ' + total + '…';
+                    const label = rowLabel(row);
+                    statusEl.textContent = 'Analyse ' + (done + 1) + ' / ' + total + (label ? ' · ' + label : '…');
                 }
                 runRow(row).finally(() => {
                     done += 1;
@@ -142,6 +197,58 @@ if (container) {
                 const haystack = row.getAttribute('data-search') || '';
                 row.classList.toggle('d-none', term !== '' && haystack.indexOf(term) === -1);
             });
+        });
+    }
+}
+
+// Delete confirmation modal (shared by "delete all" and per-page triggers).
+// The clicked trigger carries the target action URL and scope; we wire them
+// into the form on show so a single modal serves every delete.
+const deleteModal = document.getElementById('pa-delete-modal');
+
+if (deleteModal) {
+    const deleteForm = deleteModal.querySelector('.pa-delete-form');
+    const deleteText = deleteModal.querySelector('.pa-delete-text');
+
+    deleteModal.addEventListener('show.bs.modal', function (event) {
+        const trigger = event.relatedTarget;
+        if (!trigger) {
+            return;
+        }
+        const action = trigger.getAttribute('data-pa-action');
+        const scope = trigger.getAttribute('data-pa-scope');
+        const label = trigger.getAttribute('data-pa-label');
+
+        if (deleteForm && action) {
+            deleteForm.setAttribute('action', action);
+        }
+        if (deleteText) {
+            deleteText.textContent = scope === 'page' && label
+                ? 'Supprimer les analyses de « ' + label + ' » ? Cette action est irréversible.'
+                : 'Supprimer toutes les analyses enregistrées ? Cette action est irréversible.';
+        }
+    });
+}
+
+// Detail page: re-run the analysis then reload to show the fresh report.
+const detailContainer = document.getElementById('page-analysis-detail');
+
+if (detailContainer) {
+    const detailButton = detailContainer.querySelector('.pa-detail-run');
+    const detailUrl = detailContainer.getAttribute('data-run-url');
+
+    if (detailButton && detailUrl) {
+        detailButton.addEventListener('click', function () {
+            const icon = detailButton.querySelector('i');
+            detailButton.disabled = true;
+            detailButton.classList.add('disabled');
+            if (icon) {
+                icon.dataset.iconClass = icon.className;
+                icon.className = 'spinner-border spinner-border-sm';
+                icon.setAttribute('role', 'status');
+            }
+            fetch(detailUrl, {method: 'POST', headers: {'X-Requested-With': 'XMLHttpRequest'}})
+                .finally(() => window.location.reload());
         });
     }
 }

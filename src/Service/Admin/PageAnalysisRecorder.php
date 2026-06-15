@@ -51,6 +51,7 @@ class PageAnalysisRecorder
                 ->setSeverityHigh((int) ($summary['high'] ?? 0))
                 ->setSeverityMedium((int) ($summary['medium'] ?? 0))
                 ->setSeverityLow((int) ($summary['low'] ?? 0))
+                ->setHttpStatus(isset($meta['httpStatus']) ? (int) $meta['httpStatus'] : null)
                 ->setReport($report);
 
             $this->entityManager->persist($snapshot);

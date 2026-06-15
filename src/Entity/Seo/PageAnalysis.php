@@ -75,6 +75,13 @@ class PageAnalysis
     private int $severityLow = 0;
 
     /**
+     * HTTP status returned by the previewed page (null when it rendered normally);
+     * a 4xx/5xx flags a page that could not be analyzed.
+     */
+    #[ORM\Column(type: Types::INTEGER, nullable: true)]
+    private ?int $httpStatus = null;
+
+    /**
      * Full structured analysis report (meta, score, summary, grouped findings) for
      * later processing.
      *
@@ -263,6 +270,18 @@ class PageAnalysis
     public function setSeverityLow(int $severityLow): static
     {
         $this->severityLow = $severityLow;
+
+        return $this;
+    }
+
+    public function getHttpStatus(): ?int
+    {
+        return $this->httpStatus;
+    }
+
+    public function setHttpStatus(?int $httpStatus): static
+    {
+        $this->httpStatus = $httpStatus;
 
         return $this;
     }

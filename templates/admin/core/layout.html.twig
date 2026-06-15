@@ -27,7 +27,6 @@
     {%- set infill = entity.infill is defined and entity.infill -%}
     {%- if not infill and (layout and interface.name == 'page' or layout and granted('ROLE_LAYOUT_'~interface.name|upper)) -%}
         <div id="layout-grid" class="mb-4">
-            {%- include 'admin/core/layout/cache-invalidate-button.html.twig' -%}
             {%- set analyzeUrl = null -%}
             {%- if entity.urls is defined and entity.urls|length -%}
                 {%- for u in entity.urls -%}
@@ -35,7 +34,8 @@
                 {%- endfor -%}
                 {%- if analyzeUrl is null -%}{%- set analyzeUrl = entity.urls|first -%}{%- endif -%}
             {%- endif -%}
-            <div class="d-flex justify-content-end gap-2 mb-2">
+            <div class="d-flex flex-wrap justify-content-end align-items-center gap-2 mb-2">
+                {%- include 'admin/core/layout/cache-invalidate-button.html.twig' -%}
                 {%- if analyzeUrl -%}
                     <span class="analyze-page btn-app small d-inline-flex align-items-center gap-2 cursor"
                           data-bs-toggle="tooltip"

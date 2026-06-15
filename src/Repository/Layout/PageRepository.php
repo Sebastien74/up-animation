@@ -132,8 +132,6 @@ class PageRepository extends ServiceEntityRepository
 
     /**
      * Find by URL code and locale.
-     *
-     * @throws NonUniqueResultException
      */
     public function findByUrlCodeAndLocale(WebsiteModel $website, string $urlCode, string $locale, bool $preview): Page|array|null
     {
@@ -141,14 +139,16 @@ class PageRepository extends ServiceEntityRepository
             return $this->cache[$urlCode][$locale][$website->id];
         }
 
-        $page = $this->optimizedQueryBuilder($website, $locale, $preview)
+        $pages = $this->optimizedQueryBuilder($website, $locale, $preview)
             ->andWhere('u.code = :code')
             ->andWhere('u.archived = :archived')
             ->setParameter('code', $urlCode)
             ->setParameter('archived', false)
             ->getQuery()
             ->enableResultCache(3600, 'page-'.$website->id.'-'.$urlCode.'-'.$locale)
-            ->getOneOrNullResult();
+            ->getResult();
+
+        $page = $this->pickPreferredPage($pages, $urlCode, $locale);
 
         if ($page instanceof Page && $page->isInFill() && $page->getPages()->count() > 0) {
             foreach ($page->getPages() as $page) {
@@ -165,6 +165,34 @@ class PageRepository extends ServiceEntityRepository
         }
 
         return $page;
+    }
+
+    /**
+     * Resolve a single page when several non-archived URLs share the same code in preview
+     * (e.g. a draft duplicate alongside the online page): prefer the online match, then the
+     * lowest id for determinism. Avoids NonUniqueResultException without LIMIT on fetch joins.
+     *
+     * @param array<int, Page> $pages
+     */
+    private function pickPreferredPage(array $pages, string $urlCode, string $locale): ?Page
+    {
+        if (count($pages) <= 1) {
+            return $pages[0] ?? null;
+        }
+
+        $fallback = null;
+        foreach ($pages as $page) {
+            foreach ($page->getUrls() as $url) {
+                if ($url->getCode() === $urlCode && $url->getLocale() === $locale && $url->isOnline()) {
+                    return $page;
+                }
+            }
+            if (null === $fallback || (int) $page->getId() < (int) $fallback->getId()) {
+                $fallback = $page;
+            }
+        }
+
+        return $fallback;
     }
 
     /**

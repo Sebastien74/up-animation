@@ -48,12 +48,22 @@ class PageAnalysisRepository extends ServiceEntityRepository
      * Latest snapshot scalars per page (keyed by "code|locale") for a whole website.
      * Only lightweight fields are selected (the full JSON report is not loaded here).
      *
-     * @return array<string, array{code: ?string, locale: ?string, score: ?int, kb: int, date: ?\DateTimeInterface}>
+     * @return array<string, array{code: ?string, locale: ?string, score: ?int, kb: int, high: int, medium: int, low: int, httpStatus: ?int, date: ?\DateTimeInterface}>
      */
     public function findLatestPerPage(Website $website): array
     {
         $rows = $this->createQueryBuilder('s')
-            ->select('s.urlCode AS code', 's.locale AS locale', 's.score AS score', 's.htmlKb AS kb', 's.createdAt AS date')
+            ->select(
+                's.urlCode AS code',
+                's.locale AS locale',
+                's.score AS score',
+                's.htmlKb AS kb',
+                's.severityHigh AS high',
+                's.severityMedium AS medium',
+                's.severityLow AS low',
+                's.httpStatus AS httpStatus',
+                's.createdAt AS date'
+            )
             ->andWhere('s.website = :website')
             ->orderBy('s.createdAt', 'DESC')
             ->addOrderBy('s.id', 'DESC')
@@ -70,6 +80,37 @@ class PageAnalysisRepository extends ServiceEntityRepository
         }
 
         return $latest;
+    }
+
+    /**
+     * Delete every snapshot of a website. Returns the number of rows removed.
+     */
+    public function deleteAllForWebsite(Website $website): int
+    {
+        return (int) $this->createQueryBuilder('s')
+            ->delete(PageAnalysis::class, 's')
+            ->where('s.website = :website')
+            ->setParameter('website', $website)
+            ->getQuery()
+            ->execute();
+    }
+
+    /**
+     * Delete every snapshot of a single page (website + url code + locale).
+     * Returns the number of rows removed.
+     */
+    public function deleteForPage(Website $website, ?string $code, ?string $locale): int
+    {
+        return (int) $this->createQueryBuilder('s')
+            ->delete(PageAnalysis::class, 's')
+            ->where('s.website = :website')
+            ->andWhere('s.urlCode = :code')
+            ->andWhere('s.locale = :locale')
+            ->setParameter('website', $website)
+            ->setParameter('code', (string) $code)
+            ->setParameter('locale', (string) $locale)
+            ->getQuery()
+            ->execute();
     }
 
     /**

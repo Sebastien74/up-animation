@@ -22,6 +22,12 @@
                 font-size: 30px;
             }
         }
+
+        &.is-danger .icon-wrap {
+            color: $danger;
+            background: rgba($danger, .12);
+            border-color: rgba($danger, .35);
+        }
     }
 
     .text-white {

@@ -110,6 +110,36 @@ class PageAnalyzer implements PageAnalyzerInterface
         ];
     }
 
+    public function httpError(int $status): array
+    {
+        return [
+            'meta' => [
+                'urlCode' => null,
+                'bytes' => 0,
+                'kb' => 0,
+                'dom' => 0,
+                'images' => 0,
+                'scripts' => 0,
+                'requests' => 0,
+                'httpStatus' => $status,
+            ],
+            'score' => null,
+            'summary' => ['high' => 1, 'medium' => 0, 'low' => 0],
+            'groups' => [[
+                'id' => 'error',
+                'label' => $this->translator->trans('Erreur', [], 'admin'),
+                'counts' => ['high' => 1, 'medium' => 0, 'low' => 0],
+                'findings' => [$this->f(
+                    'http-error',
+                    'high',
+                    'Erreur de rendu de la page',
+                    'HTTP '.$status,
+                    'La page a renvoyé une erreur serveur : corrigez-la avant de l’analyser (consultez les logs ou le profiler).'
+                )],
+            ]],
+        ];
+    }
+
     /**
      * Performance & rendering checks.
      *

@@ -8,6 +8,7 @@ use App\Entity\Core\Website;
 use App\Entity\Seo\Url;
 use App\Service\Admin\PageAnalysisRecorder;
 use App\Service\Admin\PageAnalyzerInterface;
+use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 
 /**
  * PageAnalysisTrait.
@@ -54,8 +55,16 @@ trait PageAnalysisTrait
         $arguments = 'page' === $interface ? ['website' => $website, 'url' => $url] : ['url' => $url];
 
         $start = microtime(true);
-        $response = $this->forward($controller, $arguments);
-        $report = $analyzer->analyze((string) $response->getContent(), $url->getCode());
+        try {
+            $response = $this->forward($controller, $arguments);
+            $status = $response->getStatusCode();
+        } catch (\Throwable $e) {
+            $response = null;
+            $status = $e instanceof HttpExceptionInterface ? $e->getStatusCode() : 500;
+        }
+        $report = (null === $response || $status >= 400)
+            ? $analyzer->httpError($status)
+            : $analyzer->analyze((string) $response->getContent(), $url->getCode());
         $report['meta']['renderMs'] = (int) round((microtime(true) - $start) * 1000);
 
         $recorder->record($website, $url->getCode(), $url->getLocale(), $report, 'manual');

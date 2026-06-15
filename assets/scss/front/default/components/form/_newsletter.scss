@@ -143,15 +143,18 @@ $placeholder-color-news: $placeholder-color;
     }
 
     .btn-container {
+        width: 100%;
 
         @include mediaQuery(min-md) {
             flex: 0 0 auto;
+            width: auto;
         }
     }
 
     .newsletter-submit {
 
         display: inline-flex;
+        width: 100%;
         align-items: center;
         justify-content: center;
         gap: .65rem !important;
@@ -167,6 +170,7 @@ $placeholder-color-news: $placeholder-color;
         transition: $btn-transition !important;
 
         @include mediaQuery(min-md) {
+            width: auto;
             min-height: 44px !important;
             height: 44px !important;
             padding: 0 1.4rem !important;

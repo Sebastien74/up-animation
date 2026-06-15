@@ -20,4 +20,12 @@ interface PageAnalyzerInterface
      * @return array{meta: array<string, mixed>, score: int|null, summary: array<string, int>, groups: array<int, array<string, mixed>>}
      */
     public function analyze(string $html, ?string $urlCode = null, ?string $ownHost = null): array;
+
+    /**
+     * Build an explicit error report for a page that responded with an HTTP error
+     * status (4xx/5xx), instead of scoring the rendered error page.
+     *
+     * @return array{meta: array<string, mixed>, score: int|null, summary: array<string, int>, groups: array<int, array<string, mixed>>}
+     */
+    public function httpError(int $status): array;
 }
