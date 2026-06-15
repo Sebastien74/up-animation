@@ -52,6 +52,11 @@ html body {
         #webmaster-box {
             @include mediaQuery(max-md) {
                 bottom: 70px !important;
+
+                .webmaster-btn.btn-login,
+                #webmaster-box-dropdown {
+                    bottom: 70px !important;
+                }
             }
         }
     }
@@ -60,6 +65,11 @@ html body {
         #webmaster-box {
             @include mediaQuery(max-md) {
                 bottom: 20px !important;
+
+                .webmaster-btn.btn-login,
+                #webmaster-box-dropdown {
+                    bottom: 20px !important;
+                }
             }
         }
     }
@@ -122,6 +132,16 @@ html body #webmaster-box {
 
             &:after {
                 display: none !important;
+            }
+        }
+
+        // Self-contained show/hide: the Bootstrap dropdown CSS is not imported in this
+        // isolated vendor bundle, so the menu would otherwise stay visible by default.
+        .dropdown-menu {
+            display: none !important;
+
+            &.show {
+                display: block !important;
             }
         }
 

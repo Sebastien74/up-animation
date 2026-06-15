@@ -55,12 +55,15 @@ export default function (webmasterBox) {
                             };
                         }
                     });
-                    dropdownEl.addEventListener("mouseenter", function () {
-                        if (!dropdownEl.classList.contains('show')) {
-                            dropdown.show();
-                            hideTooltip();
-                        }
-                    });
+                    // Hover-to-open is desktop only; on touch we keep Bootstrap's click toggle
+                    if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+                        dropdownEl.addEventListener("mouseenter", function () {
+                            if (!dropdownEl.classList.contains('show')) {
+                                dropdown.show();
+                                hideTooltip();
+                            }
+                        });
+                    }
                 }).catch(error => console.error(error.message));
             }
         }
