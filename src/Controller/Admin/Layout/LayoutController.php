@@ -17,6 +17,7 @@ use Doctrine\ORM\PersistentCollection;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
@@ -112,13 +113,13 @@ class LayoutController extends AdminController
      */
     #[IsGranted('ROLE_ADMIN')]
     #[Route('/analyze/{url}', name: 'admin_layout_analyze', methods: 'POST')]
-    public function analyze(Request $request, Website $website, Url $url, PageAnalyzerInterface $analyzer, PageAnalysisRecorder $recorder, PageAnalysisRepository $analysisRepository): JsonResponse
+    public function analyze(Request $request, Website $website, Url $url, PageAnalyzerInterface $analyzer, PageAnalysisRecorder $recorder, PageAnalysisRepository $analysisRepository, EventDispatcherInterface $dispatcher): JsonResponse
     {
         $interface = (string) $request->query->get('interface', 'page');
         $history = [];
 
         try {
-            $report = $this->analyzePreview($analyzer, $recorder, $interface, $website, $url);
+            $report = $this->analyzePreview($analyzer, $recorder, $dispatcher, $interface, $website, $url);
             $history = $analysisRepository->findLatestSnapshots($website, $url->getCode(), $url->getLocale(), 12);
         } catch (\Throwable $e) {
             $report = [
@@ -147,7 +148,7 @@ class LayoutController extends AdminController
             'interface' => $interface,
         ]);
 
-        return new JsonResponse(['html' => $this->renderView('admin/core/layout/page-analysis.html.twig', [
+        return new JsonResponse(['html' => $this->renderView('admin/core/layout/analysis-page.html.twig', [
             'report' => $report,
             'url' => $url,
             'previewUrl' => $previewUrl,

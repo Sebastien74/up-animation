@@ -18,13 +18,13 @@
 {%- endblock -%}
 
 {%- block javascripts -%}
-    {{ encore_entry_script_tags('admin-page-analysis', null, 'admin', {defer: true}) }}
+    {{ encore_entry_script_tags('admin-analysis-page', null, 'admin', {defer: true}) }}
     {{ parent() }}
 {%- endblock -%}
 
 {%- block body -%}
 
-    <div id="page-analysis-detail" class="pt-2 pb-5"
+    <div id="analysis-page-detail" class="pt-2 pb-5"
          data-run-url="{{ runUrl }}">
 
         <div class="perf-inspector-head pa-detail-head mb-4">
@@ -87,11 +87,11 @@
             <div class="perf-inspector-summary mb-4">
                 <div class="perf-summary-tile pa-score-tile">
                     <span class="tile-label">{{ "Indice"|trans|raw }}</span>
-                    <span class="score-pill score-pill-lg {{ scoreState }}">{{ score is null ? '—' : score }}</span>
+                    <span class="score-pill score-pill-lg {{ scoreState }}">{{ score is null ? '-' : score }}</span>
                 </div>
                 <div class="perf-summary-tile pa-score-tile">
                     <span class="tile-label">{{ "Statut"|trans|raw }}</span>
-                    <span class="score-pill score-pill-lg {{ httpState }}">{{ httpStatus is null ? '—' : httpStatus }}</span>
+                    <span class="score-pill score-pill-lg {{ httpState }}">{{ httpStatus is null ? '-' : httpStatus }}</span>
                 </div>
                 <div class="perf-summary-tile">
                     <span class="tile-label">{{ "Problèmes"|trans|raw }}</span>
@@ -113,7 +113,7 @@
                 </div>
                 <div class="perf-summary-tile">
                     <span class="tile-label">{{ "Rendu"|trans|raw }}</span>
-                    <span class="tile-value">{{ latest.renderMs is not null ? latest.renderMs ~ ' ms' : '—' }}</span>
+                    <span class="tile-value">{{ latest.renderMs is not null ? latest.renderMs ~ ' ms' : '-' }}</span>
                 </div>
             </div>
 
@@ -121,17 +121,17 @@
                 <p class="perf-inspector-desc mb-4">{{ "Dernière analyse :"|trans }} {{ latest.createdAt|date('d/m/Y H:i') }}</p>
             {%- endif -%}
 
-            {%- include 'admin/page/core/include/page-analysis-findings.html.twig' with {groups: report.groups} only -%}
+            {%- include 'admin/page/core/include/analysis-page-findings.html.twig' with {groups: report.groups, meta: meta} only -%}
 
             <div class="mt-4">
-                {%- include 'admin/page/core/include/page-analysis-history.html.twig' with {history: history} only -%}
+                {%- include 'admin/page/core/include/analysis-page-history.html.twig' with {history: history} only -%}
             </div>
         {%- endif -%}
 
     </div>
 
     {%- if latest is not null -%}
-        {%- include 'admin/page/core/include/page-analysis-delete-modal.html.twig' -%}
+        {%- include 'admin/page/core/include/analysis-page-delete-modal.html.twig' -%}
     {%- endif -%}
 
 {%- endblock -%}

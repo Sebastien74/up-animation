@@ -4,14 +4,14 @@
 {%- set meta = report.meta -%}
 {%- set summary = report.summary -%}
 {%- set httpStatus = meta.httpStatus is defined ? meta.httpStatus : null -%}
-{%- set isHttpError = httpStatus is not null and httpStatus >= 400 -%}
+{%- set httpState = httpStatus is null ? 'is-none' : (httpStatus >= 400 ? 'is-bad' : (httpStatus >= 300 ? 'is-warn' : 'is-good')) -%}
 {%- set scoreState = score is null ? 'is-none' : (score >= 90 ? 'is-good' : (score >= 60 ? 'is-warn' : 'is-bad')) -%}
 {%- set localeCode = url.locale|default('')|lower -%}
 
 <div class="modal-wrapper">
-    <div class="modal fade modal-page-analysis layout-modal"
-         id="modal-page-analysis" tabindex="-1" role="dialog"
-         aria-labelledby="modal-page-analysis-label" aria-hidden="true">
+    <div class="modal fade modal-analysis-page layout-modal"
+         id="modal-analysis-page" tabindex="-1" role="dialog"
+         aria-labelledby="modal-analysis-page-label" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" role="document">
             <div class="modal-content border">
                 <div class="modal-header flex-column align-items-center text-center border-0 pb-0">
@@ -20,7 +20,7 @@
                             <i class="icm-rocket"></i>
                         </span>
                     </span>
-                    <h2 id="modal-page-analysis-label" class="modal-title fw-700 mt-3 mb-0">{{ "Analyse de la page"|trans|raw }}</h2>
+                    <h2 id="modal-analysis-page-label" class="modal-title fw-700 mt-3 mb-0">{{ "Analyse de la page"|trans|raw }}</h2>
                     <button type="button" class="btn-close btn-icon position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="{{ "Fermer"|trans|raw }}">
                         <i class="icm-times"></i>
                     </button>
@@ -34,11 +34,11 @@
                     <div class="perf-inspector-summary mb-4">
                         <div class="perf-summary-tile pa-score-tile">
                             <span class="tile-label">{{ "Indice"|trans|raw }}</span>
-                            {%- if isHttpError -%}
-                                <span class="score-pill score-pill-lg is-bad" title="{{ "Erreur HTTP"|trans|striptags }} {{ httpStatus }}">{{ "Err"|trans }} {{ httpStatus }}</span>
-                            {%- else -%}
-                                <span class="score-pill score-pill-lg {{ scoreState }}">{{ score is null ? '—' : score }}</span>
-                            {%- endif -%}
+                            <span class="score-pill score-pill-lg {{ scoreState }}">{{ score is null ? '-' : score }}</span>
+                        </div>
+                        <div class="perf-summary-tile pa-score-tile">
+                            <span class="tile-label">{{ "Statut"|trans|raw }}</span>
+                            <span class="score-pill score-pill-lg {{ httpState }}">{{ httpStatus is null ? '-' : httpStatus }}</span>
                         </div>
                         <div class="perf-summary-tile">
                             <span class="tile-label">{{ "Problèmes"|trans|raw }}</span>
@@ -60,7 +60,7 @@
                         </div>
                         <div class="perf-summary-tile">
                             <span class="tile-label">{{ "Rendu"|trans|raw }}</span>
-                            <span class="tile-value">{{ meta.renderMs is defined and meta.renderMs is not null ? meta.renderMs ~ ' ms' : '—' }}</span>
+                            <span class="tile-value">{{ meta.renderMs is defined and meta.renderMs is not null ? meta.renderMs ~ ' ms' : '-' }}</span>
                         </div>
                         <div class="perf-summary-tile">
                             <span class="tile-label">{{ "Domaines tiers"|trans|raw }}</span>
@@ -74,10 +74,10 @@
                         </div>
                     </div>
 
-                    {%- include 'admin/page/core/include/page-analysis-findings.html.twig' with {groups: report.groups, titleTag: 'h3'} only -%}
+                    {%- include 'admin/page/core/include/analysis-page-findings.html.twig' with {groups: report.groups, meta: meta, titleTag: 'h3'} only -%}
 
                     <div class="mt-4">
-                        {%- include 'admin/page/core/include/page-analysis-history.html.twig' with {history: history, titleTag: 'h3'} only -%}
+                        {%- include 'admin/page/core/include/analysis-page-history.html.twig' with {history: history, titleTag: 'h3'} only -%}
                     </div>
 
                 </div>
@@ -97,7 +97,7 @@
                         <i class="icm-copy"></i><span>{{ "Copier le rapport"|trans|raw }}</span>
                     </button>
                 </div>
-                <script type="application/json" id="page-analysis-data">{{ {
+                <script type="application/json" id="analysis-page-data">{{ {
                     score: report.score,
                     meta: report.meta,
                     url: {code: url.code, locale: url.locale},

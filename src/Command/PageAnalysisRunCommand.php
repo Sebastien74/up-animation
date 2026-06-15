@@ -28,12 +28,12 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
  * Newscast, Product). It fetches the live public pages: no preview, no admin
  * context required, and no impact on front navigation.
  *
- * @doc php bin/console app:page-analysis:run --max-urls=500 --max-seconds=120
+ * @doc php bin/console app:analysis-page:run --max-urls=500 --max-seconds=120
  *
  * @author Sébastien FOURNIER <fournier.sebastien@outlook.com>
  */
 #[AsCommand(
-    name: 'app:page-analysis:run',
+    name: 'app:analysis-page:run',
     description: 'Analyze published front pages over HTTP and historize their performance score.',
 )]
 final class PageAnalysisRunCommand extends Command

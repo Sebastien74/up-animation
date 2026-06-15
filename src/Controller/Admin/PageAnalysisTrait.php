@@ -8,8 +8,10 @@ use App\Entity\Core\Website;
 use App\Entity\Seo\Url;
 use App\Service\Admin\PageAnalysisRecorder;
 use App\Service\Admin\PageAnalyzerInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
-use Symfony\Component\HttpKernel\HttpKernelInterface;
+use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
  * PageAnalysisTrait.
@@ -45,36 +47,48 @@ trait PageAnalysisTrait
      *
      * @return array{meta: array<string, mixed>, score: int|null, summary: array<string, int>, groups: array<int, array<string, mixed>>}
      */
-    private function analyzePreview(PageAnalyzerInterface $analyzer, PageAnalysisRecorder $recorder, string $interface, Website $website, Url $url): array
+    private function analyzePreview(PageAnalyzerInterface $analyzer, PageAnalysisRecorder $recorder, EventDispatcherInterface $dispatcher, string $interface, Website $website, Url $url): array
     {
         $request = $this->coreLocator->request();
         if ($request) {
             $request->setLocale((string) $url->getLocale());
+            // Flag the render as a preview so front actions build view models (and not raw
+            // entities), exactly as the public /preview path does. The analysis runs from an
+            // /admin-<token>/ URL without "/preview", which the actions' heuristic would
+            // otherwise treat as the admin back-office listing.
+            $request->attributes->set('_pageAnalysisPreview', true);
         }
 
         $controller = self::PREVIEW_CONTROLLERS[$interface] ?? self::PREVIEW_CONTROLLERS['page'];
         $arguments = 'page' === $interface ? ['website' => $website, 'url' => $url] : ['url' => $url];
 
+        // The preview renders through nested sub-requests (each catch=true), so a render
+        // error is swallowed into a 500 page rather than thrown here. A one-shot listener
+        // captures the first exception wherever it fires so its origin can be reported.
+        $captured = null;
+        $listener = static function (ExceptionEvent $event) use (&$captured): void {
+            $captured ??= $event->getThrowable();
+        };
+        $dispatcher->addListener(KernelEvents::EXCEPTION, $listener, 2048);
+
         $start = microtime(true);
         $response = null;
         $status = 200;
-        $errorDetail = null;
-        $current = $this->container->get('request_stack')->getCurrentRequest();
         try {
-            if (null !== $current) {
-                // catch: false so a rendering exception propagates here and its origin can
-                // be reported, instead of being swallowed into a generic error page.
-                $subRequest = $current->duplicate(null, null, $arguments + ['_controller' => $controller]);
-                $response = $this->container->get('http_kernel')->handle($subRequest, HttpKernelInterface::SUB_REQUEST, false);
-            } else {
-                $response = $this->forward($controller, $arguments);
-            }
+            $response = $this->forward($controller, $arguments);
             $status = $response->getStatusCode();
         } catch (\Throwable $e) {
-            $response = null;
             $status = $e instanceof HttpExceptionInterface ? $e->getStatusCode() : 500;
-            $errorDetail = $this->describeThrowable($e);
+            $captured ??= $e;
+        } finally {
+            $dispatcher->removeListener(KernelEvents::EXCEPTION, $listener);
         }
+
+        $errorDetail = null !== $captured ? $this->describeThrowable($captured) : null;
+        if (null === $errorDetail && null !== $response && $status >= 400) {
+            $errorDetail = $this->extractError((string) $response->getContent());
+        }
+
         $report = (null === $response || $status >= 400)
             ? $analyzer->httpError($status, $errorDetail)
             : $analyzer->analyze((string) $response->getContent(), $url->getCode());
@@ -97,6 +111,22 @@ trait PageAnalysisTrait
         }
 
         return $detail;
+    }
+
+    /**
+     * Best-effort origin extracted from a rendered error page (dev exposes the exception
+     * in the document <title>); null when nothing usable is found.
+     */
+    private function extractError(string $html): ?string
+    {
+        if (1 === preg_match('#<title>(.*?)</title>#is', $html, $matches)) {
+            $title = trim(html_entity_decode(strip_tags($matches[1]), ENT_QUOTES | ENT_HTML5));
+            if ('' !== $title) {
+                return $title;
+            }
+        }
+
+        return null;
     }
 
     /**

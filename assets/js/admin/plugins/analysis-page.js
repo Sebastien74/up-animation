@@ -25,7 +25,7 @@ let toggleLoader = function (show) {
  * Build a plain-text version of the report from the embedded JSON data.
  */
 let buildReportText = function (modalEl) {
-    let dataEl = modalEl.querySelector('#page-analysis-data');
+    let dataEl = modalEl.querySelector('#analysis-page-data');
     if (!dataEl) {
         return modalEl.innerText;
     }
@@ -107,7 +107,7 @@ let bindActions = function (modalEl) {
 };
 
 let cleanup = function () {
-    document.querySelectorAll('#modal-page-analysis').forEach(function (modal) {
+    document.querySelectorAll('#modal-analysis-page').forEach(function (modal) {
         let instance = Modal.getInstance(modal);
         if (instance) {
             instance.dispose();
@@ -146,7 +146,7 @@ let run = function (href) {
             wrapper.innerHTML = response.html.trim();
             document.body.appendChild(wrapper);
 
-            let modalEl = document.getElementById('modal-page-analysis');
+            let modalEl = document.getElementById('modal-analysis-page');
             if (modalEl) {
                 Modal.getOrCreateInstance(modalEl).show();
                 modalEl.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function (tip) {

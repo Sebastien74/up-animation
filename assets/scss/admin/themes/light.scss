@@ -2139,9 +2139,9 @@ body {
 
 #performance-inspector,
 #mail-log-show,
-#page-analysis,
-#page-analysis-detail,
-.modal-page-analysis {
+#analysis-page,
+#analysis-page-detail,
+.modal-analysis-page {
 
     .perf-back-link {
         color: $theme-text-muted !important;
@@ -2194,9 +2194,9 @@ body {
 
 /*--- Page analysis dashboard + detail + modal ---*/
 
-#page-analysis,
-#page-analysis-detail,
-.modal-page-analysis {
+#analysis-page,
+#analysis-page-detail,
+.modal-analysis-page {
 
     .pa-progress-wrap {
         background: $theme-overlay-soft !important;
@@ -2257,8 +2257,8 @@ body {
 
 /*--- Page analysis detail + analysis modal ---*/
 
-#page-analysis-detail,
-.modal-page-analysis {
+#analysis-page-detail,
+.modal-analysis-page {
 
     .pa-sev-pill.sev-medium {
         color: darken(rgba($warning, 1), 28%) !important;
@@ -2297,8 +2297,12 @@ body {
         color: $theme-text-muted !important;
     }
 
-    .pa-finding-samples code {
+    .pa-preview figcaption {
         color: $theme-text-muted !important;
+    }
+
+    .pa-preview-favicon,
+    .pa-preview-share {
         background: $theme-card-bg !important;
         border-color: $theme-border-subtle !important;
     }

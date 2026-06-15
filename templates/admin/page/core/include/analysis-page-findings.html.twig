@@ -2,11 +2,14 @@
 
 {#
    Shared grouped-findings renderer for the analysis surfaces (detail page + layout
-   modal). Expects `groups` (report.groups) and an optional `titleTag` (h2 by default,
-   h3 inside a modal where the dialog title is already an h2).
+   modal). Expects `groups` (report.groups), optional `meta` (for the SEO preview) and
+   an optional `titleTag` (h2 by default, h3 inside a modal whose title is already h2).
 #}
 
 {%- set titleTag = titleTag|default('h2') -%}
+{%- set meta = meta|default({}) -%}
+{%- set ogImage = meta.ogImage|default('') -%}
+{%- set favicon = meta.favicon|default('') -%}
 
 {%- macro sevPill(severity) -%}
     {%- set map = {
@@ -48,7 +51,7 @@
                             {%- set extra = finding.affected is defined ? finding.affected - shown : 0 -%}
                             <ul class="pa-finding-samples reset">
                                 {%- for sample in finding.samples -%}
-                                    <li><code title="{{ sample }}">{{ sample }}</code></li>
+                                    <li><code class="language-markup">{{ sample }}</code></li>
                                 {%- endfor -%}
                                 {%- if extra > 0 -%}
                                     <li class="pa-finding-more">+{{ extra }} {{ "autres"|trans }}</li>
@@ -61,5 +64,21 @@
                 </li>
             {%- endfor -%}
         </ul>
+        {%- if group.id == 'seo' and (ogImage or favicon) -%}
+            <div class="pa-preview">
+                {%- if favicon -%}
+                    <figure class="pa-preview-item">
+                        <img src="{{ favicon }}" class="pa-preview-favicon" width="40" height="40" loading="lazy" alt="{{ "Favicon"|trans|striptags }}">
+                        <figcaption>{{ "Favicon"|trans|raw }}</figcaption>
+                    </figure>
+                {%- endif -%}
+                {%- if ogImage -%}
+                    <figure class="pa-preview-item pa-preview-item-share">
+                        <img src="{{ ogImage }}" class="pa-preview-share" loading="lazy" alt="{{ "Image de partage"|trans|striptags }}">
+                        <figcaption>{{ "Image de partage (Open Graph)"|trans|raw }}</figcaption>
+                    </figure>
+                {%- endif -%}
+            </div>
+        {%- endif -%}
     </section>
 {%- endfor -%}

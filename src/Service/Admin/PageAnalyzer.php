@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Service\Admin;
 
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
@@ -42,8 +43,11 @@ class PageAnalyzer implements PageAnalyzerInterface
      */
     private const MAX_SAMPLES = 6;
 
-    public function __construct(private readonly TranslatorInterface $translator)
-    {
+    public function __construct(
+        private readonly TranslatorInterface $translator,
+        #[Autowire('%kernel.project_dir%')]
+        private readonly string $projectDir = '',
+    ) {
     }
 
     public function analyze(string $html, ?string $urlCode = null, ?string $ownHost = null): array
@@ -80,6 +84,10 @@ class PageAnalyzer implements PageAnalyzerInterface
         libxml_use_internal_errors($previous);
         $xpath = new \DOMXPath($dom);
 
+        // Preview mode injects the in-context editor ("webmaster") controls: drop every
+        // element pointing at an /admin-<token>/ path so they never skew the analysis.
+        $this->stripAdminControls($xpath);
+
         [$maxDepth, $maxChildren] = $this->domShape($dom);
         $domCount = $this->count($xpath, '//body//*');
         $ownHost = $ownHost ? strtolower($ownHost) : $this->ownHostFromHtml($xpath);
@@ -89,11 +97,13 @@ class PageAnalyzer implements PageAnalyzerInterface
         $meta['scripts'] = $this->count($xpath, '//script[@src]');
         $meta['requests'] = $this->requestCount($xpath);
         $meta['externalDomains'] = count($this->externalHosts($xpath, $ownHost));
+        $meta['ogImage'] = $this->attr($xpath, '//head/meta[@property="og:image"]/@content');
+        $meta['favicon'] = $this->attr($xpath, '//head/link[contains(@rel,"icon")][@href]/@href');
 
         $groups = [
             ['id' => 'perf', 'label' => 'Performance & rendu', 'findings' => $this->perf($xpath, $html, $bytes, $domCount, $maxDepth, $maxChildren)],
             ['id' => 'resources', 'label' => 'Ressources & chargement', 'findings' => $this->resources($xpath, $html, $ownHost)],
-            ['id' => 'images', 'label' => 'Images & médias', 'findings' => $this->images($xpath, $html)],
+            ['id' => 'images', 'label' => 'Images & médias', 'findings' => $this->images($xpath, $html, $ownHost)],
             ['id' => 'structure', 'label' => 'Structure & DOM', 'findings' => $this->structure($xpath, $maxDepth, $maxChildren)],
             ['id' => 'seo', 'label' => 'SEO & métadonnées', 'findings' => $this->seo($xpath)],
             ['id' => 'a11y', 'label' => 'Accessibilité', 'findings' => $this->accessibility($xpath)],
@@ -102,7 +112,9 @@ class PageAnalyzer implements PageAnalyzerInterface
 
         $all = [];
         foreach ($groups as &$group) {
-            $group['findings'] = $this->sort($group['findings']);
+            // SEO keeps a fixed editorial order (title, description, canonical, …); every
+            // other group is ordered by severity so problems surface first.
+            $group['findings'] = 'seo' === $group['id'] ? $group['findings'] : $this->sort($group['findings']);
             $group['counts'] = $this->groupCounts($group['findings']);
             $all = array_merge($all, $group['findings']);
         }
@@ -249,23 +261,34 @@ class PageAnalyzer implements PageAnalyzerInterface
      *
      * @return array<int, array<string, mixed>>
      */
-    private function images(\DOMXPath $xpath, string $html): array
+    private function images(\DOMXPath $xpath, string $html, ?string $ownHost = null): array
     {
         $images = $xpath->query('//img');
         $total = $images->length;
-        $noDim = $noLazy = $legacy = $noAlt = $srcset = $asyncDecode = 0;
-        $noDimEls = $noLazyEls = $legacyEls = $noAltEls = [];
+        $noDim = $noLazy = $legacy = $noAlt = $srcset = $asyncDecode = $noVariants = 0;
+        $noDimEls = $noLazyEls = $legacyEls = $noAltEls = $noVariantEls = [];
         foreach ($images as $img) {
             /** @var \DOMElement $img */
+            // Real source: lazy images keep a data: placeholder in src and the file in data-src.
+            $realSrc = trim($img->getAttribute('src'));
+            if ('' === $realSrc || 0 === stripos($realSrc, 'data:')) {
+                $realSrc = trim($img->getAttribute('data-src'));
+            }
+            // Lazy-loaded either natively (loading="lazy") or via the project's JS loader
+            // (data-src + a "lazy" class), so JS-lazy images are not flagged as eager.
+            $lazyLoaded = 'lazy' === strtolower($img->getAttribute('loading'))
+                || $img->hasAttribute('data-src')
+                || str_contains(strtolower($img->getAttribute('class')), 'lazy');
+
             if ('' === $img->getAttribute('width') || '' === $img->getAttribute('height')) {
                 ++$noDim;
                 $this->sample($noDimEls, $img);
             }
-            if ('lazy' !== strtolower($img->getAttribute('loading'))) {
+            if (!$lazyLoaded) {
                 ++$noLazy;
                 $this->sample($noLazyEls, $img);
             }
-            if (preg_match('/\.(jpe?g|png|gif)(\?.*)?$/i', $img->getAttribute('src'))) {
+            if (preg_match('/\.(jpe?g|png|gif)(\?.*)?$/i', $realSrc)) {
                 ++$legacy;
                 $this->sample($legacyEls, $img);
             }
@@ -276,9 +299,23 @@ class PageAnalyzer implements PageAnalyzerInterface
             if ($img->hasAttribute('srcset')) {
                 ++$srcset;
             }
+            // Responsive coverage per device: a single src (no srcset, not in <picture>)
+            // serves the same file to Desktop, Laptop, Tablet and Mobile alike.
+            $inPicture = $img->parentNode instanceof \DOMElement && 'picture' === strtolower($img->parentNode->nodeName);
+            if (!$img->hasAttribute('srcset') && !$inPicture) {
+                ++$noVariants;
+                $this->sample($noVariantEls, $img);
+            }
             if ('async' === strtolower($img->getAttribute('decoding'))) {
                 ++$asyncDecode;
             }
+        }
+
+        $weight = $this->imageWeights($xpath, $ownHost);
+        $weightKb = (int) round($weight['bytes'] / 1024);
+        $heaviest = [];
+        foreach (\array_slice($weight['files'], 0, self::MAX_SAMPLES) as $file) {
+            $heaviest[] = $file['label'].' - '.((int) round($file['bytes'] / 1024)).' Ko';
         }
         $picture = $this->count($xpath, '//picture');
         $iframeNoLazy = 0;
@@ -301,6 +338,12 @@ class PageAnalyzer implements PageAnalyzerInterface
                 $legacy > 0 ? 'Servez des formats modernes (WebP/AVIF) pour réduire le poids.' : '', $legacyEls, $legacy),
             $this->f('img-alt', $noAlt > 0 ? 'medium' : 'ok', "Images sans attribut alt", $noAlt.' / '.$total,
                 $noAlt > 0 ? 'Ajoutez un attribut alt (vide si décoratif) pour le SEO et l’accessibilité.' : '', $noAltEls, $noAlt),
+            $this->f('img-weight', $this->sev($weightKb, 1000, 2500), 'Poids des images (fichiers locaux)',
+                $weightKb.' Ko ('.$weight['count'].')',
+                $weightKb > 1000 ? 'Compressez et redimensionnez les images les plus lourdes (formats modernes, dimensions adaptées).' : '',
+                $heaviest, $weight['count']),
+            $this->f('img-variants', $noVariants > 0 ? 'medium' : 'ok', 'Images sans variantes responsive (par écran)', $noVariants.' / '.$total,
+                $noVariants > 0 ? 'Servez des variantes adaptées à chaque écran (srcset/sizes ou <picture>) : Desktop, Laptop, Tablette, Mobile.' : '', $noVariantEls, $noVariants),
             $this->f('img-srcset', 'info', 'Images responsive (srcset)', $srcset.' / '.$total,
                 $total > 0 && 0 === $srcset ? 'Utilisez srcset/sizes pour servir des tailles adaptées à chaque écran.' : ''),
             $this->f('img-decoding', 'info', 'Décodage asynchrone (decoding="async")', $asyncDecode.' / '.$total, ''),
@@ -362,10 +405,13 @@ class PageAnalyzer implements PageAnalyzerInterface
         $desc = $descNode ? trim($descNode->nodeValue) : '';
         $descLen = mb_strlen($desc);
         $canonical = $this->count($xpath, '//head/link[@rel="canonical"]');
+        $canonicalHref = $this->attr($xpath, '//head/link[@rel="canonical"]/@href');
         $robots = strtolower($this->attr($xpath, '//head/meta[@name="robots"]/@content'));
         $noindex = str_contains($robots, 'noindex');
         $ogTitle = $this->count($xpath, '//head/meta[@property="og:title"]');
+        $ogTitleValue = $this->attr($xpath, '//head/meta[@property="og:title"]/@content');
         $ogImage = $this->count($xpath, '//head/meta[@property="og:image"]');
+        $ogImageValue = $this->attr($xpath, '//head/meta[@property="og:image"]/@content');
         $twitter = $this->count($xpath, '//head/meta[starts-with(@name,"twitter:")]');
         $hreflang = $this->count($xpath, '//head/link[@rel="alternate"][@hreflang]');
         $structured = $this->count($xpath, '//script[@type="application/ld+json"]');
@@ -374,16 +420,21 @@ class PageAnalyzer implements PageAnalyzerInterface
         return [
             $this->f('title', '' === $title ? 'high' : (($titleLen < 10 || $titleLen > 65) ? 'medium' : 'ok'), 'Balise <title>',
                 '' === $title ? 'absente' : $titleLen.' car.',
-                '' === $title ? 'Ajoutez une balise title.' : (($titleLen < 10 || $titleLen > 65) ? 'Visez 10 à 65 caractères.' : '')),
+                '' === $title ? 'Ajoutez une balise title.' : (($titleLen < 10 || $titleLen > 65) ? 'Visez 10 à 65 caractères.' : ''),
+                '' !== $title ? [$title] : []),
             $this->f('description', '' === $desc ? 'medium' : (($descLen < 50 || $descLen > 160) ? 'low' : 'ok'), 'Meta description',
                 '' === $desc ? 'absente' : $descLen.' car.',
-                '' === $desc ? 'Ajoutez une meta description.' : (($descLen < 50 || $descLen > 160) ? 'Visez 50 à 160 caractères.' : '')),
+                '' === $desc ? 'Ajoutez une meta description.' : (($descLen < 50 || $descLen > 160) ? 'Visez 50 à 160 caractères.' : ''),
+                '' !== $desc ? [$desc] : []),
             $this->f('canonical', $canonical > 0 ? 'ok' : 'low', 'URL canonique', $canonical > 0 ? 'présente' : 'absente',
-                0 === $canonical ? 'Ajoutez une balise canonical pour éviter le contenu dupliqué.' : ''),
+                0 === $canonical ? 'Ajoutez une balise canonical pour éviter le contenu dupliqué.' : '',
+                '' !== $canonicalHref ? [$canonicalHref] : []),
             $this->f('noindex', $noindex ? 'medium' : 'ok', 'Indexation (meta robots)', $noindex ? 'noindex' : 'indexable',
-                $noindex ? 'La page est en noindex : normal en preview, à vérifier avant publication.' : ''),
+                $noindex ? 'La page est en noindex : normal en preview, à vérifier avant publication.' : '',
+                '' !== $robots ? [$robots] : []),
             $this->f('og', ($ogTitle > 0 && $ogImage > 0) ? 'ok' : 'low', 'Open Graph (partage social)', 'title:'.$ogTitle.' image:'.$ogImage,
-                ($ogTitle > 0 && $ogImage > 0) ? '' : 'Complétez og:title et og:image pour le partage sur les réseaux.'),
+                ($ogTitle > 0 && $ogImage > 0) ? '' : 'Complétez og:title et og:image pour le partage sur les réseaux.',
+                array_values(array_filter([$ogTitleValue, $ogImageValue]))),
             $this->f('twitter', 'info', 'Twitter Card', (string) $twitter, ''),
             $this->f('hreflang', 'info', 'Alternates hreflang', (string) $hreflang, ''),
             $this->f('structured-data', $structured > 0 ? 'ok' : 'info', 'Données structurées (JSON-LD)', (string) $structured,
@@ -606,6 +657,85 @@ class PageAnalyzer implements PageAnalyzerInterface
         return null;
     }
 
+    /**
+     * Weight (bytes) of the page's locally-served images, read from the filesystem
+     * (no network). External/CDN images are skipped; identical files counted once.
+     *
+     * @return array{bytes: int, count: int, files: array<int, array{label: string, bytes: int}>}
+     */
+    private function imageWeights(\DOMXPath $xpath, ?string $ownHost): array
+    {
+        $publicRoot = realpath($this->projectDir.'/public');
+        if (false === $publicRoot) {
+            return ['bytes' => 0, 'count' => 0, 'files' => []];
+        }
+
+        $stripWww = static fn (string $host): string => str_starts_with($host, 'www.') ? substr($host, 4) : $host;
+        $own = $ownHost ? $stripWww(strtolower($ownHost)) : null;
+
+        $bytes = 0;
+        $files = [];
+        $seen = [];
+        foreach ($xpath->query('//img') as $img) {
+            /** @var \DOMElement $img */
+            // Lazy-loaded images keep a data: placeholder in src and the real file in
+            // data-src: fall back to it so their weight is actually measured.
+            $src = trim($img->getAttribute('src'));
+            if ('' === $src || 0 === stripos($src, 'data:')) {
+                $src = trim($img->getAttribute('data-src'));
+            }
+            if ('' === $src || 0 === stripos($src, 'data:')) {
+                continue;
+            }
+            $path = (string) preg_replace('/[?#].*$/', '', $src);
+            if (1 === preg_match('#^https?://#i', $path) || str_starts_with($path, '//')) {
+                $normalized = str_starts_with($path, '//') ? 'http:'.$path : $path;
+                $host = parse_url($normalized, PHP_URL_HOST);
+                if (!is_string($host) || null === $own || $stripWww(strtolower($host)) !== $own) {
+                    continue;
+                }
+                $urlPath = (string) parse_url($normalized, PHP_URL_PATH);
+            } elseif (str_starts_with($path, '/')) {
+                $urlPath = $path;
+            } else {
+                continue;
+            }
+
+            $urlPath = rawurldecode($urlPath);
+            $real = realpath($publicRoot.'/'.ltrim(str_replace('\\', '/', $urlPath), '/'));
+            if (false === $real || !str_starts_with($real, $publicRoot) || !is_file($real) || isset($seen[$real])) {
+                continue;
+            }
+            $seen[$real] = true;
+            $size = (int) filesize($real);
+            $bytes += $size;
+            $files[] = ['label' => basename($urlPath), 'bytes' => $size];
+        }
+
+        usort($files, static fn (array $a, array $b): int => $b['bytes'] <=> $a['bytes']);
+
+        return ['bytes' => $bytes, 'count' => count($files), 'files' => $files];
+    }
+
+    /**
+     * Remove the preview-only admin/editor controls (links or forms targeting an
+     * /admin-<token>/ path) so they are excluded from every count and finding.
+     */
+    private function stripAdminControls(\DOMXPath $xpath): void
+    {
+        $remove = [];
+        foreach ($xpath->query('//a[@href] | //form[@action]') as $node) {
+            /** @var \DOMElement $node */
+            $target = $node->getAttribute('href').' '.$node->getAttribute('action');
+            if (1 === preg_match('#/admin-[0-9a-f]{8,}/#i', $target)) {
+                $remove[] = $node;
+            }
+        }
+        foreach ($remove as $node) {
+            $node->parentNode?->removeChild($node);
+        }
+    }
+
     private function count(\DOMXPath $xpath, string $query): int
     {
         $nodes = $xpath->query($query);
@@ -678,18 +808,21 @@ class PageAnalyzer implements PageAnalyzerInterface
     {
         $tag = strtolower($el->nodeName);
         foreach (['src', 'href', 'name', 'id', 'class'] as $name) {
-            if ($el->hasAttribute($name) && '' !== trim($el->getAttribute($name))) {
-                return '<'.$tag.' '.$name.'="'.$this->clip(trim($el->getAttribute($name)), 60).'">';
+            $value = trim($el->getAttribute($name));
+            if ('' === $value) {
+                continue;
             }
+            if (('src' === $name || 'href' === $name) && 0 === stripos($value, 'data:')) {
+                // Inline data URI: summarize instead of dumping the (huge) payload.
+                $mime = strtok(substr($value, 5), ';,');
+                $value = 'data:'.('' !== (string) $mime ? $mime : 'inline').' (inline)';
+            }
+
+            return '<'.$tag.' '.$name.'="'.$value.'">';
         }
         $text = trim(preg_replace('/\s+/', ' ', (string) $el->textContent));
 
-        return '' !== $text ? '<'.$tag.'> '.$this->clip($text, 50) : '<'.$tag.'>';
-    }
-
-    private function clip(string $value, int $max): string
-    {
-        return mb_strlen($value) > $max ? mb_substr($value, 0, $max - 1).'…' : $value;
+        return '' !== $text ? '<'.$tag.'> '.$text : '<'.$tag.'>';
     }
 
     /**

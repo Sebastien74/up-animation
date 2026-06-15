@@ -67,7 +67,7 @@ export default function (Routing) {
             let btn = e.target.closest('.analyze-page');
             if (btn) {
                 e.preventDefault();
-                import('./../../plugins/page-analysis').then(({default: pageAnalysis}) => {
+                import('./../../plugins/analysis-page').then(({default: pageAnalysis}) => {
                     new pageAnalysis(e, btn);
                 }).catch(error => console.error(error.message));
             }

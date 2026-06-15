@@ -5,7 +5,10 @@
  * @author Sébastien FOURNIER <fournier.sebastien@outlook.com>
  */
 
-const container = document.getElementById('page-analysis');
+import '../../vendor/plugins/prism';
+import '../../../scss/vendor/components/_prism.scss';
+
+const container = document.getElementById('analysis-page');
 
 if (container) {
 
@@ -67,27 +70,39 @@ if (container) {
         if (!data.ok) {
             if (scoreEl) {
                 scoreEl.className = 'score-pill pa-score is-none';
-                scoreEl.textContent = '—';
+                scoreEl.textContent = '-';
             }
             return;
         }
+        const setSort = function (el, value) {
+            const cell = el ? el.closest('td') : null;
+            if (cell) {
+                cell.dataset.sort = value;
+            }
+        };
+
         if (httpEl) {
             httpEl.className = 'score-pill pa-http ' + httpState(data.httpStatus);
-            httpEl.textContent = data.httpStatus ? data.httpStatus : '—';
+            httpEl.textContent = data.httpStatus ? data.httpStatus : '-';
+            setSort(httpEl, data.httpStatus || -1);
         }
         if (scoreEl) {
             scoreEl.className = 'score-pill pa-score ' + scoreState(data.score);
-            scoreEl.textContent = data.score === null ? '—' : data.score;
+            scoreEl.textContent = data.score === null ? '-' : data.score;
+            setSort(scoreEl, data.score === null ? -1 : data.score);
         }
         if (kbEl) {
             kbEl.textContent = (data.kb || 0) + ' Ko';
+            kbEl.dataset.sort = data.kb || 0;
         }
         if (issuesEl) {
             issuesEl.innerHTML = issuesHtml(data.high || 0, data.medium || 0, data.low || 0);
+            issuesEl.dataset.sort = (data.high || 0) + (data.medium || 0) + (data.low || 0);
         }
         if (dateEl) {
             const dateSpan = dateEl.querySelector('.text-nowrap') || dateEl;
             dateSpan.textContent = data.date || '';
+            dateEl.dataset.sort = Math.floor(Date.now() / 1000);
         }
     };
 
@@ -133,7 +148,8 @@ if (container) {
             });
     };
 
-    // Single row analysis.
+    // Single row analysis (shows the main loader for the duration).
+    const mainPreloader = document.getElementById('main-preloader');
     container.addEventListener('click', function (e) {
         const button = e.target.closest('.pa-run');
         if (!button) {
@@ -142,7 +158,14 @@ if (container) {
         e.preventDefault();
         const row = button.closest('.pa-row');
         if (row) {
-            runRow(row);
+            if (mainPreloader) {
+                mainPreloader.classList.remove('d-none');
+            }
+            runRow(row).finally(function () {
+                if (mainPreloader) {
+                    mainPreloader.classList.add('d-none');
+                }
+            });
         }
     });
 
@@ -211,6 +234,35 @@ if (container) {
             });
         });
     }
+
+    // Column sorting: click a header to reorder rows by that column.
+    const sortTable = container.querySelector('table.responsive-cards');
+    const sortBody = sortTable ? sortTable.querySelector('tbody') : null;
+
+    if (sortBody) {
+        const headers = sortTable.querySelectorAll('thead th.pa-sortable');
+        headers.forEach(function (th) {
+            th.addEventListener('click', function () {
+                const colIndex = Array.prototype.indexOf.call(th.parentNode.children, th);
+                const numeric = 'num' === th.getAttribute('data-sort-type');
+                const asc = !th.classList.contains('sort-asc');
+
+                headers.forEach(h => h.classList.remove('sort-asc', 'sort-desc'));
+                th.classList.add(asc ? 'sort-asc' : 'sort-desc');
+
+                Array.from(sortBody.querySelectorAll('.pa-row'))
+                    .sort(function (a, b) {
+                        const av = a.children[colIndex] ? a.children[colIndex].getAttribute('data-sort') || '' : '';
+                        const bv = b.children[colIndex] ? b.children[colIndex].getAttribute('data-sort') || '' : '';
+                        const cmp = numeric
+                            ? (parseFloat(av) || 0) - (parseFloat(bv) || 0)
+                            : av.localeCompare(bv, 'fr');
+                        return asc ? cmp : -cmp;
+                    })
+                    .forEach(row => sortBody.appendChild(row));
+            });
+        });
+    }
 }
 
 // Delete confirmation modal (shared by "delete all" and per-page triggers).
@@ -221,6 +273,8 @@ const deleteModal = document.getElementById('pa-delete-modal');
 if (deleteModal) {
     const deleteForm = deleteModal.querySelector('.pa-delete-form');
     const deleteText = deleteModal.querySelector('.pa-delete-text');
+
+    const redirectInput = deleteForm ? deleteForm.querySelector('.pa-delete-redirect') : null;
 
     deleteModal.addEventListener('show.bs.modal', function (event) {
         const trigger = event.relatedTarget;
@@ -234,6 +288,9 @@ if (deleteModal) {
         if (deleteForm && action) {
             deleteForm.setAttribute('action', action);
         }
+        if (redirectInput) {
+            redirectInput.value = trigger.getAttribute('data-pa-return') || '';
+        }
         if (deleteText) {
             deleteText.textContent = scope === 'page' && label
                 ? 'Supprimer les analyses de « ' + label + ' » ? Cette action est irréversible.'
@@ -243,21 +300,19 @@ if (deleteModal) {
 }
 
 // Detail page: re-run the analysis then reload to show the fresh report.
-const detailContainer = document.getElementById('page-analysis-detail');
+const detailContainer = document.getElementById('analysis-page-detail');
 
 if (detailContainer) {
     const detailButton = detailContainer.querySelector('.pa-detail-run');
     const detailUrl = detailContainer.getAttribute('data-run-url');
 
     if (detailButton && detailUrl) {
+        const mainPreloader = document.getElementById('main-preloader');
         detailButton.addEventListener('click', function () {
-            const icon = detailButton.querySelector('i');
             detailButton.disabled = true;
             detailButton.classList.add('disabled');
-            if (icon) {
-                icon.dataset.iconClass = icon.className;
-                icon.className = 'spinner-border spinner-border-sm';
-                icon.setAttribute('role', 'status');
+            if (mainPreloader) {
+                mainPreloader.classList.remove('d-none');
             }
             fetch(detailUrl, {method: 'POST', headers: {'X-Requested-With': 'XMLHttpRequest'}})
                 .finally(() => window.location.reload());

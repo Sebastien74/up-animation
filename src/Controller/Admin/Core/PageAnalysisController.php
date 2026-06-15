@@ -11,6 +11,7 @@ use App\Entity\Seo\Url;
 use App\Repository\Seo\PageAnalysisRepository;
 use App\Service\Admin\PageAnalysisRecorder;
 use App\Service\Admin\PageAnalyzerInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,7 +30,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  * @author Sébastien FOURNIER <fournier.sebastien@outlook.com>
  */
 #[IsGranted('ROLE_ADMIN')]
-#[Route('/admin-%security_token%/{website}/page-analysis', schemes: '%protocol%')]
+#[Route('/admin-%security_token%/{website}/analysis-page', schemes: '%protocol%')]
 class PageAnalysisController extends AdminController
 {
     use PageAnalysisTrait;
@@ -37,15 +38,15 @@ class PageAnalysisController extends AdminController
     /**
      * Analyzable interfaces: name => entity FQCN.
      */
-    private const INTERFACES = [
+    private const array INTERFACES = [
         'page' => 'App\Entity\Layout\Page',
         'newscast' => 'App\Entity\Module\Newscast\Newscast',
         'catalogproduct' => 'App\Entity\Module\Catalog\Product',
     ];
 
-    private const MAX_PER_INTERFACE = 500;
+    private const int MAX_PER_INTERFACE = 500;
 
-    private const CSRF_DELETE = 'pa-delete';
+    private const string CSRF_DELETE = 'pa-delete';
 
     /**
      * List all front pages (Page, Newscast, Product) with their last indicative score.
@@ -63,13 +64,17 @@ class PageAnalysisController extends AdminController
                 continue;
             }
 
+            // Only the Page entity carries the home flag (asIndex).
+            $indexSelect = 'page' === $name ? ', e.asIndex AS isIndex' : '';
+
             try {
                 // One scalar query per interface (JOIN on urls), no entity/collection
                 // hydration and no N+1.
                 $records = $em->createQuery(
                     sprintf(
-                        'SELECT e.adminName AS title, u.code AS code, u.locale AS locale, u.id AS urlId '
+                        'SELECT e.adminName AS title, u.code AS code, u.locale AS locale, u.id AS urlId%s '
                         .'FROM %s e JOIN e.urls u WHERE e.website = :website AND u.online = true ORDER BY e.id DESC',
+                        $indexSelect,
                         $class,
                     )
                 )
@@ -88,6 +93,7 @@ class PageAnalysisController extends AdminController
                 $title = ltrim((string) $record['title'], '_');
                 $rows[] = [
                     'interface' => $name,
+                    'home' => 'page' === $name && !empty($record['isIndex']),
                     'title' => '' !== $title ? $title : ($code ?: '/'),
                     'code' => $code,
                     'locale' => $locale,
@@ -117,9 +123,13 @@ class PageAnalysisController extends AdminController
             }
         }
 
+        // Home page (the Page flagged asIndex) goes first; the stable sort keeps every
+        // other row in its existing order.
+        usort($rows, static fn (array $a, array $b): int => ($b['home'] <=> $a['home']));
+
         $this->breadcrumb($request, ['Analyse des pages' => 'admin_page_analysis_dashboard']);
 
-        return $this->render('admin/page/core/page-analysis-dashboard.html.twig', array_merge($this->arguments, [
+        return $this->render('admin/page/core/analysis-page-dashboard.html.twig', array_merge($this->arguments, [
             'rows' => $rows,
         ]));
     }
@@ -128,7 +138,7 @@ class PageAnalysisController extends AdminController
      * Detail view for a single page: latest full report (grouped findings) and history.
      */
     #[Route('/detail/{url}', name: 'admin_page_analysis_detail', methods: 'GET')]
-    public function detail(Request $request, Website $website, Url $url, PageAnalysisRepository $analysisRepository, PageAnalyzerInterface $analyzer, PageAnalysisRecorder $recorder): Response
+    public function detail(Request $request, Website $website, Url $url, PageAnalysisRepository $analysisRepository, PageAnalyzerInterface $analyzer, PageAnalysisRecorder $recorder, EventDispatcherInterface $dispatcher): Response
     {
         $interface = (string) $request->query->get('interface', 'page');
 
@@ -136,7 +146,7 @@ class PageAnalysisController extends AdminController
         // clean URL (PRG) so a reload does not re-run and an HTTP error gets recorded/shown.
         if ($request->query->getBoolean('run')) {
             try {
-                $this->analyzePreview($analyzer, $recorder, $interface, $website, $url);
+                $this->analyzePreview($analyzer, $recorder, $dispatcher, $interface, $website, $url);
             } catch (\Throwable) {
             }
 
@@ -161,7 +171,7 @@ class PageAnalysisController extends AdminController
             ($url->getCode() ?: '/') => $detailUrl,
         ]);
 
-        return $this->render('admin/page/core/page-analysis-detail.html.twig', array_merge($this->arguments, [
+        return $this->render('admin/page/core/analysis-page-detail.html.twig', array_merge($this->arguments, [
             'url' => $url,
             'interface' => $interface,
             'name' => $name,
@@ -209,6 +219,14 @@ class PageAnalysisController extends AdminController
         $deleted = $analysisRepository->deleteForPage($website, $url->getCode(), $url->getLocale());
         $this->addFlash('success', $translator->trans('%count% analyse(s) supprimée(s).', ['%count%' => $deleted], 'admin'));
 
+        $redirect = (string) $request->request->get('_redirect', '');
+        if ('' !== $redirect
+            && str_starts_with($redirect, '/')
+            && !str_starts_with($redirect, '//')
+            && !str_contains($redirect, '\\')) {
+            return $this->redirect($redirect);
+        }
+
         return $this->redirectToRoute('admin_page_analysis_dashboard', ['website' => $website->getId()]);
     }
 
@@ -242,12 +260,12 @@ class PageAnalysisController extends AdminController
      * Run the analysis for a single page (AJAX) and return its metrics as JSON.
      */
     #[Route('/run/{url}', name: 'admin_page_analysis_run', methods: 'POST')]
-    public function run(Request $request, Website $website, Url $url, PageAnalyzerInterface $analyzer, PageAnalysisRecorder $recorder): JsonResponse
+    public function run(Request $request, Website $website, Url $url, PageAnalyzerInterface $analyzer, PageAnalysisRecorder $recorder, EventDispatcherInterface $dispatcher): JsonResponse
     {
         $interface = (string) $request->query->get('interface', 'page');
 
         try {
-            $report = $this->analyzePreview($analyzer, $recorder, $interface, $website, $url);
+            $report = $this->analyzePreview($analyzer, $recorder, $dispatcher, $interface, $website, $url);
 
             return new JsonResponse([
                 'ok' => true,

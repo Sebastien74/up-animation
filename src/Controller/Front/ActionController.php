@@ -161,7 +161,9 @@ class ActionController extends FrontController
         }
 
         $pagination = $this->getPagination($paginator, $entities, $limit);
-        $inAdmin = preg_match('/\/admin-'.$_ENV['SECURITY_TOKEN'].'/', $this->coreLocator->request()->getUri()) && !str_contains($this->coreLocator->request()->getUri(), '/preview');
+        $mainRequest = $this->coreLocator->request();
+        $isPreview = str_contains($mainRequest->getUri(), '/preview') || (bool) $mainRequest->attributes->get('_pageAnalysisPreview', false);
+        $inAdmin = preg_match('/\/admin-'.$_ENV['SECURITY_TOKEN'].'/', $mainRequest->getUri()) && !$isPreview;
         if (!$inAdmin) {
             $items = [];
             foreach ($pagination->getItems() as $item) {

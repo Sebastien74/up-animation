@@ -8,6 +8,7 @@ use App\Entity\Core\Website;
 use App\Entity\Seo\PageAnalysis;
 use App\Repository\Seo\PageAnalysisRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * PageAnalysisRecorder.
@@ -22,6 +23,7 @@ class PageAnalysisRecorder
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
         private readonly PageAnalysisRepository $repository,
+        private readonly ?LoggerInterface $logger = null,
     ) {
     }
 
@@ -34,6 +36,16 @@ class PageAnalysisRecorder
     public function record(Website $website, ?string $code, ?string $locale, array $report, string $source = 'manual', int $keep = 20): ?PageAnalysis
     {
         try {
+            // Discard any pending changes the page render left in the Unit of Work: the
+            // render is read-only for us and must not be committed, and a stray invalid
+            // entity would otherwise make the snapshot flush fail silently.
+            $websiteId = $website->getId();
+            $this->entityManager->clear();
+            $website = $websiteId ? $this->entityManager->find(Website::class, $websiteId) : null;
+            if (!$website instanceof Website) {
+                return null;
+            }
+
             $meta = $report['meta'] ?? [];
             $summary = $report['summary'] ?? [];
             $snapshot = (new PageAnalysis())
@@ -60,7 +72,13 @@ class PageAnalysisRecorder
             $this->repository->pruneOldSnapshots($website, $code, $locale, $keep);
 
             return $snapshot;
-        } catch (\Throwable) {
+        } catch (\Throwable $e) {
+            $this->logger?->error('PageAnalysis snapshot not recorded: '.$e->getMessage(), [
+                'urlCode' => $code,
+                'locale' => $locale,
+                'exception' => $e,
+            ]);
+
             return null;
         }
     }

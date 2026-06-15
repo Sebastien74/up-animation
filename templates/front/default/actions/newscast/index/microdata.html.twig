@@ -3,10 +3,12 @@
 {%- set displayMicrodata = true -%}
 {%- set items = lastEntity is defined and lastEntity ? [lastEntity] : [] -%}
 {%- set items = items|merge(entities) -%}
+{# Keep only proper models exposing the SEO accessors (raw entities, e.g. in preview, are skipped). #}
+{%- set items = items|filter(item => item.urlEntity is defined and item.urlEntity) -%}
 {%- set filters = ['microdata_1x1', 'microdata_4x3', 'microdata_16x9'] -%}
 {%- set images = [] -%}
 {%- for entity in items -%}
-    {%- if entity.mainMedia -%}
+    {%- if entity.mainMedia is defined and entity.mainMedia -%}
         {%- set displayMedia = entity.mainMedia.extension is defined and entity.mainMedia.extension not in ['.svg', '.gif', '.mp3'] -%}
         {%- if displayMedia -%}
             {%- for filter in filters -%}
