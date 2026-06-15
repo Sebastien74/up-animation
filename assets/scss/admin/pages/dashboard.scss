@@ -1475,7 +1475,8 @@
 #performance-inspector,
 #mail-log-show,
 #page-analysis,
-#page-analysis-detail {
+#page-analysis-detail,
+.modal-page-analysis {
 
     .perf-back-link {
         display: inline-flex;
@@ -2127,7 +2128,8 @@
 -----------------------------------*/
 
 #page-analysis,
-#page-analysis-detail {
+#page-analysis-detail,
+.modal-page-analysis {
 
     .pa-head {
         display: flex;
@@ -2354,9 +2356,10 @@
     }
 }
 
-/*--- Page analysis detail ---*/
+/*--- Page analysis detail + analysis modal ---*/
 
-#page-analysis-detail {
+#page-analysis-detail,
+.modal-page-analysis {
 
     .pa-detail-head {
         display: flex;
@@ -2385,6 +2388,24 @@
     .pa-score-tile {
         align-items: flex-start;
         gap: $space-2;
+    }
+
+    .tile-value-flag {
+        display: inline-flex;
+        align-items: center;
+
+        .pa-flag {
+            width: 26px;
+        }
+    }
+
+    .pa-history-now {
+        margin-left: $space-2;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: .06em;
+        text-transform: uppercase;
+        color: $primary;
     }
 
     .pa-group {

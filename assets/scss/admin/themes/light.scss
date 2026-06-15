@@ -2140,7 +2140,8 @@ body {
 #performance-inspector,
 #mail-log-show,
 #page-analysis,
-#page-analysis-detail {
+#page-analysis-detail,
+.modal-page-analysis {
 
     .perf-back-link {
         color: $theme-text-muted !important;
@@ -2191,10 +2192,11 @@ body {
     }
 }
 
-/*--- Page analysis dashboard + detail ---*/
+/*--- Page analysis dashboard + detail + modal ---*/
 
 #page-analysis,
-#page-analysis-detail {
+#page-analysis-detail,
+.modal-page-analysis {
 
     .pa-progress-wrap {
         background: $theme-overlay-soft !important;
@@ -2253,9 +2255,10 @@ body {
     }
 }
 
-/*--- Page analysis detail ---*/
+/*--- Page analysis detail + analysis modal ---*/
 
-#page-analysis-detail {
+#page-analysis-detail,
+.modal-page-analysis {
 
     .pa-sev-pill.sev-medium {
         color: darken(rgba($warning, 1), 28%) !important;
