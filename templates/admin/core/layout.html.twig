@@ -21,32 +21,33 @@
     {%- set haveSeoAlert = (haveH1.error is defined and haveH1.error)
         or ((seoAlert.noTitle is defined or seoAlert.noDescription is defined) and (seoAlert.noTitle is not empty or seoAlert.noDescription is not empty))
         or (mediasAlert is defined and mediasAlert is not empty) -%}
-    {%- include 'admin/core/form/edit-form-base.html.twig' -%}
-    {%- include 'admin/include/alerts.html.twig' -%}
     {%- set layout = entity.layout is defined and entity.layout ? entity.layout : null -%}
     {%- set infill = entity.infill is defined and entity.infill -%}
-    {%- if not infill and (layout and interface.name == 'page' or layout and granted('ROLE_LAYOUT_'~interface.name|upper)) -%}
-        <div id="layout-grid" class="mb-4">
-            {%- set analyzeUrl = null -%}
-            {%- if entity.urls is defined and entity.urls|length -%}
-                {%- for u in entity.urls -%}
-                    {%- if analyzeUrl is null and u.locale == app.request.locale -%}{%- set analyzeUrl = u -%}{%- endif -%}
-                {%- endfor -%}
-                {%- if analyzeUrl is null -%}{%- set analyzeUrl = entity.urls|first -%}{%- endif -%}
-            {%- endif -%}
-            <div class="d-flex flex-wrap justify-content-end align-items-center gap-2 mb-2">
+    {%- set showLayout = not infill and (layout and interface.name == 'page' or layout and granted('ROLE_LAYOUT_'~interface.name|upper)) -%}
+
+    {%- if showLayout -%}
+        {%- set analyzeUrl = null -%}
+        {%- if entity.urls is defined and entity.urls|length -%}
+            {%- for u in entity.urls -%}
+                {%- if analyzeUrl is null and u.locale == app.request.locale -%}{%- set analyzeUrl = u -%}{%- endif -%}
+            {%- endfor -%}
+            {%- if analyzeUrl is null -%}{%- set analyzeUrl = entity.urls|first -%}{%- endif -%}
+        {%- endif -%}
+        {%- set layoutHeaderActions -%}
+            <div class="layout-header-actions d-flex flex-wrap align-items-center gap-2">
                 {%- include 'admin/core/layout/cache-invalidate-button.html.twig' -%}
                 {%- if analyzeUrl -%}
-                    <span class="analyze-page btn-app small d-inline-flex align-items-center gap-2 cursor"
-                          data-bs-toggle="tooltip"
-                          href="{{ path('admin_layout_analyze', {
-                              website: website.id,
-                              url: analyzeUrl.id,
-                              interface: interface.name,
-                          }) }}"
-                          title="{{ "Analyse la performance et le rendu de la page front (preview)"|trans|striptags }}">
+                    <a class="btn-app small d-inline-flex align-items-center gap-2"
+                       href="{{ path('admin_page_analysis_detail', {
+                           website: website.id,
+                           url: analyzeUrl.id,
+                           interface: interface.name,
+                           run: 1,
+                       }) }}"
+                       data-bs-toggle="tooltip"
+                       title="{{ "Analyse la page et ouvre le rapport (performance, rendu, SEO, accessibilité)"|trans|striptags }}">
                         <i class="icm-tachometer"></i><span>{{ "Analyser la page"|trans|raw }}</span>
-                    </span>
+                    </a>
                 {%- endif -%}
                 <span class="standardize-margins-page btn-app small d-inline-flex align-items-center gap-2 cursor"
                       data-bs-toggle="tooltip"
@@ -57,7 +58,26 @@
                       title="{{ "Recopie les marges et paddings « ordinateur » de toute la page (zones, colonnes et blocs) sur les écrans portable, tablette et mobile"|trans|striptags }}">
                     <i class="icm-phone-laptop"></i><span>{{ "Standardiser les marges"|trans|raw }}</span>
                 </span>
+                {%- if layout.hasMarginsBackup -%}
+                    <span class="restore-margins-page btn-app small d-inline-flex align-items-center gap-2 cursor"
+                          data-bs-toggle="tooltip"
+                          href="{{ path('admin_layout_restore_margins', {
+                              website: website.id,
+                              layout: layout.id,
+                          }) }}"
+                          title="{{ "Revenir aux marges précédant la dernière standardisation de la page"|trans|striptags }}">
+                        <i class="icm-undo"></i><span>{{ "Revenir aux marges précédentes"|trans|raw }}</span>
+                    </span>
+                {%- endif -%}
             </div>
+        {%- endset -%}
+    {%- endif -%}
+
+    {%- include 'admin/core/form/edit-form-base.html.twig' -%}
+    {%- include 'admin/include/alerts.html.twig' -%}
+
+    {%- if showLayout -%}
+        <div id="layout-grid" class="mb-4">
             {%- include 'admin/core/layout/zones.html.twig' -%}
         </div>
     {%- endif -%}

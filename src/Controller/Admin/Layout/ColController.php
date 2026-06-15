@@ -132,6 +132,18 @@ class ColController extends AdminController
     }
 
     /**
+     * Restore Col margins from the snapshot taken before the last standardization.
+     */
+    #[IsGranted('ROLE_EDIT')]
+    #[Route('/restore-margins/{col}', name: 'admin_col_restore_margins', methods: 'DELETE')]
+    public function restoreMargins(LayoutServiceInterface $service, Col $col): JsonResponse
+    {
+        $this->denyUnlessEntityWebsite($col);
+
+        return $service->restoreMarginsEL($col);
+    }
+
+    /**
      * Standardize Block[] width in Col.
      */
     #[IsGranted('ROLE_EDIT')]

@@ -19,5 +19,9 @@ interface LayoutServiceInterface
 
     public function standardizeMarginsEL(mixed $entity): JsonResponse;
 
+    public function restoreMarginsEL(mixed $entity): JsonResponse;
+
     public function standardizeLayoutMargins(Layout $layout): JsonResponse;
+
+    public function restoreLayoutMargins(Layout $layout): JsonResponse;
 }

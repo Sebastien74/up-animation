@@ -305,6 +305,18 @@ class BlockController extends AdminController
     }
 
     /**
+     * Restore Block margins from the snapshot taken before the last standardization.
+     */
+    #[IsGranted('ROLE_EDIT')]
+    #[Route('/restore-margins/{block}', name: 'admin_block_restore_margins', methods: 'DELETE')]
+    public function restoreMargins(LayoutServiceInterface $service, Layout\Block $block): JsonResponse
+    {
+        $this->denyUnlessEntityWebsite($block);
+
+        return $service->restoreMarginsEL($block);
+    }
+
+    /**
      * Block modal.
      */
     #[Route('/add/modal/{col}/{configuration}/{entityId}', name: 'admin_block_modal', options: ['expose' => true], methods: 'GET')]

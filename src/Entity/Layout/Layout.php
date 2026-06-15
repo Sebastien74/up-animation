@@ -161,4 +161,25 @@ class Layout extends BaseEntity
 
         return $this;
     }
+
+    public function hasMarginsBackup(): bool
+    {
+        foreach ($this->zones as $zone) {
+            if (!empty($zone->getMarginsBackup())) {
+                return true;
+            }
+            foreach ($zone->getCols() as $col) {
+                if (!empty($col->getMarginsBackup())) {
+                    return true;
+                }
+                foreach ($col->getBlocks() as $block) {
+                    if (!empty($block->getMarginsBackup())) {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
 }

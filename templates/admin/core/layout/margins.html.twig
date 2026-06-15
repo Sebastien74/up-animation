@@ -13,6 +13,17 @@
               title="{{"Standardiser les marges (recopie les marges et paddings de l'ordinateur sur les autres écrans)"|trans|striptags }}">
             <i class="icm-phone-laptop"></i>
         </span>
+        {%- if entity.marginsBackup is not empty -%}
+            <span class="restore-margins d-inline-flex justify-content-center align-items-center cursor"
+                  href="{{ path('admin_'~interface.name~'_restore_margins', {
+                      website: website.id,
+                      (interface.name): entity.id,
+                  }) }}"
+                  aria-label="{{"Annuler la standardisation des marges"|trans|striptags }}"
+                  title="{{"Revenir aux marges précédant la dernière standardisation"|trans|striptags }}">
+                <i class="icm-undo"></i>
+            </span>
+        {%- endif -%}
         {%- if 'zone' == interface.name -%}
             <span class="reset-margins d-inline-flex justify-content-center align-items-center cursor"
                   data-post-form="0"

@@ -45,6 +45,21 @@ export default function (Routing) {
     };
 
     /**
+     * On restore all the page margins (layout-level button, outside modals)
+     */
+    let restoreLayout = function () {
+        document.body.addEventListener('click', function (e) {
+            let btn = e.target.closest('.restore-margins-page');
+            if (btn) {
+                e.preventDefault();
+                import('./../../plugins/standardize-margins').then(({default: standardizeMargins}) => {
+                    new standardizeMargins(e, btn);
+                }).catch(error => console.error(error.message));
+            }
+        });
+    };
+
+    /**
      * On analyze page (layout-level button, outside modals)
      */
     let analyzePage = function () {
@@ -280,6 +295,13 @@ export default function (Routing) {
                                         new standardizeMargins(e, standardizeBtn);
                                     }).catch(error => console.error(error.message));
                                 }
+                                let restoreBtn = e.target.closest('.restore-margins');
+                                if (restoreBtn) {
+                                    e.preventDefault();
+                                    import('./../../plugins/standardize-margins').then(({default: standardizeMargins}) => {
+                                        new standardizeMargins(e, restoreBtn);
+                                    }).catch(error => console.error(error.message));
+                                }
                             });
 
                             modalEl.addEventListener('hide.bs.modal', function () {
@@ -304,6 +326,7 @@ export default function (Routing) {
     if (!window.editElementInitialized) {
         showSubmit();
         standardizeLayout();
+        restoreLayout();
         analyzePage();
         submit();
         backgroundModal();

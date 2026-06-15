@@ -91,6 +91,19 @@ class LayoutController extends AdminController
     }
 
     /**
+     * Restore all the layout margins from the snapshots taken before the last
+     * standardization, for every zone, col and block that still has a backup.
+     */
+    #[IsGranted('ROLE_EDIT')]
+    #[Route('/restore-margins/{layout}', name: 'admin_layout_restore_margins', methods: 'DELETE')]
+    public function restoreMargins(LayoutServiceInterface $service, Layout $layout): JsonResponse
+    {
+        $this->denyUnlessEntityWebsite($layout);
+
+        return $service->restoreLayoutMargins($layout);
+    }
+
+    /**
      * Analyze the front rendering of the page: renders it internally (preview mode),
      * parses the HTML and returns a performance/rendering report for an admin modal.
      *

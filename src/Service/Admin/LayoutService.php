@@ -81,8 +81,66 @@ class LayoutService implements LayoutServiceInterface
         return new JsonResponse(['success' => true]);
     }
 
+    public function restoreLayoutMargins(Layout $layout): JsonResponse
+    {
+        $restored = false;
+        foreach ($layout->getZones() as $zone) {
+            $restored = $this->applyMarginsBackup($zone) || $restored;
+            foreach ($zone->getCols() as $col) {
+                $restored = $this->applyMarginsBackup($col) || $restored;
+                foreach ($col->getBlocks() as $block) {
+                    $restored = $this->applyMarginsBackup($block) || $restored;
+                }
+            }
+        }
+
+        if ($restored) {
+            $this->coreLocator->em()->flush();
+        }
+
+        return new JsonResponse(['success' => true]);
+    }
+
+    public function restoreMarginsEL(mixed $entity): JsonResponse
+    {
+        if (!method_exists($entity, 'getMarginsBackup')) {
+            return new JsonResponse(['success' => false], 400);
+        }
+        if (empty($entity->getMarginsBackup())) {
+            return new JsonResponse(['success' => false], 404);
+        }
+
+        $this->applyMarginsBackup($entity);
+        $this->coreLocator->em()->flush();
+
+        return new JsonResponse(['success' => true]);
+    }
+
+    private function applyMarginsBackup(mixed $entity): bool
+    {
+        if (!method_exists($entity, 'getMarginsBackup') || empty($backup = $entity->getMarginsBackup())) {
+            return false;
+        }
+
+        foreach ($backup as $field => $value) {
+            $setter = 'set'.ucfirst((string) $field);
+            if (method_exists($entity, $setter)) {
+                $entity->$setter($value);
+            }
+        }
+        $entity->setMarginsBackup(null);
+
+        $this->coreLocator->em()->persist($entity);
+
+        return true;
+    }
+
     public function standardizeMarginsEL(mixed $entity): JsonResponse
     {
+        if (method_exists($entity, 'setMarginsBackup') && empty($entity->getMarginsBackup())) {
+            $entity->setMarginsBackup($this->captureMargins($entity));
+        }
+
         foreach (self::SIDES as $side) {
             foreach (['margin', 'padding'] as $type) {
                 $getter = 'get'.ucfirst($type).ucfirst($side);
@@ -106,5 +164,23 @@ class LayoutService implements LayoutServiceInterface
         $this->coreLocator->em()->flush();
 
         return new JsonResponse(['success' => true]);
+    }
+
+    private function captureMargins(mixed $entity): array
+    {
+        $backup = [];
+        foreach (self::SCREENS as $screen) {
+            foreach (self::SIDES as $side) {
+                foreach (['margin', 'padding'] as $type) {
+                    $field = $type.ucfirst($side).ucfirst($screen);
+                    $getter = 'get'.ucfirst($field);
+                    if (method_exists($entity, $getter)) {
+                        $backup[$field] = $entity->$getter();
+                    }
+                }
+            }
+        }
+
+        return $backup;
     }
 }

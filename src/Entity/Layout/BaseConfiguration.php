@@ -204,6 +204,9 @@ class BaseConfiguration extends BaseEntity
     #[ORM\Column(type: Types::JSON, nullable: true)]
     private array $hideLocales = [];
 
+    #[ORM\Column(type: Types::JSON, nullable: true)]
+    protected ?array $marginsBackup = null;
+
     #[ORM\ManyToOne(targetEntity: Transition::class, cascade: ['persist'])]
     #[ORM\JoinColumn(referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
     protected ?Transition $transition = null;
@@ -948,6 +951,18 @@ class BaseConfiguration extends BaseEntity
     public function setHideLocales(?array $hideLocales): static
     {
         $this->hideLocales = $hideLocales;
+
+        return $this;
+    }
+
+    public function getMarginsBackup(): ?array
+    {
+        return $this->marginsBackup;
+    }
+
+    public function setMarginsBackup(?array $marginsBackup): static
+    {
+        $this->marginsBackup = $marginsBackup;
 
         return $this;
     }

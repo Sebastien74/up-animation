@@ -212,6 +212,18 @@ class ZoneController extends AdminController
     }
 
     /**
+     * Restore Zone margins from the snapshot taken before the last standardization.
+     */
+    #[IsGranted('ROLE_EDIT')]
+    #[Route('/restore-margins/{zone}', name: 'admin_zone_restore_margins', methods: 'DELETE')]
+    public function restoreMargins(LayoutServiceInterface $service, Zone $zone): JsonResponse
+    {
+        $this->denyUnlessEntityWebsite($zone);
+
+        return $service->restoreMarginsEL($zone);
+    }
+
+    /**
      * To set breadcrumb.
      */
     protected function breadcrumb(Request $request, array $items = []): void
