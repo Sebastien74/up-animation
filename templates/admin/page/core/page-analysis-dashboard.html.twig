@@ -103,6 +103,7 @@
                             <th class="align-middle px-4">{{ "Type"|trans }}</th>
                             <th class="align-middle px-4">{{ "Page"|trans }}</th>
                             <th class="align-middle text-center px-4">{{ "Langue"|trans }}</th>
+                            <th class="align-middle text-center px-4">{{ "Statut"|trans }}</th>
                             <th class="align-middle text-center px-4">{{ "Indice"|trans }}</th>
                             <th class="align-middle text-center px-4">{{ "Poids"|trans }}</th>
                             <th class="align-middle text-center px-4">{{ "Problèmes"|trans }}</th>
@@ -132,12 +133,12 @@
                                          class="pa-flag" width="19" height="14" loading="lazy"
                                          alt="{{ localeCode|languageName }}" title="{{ localeCode|languageName }}">
                                 </td>
+                                <td class="align-middle text-center px-4" data-label="{{ "Statut"|trans|striptags }}">
+                                    {%- set httpState = row.httpStatus is null ? 'is-none' : (row.httpStatus >= 400 ? 'is-bad' : (row.httpStatus >= 300 ? 'is-warn' : 'is-good')) -%}
+                                    <span class="score-pill pa-http {{ httpState }}">{{ row.httpStatus is null ? '—' : row.httpStatus }}</span>
+                                </td>
                                 <td class="align-middle text-center px-4" data-label="{{ "Indice"|trans|striptags }}">
-                                    {%- if row.httpStatus is not null and row.httpStatus >= 400 -%}
-                                        <span class="score-pill pa-score is-bad" title="{{ "Erreur HTTP"|trans|striptags }} {{ row.httpStatus }}">{{ "Err"|trans }} {{ row.httpStatus }}</span>
-                                    {%- else -%}
-                                        <span class="score-pill pa-score {{ scoreState }}">{{ s is null ? '—' : s }}</span>
-                                    {%- endif -%}
+                                    <span class="score-pill pa-score {{ scoreState }}">{{ s is null ? '—' : s }}</span>
                                 </td>
                                 <td class="align-middle text-center px-4 pa-kb" data-label="{{ "Poids"|trans|striptags }}">{{ row.kb is null ? '—' : row.kb ~ ' Ko' }}</td>
                                 <td class="align-middle text-center px-4 pa-issues" data-label="{{ "Problèmes"|trans|striptags }}">

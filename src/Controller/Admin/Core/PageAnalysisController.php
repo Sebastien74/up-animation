@@ -128,9 +128,25 @@ class PageAnalysisController extends AdminController
      * Detail view for a single page: latest full report (grouped findings) and history.
      */
     #[Route('/detail/{url}', name: 'admin_page_analysis_detail', methods: 'GET')]
-    public function detail(Request $request, Website $website, Url $url, PageAnalysisRepository $analysisRepository): Response
+    public function detail(Request $request, Website $website, Url $url, PageAnalysisRepository $analysisRepository, PageAnalyzerInterface $analyzer, PageAnalysisRecorder $recorder): Response
     {
         $interface = (string) $request->query->get('interface', 'page');
+
+        // Arriving from "Analyser la page" runs a fresh analysis, then redirects to the
+        // clean URL (PRG) so a reload does not re-run and an HTTP error gets recorded/shown.
+        if ($request->query->getBoolean('run')) {
+            try {
+                $this->analyzePreview($analyzer, $recorder, $interface, $website, $url);
+            } catch (\Throwable) {
+            }
+
+            return $this->redirectToRoute('admin_page_analysis_detail', [
+                'website' => $website->getId(),
+                'url' => $url->getId(),
+                'interface' => $interface,
+            ]);
+        }
+
         $history = $analysisRepository->findLatestSnapshots($website, $url->getCode(), $url->getLocale(), 12);
         $latest = $history[0] ?? null;
         $name = $this->pageNameForUrl($interface, (int) $url->getId());

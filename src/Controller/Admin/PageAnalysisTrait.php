@@ -9,6 +9,7 @@ use App\Entity\Seo\Url;
 use App\Service\Admin\PageAnalysisRecorder;
 use App\Service\Admin\PageAnalyzerInterface;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 /**
  * PageAnalysisTrait.
@@ -55,21 +56,47 @@ trait PageAnalysisTrait
         $arguments = 'page' === $interface ? ['website' => $website, 'url' => $url] : ['url' => $url];
 
         $start = microtime(true);
+        $response = null;
+        $status = 200;
+        $errorDetail = null;
+        $current = $this->container->get('request_stack')->getCurrentRequest();
         try {
-            $response = $this->forward($controller, $arguments);
+            if (null !== $current) {
+                // catch: false so a rendering exception propagates here and its origin can
+                // be reported, instead of being swallowed into a generic error page.
+                $subRequest = $current->duplicate(null, null, $arguments + ['_controller' => $controller]);
+                $response = $this->container->get('http_kernel')->handle($subRequest, HttpKernelInterface::SUB_REQUEST, false);
+            } else {
+                $response = $this->forward($controller, $arguments);
+            }
             $status = $response->getStatusCode();
         } catch (\Throwable $e) {
             $response = null;
             $status = $e instanceof HttpExceptionInterface ? $e->getStatusCode() : 500;
+            $errorDetail = $this->describeThrowable($e);
         }
         $report = (null === $response || $status >= 400)
-            ? $analyzer->httpError($status)
+            ? $analyzer->httpError($status, $errorDetail)
             : $analyzer->analyze((string) $response->getContent(), $url->getCode());
         $report['meta']['renderMs'] = (int) round((microtime(true) - $start) * 1000);
+        $report['meta']['httpStatus'] = $status;
 
         $recorder->record($website, $url->getCode(), $url->getLocale(), $report, 'manual');
 
         return $report;
+    }
+
+    /**
+     * Short description of a caught throwable for the error finding (full location in debug).
+     */
+    private function describeThrowable(\Throwable $e): string
+    {
+        $detail = sprintf('%s : %s', (new \ReflectionClass($e))->getShortName(), $e->getMessage());
+        if ($this->coreLocator->isDebug()) {
+            $detail .= sprintf(' (%s:%d)', basename($e->getFile()), $e->getLine());
+        }
+
+        return $detail;
     }
 
     /**

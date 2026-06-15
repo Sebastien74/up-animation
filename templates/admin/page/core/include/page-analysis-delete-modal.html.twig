@@ -17,6 +17,7 @@
                 <p class="text-center pa-delete-text mb-0">{{ "Cette action est irréversible."|trans|raw }}</p>
                 <form method="post" action="" class="pa-delete-form">
                     <input type="hidden" name="_token" value="{{ csrf_token('pa-delete') }}">
+                    <input type="hidden" name="_redirect" value="" class="pa-delete-redirect">
                     <div class="modal-buttons mt-4 d-flex flex-wrap justify-content-center gap-2">
                         <button type="button" class="btn-app muted d-inline-flex align-items-center gap-2" data-bs-dismiss="modal">
                             <i class="icm-ban"></i><span>{{ "Annuler"|trans|raw }}</span>

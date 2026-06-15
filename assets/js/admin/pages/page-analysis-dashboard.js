@@ -44,28 +44,40 @@ if (container) {
         return html + '</span>';
     };
 
+    const httpState = function (status) {
+        if (!status) {
+            return 'is-none';
+        }
+        if (status >= 400) {
+            return 'is-bad';
+        }
+        if (status >= 300) {
+            return 'is-warn';
+        }
+        return 'is-good';
+    };
+
     const updateRow = function (row, data) {
         const scoreEl = row.querySelector('.pa-score');
+        const httpEl = row.querySelector('.pa-http');
         const kbEl = row.querySelector('.pa-kb');
         const issuesEl = row.querySelector('.pa-issues');
         const dateEl = row.querySelector('.pa-date');
 
         if (!data.ok) {
             if (scoreEl) {
-                scoreEl.className = 'score-pill pa-score is-bad';
-                scoreEl.textContent = 'KO';
+                scoreEl.className = 'score-pill pa-score is-none';
+                scoreEl.textContent = '—';
             }
             return;
         }
+        if (httpEl) {
+            httpEl.className = 'score-pill pa-http ' + httpState(data.httpStatus);
+            httpEl.textContent = data.httpStatus ? data.httpStatus : '—';
+        }
         if (scoreEl) {
-            if (data.httpStatus && data.httpStatus >= 400) {
-                scoreEl.className = 'score-pill pa-score is-bad';
-                scoreEl.textContent = 'Err ' + data.httpStatus;
-                scoreEl.title = 'Erreur HTTP ' + data.httpStatus;
-            } else {
-                scoreEl.className = 'score-pill pa-score ' + scoreState(data.score);
-                scoreEl.textContent = data.score === null ? '—' : data.score;
-            }
+            scoreEl.className = 'score-pill pa-score ' + scoreState(data.score);
+            scoreEl.textContent = data.score === null ? '—' : data.score;
         }
         if (kbEl) {
             kbEl.textContent = (data.kb || 0) + ' Ko';

@@ -116,8 +116,12 @@ class PageAnalyzer implements PageAnalyzerInterface
         ];
     }
 
-    public function httpError(int $status): array
+    public function httpError(int $status, ?string $detail = null): array
     {
+        $reco = null !== $detail && '' !== $detail
+            ? $detail
+            : $this->translator->trans('La page a renvoyé une erreur serveur : corrigez-la avant de l’analyser (consultez les logs ou le profiler).', [], 'admin');
+
         return [
             'meta' => [
                 'urlCode' => null,
@@ -135,13 +139,14 @@ class PageAnalyzer implements PageAnalyzerInterface
                 'id' => 'error',
                 'label' => $this->translator->trans('Erreur', [], 'admin'),
                 'counts' => ['high' => 1, 'medium' => 0, 'low' => 0],
-                'findings' => [$this->f(
-                    'http-error',
-                    'high',
-                    'Erreur de rendu de la page',
-                    'HTTP '.$status,
-                    'La page a renvoyé une erreur serveur : corrigez-la avant de l’analyser (consultez les logs ou le profiler).'
-                )],
+                'findings' => [[
+                    'id' => 'http-error',
+                    'severity' => 'high',
+                    'label' => $this->translator->trans('Erreur de rendu de la page', [], 'admin'),
+                    'value' => 'HTTP '.$status,
+                    'reco' => $reco,
+                    'samples' => [],
+                ]],
             ]],
         ];
     }

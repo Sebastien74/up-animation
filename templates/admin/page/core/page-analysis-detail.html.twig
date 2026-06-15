@@ -49,7 +49,8 @@
                     <button type="button" class="btn-app danger small d-inline-flex align-items-center gap-2"
                             data-bs-toggle="modal" data-bs-target="#pa-delete-modal"
                             data-pa-action="{{ path('admin_page_analysis_clear_page', {website: websiteId(), url: url.id}) }}"
-                            data-pa-scope="page" data-pa-label="/{{ pageCode }}">
+                            data-pa-scope="page" data-pa-label="/{{ pageCode }}"
+                            data-pa-return="{{ path('admin_page_analysis_detail', {website: websiteId(), url: url.id, interface: interface}) }}">
                         <i class="icm-trash"></i><span>{{ "Supprimer les données"|trans|striptags }}</span>
                     </button>
                 {%- endif -%}
@@ -80,17 +81,17 @@
             {%- set meta = report.meta|default({}) -%}
             {%- set score = latest.score -%}
             {%- set httpStatus = latest.httpStatus -%}
-            {%- set isHttpError = httpStatus is not null and httpStatus >= 400 -%}
+            {%- set httpState = httpStatus is null ? 'is-none' : (httpStatus >= 400 ? 'is-bad' : (httpStatus >= 300 ? 'is-warn' : 'is-good')) -%}
             {%- set scoreState = score is null ? 'is-none' : (score >= 90 ? 'is-good' : (score >= 60 ? 'is-warn' : 'is-bad')) -%}
 
             <div class="perf-inspector-summary mb-4">
                 <div class="perf-summary-tile pa-score-tile">
                     <span class="tile-label">{{ "Indice"|trans|raw }}</span>
-                    {%- if isHttpError -%}
-                        <span class="score-pill score-pill-lg is-bad" title="{{ "Erreur HTTP"|trans|striptags }} {{ httpStatus }}">{{ "Err"|trans }} {{ httpStatus }}</span>
-                    {%- else -%}
-                        <span class="score-pill score-pill-lg {{ scoreState }}">{{ score is null ? '—' : score }}</span>
-                    {%- endif -%}
+                    <span class="score-pill score-pill-lg {{ scoreState }}">{{ score is null ? '—' : score }}</span>
+                </div>
+                <div class="perf-summary-tile pa-score-tile">
+                    <span class="tile-label">{{ "Statut"|trans|raw }}</span>
+                    <span class="score-pill score-pill-lg {{ httpState }}">{{ httpStatus is null ? '—' : httpStatus }}</span>
                 </div>
                 <div class="perf-summary-tile">
                     <span class="tile-label">{{ "Problèmes"|trans|raw }}</span>
