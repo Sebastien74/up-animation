@@ -3,7 +3,7 @@
 {%- if interface.configuration.saveArea is not defined
     or interface.configuration.saveArea != 'bottom'
     or configFields is defined and configFields -%}
-    <div class="form-header d-flex justify-content-between mb-3">
+    <div class="form-header d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
         {%- if configFields is defined and configFields -%}
             <button class="btn-app collapsed"
                     type="button"
@@ -14,8 +14,11 @@
                 <i class="icm-cog-reg"></i>{{ "Configuration"|trans|raw }}
             </button>
         {%- endif -%}
-        <div class="save-base gap-2 d-flex align-self-center">
-            {%- include 'admin/core/form/save/base.html.twig' with {saveAreaTpl: 'header'} -%}
+        <div class="d-flex flex-wrap align-items-center gap-2 ms-auto">
+            {%- if layoutHeaderActions is defined -%}{{ layoutHeaderActions }}{%- endif -%}
+            <div class="save-base gap-2 d-flex align-self-center">
+                {%- include 'admin/core/form/save/base.html.twig' with {saveAreaTpl: 'header'} -%}
+            </div>
         </div>
     </div>
 {%- endif -%}
