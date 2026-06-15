@@ -113,7 +113,7 @@ class RegistrationType extends AbstractType
                 ],
                 'row_attr' => ['class' => 'col-12 col-lg-6'],
                 'constraints' => [
-                    new Assert\NotBlank(['message' => $this->translator->trans('Veuillez saisir un email.', [], 'security_cms')]),
+                    new Assert\NotBlank(message: $this->translator->trans('Veuillez saisir un email.', [], 'security_cms')),
                     new UniqUserEmail(),
                 ],
             ]);
@@ -134,7 +134,7 @@ class RegistrationType extends AbstractType
                     ],
                     'row_attr' => ['class' => 'col-12 col-lg-6'],
                     'constraints' => [
-                        new Assert\NotBlank(['message' => $this->translator->trans('Veuillez saisir un mot de passe.', [], 'security_cms')]),
+                        new Assert\NotBlank(message: $this->translator->trans('Veuillez saisir un mot de passe.', [], 'security_cms')),
                     ],
                 ],
                 'second_options' => [
@@ -146,14 +146,14 @@ class RegistrationType extends AbstractType
                     ],
                     'row_attr' => ['class' => 'col-12 col-lg-6'],
                     'constraints' => [
-                        new Assert\NotBlank(['message' => $this->translator->trans('Veuillez confirmer votre mot de passe.', [], 'security_cms')]),
+                        new Assert\NotBlank(message: $this->translator->trans('Veuillez confirmer votre mot de passe.', [], 'security_cms')),
                     ],
                 ],
                 'constraints' => [
-                    new Assert\Regex([
-                        'message' => $this->translator->trans('Le mot de passe doit comporter au moins 8 caractères, contenir au moins un chiffre, une majuscule et une minuscule.', [], 'security_cms'),
-                        'pattern' => '/(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{8,}/',
-                    ]),
+                    new Assert\Regex(
+                        message: $this->translator->trans('Le mot de passe doit comporter au moins 8 caractères, contenir au moins un chiffre, une majuscule et une minuscule.', [], 'security_cms'),
+                        pattern: '/(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{8,}/',
+                    ),
                 ],
             ]);
         }
@@ -176,7 +176,7 @@ class RegistrationType extends AbstractType
         $builder->add('locale', Type\HiddenType::class, [
             'data' => $this->request->getLocale(),
             'constraints' => [
-                new Assert\NotBlank(['message' => $this->translator->trans('Veuillez choisir une langue.', [], 'security_cms')]),
+                new Assert\NotBlank(message: $this->translator->trans('Veuillez choisir une langue.', [], 'security_cms')),
             ],
         ]);
     }

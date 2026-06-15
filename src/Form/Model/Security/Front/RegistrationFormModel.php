@@ -18,32 +18,32 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class RegistrationFormModel
 {
-    #[Assert\NotBlank(['message' => "Veuillez saisir un nom d'utilisateur."])]
+    #[Assert\NotBlank(message: "Veuillez saisir un nom d'utilisateur.")]
     #[UniqUserLogin]
     protected ?string $login = null;
 
-    #[Assert\NotBlank(['message' => 'Veuillez choisir une langue.'])]
+    #[Assert\NotBlank(message: 'Veuillez choisir une langue.')]
     protected ?string $locale;
 
-    #[Assert\NotBlank(['message' => 'Veuillez saisir un email.'])]
+    #[Assert\NotBlank(message: 'Veuillez saisir un email.')]
     #[Assert\Email]
     #[UniqUserEmail]
     protected ?string $email = null;
 
-    #[Assert\NotBlank(['message' => 'Veuillez saisir votre nom.'])]
+    #[Assert\NotBlank(message: 'Veuillez saisir votre nom.')]
     protected ?string $lastName = null;
 
-    #[Assert\NotBlank(['message' => 'Veuillez saisir votre prénom.'])]
+    #[Assert\NotBlank(message: 'Veuillez saisir votre prénom.')]
     protected ?string $firstName = null;
 
-    #[Assert\NotBlank(['message' => 'Veuillez saisir un mot de passe.'])]
-    #[Assert\Regex([
-        'message' => 'Le mot de passe doit comporter au moins 8 caractères, contenir au moins un chiffre, une majuscule et une minuscule.',
-        'pattern' => '/(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{8,}/',
-    ])]
+    #[Assert\NotBlank(message: 'Veuillez saisir un mot de passe.')]
+    #[Assert\Regex(
+        message: 'Le mot de passe doit comporter au moins 8 caractères, contenir au moins un chiffre, une majuscule et une minuscule.',
+        pattern: '/(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{8,}/',
+    )]
     protected ?string $plainPassword = null;
 
-    #[Assert\IsTrue(['message' => 'Vous devez accepter les conditions générales.'])]
+    #[Assert\IsTrue(message: 'Vous devez accepter les conditions générales.')]
     protected bool $agreeTerms = false;
 
     #[Assert\Valid]

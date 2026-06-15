@@ -56,10 +56,10 @@ class PasswordResetType extends AbstractType
                 'row_attr' => ['class' => 'col-12 col-lg-12'],
             ],
             'constraints' => [
-                new Assert\Regex([
-                    'message' => $this->translator->trans('Le mot de passe doit comporter au moins 8 caractères, contenir au moins un chiffre, une majuscule et une minuscule.', [], 'security_cms'),
-                    'pattern' => '/(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{8,}/',
-                ]),
+                new Assert\Regex(
+                    message: $this->translator->trans('Le mot de passe doit comporter au moins 8 caractères, contenir au moins un chiffre, une majuscule et une minuscule.', [], 'security_cms'),
+                    pattern: '/(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{8,}/',
+                ),
             ],
         ]);
     }

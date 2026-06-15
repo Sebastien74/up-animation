@@ -177,7 +177,7 @@ class UserType extends AbstractType
                     ],
                     'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6 password-generator'],
                     'constraints' => [
-                        new Assert\NotBlank(['message' => $this->translator->trans('Veuillez saisir un mot de passe.', [], 'security_cms')]),
+                        new Assert\NotBlank(message: $this->translator->trans('Veuillez saisir un mot de passe.', [], 'security_cms')),
                     ],
                 ],
                 'second_options' => [
@@ -187,7 +187,7 @@ class UserType extends AbstractType
                     ],
                     'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
                     'constraints' => [
-                        new Assert\NotBlank(['message' => $this->translator->trans('Veuillez confirmer votre mot de passe.', [], 'security_cms')]),
+                        new Assert\NotBlank(message: $this->translator->trans('Veuillez confirmer votre mot de passe.', [], 'security_cms')),
                     ],
                 ],
             ]);

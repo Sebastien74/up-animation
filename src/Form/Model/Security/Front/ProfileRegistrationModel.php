@@ -15,7 +15,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class ProfileRegistrationModel
 {
-    #[Assert\NotBlank(['message' => 'Veuillez sélectionner un genre.'])]
+    #[Assert\NotBlank(message: 'Veuillez sélectionner un genre.')]
     protected ?string $gender = null;
 
     public function getGender(): ?string

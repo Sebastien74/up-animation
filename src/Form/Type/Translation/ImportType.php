@@ -25,9 +25,9 @@ class ImportType extends AbstractType
             'attr' => ['accept' => '.xlsx'],
             'constraints' => [
                 new Assert\NotBlank(),
-                new Assert\File([
-                    'mimeTypes' => ['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'],
-                ]),
+                new Assert\File(
+                    mimeTypes: ['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'],
+                ),
             ],
         ]);
     }
