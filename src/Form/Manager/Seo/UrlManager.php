@@ -155,21 +155,23 @@ class UrlManager
 
         $locale = $url->getLocale();
         $classname = $this->entityManager->getClassMetadata(get_class($entity))->getName();
-        $findEntity = $url->getCode() ? $this->entityManager->getRepository($classname)->createQueryBuilder('e')
+        $queryBuilder = $this->entityManager->getRepository($classname)->createQueryBuilder('e')
             ->leftJoin('e.urls', 'u')
             ->andWhere('u.code = :code')
-            ->andWhere('u.id != :id')
             ->andWhere('u.locale = :locale')
             ->andWhere('u.website = :website')
             ->andWhere('u.archived = :archived')
             ->setParameter('code', Urlizer::urlize($url->getCode()))
-            ->setParameter('id', $url->getId())
             ->setParameter('locale', $locale)
             ->setParameter('website', $website)
             ->setParameter('archived', false)
-            ->addSelect('u')
-            ->getQuery()
-            ->getOneOrNullResult() : null;
+            ->addSelect('u');
+
+        if ($url->getId()) {
+            $queryBuilder->andWhere('u.id != :id')->setParameter('id', $url->getId());
+        }
+
+        $findEntity = $url->getCode() ? $queryBuilder->getQuery()->getOneOrNullResult() : null;
 
         if (is_object($findEntity) && method_exists($findEntity, 'getUrls')) {
             foreach ($findEntity->getUrls() as $url) {
