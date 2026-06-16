@@ -49,6 +49,10 @@ marque), pensée pour être reprise telle quelle d'un projet à l'autre.
 - **Non-indexation** : chaque page envoie l'en-tête HTTP
   `X-Robots-Tag: noindex, nofollow, noarchive` (plus fiable que la seule balise meta, qui
   reste présente en complément). À conserver sur toute nouvelle page utilitaire.
+- **Détail technique réservé** (`error.php`) : la page n'étant atteinte que par une IP de
+  l'allowlist, elle révèle le détail de l'erreur sous-jacente (`error_get_last()` + contexte
+  `REDIRECT_*` d'Apache) dans un volet « Détail technique », échappé via `htmlspecialchars`.
+  Le visiteur hors allowlist ne voit jamais ce détail (il reçoit un `403`).
 
 ---
 
@@ -70,7 +74,8 @@ doit donc rester strictement autonome :
 
 - **Changer l'accent d'une page** : ajuster `--hl` / `--hl-soft` dans le `:root` du fichier
   (et, pour `check.php`, les règles `[data-state="…"]`).
-- **Ajouter une IP autorisée** : compléter le tableau `$ips` en tête de `check.php` **et**
-  `error.php`.
+- **Ajouter une IP autorisée** : éditer la **source unique** `config/trusted_ips.php` (le
+  tableau y est défini une seule fois ; `check.php`, `error.php` et `config/boot_error.php`
+  la consomment via `require`).
 - **Nouvelle page utilitaire** : reprendre le `:root` (tokens neutres + accent sémantique),
   l'en-tête `X-Robots-Tag`, la balise `meta robots`, et les garde-fous responsive.

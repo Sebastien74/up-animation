@@ -2,13 +2,40 @@
 
 header('X-Robots-Tag: noindex, nofollow, noarchive');
 
-$ips = ['::1', '127.0.0.1', 'fe80::1', '194.51.155.21', '195.135.16.88', '176.135.112.19', '2001:861:43c3:ce70:448f:74b:e526:cdae', '2001:861:43c3:ce70:60b8:f71:1c9:4843'];
+$ips = require dirname(__DIR__) . '/config/trusted_ips.php';
+// Trust only the real TCP peer; X-Forwarded-For is client-spoofable.
 $allowed = in_array($_SERVER['REMOTE_ADDR'] ?? '', $ips, true);
 if (!$allowed) {
     header('HTTP/1.0 403 Forbidden');
     require_once $_SERVER['DOCUMENT_ROOT'] . '/denied.php';
     exit;
 }
+
+$e = static fn (?string $value): string => htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
+
+// Reaching this point implies an allowlisted IP: surface the underlying error for debugging.
+$errorLabels = [
+    E_ERROR => 'E_ERROR', E_PARSE => 'E_PARSE', E_CORE_ERROR => 'E_CORE_ERROR',
+    E_COMPILE_ERROR => 'E_COMPILE_ERROR', E_RECOVERABLE_ERROR => 'E_RECOVERABLE_ERROR',
+    E_USER_ERROR => 'E_USER_ERROR', E_WARNING => 'E_WARNING', E_NOTICE => 'E_NOTICE',
+    E_DEPRECATED => 'E_DEPRECATED',
+];
+
+$detailLines = [];
+$lastError = error_get_last();
+if (is_array($lastError) && '' !== (string) ($lastError['message'] ?? '')) {
+    $label = $errorLabels[$lastError['type'] ?? 0] ?? ('type ' . (int) ($lastError['type'] ?? 0));
+    $detailLines[] = sprintf('[%s] %s', $label, $lastError['message']);
+    if (!empty($lastError['file'])) {
+        $detailLines[] = sprintf('%s:%d', $lastError['file'], (int) ($lastError['line'] ?? 0));
+    }
+}
+foreach (['REDIRECT_STATUS' => 'Status', 'REDIRECT_URL' => 'URL', 'REQUEST_URI' => 'Request', 'REDIRECT_QUERY_STRING' => 'Query'] as $key => $contextLabel) {
+    if (!empty($_SERVER[$key])) {
+        $detailLines[] = sprintf('%s: %s', $contextLabel, $_SERVER[$key]);
+    }
+}
+$detail = implode("\n", $detailLines);
 
 ?>
 <!DOCTYPE html>
@@ -181,15 +208,50 @@ if (!$allowed) {
         .btn-primary svg { transition: transform .55s ease; }
         .btn-primary:hover svg { transform: rotate(-180deg); }
 
+        .diagnostic {
+            margin: 2.5rem 0 0 4rem;
+            max-width: 70ch;
+            opacity: 0;
+            animation: rise .7s .5s cubic-bezier(.2, .7, .2, 1) forwards;
+        }
+        .diagnostic summary {
+            cursor: pointer;
+            list-style: none;
+            font-size: .78rem;
+            letter-spacing: .18em;
+            text-transform: uppercase;
+            font-weight: 600;
+            color: var(--muted);
+            user-select: none;
+            transition: color .2s ease;
+        }
+        .diagnostic summary:hover { color: var(--bright); }
+        .diagnostic summary::-webkit-details-marker { display: none; }
+        .diagnostic summary::before { content: "+ "; color: var(--hl); }
+        .diagnostic[open] summary::before { content: "- "; }
+        .diagnostic pre {
+            margin-top: .9rem;
+            padding: 1rem 1.1rem;
+            border-radius: 14px;
+            border: 1px solid var(--line);
+            background: var(--surface);
+            color: var(--muted);
+            font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+            font-size: .8rem;
+            line-height: 1.7;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
         @keyframes rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: .35; } }
 
         @media (max-width: 600px) {
-            .lead, .actions { margin-left: 0; }
+            .lead, .actions, .diagnostic { margin-left: 0; }
         }
         @media (prefers-reduced-motion: reduce) {
             * { animation: none !important; }
-            .mark, .eyebrow, h1, .lead, .actions { opacity: 1 !important; }
+            .mark, .eyebrow, h1, .lead, .actions, .diagnostic { opacity: 1 !important; }
         }
     </style>
 </head>
@@ -217,6 +279,13 @@ if (!$allowed) {
             Retour à l'accueil
         </a>
     </div>
+
+    <?php if ('' !== $detail): ?>
+    <details class="diagnostic" open>
+        <summary>Détail technique</summary>
+        <pre><?= $e($detail) ?></pre>
+    </details>
+    <?php endif; ?>
 
 </div>
 </body>

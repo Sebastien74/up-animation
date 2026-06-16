@@ -2,7 +2,7 @@
 
 header('X-Robots-Tag: noindex, nofollow, noarchive');
 
-$ips = ['::1', '127.0.0.1', 'fe80::1', '194.51.155.21', '195.135.16.88', '176.135.112.19', '2001:861:43c3:ce70:448f:74b:e526:cdae', '2001:861:43c3:ce70:60b8:f71:1c9:4843'];
+$ips = require dirname(__DIR__) . '/config/trusted_ips.php';
 // Trust only the real TCP peer; X-Forwarded-For is client-spoofable.
 $allowed = in_array($_SERVER['REMOTE_ADDR'] ?? '', $ips, true);
 if (!$allowed) {
