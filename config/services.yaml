@@ -11,6 +11,10 @@ parameters:
     .container.dumper.inline_factories: true
     # Default when the env var is unset (.env is gitignored): web-cron enabled.
     env(SCHEDULER_WEB_CRON_ENABLED): 'true'
+    # PageSpeed Insights defaults when the env var is unset (.env is gitignored).
+    env(PAGESPEED_ENABLED): 'false'
+    env(PAGESPEED_API_KEY): ''
+    env(PAGESPEED_STRATEGIES): 'mobile'
 
 services:
 
@@ -155,6 +159,16 @@ services:
             $opportunityAmount: '%env(float:AXONAUT_OPPORTUNITY_AMOUNT)%'
 
     App\Service\Axonaut\AxonautClientInterface: '@App\Service\Axonaut\AxonautClient'
+
+    #####################################
+    #        PageSpeed Insights         #
+    #####################################
+
+    App\Service\Seo\PageSpeed\PageSpeedClient:
+        arguments:
+            $apiKey: '%env(PAGESPEED_API_KEY)%'
+            $enabled: '%env(bool:PAGESPEED_ENABLED)%'
+            $strategies: '%env(PAGESPEED_STRATEGIES)%'
 
     #####################################
     #         Form extensions           #

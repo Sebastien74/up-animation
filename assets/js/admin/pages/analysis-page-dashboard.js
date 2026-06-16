@@ -229,6 +229,117 @@ if (container) {
         });
     }
 
+    // PageSpeed Insights: real Lighthouse runs (slow), admin-triggered per row or for all.
+    const psiPillState = function (value) {
+        if (value === null || value === undefined || value === '') {
+            return 'is-none';
+        }
+        if (value >= 90) {
+            return 'is-good';
+        }
+        if (value >= 50) {
+            return 'is-warn';
+        }
+        return 'is-bad';
+    };
+
+    const psiPillHtml = function (letter, value) {
+        const v = (value === null || value === undefined || value === '') ? null : value;
+        return '<span class="pa-psi-pill ' + psiPillState(v) + '"><span class="pa-psi-strat">' + letter + '</span>'
+            + (v === null ? '-' : v) + '</span>';
+    };
+
+    const updatePsiCell = function (cell, data) {
+        if (!cell || !data || !data.ok) {
+            return;
+        }
+        const pills = cell.querySelector('.pa-psi-pills');
+        if (pills) {
+            pills.innerHTML = psiPillHtml('M', data.perfMobile) + psiPillHtml('D', data.perfDesktop);
+        }
+        cell.dataset.sort = (data.perfMobile === null || data.perfMobile === undefined) ? -1 : data.perfMobile;
+    };
+
+    const runPsiRow = function (row) {
+        const cell = row.querySelector('.pa-psi-cell');
+        const button = cell ? cell.querySelector('.pa-psi-run') : null;
+        const url = button ? button.getAttribute('data-psi-url') : null;
+        if (!url) {
+            return Promise.resolve();
+        }
+        setButtonLoading(button, true);
+        row.classList.add('pa-psi-running');
+
+        return fetch(url, {method: 'POST', headers: {'X-Requested-With': 'XMLHttpRequest'}})
+            .then(response => response.ok ? response.json() : {ok: false})
+            .then(data => updatePsiCell(cell, data))
+            .catch(() => {})
+            .finally(() => {
+                row.classList.remove('pa-psi-running');
+                setButtonLoading(button, false);
+            });
+    };
+
+    container.addEventListener('click', function (e) {
+        const button = e.target.closest('.pa-psi-run');
+        if (!button) {
+            return;
+        }
+        e.preventDefault();
+        const row = button.closest('.pa-row');
+        if (row) {
+            if (mainPreloader) {
+                mainPreloader.classList.remove('d-none');
+            }
+            runPsiRow(row).finally(function () {
+                if (mainPreloader) {
+                    mainPreloader.classList.add('d-none');
+                }
+            });
+        }
+    });
+
+    const psiRunAll = container.querySelector('.pa-psi-run-all');
+    if (psiRunAll) {
+        psiRunAll.addEventListener('click', function () {
+            const rows = Array.from(container.querySelectorAll('.pa-row'))
+                .filter(row => !row.classList.contains('d-none') && row.querySelector('.pa-psi-run'));
+            if (!rows.length || psiRunAll.disabled) {
+                return;
+            }
+            psiRunAll.disabled = true;
+            psiRunAll.classList.add('disabled');
+            if (progressWrap) {
+                progressWrap.classList.remove('d-none');
+            }
+
+            let done = 0;
+            const total = rows.length;
+            const next = function () {
+                if (!rows.length) {
+                    if (statusEl) {
+                        statusEl.textContent = total + ' mesure(s) PageSpeed terminée(s).';
+                    }
+                    psiRunAll.disabled = false;
+                    psiRunAll.classList.remove('disabled');
+                    return;
+                }
+                const row = rows.shift();
+                if (statusEl) {
+                    statusEl.textContent = 'PageSpeed ' + (done + 1) + ' / ' + total + '…';
+                }
+                runPsiRow(row).finally(() => {
+                    done += 1;
+                    if (progressBar) {
+                        progressBar.style.width = Math.round((done / total) * 100) + '%';
+                    }
+                    next();
+                });
+            };
+            next();
+        });
+    }
+
     // Client-side filter.
     const filter = container.querySelector('.pa-filter');
     if (filter) {
@@ -322,6 +433,49 @@ if (detailContainer) {
             }
             fetch(detailUrl, {method: 'POST', headers: {'X-Requested-With': 'XMLHttpRequest'}})
                 .finally(() => window.location.reload());
+        });
+    }
+
+    // Detail page: run PageSpeed then reload to show the fresh panel (slow, real Lighthouse).
+    const psiButton = detailContainer.querySelector('.pa-psi-run');
+    const psiUrl = detailContainer.getAttribute('data-psi-url');
+
+    if (psiButton && psiUrl) {
+        const preloader = document.getElementById('main-preloader');
+        psiButton.addEventListener('click', function () {
+            psiButton.disabled = true;
+            psiButton.classList.add('disabled');
+            const span = psiButton.querySelector('span');
+            const running = psiButton.getAttribute('data-running-label');
+            if (span && running) {
+                span.textContent = running;
+            }
+            if (preloader) {
+                preloader.classList.remove('d-none');
+            }
+            fetch(psiUrl, {method: 'POST', headers: {'X-Requested-With': 'XMLHttpRequest'}})
+                .then(response => response.ok ? response.json() : {ok: false})
+                .then(function (data) {
+                    if (data && data.ok) {
+                        window.location.reload();
+                        return;
+                    }
+                    if (preloader) {
+                        preloader.classList.add('d-none');
+                    }
+                    psiButton.disabled = false;
+                    psiButton.classList.remove('disabled');
+                    import('../core/errors').then(({default: displayErrors}) => {
+                        new displayErrors(data && data.error ? data.error : 'Erreur PageSpeed');
+                    }).catch(error => console.error(error.message));
+                })
+                .catch(function () {
+                    if (preloader) {
+                        preloader.classList.add('d-none');
+                    }
+                    psiButton.disabled = false;
+                    psiButton.classList.remove('disabled');
+                });
         });
     }
 

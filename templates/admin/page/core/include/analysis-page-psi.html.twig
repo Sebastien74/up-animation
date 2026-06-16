@@ -1,0 +1,136 @@
+{%- trans_default_domain 'admin' -%}
+
+{%- import _self as psiMacro -%}
+
+{%- macro scorePill(value, big) -%}
+    {%- set state = value is null ? 'is-none' : (value >= 90 ? 'is-good' : (value >= 50 ? 'is-warn' : 'is-bad')) -%}
+    <span class="score-pill {{ big ? 'score-pill-lg' : '' }} {{ state }}">{{ value is null ? '-' : value }}</span>
+{%- endmacro -%}
+
+{%- macro vital(label, display, state) -%}
+    <div class="psi-vital {{ state }}">
+        <span class="psi-vital-label">{{ label }}</span>
+        <span class="psi-vital-value">{{ display ?? '-' }}</span>
+    </div>
+{%- endmacro -%}
+
+{%- macro sourceType(type) -%}
+    {%- set map = {
+        'entrypoint': "Entrypoint Webpack",
+        'asset': "Asset compilé",
+        'media': "Média",
+        'third-party': "Tiers",
+        'document': "Document",
+        'other': "Autre"
+    } -%}
+    {{ map[type]|default(type) }}
+{%- endmacro -%}
+
+{%- set report = psi.report|default({}) -%}
+{%- set strategies = report.strategies|default({}) -%}
+{%- set stratLabels = {mobile: "Mobile"|trans, desktop: "Ordinateur"|trans} -%}
+{%- set scoreLabels = {performance: "Performance"|trans, accessibility: "Accessibilité"|trans, bestPractices: "Bonnes pratiques"|trans, seo: "SEO"|trans} -%}
+
+<section class="psi-panel mb-4">
+    <header class="psi-panel-head">
+        <div>
+            <span class="psi-badge"><i class="icm-rocket" aria-hidden="true"></i> {{ "PageSpeed Insights"|trans }}</span>
+            <p class="perf-inspector-desc mb-0">
+                {{ "Mesure réelle (Lighthouse) et données terrain Google (CrUX) sur la page en ligne."|trans|raw }}
+                {%- if psi.createdAt %} {{ "Mesuré le"|trans }} {{ psi.createdAt|date('d/m/Y H:i') }}.{% endif -%}
+            </p>
+        </div>
+    </header>
+
+    <div class="psi-strategies">
+        {%- for key, label in stratLabels -%}
+            {%- set strat = strategies[key]|default(null) -%}
+            {%- if strat -%}
+                {%- set lab = strat.lab|default({}) -%}
+                {%- set field = strat.field|default(null) -%}
+                <div class="psi-strategy">
+                    <div class="psi-strategy-head">
+                        <i class="icm-{{ key == 'mobile' ? 'mobile' : 'desktop' }}" aria-hidden="true"></i>
+                        <span>{{ label }}</span>
+                    </div>
+
+                    <div class="psi-scores">
+                        {%- for sk, sl in scoreLabels -%}
+                            <div class="psi-score">
+                                {{ psiMacro.scorePill(strat.scores[sk]|default(null), false) }}
+                                <span class="psi-score-label">{{ sl }}</span>
+                            </div>
+                        {%- endfor -%}
+                    </div>
+
+                    <div class="psi-vitals">
+                        <span class="psi-vitals-caption">{{ "Core Web Vitals (labo)"|trans }}</span>
+                        <div class="psi-vitals-row">
+                            {%- set lcpState = lab.lcpMs is null ? 'is-none' : (lab.lcpMs <= 2500 ? 'is-good' : (lab.lcpMs <= 4000 ? 'is-warn' : 'is-bad')) -%}
+                            {{ psiMacro.vital('LCP', lab.display.lcp|default(null), lcpState) }}
+                            {%- set tbtState = lab.tbtMs is null ? 'is-none' : (lab.tbtMs <= 200 ? 'is-good' : (lab.tbtMs <= 600 ? 'is-warn' : 'is-bad')) -%}
+                            {{ psiMacro.vital('TBT', lab.display.tbt|default(null), tbtState) }}
+                            {%- set clsState = lab.cls is null ? 'is-none' : (lab.cls <= 0.1 ? 'is-good' : (lab.cls <= 0.25 ? 'is-warn' : 'is-bad')) -%}
+                            {{ psiMacro.vital('CLS', lab.display.cls|default(null), clsState) }}
+                            {{ psiMacro.vital('FCP', lab.display.fcp|default(null), 'is-none') }}
+                        </div>
+
+                        {%- if field -%}
+                            <span class="psi-vitals-caption mt-2">{{ "Données terrain (CrUX)"|trans }}</span>
+                            <div class="psi-vitals-row">
+                                {%- for fk, fl in {lcp: 'LCP', inp: 'INP', cls: 'CLS'} -%}
+                                    {%- set metric = field[fk]|default(null) -%}
+                                    {%- if metric and metric.rating -%}
+                                        {%- set fState = metric.rating == 'FAST' ? 'is-good' : (metric.rating == 'AVERAGE' ? 'is-warn' : 'is-bad') -%}
+                                        {%- set display = fk == 'cls' ? (metric.percentile / 100)|round(2) : (metric.percentile ~ ' ms') -%}
+                                        {{ psiMacro.vital(fl, display, fState) }}
+                                    {%- endif -%}
+                                {%- endfor -%}
+                            </div>
+                        {%- endif -%}
+                    </div>
+                </div>
+            {%- endif -%}
+        {%- endfor -%}
+    </div>
+
+    {%- set primary = strategies.mobile|default(strategies.desktop|default(null)) -%}
+    {%- set opportunities = primary ? primary.opportunities|default([]) : [] -%}
+    {%- if opportunities is not empty -%}
+        <div class="psi-sources">
+            <h2 class="psi-sources-title">{{ "Sources identifiées dans le code"|trans }}</h2>
+            <p class="perf-inspector-desc">{{ "Chaque point relie un diagnostic Google à l'endroit du projet concerné (entrypoint, média ou tiers)."|trans|raw }}</p>
+
+            <ul class="psi-opp-list reset">
+                {%- for opp in opportunities -%}
+                    <li class="psi-opp sev-{{ opp.severity }}">
+                        <details class="psi-opp-acc">
+                            <summary class="psi-opp-summary">
+                                <span class="psi-opp-sev sev-{{ opp.severity }}" aria-hidden="true"></span>
+                                <span class="psi-opp-title">{{ opp.title }}</span>
+                                {%- if opp.savingsMs %}<span class="psi-opp-savings">~{{ (opp.savingsMs / 1000)|round(1) }} s</span>{% endif -%}
+                                {%- if opp.displayValue %}<span class="psi-opp-display">{{ opp.displayValue }}</span>{% endif -%}
+                            </summary>
+                            <div class="psi-opp-body">
+                                {%- if opp.description %}<p class="psi-opp-desc">{{ opp.description }}</p>{% endif -%}
+                                {%- if opp.items is not empty -%}
+                                    <ul class="psi-source-list reset">
+                                        {%- for item in opp.items -%}
+                                            <li class="psi-source-item">
+                                                <span class="psi-source-tag psi-tag-{{ item.type }}">{{ psiMacro.sourceType(item.type) }}</span>
+                                                <code class="psi-source-label">{{ item.label }}</code>
+                                                {%- if item.detail %}<span class="psi-source-detail">{{ item.detail }}</span>{% endif -%}
+                                            </li>
+                                        {%- endfor -%}
+                                    </ul>
+                                {%- else -%}
+                                    <p class="perf-inspector-desc mb-0">{{ "Aucune ressource précise listée pour ce point."|trans|raw }}</p>
+                                {%- endif -%}
+                            </div>
+                        </details>
+                    </li>
+                {%- endfor -%}
+            </ul>
+        </div>
+    {%- endif -%}
+</section>

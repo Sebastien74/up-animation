@@ -25,7 +25,8 @@
 {%- block body -%}
 
     <div id="analysis-page-detail" class="pt-2 pb-5"
-         data-run-url="{{ runUrl }}">
+         data-run-url="{{ runUrl }}"
+         {% if psiEnabled %}data-psi-url="{{ psiUrl }}"{% endif %}>
 
         {%- if reportMarkdown -%}
             <textarea id="pa-md-source" class="d-none" aria-hidden="true" tabindex="-1">{{ reportMarkdown }}</textarea>
@@ -49,6 +50,12 @@
                 <button type="button" class="pa-detail-run btn-app small d-inline-flex align-items-center gap-2">
                     <i class="icm-rocket"></i><span>{{ "Relancer l'analyse"|trans|striptags }}</span>
                 </button>
+                {%- if psiEnabled -%}
+                    <button type="button" class="pa-psi-run btn-app small d-inline-flex align-items-center gap-2"
+                            data-running-label="{{ "Mesure en cours…"|trans|striptags }}">
+                        <i class="icm-google"></i><span>{{ "Lancer PageSpeed"|trans|striptags }}</span>
+                    </button>
+                {%- endif -%}
                 {%- if reportMarkdown -%}
                     <button type="button" class="pa-detail-copy-md btn-app small d-inline-flex align-items-center gap-2"
                             data-copied-label="{{ "Copié !"|trans|striptags }}">
@@ -66,6 +73,19 @@
                 {%- endif -%}
             </div>
         </div>
+
+        {%- if psiEnabled -%}
+            {%- if psi is not null -%}
+                {%- include 'admin/page/core/include/analysis-page-psi.html.twig' with {psi: psi} only -%}
+            {%- else -%}
+                <div class="psi-panel psi-panel-empty mb-4">
+                    <span class="psi-badge"><i class="icm-rocket" aria-hidden="true"></i> {{ "PageSpeed Insights"|trans }}</span>
+                    <p class="perf-inspector-desc mb-0">
+                        {{ "Lancez une mesure PageSpeed pour obtenir les scores réels Google et la liste des points à corriger."|trans|raw }}
+                    </p>
+                </div>
+            {%- endif -%}
+        {%- endif -%}
 
         {%- if latest is null -%}
             <div class="table-responsive app-table">

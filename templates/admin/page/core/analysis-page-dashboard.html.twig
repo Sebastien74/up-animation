@@ -20,6 +20,11 @@
     {{ parent() }}
 {%- endblock -%}
 
+{%- macro psiPill(letter, value) -%}
+    {%- set state = value is null ? 'is-none' : (value >= 90 ? 'is-good' : (value >= 50 ? 'is-warn' : 'is-bad')) -%}
+    <span class="pa-psi-pill {{ state }}"><span class="pa-psi-strat">{{ letter }}</span>{{ value is null ? '-' : value }}</span>
+{%- endmacro -%}
+
 {%- macro issues(high, medium, low, hasSnapshot) -%}
     {%- if not hasSnapshot -%}
         <span class="pa-issue-empty" aria-label="{{ "Non analysé"|trans|striptags }}">-</span>
@@ -65,6 +70,11 @@
                 <button type="button" class="pa-run-all btn-app small d-inline-flex align-items-center gap-2">
                     <i class="icm-rocket"></i><span class="text-nowrap">{{ "Tout analyser"|trans|striptags }} ({{ rows|length }})</span>
                 </button>
+                {%- if psiEnabled and rows is not empty -%}
+                    <button type="button" class="pa-psi-run-all btn-app small d-inline-flex align-items-center gap-2">
+                        <i class="icm-rocket"></i><span class="text-nowrap">{{ "Tout PageSpeed"|trans|striptags }}</span>
+                    </button>
+                {%- endif -%}
                 {%- if rows is not empty -%}
                     <button type="button" class="pa-delete-all btn-app danger small d-inline-flex align-items-center gap-2"
                             data-bs-toggle="modal" data-bs-target="#pa-delete-modal"
@@ -105,6 +115,9 @@
                             <th class="align-middle text-center px-4 pa-sortable" data-sort-type="text">{{ "Langue"|trans }}</th>
                             <th class="align-middle text-center px-4 pa-sortable" data-sort-type="num">{{ "Statut"|trans }}</th>
                             <th class="align-middle text-center px-4 pa-sortable" data-sort-type="num">{{ "Indice"|trans }}</th>
+                            {%- if psiEnabled -%}
+                                <th class="align-middle text-center px-4 pa-sortable" data-sort-type="num">{{ "PageSpeed"|trans }}</th>
+                            {%- endif -%}
                             <th class="align-middle text-center px-4 pa-sortable" data-sort-type="num">{{ "Poids"|trans }}</th>
                             <th class="align-middle text-center px-4 pa-sortable" data-sort-type="num">{{ "Problèmes"|trans }}</th>
                             <th class="align-middle px-4 pa-sortable" data-sort-type="num">{{ "Dernière analyse"|trans }}</th>
@@ -140,6 +153,18 @@
                                 <td class="align-middle text-center px-4 pa-score-cell" data-label="{{ "Indice"|trans|striptags }}" data-sort="{{ s ?? -1 }}">
                                     <span class="score-pill pa-score {{ scoreState }}">{{ s is null ? '-' : s }}</span>
                                 </td>
+                                {%- if psiEnabled -%}
+                                    <td class="align-middle text-center px-4 pa-psi-cell" data-label="{{ "PageSpeed"|trans|striptags }}" data-sort="{{ row.psiMobile ?? -1 }}">
+                                        <div class="pa-psi-cell-inner d-inline-flex align-items-center gap-1">
+                                            <span class="pa-psi-pills">{{ pa.psiPill('M', row.psiMobile) }}{{ pa.psiPill('D', row.psiDesktop) }}</span>
+                                            <button type="button" class="pa-psi-run btn-icon small info" data-psi-url="{{ row.psiUrl }}"
+                                                    data-bs-toggle="tooltip" data-tooltip-variant="info"
+                                                    title="{{ "Lancer la mesure PageSpeed"|trans|striptags }}">
+                                                <i class="icm-rocket"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                {%- endif -%}
                                 <td class="align-middle text-center px-4 pa-kb" data-label="{{ "Poids"|trans|striptags }}" data-sort="{{ row.kb ?? -1 }}">{{ row.kb is null ? '-' : row.kb ~ ' Ko' }}</td>
                                 <td class="align-middle text-center px-4 pa-issues" data-label="{{ "Problèmes"|trans|striptags }}" data-sort="{{ hasSnapshot ? (row.high|default(0) + row.medium|default(0) + row.low|default(0)) : -1 }}">
                                     {{- pa.issues(row.high|default(0), row.medium|default(0), row.low|default(0), hasSnapshot) -}}

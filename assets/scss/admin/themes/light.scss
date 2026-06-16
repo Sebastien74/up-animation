@@ -3486,6 +3486,81 @@ th.fc-col-header-cell {
     }
 }
 
+/*--- PageSpeed Insights (light overrides) ---*/
+
+#analysis-page {
+
+    .pa-psi-pill.is-none {
+        color: $theme-text-muted !important;
+        background: $theme-card-bg !important;
+    }
+
+    .pa-psi-pill.is-warn {
+        color: $warning !important;
+        background: rgba(lighten($warning, 40%), .55) !important;
+    }
+}
+
+#analysis-page-detail {
+
+    .psi-panel {
+        background: $theme-card-bg !important;
+        border-color: $theme-border-subtle !important;
+    }
+
+    .psi-badge,
+    .psi-strategy-head,
+    .psi-sources-title,
+    .psi-opp-title,
+    .psi-vital-value {
+        color: $theme-text !important;
+    }
+
+    .psi-strategy {
+        background: $theme-bg !important;
+        border-color: $theme-border-subtle !important;
+    }
+
+    .psi-score-label,
+    .psi-vitals-caption,
+    .psi-vital-label,
+    .psi-opp-desc,
+    .psi-opp-display,
+    .psi-source-detail {
+        color: $theme-text-muted !important;
+    }
+
+    .psi-vital {
+        background: $theme-card-bg !important;
+        border-left-color: $theme-border-subtle !important;
+
+        &.is-good {
+            border-left-color: $success !important;
+        }
+
+        &.is-warn {
+            border-left-color: $warning !important;
+        }
+
+        &.is-bad {
+            border-left-color: $danger !important;
+        }
+    }
+
+    .psi-opp {
+        border-top-color: $theme-border-subtle !important;
+    }
+
+    .psi-source-tag {
+        color: $theme-text-muted !important;
+        background: $theme-card-bg !important;
+    }
+
+    .psi-source-label {
+        color: $theme-text !important;
+    }
+}
+
 /*-----------------------------------
    5 ) Vendor
 -----------------------------------*/
