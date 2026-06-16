@@ -6,14 +6,18 @@ namespace App\Service\Seo\PageSpeed;
 
 use App\Entity\Core\Domain;
 use App\Entity\Core\Website;
+use App\Entity\Seo\Url;
+use App\Service\Content\SeoService;
 use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * PublicPageUrlResolver.
  *
- * Resolves the absolute public URL of a front page (by website, locale and url code),
- * picking the domain that matches the locale and falling back to the default domain.
- * Used by external probes that must hit the live page (PageSpeed Insights).
+ * Resolves the absolute public URL of a front page so an external probe (PageSpeed
+ * Insights) hits the real live page. Pages map to "/{code}"; newscasts and products
+ * live behind a module path (e.g. /{pageUrl}/fiche-actualite/{code}), so for those the
+ * canonical URL is built with the same logic SEO uses (SeoService::getAsCardUrl) and we
+ * only fall back to the bare domain + code when no canonical route can be generated.
  *
  * @author Sébastien FOURNIER <fournier.sebastien@outlook.com>
  */
@@ -21,11 +25,31 @@ final class PublicPageUrlResolver
 {
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
+        private readonly SeoService $seoService,
         private readonly string $appProtocol,
     ) {
     }
 
-    public function resolve(Website $website, ?string $locale, ?string $code): ?string
+    /**
+     * @param object|null $entity the entity owning the url, required for card interfaces
+     */
+    public function resolve(Website $website, Url $url, string $interface = 'page', ?object $entity = null, ?string $classname = null): ?string
+    {
+        if ('page' !== $interface && null !== $entity && null !== $classname) {
+            try {
+                $card = $this->seoService->getAsCardUrl($url, $entity, $classname);
+            } catch (\Throwable) {
+                $card = null;
+            }
+            if (is_string($card) && '' !== $card) {
+                return $card;
+            }
+        }
+
+        return $this->pageUrl($website, $url->getLocale(), $url->getCode());
+    }
+
+    private function pageUrl(Website $website, ?string $locale, ?string $code): ?string
     {
         $base = $this->baseUrl($website, $locale);
         if (null === $base) {

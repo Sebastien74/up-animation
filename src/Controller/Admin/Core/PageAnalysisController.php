@@ -334,13 +334,31 @@ class PageAnalysisController extends AdminController
      * runs at Google), so it is admin-triggered only, never on page load.
      */
     #[Route('/psi/{url}', name: 'admin_page_analysis_psi', methods: 'POST')]
-    public function pageSpeed(Website $website, Url $url, PageSpeedClient $client, PageSpeedRecorder $recorder, PublicPageUrlResolver $urlResolver): JsonResponse
+    public function pageSpeed(Request $request, Website $website, Url $url, PageSpeedClient $client, PageSpeedRecorder $recorder, PublicPageUrlResolver $urlResolver): JsonResponse
     {
         if (!$client->isEnabled()) {
             return new JsonResponse(['ok' => false, 'error' => 'PageSpeed Insights n\'est pas configuré.']);
         }
 
-        $publicUrl = $urlResolver->resolve($website, $url->getLocale(), $url->getCode());
+        // Newscasts and products do not live at "/{code}" but behind a module path, so the
+        // resolver needs the owning entity to build the real public URL (as SEO does).
+        $interface = (string) $request->query->get('interface', 'page');
+        $class = self::INTERFACES[$interface] ?? null;
+        $entity = null;
+        if ('page' !== $interface && null !== $class && class_exists($class)) {
+            try {
+                $entity = $this->coreLocator->em()->createQuery(
+                    sprintf('SELECT e FROM %s e JOIN e.urls u WHERE u.id = :url', $class)
+                )
+                    ->setParameter('url', $url->getId())
+                    ->setMaxResults(1)
+                    ->getOneOrNullResult();
+            } catch (\Throwable) {
+                $entity = null;
+            }
+        }
+
+        $publicUrl = $urlResolver->resolve($website, $url, $interface, $entity, $class);
         if (null === $publicUrl) {
             return new JsonResponse(['ok' => false, 'error' => 'Aucun domaine public pour cette page.']);
         }
