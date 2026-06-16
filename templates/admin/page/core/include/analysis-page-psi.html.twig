@@ -2,9 +2,21 @@
 
 {%- import _self as psiMacro -%}
 
-{%- macro scorePill(value, big) -%}
+{# Circular score gauge (PSI style). r = 15.915 makes the circumference ≈ 100, so the
+   dash array maps the score straight to a percentage; offset 25 starts the arc at top. #}
+{%- macro gauge(value, label, small) -%}
     {%- set state = value is null ? 'is-none' : (value >= 90 ? 'is-good' : (value >= 50 ? 'is-warn' : 'is-bad')) -%}
-    <span class="score-pill {{ big ? 'score-pill-lg' : '' }} {{ state }}">{{ value is null ? '-' : value }}</span>
+    {%- set dash = value is null ? 0 : value -%}
+    <div class="psi-gauge {{ small ? 'psi-gauge-sm' : '' }} {{ state }}">
+        <svg class="psi-gauge-svg" viewBox="0 0 36 36" role="img"
+             aria-label="{{ label ? label ~ ' : ' : '' }}{{ value is null ? 'non mesuré' : value ~ ' / 100' }}">
+            <circle class="psi-gauge-track" cx="18" cy="18" r="15.915" fill="none" stroke-width="3"></circle>
+            <circle class="psi-gauge-arc" cx="18" cy="18" r="15.915" fill="none" stroke-width="3"
+                    stroke-dasharray="{{ dash }} {{ 100 - dash }}" stroke-dashoffset="25" stroke-linecap="round"></circle>
+            <text class="psi-gauge-text" x="18" y="18" text-anchor="middle" dominant-baseline="central">{{ value is null ? '–' : value }}</text>
+        </svg>
+        {%- if label and not small %}<span class="psi-gauge-label">{{ label }}</span>{% endif -%}
+    </div>
 {%- endmacro -%}
 
 {%- macro vital(label, display, state) -%}
@@ -70,7 +82,7 @@
 
     <section class="psi-category">
         <header class="psi-category-head">
-            {{ psiMacro.scorePill(cat.score, false) }}
+            {{ psiMacro.gauge(cat.score, null, true) }}
             <h3 class="psi-category-title">{{ title }}</h3>
             <span class="psi-category-counts">
                 {%- if toFix|length %}<span class="psi-count is-bad">{{ toFix|length }} {{ "à corriger"|trans }}</span>{% endif -%}
@@ -146,12 +158,9 @@
             {%- set cats = strat.categories|default({}) -%}
             <div class="tab-pane fade {{ first ? 'show active' : '' }}" id="psi-pane-{{ key }}" role="tabpanel" aria-labelledby="psi-tab-{{ key }}">
 
-                <div class="psi-scores psi-scores-lg">
+                <div class="psi-gauges">
                     {%- for sk, sl in scoreLabels -%}
-                        <div class="psi-score">
-                            {{ psiMacro.scorePill(strat.scores[sk]|default(null), true) }}
-                            <span class="psi-score-label">{{ sl }}</span>
-                        </div>
+                        {{ psiMacro.gauge(strat.scores[sk]|default(null), sl, false) }}
                     {%- endfor -%}
                 </div>
 

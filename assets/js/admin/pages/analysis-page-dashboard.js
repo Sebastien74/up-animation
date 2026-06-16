@@ -431,6 +431,14 @@ if (deleteModal) {
 const detailContainer = document.getElementById('analysis-page-detail');
 
 if (detailContainer) {
+    // Land on the PageSpeed tab when coming back from a fresh measurement.
+    if (window.location.hash === '#psi') {
+        const psiTab = document.getElementById('pa-tab-psi');
+        if (psiTab) {
+            psiTab.click();
+        }
+    }
+
     const detailButton = detailContainer.querySelector('.pa-detail-run');
     const detailUrl = detailContainer.getAttribute('data-run-url');
 
@@ -468,6 +476,7 @@ if (detailContainer) {
                 .then(response => response.ok ? response.json() : {ok: false})
                 .then(function (data) {
                     if (data && data.ok) {
+                        window.location.hash = 'psi';
                         window.location.reload();
                         return;
                     }

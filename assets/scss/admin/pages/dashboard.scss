@@ -2904,49 +2904,6 @@
         }
     }
 
-    .psi-strategies {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        gap: $space-3;
-    }
-
-    .psi-strategy {
-        padding: $space-3;
-        background: $crumb-surface;
-        border: 1px solid $crumb-border;
-        border-radius: $radius-md;
-    }
-
-    .psi-strategy-head {
-        display: flex;
-        align-items: center;
-        gap: $space-2;
-        margin-bottom: $space-3;
-        font-weight: 600;
-        color: $crumb-text;
-    }
-
-    .psi-scores {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: $space-2;
-        margin-bottom: $space-3;
-    }
-
-    .psi-score {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 4px;
-        text-align: center;
-    }
-
-    .psi-score-label {
-        font-size: 10px;
-        line-height: 1.2;
-        color: $crumb-muted;
-    }
-
     .psi-vitals-caption {
         display: block;
         margin-bottom: $space-1;
@@ -2995,10 +2952,6 @@
             color: $crumb-text;
             font-variant-numeric: tabular-nums;
         }
-    }
-
-    .psi-sources {
-        margin-top: $space-4;
     }
 
     .psi-sources-title {
@@ -3199,9 +3152,81 @@
         }
     }
 
-    .psi-scores-lg {
-        grid-template-columns: repeat(4, 1fr);
+    /* Circular score gauges (per category, PSI style). */
+    .psi-gauges {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: $space-3;
         margin-bottom: $space-4;
+    }
+
+    .psi-gauge {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: $space-1;
+        text-align: center;
+    }
+
+    .psi-gauge-svg {
+        width: 76px;
+        height: 76px;
+    }
+
+    .psi-gauge-track {
+        stroke: $crumb-border;
+    }
+
+    .psi-gauge-arc {
+        transition: stroke-dasharray .6s ease;
+    }
+
+    .psi-gauge-text {
+        font-size: 10px;
+        font-weight: 700;
+        fill: $crumb-text;
+        font-variant-numeric: tabular-nums;
+    }
+
+    .psi-gauge-label {
+        font-size: 12px;
+        font-weight: 500;
+        color: $crumb-muted;
+    }
+
+    .psi-gauge.is-good {
+        .psi-gauge-arc { stroke: $success; }
+        .psi-gauge-text { fill: $success; }
+    }
+
+    .psi-gauge.is-warn {
+        .psi-gauge-arc { stroke: $warning; }
+        .psi-gauge-text { fill: $warning; }
+    }
+
+    .psi-gauge.is-bad {
+        .psi-gauge-arc { stroke: $danger; }
+        .psi-gauge-text { fill: $danger; }
+    }
+
+    .psi-gauge.is-none {
+        .psi-gauge-arc { stroke: $crumb-border; }
+        .psi-gauge-text { fill: $crumb-muted; }
+    }
+
+    .psi-gauge-sm {
+        .psi-gauge-svg {
+            width: 38px;
+            height: 38px;
+        }
+
+        .psi-gauge-text {
+            font-size: 13px;
+        }
+    }
+
+    .psi-category-head .psi-gauge-sm {
+        flex: 0 0 auto;
     }
 
     .psi-categories {

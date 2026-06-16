@@ -3509,19 +3509,12 @@ th.fc-col-header-cell {
     }
 
     .psi-badge,
-    .psi-strategy-head,
     .psi-sources-title,
     .psi-opp-title,
     .psi-vital-value {
         color: $theme-text !important;
     }
 
-    .psi-strategy {
-        background: $theme-bg !important;
-        border-color: $theme-border-subtle !important;
-    }
-
-    .psi-score-label,
     .psi-vitals-caption,
     .psi-vital-label,
     .psi-opp-desc,
@@ -3576,8 +3569,13 @@ th.fc-col-header-cell {
     }
 
     .pa-detail-tabs .nav-link,
-    .psi-group-label {
+    .psi-group-label,
+    .psi-gauge-label {
         color: $theme-text-muted !important;
+    }
+
+    .psi-gauge-track {
+        stroke: $theme-border-subtle !important;
     }
 }
 
