@@ -157,7 +157,6 @@ final class PageSpeedResultParser
 
             $auditRefs = is_array($category['auditRefs'] ?? null) ? $category['auditRefs'] : [];
             $entries = [];
-            $counts = ['fail' => 0, 'average' => 0, 'diagnostic' => 0, 'pass' => 0, 'na' => 0, 'manual' => 0];
 
             foreach ($auditRefs as $ref) {
                 if (!is_array($ref)) {
@@ -174,16 +173,7 @@ final class PageSpeedResultParser
                     continue;
                 }
 
-                $entry = $this->auditEntry($id, $audit, $group, $ownHost);
-                ++$counts[$entry['severity']];
-
-                // Not-applicable and manual audits carry no fixable resource: keep them in
-                // the counts but drop them from the stored payload to keep snapshots lean.
-                if (in_array($entry['severity'], ['na', 'manual'], true)) {
-                    continue;
-                }
-
-                $entries[] = $entry;
+                $entries[] = $this->auditEntry($id, $audit, $group, $ownHost);
             }
 
             // Failing first (by potential savings, then weight), then everything else.
@@ -201,7 +191,6 @@ final class PageSpeedResultParser
             $out[$key] = [
                 'title' => (string) ($category['title'] ?? $lhKey),
                 'score' => $this->scoreOf($category),
-                'counts' => $counts,
                 'audits' => $entries,
             ];
         }
@@ -232,8 +221,9 @@ final class PageSpeedResultParser
             'savingsMs' => $savingsMs > 0 ? $savingsMs : null,
             'weight' => isset($audit['weight']) && is_numeric($audit['weight']) ? (int) $audit['weight'] : 0,
             // Offending resources only matter where there is something to fix or diagnose;
-            // passing audits keep just their title and score.
-            'items' => 'pass' === $severity ? [] : $this->auditItems($audit, $ownHost),
+            // passing, manual and not-applicable audits keep their title, score and
+            // description but list no resources (Google reports none for them either).
+            'items' => in_array($severity, ['fail', 'average', 'diagnostic'], true) ? $this->auditItems($audit, $ownHost) : [],
         ];
     }
 

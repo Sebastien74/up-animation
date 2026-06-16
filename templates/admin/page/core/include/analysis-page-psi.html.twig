@@ -13,7 +13,7 @@
             <circle class="psi-gauge-track" cx="18" cy="18" r="15.915" fill="none" stroke-width="3"></circle>
             <circle class="psi-gauge-arc" cx="18" cy="18" r="15.915" fill="none" stroke-width="3"
                     stroke-dasharray="{{ dash }} {{ 100 - dash }}" stroke-dashoffset="25" stroke-linecap="round"></circle>
-            <text class="psi-gauge-text" x="18" y="18" text-anchor="middle" dominant-baseline="central">{{ value is null ? '–' : value }}</text>
+            <text class="psi-gauge-text" x="18" y="18" text-anchor="middle" dominant-baseline="central" aria-hidden="true">{{ value is null ? '–' : value }}</text>
         </svg>
         {%- if label and not small %}<span class="psi-gauge-label">{{ label }}</span>{% endif -%}
     </div>
@@ -77,8 +77,8 @@
     {%- set toFix = cat.audits|filter(a => a.severity in ['fail', 'average']) -%}
     {%- set diagnostics = cat.audits|filter(a => a.severity == 'diagnostic') -%}
     {%- set passed = cat.audits|filter(a => a.severity == 'pass') -%}
-    {%- set manualCount = cat.counts.manual|default(0) -%}
-    {%- set naCount = cat.counts.na|default(0) -%}
+    {%- set manual = cat.audits|filter(a => a.severity == 'manual') -%}
+    {%- set notApplicable = cat.audits|filter(a => a.severity == 'na') -%}
 
     <section class="psi-category">
         <header class="psi-category-head">
@@ -108,12 +108,18 @@
             </details>
         {%- endif -%}
 
-        {%- if manualCount or naCount -%}
-            <p class="perf-inspector-desc psi-na-note mb-0">
-                {%- if manualCount %}{{ manualCount }} {{ "à vérifier manuellement"|trans }}{% endif -%}
-                {%- if manualCount and naCount %} · {% endif -%}
-                {%- if naCount %}{{ naCount }} {{ "non applicable(s)"|trans }}{% endif -%}
-            </p>
+        {%- if manual is not empty -%}
+            <details class="psi-passed">
+                <summary class="psi-group-label">{{ "À vérifier manuellement"|trans }} ({{ manual|length }})</summary>
+                <ul class="psi-opp-list reset">{% for opp in manual %}{{ psiMacro.audit(opp) }}{% endfor %}</ul>
+            </details>
+        {%- endif -%}
+
+        {%- if notApplicable is not empty -%}
+            <details class="psi-passed">
+                <summary class="psi-group-label">{{ "Non applicable"|trans }} ({{ notApplicable|length }})</summary>
+                <ul class="psi-opp-list reset">{% for opp in notApplicable %}{{ psiMacro.audit(opp) }}{% endfor %}</ul>
+            </details>
         {%- endif -%}
     </section>
 {%- endmacro -%}

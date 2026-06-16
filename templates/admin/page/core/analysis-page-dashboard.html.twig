@@ -76,7 +76,7 @@
                     </select>
                 {%- endif -%}
                 <button type="button" class="pa-run-all btn-app small d-inline-flex align-items-center gap-2">
-                    <i class="icm-rocket"></i><span class="text-nowrap">{{ "Tout analyser"|trans|striptags }} ({{ rows|length }})</span>
+                    <i class="icm-rocket"></i><span class="text-nowrap">{{ "Tout analyser"|trans|striptags }} (<span class="pa-run-all-count">{{ rows|length }}</span>)</span>
                 </button>
                 {%- if psiEnabled and rows is not empty -%}
                     <button type="button" class="pa-psi-run-all btn-app small d-inline-flex align-items-center gap-2">

@@ -3181,10 +3181,6 @@
         stroke: $crumb-border;
     }
 
-    .psi-gauge-arc {
-        transition: stroke-dasharray .6s ease;
-    }
-
     .psi-gauge-text {
         font-size: 10px;
         font-weight: 700;
@@ -3319,11 +3315,6 @@
                 display: none;
             }
         }
-    }
-
-    .psi-na-note {
-        margin-top: $space-2;
-        font-size: 11px;
     }
 
     .psi-audit-score {

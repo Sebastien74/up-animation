@@ -344,16 +344,26 @@ if (container) {
     const filter = container.querySelector('.pa-filter');
     const langFilter = container.querySelector('.pa-lang-filter');
 
+    const runAllCount = container.querySelector('.pa-run-all-count');
+
     const applyFilters = function () {
         const term = filter ? filter.value.trim().toLowerCase() : '';
         const lang = langFilter ? langFilter.value.trim().toLowerCase() : '';
+        let visible = 0;
         container.querySelectorAll('.pa-row').forEach(function (row) {
             const haystack = row.getAttribute('data-search') || '';
             const locale = (row.getAttribute('data-locale') || '').toLowerCase();
             const matchesTerm = term === '' || haystack.indexOf(term) !== -1;
             const matchesLang = lang === '' || locale === lang;
-            row.classList.toggle('d-none', !(matchesTerm && matchesLang));
+            const shown = matchesTerm && matchesLang;
+            row.classList.toggle('d-none', !shown);
+            if (shown) {
+                visible += 1;
+            }
         });
+        if (runAllCount) {
+            runAllCount.textContent = visible;
+        }
     };
 
     if (filter) {
