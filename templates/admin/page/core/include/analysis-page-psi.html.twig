@@ -139,7 +139,17 @@
                 {%- if psi.createdAt %} {{ "Mesuré le"|trans }} {{ psi.createdAt|date('d/m/Y H:i') }}.{% endif -%}
             </p>
         </div>
+        {%- if psiMarkdown is defined and psiMarkdown -%}
+            <button type="button" class="psi-copy-md btn-app small d-inline-flex align-items-center gap-2"
+                    data-copied-label="{{ "Copié !"|trans|striptags }}">
+                <i class="icm-copy"></i><span>{{ "Copier le rapport (.md)"|trans|striptags }}</span>
+            </button>
+        {%- endif -%}
     </header>
+
+    {%- if psiMarkdown is defined and psiMarkdown -%}
+        <textarea id="psi-md-source" class="d-none" aria-hidden="true" tabindex="-1">{{ psiMarkdown }}</textarea>
+    {%- endif -%}
 
     {%- if available|length > 1 -%}
         <ul class="nav nav-pills psi-strat-nav mb-3" role="tablist">

@@ -12,6 +12,7 @@ use App\Repository\Seo\PageAnalysisRepository;
 use App\Repository\Seo\PageSpeedSnapshotRepository;
 use App\Service\Admin\PageAnalysisMarkdownFormatter;
 use App\Service\Admin\PageAnalysisRecorder;
+use App\Service\Admin\PageSpeedMarkdownFormatter;
 use App\Service\Admin\PageAnalyzerInterface;
 use App\Service\Seo\PageSpeed\PageSpeedClient;
 use App\Service\Seo\PageSpeed\PageSpeedException;
@@ -163,7 +164,7 @@ class PageAnalysisController extends AdminController
      * Detail view for a single page: latest full report (grouped findings) and history.
      */
     #[Route('/detail/{url}', name: 'admin_page_analysis_detail', methods: 'GET')]
-    public function detail(Request $request, Website $website, Url $url, PageAnalysisRepository $analysisRepository, PageAnalyzerInterface $analyzer, PageAnalysisRecorder $recorder, EventDispatcherInterface $dispatcher, PageAnalysisMarkdownFormatter $markdownFormatter, PageSpeedSnapshotRepository $pageSpeedRepository, PageSpeedClient $pageSpeed): Response
+    public function detail(Request $request, Website $website, Url $url, PageAnalysisRepository $analysisRepository, PageAnalyzerInterface $analyzer, PageAnalysisRecorder $recorder, EventDispatcherInterface $dispatcher, PageAnalysisMarkdownFormatter $markdownFormatter, PageSpeedMarkdownFormatter $psiMarkdownFormatter, PageSpeedSnapshotRepository $pageSpeedRepository, PageSpeedClient $pageSpeed): Response
     {
         $interface = (string) $request->query->get('interface', 'page');
 
@@ -201,6 +202,10 @@ class PageAnalysisController extends AdminController
         ]);
 
         $psiEnabled = $pageSpeed->isEnabled();
+        $psiSnapshot = $psiEnabled ? $pageSpeedRepository->findLatestForPage($website, $url->getCode(), $url->getLocale()) : null;
+        $psiMarkdown = null !== $psiSnapshot && is_array($psiSnapshot->getReport())
+            ? $psiMarkdownFormatter->format($psiSnapshot->getReport(), $url->getCode() ?: '/', $name, $psiSnapshot->getCreatedAt())
+            : null;
 
         return $this->render('admin/page/core/analysis-page-detail.html.twig', array_merge($this->arguments, [
             'url' => $url,
@@ -210,7 +215,8 @@ class PageAnalysisController extends AdminController
             'history' => $history,
             'reportMarkdown' => $reportMarkdown,
             'psiEnabled' => $psiEnabled,
-            'psi' => $psiEnabled ? $pageSpeedRepository->findLatestForPage($website, $url->getCode(), $url->getLocale()) : null,
+            'psi' => $psiSnapshot,
+            'psiMarkdown' => $psiMarkdown,
             'psiUrl' => $this->coreLocator->router()->generate('admin_page_analysis_psi', [
                 'website' => $website->getId(),
                 'url' => $url->getId(),

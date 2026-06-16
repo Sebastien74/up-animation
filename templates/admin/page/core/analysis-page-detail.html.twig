@@ -97,7 +97,7 @@
                 </div>
                 <div class="tab-pane fade" id="pa-pane-psi" role="tabpanel" aria-labelledby="pa-tab-psi">
                     {%- if psi is not null -%}
-                        {%- include 'admin/page/core/include/analysis-page-psi.html.twig' with {psi: psi} only -%}
+                        {%- include 'admin/page/core/include/analysis-page-psi.html.twig' with {psi: psi, psiMarkdown: psiMarkdown} only -%}
                     {%- else -%}
                         <div class="psi-panel psi-panel-empty mb-4">
                             <span class="psi-badge"><i class="icm-rocket" aria-hidden="true"></i> {{ "PageSpeed Insights"|trans }}</span>

@@ -2888,7 +2888,15 @@
     }
 
     .psi-panel-head {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: $space-3;
         margin-bottom: $space-3;
+    }
+
+    .psi-copy-md {
+        flex-shrink: 0;
     }
 
     .psi-badge {

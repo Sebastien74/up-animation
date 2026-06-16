@@ -509,13 +509,14 @@ if (detailContainer) {
         });
     }
 
-    const copyButton = detailContainer.querySelector('.pa-detail-copy-md');
-    const mdSource = document.getElementById('pa-md-source');
-
-    if (copyButton && mdSource) {
+    // Copy a hidden Markdown source to the clipboard (internal report or PageSpeed report).
+    const wireCopyButton = function (button, source) {
+        if (!button || !source) {
+            return;
+        }
         const flashCopied = function () {
-            const span = copyButton.querySelector('span');
-            const label = copyButton.getAttribute('data-copied-label') || 'OK';
+            const span = button.querySelector('span');
+            const label = button.getAttribute('data-copied-label') || 'OK';
             if (span) {
                 const previous = span.textContent;
                 span.textContent = label;
@@ -523,23 +524,26 @@ if (detailContainer) {
             }
         };
         const fallbackCopy = function (text) {
-            mdSource.classList.remove('d-none');
-            mdSource.select();
+            source.classList.remove('d-none');
+            source.select();
             try {
                 document.execCommand('copy');
                 flashCopied();
             } catch (e) {
                 console.error(e.message);
             }
-            mdSource.classList.add('d-none');
+            source.classList.add('d-none');
         };
-        copyButton.addEventListener('click', function () {
-            const text = mdSource.value;
+        button.addEventListener('click', function () {
+            const text = source.value;
             if (navigator.clipboard && navigator.clipboard.writeText) {
                 navigator.clipboard.writeText(text).then(flashCopied).catch(() => fallbackCopy(text));
             } else {
                 fallbackCopy(text);
             }
         });
-    }
+    };
+
+    wireCopyButton(detailContainer.querySelector('.pa-detail-copy-md'), document.getElementById('pa-md-source'));
+    wireCopyButton(detailContainer.querySelector('.psi-copy-md'), document.getElementById('psi-md-source'));
 }
