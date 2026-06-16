@@ -9,6 +9,7 @@ use App\Controller\Admin\PageAnalysisTrait;
 use App\Entity\Core\Website;
 use App\Entity\Seo\Url;
 use App\Repository\Seo\PageAnalysisRepository;
+use App\Service\Admin\PageAnalysisMarkdownFormatter;
 use App\Service\Admin\PageAnalysisRecorder;
 use App\Service\Admin\PageAnalyzerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -138,7 +139,7 @@ class PageAnalysisController extends AdminController
      * Detail view for a single page: latest full report (grouped findings) and history.
      */
     #[Route('/detail/{url}', name: 'admin_page_analysis_detail', methods: 'GET')]
-    public function detail(Request $request, Website $website, Url $url, PageAnalysisRepository $analysisRepository, PageAnalyzerInterface $analyzer, PageAnalysisRecorder $recorder, EventDispatcherInterface $dispatcher): Response
+    public function detail(Request $request, Website $website, Url $url, PageAnalysisRepository $analysisRepository, PageAnalyzerInterface $analyzer, PageAnalysisRecorder $recorder, EventDispatcherInterface $dispatcher, PageAnalysisMarkdownFormatter $markdownFormatter): Response
     {
         $interface = (string) $request->query->get('interface', 'page');
 
@@ -161,6 +162,10 @@ class PageAnalysisController extends AdminController
         $latest = $history[0] ?? null;
         $name = $this->pageNameForUrl($interface, (int) $url->getId());
 
+        $reportMarkdown = null !== $latest && is_array($latest->getReport())
+            ? $markdownFormatter->format($latest->getReport(), $url->getCode() ?: '/', $name)
+            : null;
+
         $detailUrl = $this->coreLocator->router()->generate('admin_page_analysis_detail', [
             'website' => $website->getId(),
             'url' => $url->getId(),
@@ -177,6 +182,7 @@ class PageAnalysisController extends AdminController
             'name' => $name,
             'latest' => $latest,
             'history' => $history,
+            'reportMarkdown' => $reportMarkdown,
             'previewUrl' => $this->previewUrlFor($interface, $website, $url),
             'runUrl' => $this->coreLocator->router()->generate('admin_page_analysis_run', [
                 'website' => $website->getId(),

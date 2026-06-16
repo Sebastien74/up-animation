@@ -2250,8 +2250,8 @@ body {
 
     .score-pill.is-warn,
     .issue-chip.is-medium {
-        color: darken(rgba($warning, 1), 28%) !important;
-        background: rgba($warning, .24) !important;
+        color: $warning !important;
+        background: rgba(lighten($warning, 40%), .55) !important;
     }
 }
 
@@ -2261,12 +2261,12 @@ body {
 .modal-analysis-page {
 
     .pa-sev-pill.sev-medium {
-        color: darken(rgba($warning, 1), 28%) !important;
-        background: rgba($warning, .24) !important;
+        color: $warning !important;
+        background: rgba(lighten($warning, 40%), .55) !important;
     }
 
     .pa-finding.sev-medium .pa-finding-dot {
-        background: darken(rgba($warning, 1), 14%) !important;
+        background: lighten($warning, 6%) !important;
     }
 
     .pa-group {
@@ -2313,7 +2313,18 @@ body {
 
     .pa-sev-pill.sev-info {
         color: $theme-text-muted !important;
-        background: $theme-card-bg !important;
+        background: rgba($theme-text, .07) !important;
+    }
+
+    .pa-finding-acc > summary {
+        color: $theme-text-muted !important;
+        background: $theme-surface !important;
+        border-color: $theme-border-subtle !important;
+    }
+
+    .pa-finding-acc > summary:hover {
+        color: $theme-text !important;
+        border-color: $theme-border !important;
     }
 }
 

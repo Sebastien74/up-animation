@@ -43,6 +43,12 @@ class PageAnalyzer implements PageAnalyzerInterface
      */
     private const MAX_SAMPLES = 6;
 
+    /**
+     * Max exact DOM paths kept per empty-container group (the breakdown stays useful
+     * yet bounded even on pathological pages); the true count is reported separately.
+     */
+    private const MAX_PATHS_PER_GROUP = 25;
+
     public function __construct(
         private readonly TranslatorInterface $translator,
         #[Autowire('%kernel.project_dir%')]
@@ -327,7 +333,10 @@ class PageAnalyzer implements PageAnalyzerInterface
                 $this->sample($iframeEls, $iframe);
             }
         }
-        $bgImages = preg_match_all('/background-image\s*:\s*url\(/i', $html);
+        [$bgImages, $bgBreakdown] = $this->inlineBackgrounds($xpath);
+        $bgFinding = $this->f('bg-images', 'info', 'Images de fond inline (background-image)', (string) $bgImages,
+            $bgImages > 5 ? 'Nombreuses images de fond inline : elles ne bénéficient ni du lazy-load ni du srcset.' : '', [], $bgImages);
+        $bgFinding['breakdown'] = $bgBreakdown;
 
         return [
             $this->f('img-dimensions', $noDim > 0 ? 'high' : 'ok', 'Images sans dimensions (width/height)', $noDim.' / '.$total,
@@ -348,8 +357,7 @@ class PageAnalyzer implements PageAnalyzerInterface
                 $total > 0 && 0 === $srcset ? 'Utilisez srcset/sizes pour servir des tailles adaptées à chaque écran.' : ''),
             $this->f('img-decoding', 'info', 'Décodage asynchrone (decoding="async")', $asyncDecode.' / '.$total, ''),
             $this->f('picture', 'info', 'Balises <picture>', (string) $picture, ''),
-            $this->f('bg-images', 'info', 'Images de fond inline (background-image)', (string) $bgImages,
-                $bgImages > 5 ? 'Nombreuses images de fond inline : elles ne bénéficient ni du lazy-load ni du srcset.' : ''),
+            $bgFinding,
             $this->f('iframe-lazy', $iframeNoLazy > 0 ? 'medium' : 'ok', 'Iframes sans lazy-load', (string) $iframeNoLazy,
                 $iframeNoLazy > 0 ? 'Ajoutez loading="lazy" sur les iframes (vidéos, cartes).' : '', $iframeEls, $iframeNoLazy),
         ];
@@ -363,6 +371,13 @@ class PageAnalyzer implements PageAnalyzerInterface
     private function structure(\DOMXPath $xpath, int $maxDepth, int $maxChildren): array
     {
         $h1 = $this->count($xpath, '//h1');
+        $h1Texts = [];
+        foreach ($xpath->query('//h1') as $node) {
+            $text = trim((string) preg_replace('/\s+/', ' ', (string) $node->textContent));
+            if ('' !== $text && count($h1Texts) < self::MAX_SAMPLES) {
+                $h1Texts[] = $text;
+            }
+        }
         $headings = [];
         foreach (['h1', 'h2', 'h3', 'h4', 'h5', 'h6'] as $tag) {
             $headings[$tag] = $this->count($xpath, '//'.$tag);
@@ -375,11 +390,14 @@ class PageAnalyzer implements PageAnalyzerInterface
             ++$deprecated;
             $this->sample($deprecatedEls, $node);
         }
-        $emptyContainers = $this->count($xpath, '//div[not(node())] | //span[not(node())]');
+        [$emptyContainers, $emptyBreakdown] = $this->emptyContainers($xpath);
+        $emptyFinding = $this->f('empty-containers', $this->sev($emptyContainers, 10, 30), 'Conteneurs vides (div/span)', (string) $emptyContainers,
+            $emptyContainers > 10 ? 'Nombreux conteneurs vides : nettoyez le markup généré pour alléger le DOM.' : '', [], $emptyContainers);
+        $emptyFinding['breakdown'] = $emptyBreakdown;
 
         return [
             $this->f('h1', 1 === $h1 ? 'ok' : ($h1 > 1 ? 'medium' : 'high'), 'Titre principal (H1)', $h1.' H1',
-                1 === $h1 ? '' : (0 === $h1 ? 'Aucun H1 : ajoutez un titre principal unique.' : 'Plusieurs H1 : conservez un seul H1 par page.')),
+                1 === $h1 ? '' : (0 === $h1 ? 'Aucun H1 : ajoutez un titre principal unique.' : 'Plusieurs H1 : conservez un seul H1 par page.'), $h1Texts, $h1),
             $this->f('headings', 'info', 'Hiérarchie des titres', $headingResume, ''),
             $this->f('dom-depth', $this->sev($maxDepth, 25, 32), 'Profondeur maximale du DOM', $maxDepth.' niveaux',
                 $maxDepth > 25 ? 'DOM trop imbriqué : aplatissez la structure (Lighthouse alerte au-delà de 32 niveaux).' : ''),
@@ -387,9 +405,136 @@ class PageAnalyzer implements PageAnalyzerInterface
                 $maxChildren > 40 ? 'Un élément a beaucoup d’enfants directs : paginez ou virtualisez les longues listes.' : ''),
             $this->f('deprecated', $deprecated > 0 ? 'medium' : 'ok', 'Balises obsolètes', (string) $deprecated,
                 $deprecated > 0 ? 'Supprimez les balises obsolètes (center, font, marquee…) au profit du CSS.' : '', $deprecatedEls, $deprecated),
-            $this->f('empty-containers', $this->sev($emptyContainers, 10, 30), 'Conteneurs vides (div/span)', (string) $emptyContainers,
-                $emptyContainers > 10 ? 'Nombreux conteneurs vides : nettoyez le markup généré pour alléger le DOM.' : ''),
+            $emptyFinding,
         ];
+    }
+
+    /**
+     * Empty div/span containers grouped by signature (tag + classes), each with its
+     * exact DOM path(s), so the admin can locate every occurrence and its frequency.
+     *
+     * @return array{0: int, 1: array<int, array{signature: string, count: int, paths: array<int, string>}>}
+     */
+    private function emptyContainers(\DOMXPath $xpath): array
+    {
+        $groups = [];
+        $total = 0;
+        foreach ($xpath->query('//div[not(node())] | //span[not(node())]') as $node) {
+            /** @var \DOMElement $node */
+            ++$total;
+            $signature = $this->containerSignature($node);
+            if (!isset($groups[$signature])) {
+                $groups[$signature] = ['signature' => $signature, 'count' => 0, 'paths' => []];
+            }
+            ++$groups[$signature]['count'];
+            if (count($groups[$signature]['paths']) < self::MAX_PATHS_PER_GROUP) {
+                $groups[$signature]['paths'][] = $this->domPath($node);
+            }
+        }
+        usort($groups, static fn (array $a, array $b): int => $b['count'] <=> $a['count']);
+
+        return [$total, array_values($groups)];
+    }
+
+    /**
+     * Elements carrying an inline background image (style="…url(…)"), grouped by the
+     * image URL, each with its occurrence count and exact DOM path(s).
+     *
+     * @return array{0: int, 1: array<int, array{signature: string, count: int, paths: array<int, string>}>}
+     */
+    private function inlineBackgrounds(\DOMXPath $xpath): array
+    {
+        $groups = [];
+        $total = 0;
+        foreach ($xpath->query('//*[contains(@style, "url(")]') as $node) {
+            /** @var \DOMElement $node */
+            if (!preg_match_all('/(?:background-image|background)\s*:[^;]*url\(\s*([\'"]?)([^\'")]+)\1\s*\)/i', $node->getAttribute('style'), $matches, PREG_SET_ORDER)) {
+                continue;
+            }
+            foreach ($matches as $match) {
+                $url = trim($match[2]);
+                if (0 === stripos($url, 'data:')) {
+                    $url = 'data:'.(strtok(substr($url, 5), ';,') ?: 'inline').' (inline)';
+                }
+                ++$total;
+                $signature = 'url('.$url.')';
+                if (!isset($groups[$signature])) {
+                    $groups[$signature] = ['signature' => $signature, 'count' => 0, 'paths' => []];
+                }
+                ++$groups[$signature]['count'];
+                if (count($groups[$signature]['paths']) < self::MAX_PATHS_PER_GROUP) {
+                    $groups[$signature]['paths'][] = $this->domPath($node);
+                }
+            }
+        }
+        usort($groups, static fn (array $a, array $b): int => $b['count'] <=> $a['count']);
+
+        return [$total, array_values($groups)];
+    }
+
+    /**
+     * Group key for an empty container: tag plus its class list (ids stay out, so
+     * identical structural blocks group together; the exact node is in its path).
+     */
+    private function containerSignature(\DOMElement $el): string
+    {
+        $tag = strtolower($el->nodeName);
+        $class = trim($el->getAttribute('class'));
+
+        return '' !== $class ? '<'.$tag.' class="'.$class.'">' : '<'.$tag.'>';
+    }
+
+    /**
+     * CSS-like path from <body> to the element (id when present, else classes plus a
+     * :nth-of-type when siblings of the same tag would otherwise be ambiguous).
+     */
+    private function domPath(\DOMElement $el): string
+    {
+        $segments = [];
+        for ($node = $el; $node instanceof \DOMElement; $node = $node->parentNode) {
+            $tag = strtolower($node->nodeName);
+            if ('body' === $tag || 'html' === $tag) {
+                break;
+            }
+            $segment = $tag;
+            $id = trim($node->getAttribute('id'));
+            if ('' !== $id) {
+                $segment .= '#'.$id;
+            } else {
+                $class = trim($node->getAttribute('class'));
+                if ('' !== $class) {
+                    $segment .= '.'.implode('.', preg_split('/\s+/', $class) ?: []);
+                }
+                $nth = $this->nthOfType($node);
+                if (null !== $nth) {
+                    $segment .= ':nth-of-type('.$nth.')';
+                }
+            }
+            array_unshift($segments, $segment);
+        }
+
+        return 'body > '.implode(' > ', $segments);
+    }
+
+    /**
+     * 1-based position of $el among its same-tag siblings, or null when it is the
+     * only element of its tag under its parent (no disambiguation needed).
+     */
+    private function nthOfType(\DOMElement $el): ?int
+    {
+        $tag = $el->nodeName;
+        $position = 0;
+        $sameType = 0;
+        for ($sibling = $el->parentNode?->firstChild; null !== $sibling; $sibling = $sibling->nextSibling) {
+            if ($sibling instanceof \DOMElement && $sibling->nodeName === $tag) {
+                ++$sameType;
+                if ($sibling === $el) {
+                    $position = $sameType;
+                }
+            }
+        }
+
+        return $sameType > 1 ? $position : null;
     }
 
     /**
@@ -414,7 +559,29 @@ class PageAnalyzer implements PageAnalyzerInterface
         $ogImageValue = $this->attr($xpath, '//head/meta[@property="og:image"]/@content');
         $twitter = $this->count($xpath, '//head/meta[starts-with(@name,"twitter:")]');
         $hreflang = $this->count($xpath, '//head/link[@rel="alternate"][@hreflang]');
-        $structured = $this->count($xpath, '//script[@type="application/ld+json"]');
+        $structured = 0;
+        $structuredEls = [];
+        $breadcrumbJsonLd = false;
+        foreach ($xpath->query('//script[@type="application/ld+json"]') as $node) {
+            ++$structured;
+            $raw = trim($node->textContent);
+            if (str_contains($raw, 'BreadcrumbList')) {
+                $breadcrumbJsonLd = true;
+            }
+            $decoded = json_decode($raw, true);
+            $pretty = null !== $decoded
+                ? json_encode($decoded, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)
+                : $raw;
+            if (count($structuredEls) < self::MAX_SAMPLES) {
+                $structuredEls[] = (string) $pretty;
+            }
+        }
+
+        $breadcrumbMarkup = $this->count($xpath, '//nav[contains(translate(@aria-label, "BREADCRUMBFILDAIN", "breadcrumbfildain"), "breadcrumb")]'
+            .' | //*[contains(concat(" ", normalize-space(@class), " "), " breadcrumb ")]'
+            .' | //*[contains(@itemtype, "BreadcrumbList")]') > 0;
+        $breadcrumb = $breadcrumbJsonLd || $breadcrumbMarkup;
+        $breadcrumbSource = $breadcrumbJsonLd ? 'JSON-LD' : ($breadcrumbMarkup ? 'markup' : '');
         $links = $this->count($xpath, '//a[@href]');
 
         return [
@@ -438,7 +605,9 @@ class PageAnalyzer implements PageAnalyzerInterface
             $this->f('twitter', 'info', 'Twitter Card', (string) $twitter, ''),
             $this->f('hreflang', 'info', 'Alternates hreflang', (string) $hreflang, ''),
             $this->f('structured-data', $structured > 0 ? 'ok' : 'info', 'Données structurées (JSON-LD)', (string) $structured,
-                0 === $structured ? 'Ajoutez du JSON-LD (schema.org) pour enrichir les résultats de recherche.' : ''),
+                0 === $structured ? 'Ajoutez du JSON-LD (schema.org) pour enrichir les résultats de recherche.' : '', $structuredEls, $structured),
+            $this->f('breadcrumb', $breadcrumb ? 'ok' : 'low', 'Fil d’Ariane (breadcrumb)', $breadcrumb ? 'présent ('.$breadcrumbSource.')' : 'absent',
+                $breadcrumb ? '' : 'Ajoutez un fil d’Ariane (BreadcrumbList en JSON-LD ou markup nav) pour la navigation et les rich results.'),
             $this->f('links', 'info', 'Liens <a>', (string) $links, ''),
         ];
     }

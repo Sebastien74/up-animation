@@ -2584,6 +2584,48 @@
         color: $crumb-muted;
     }
 
+    .pa-finding-acc {
+        margin-top: 6px;
+
+        > summary {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            width: fit-content;
+            padding: 3px 9px;
+            font-size: 11px;
+            font-weight: 600;
+            color: $crumb-muted;
+            background: $crumb-surface;
+            border: 1px solid $crumb-border;
+            border-radius: $radius-xs;
+            cursor: pointer;
+            list-style: none;
+            user-select: none;
+            transition: color .15s ease, border-color .15s ease;
+
+            &::-webkit-details-marker {
+                display: none;
+            }
+
+            &::before {
+                content: "\25B8";
+                font-size: 9px;
+                line-height: 1;
+                transition: transform .15s ease;
+            }
+
+            &:hover {
+                color: $crumb-text;
+                border-color: $crumb-border-hover;
+            }
+        }
+
+        &[open] > summary::before {
+            transform: rotate(90deg);
+        }
+    }
+
     .pa-finding-samples {
         display: flex;
         flex-direction: column;
@@ -2609,6 +2651,65 @@
             border: 1px solid rgba($light, .14);
             border-radius: $radius-xs;
             white-space: pre-wrap;
+            word-break: break-all;
+        }
+    }
+
+    .pa-finding-breakdown {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        margin: 8px 0 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .pa-bd-group {
+        padding: 8px 10px;
+        background: $dark;
+        border: 1px solid rgba($light, .14);
+        border-radius: $radius-xs;
+    }
+
+    .pa-bd-head {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 10px;
+
+        code {
+            font-family: $font-family-monospace;
+            font-size: 11px;
+            color: $light;
+            word-break: break-all;
+        }
+    }
+
+    .pa-bd-count {
+        flex-shrink: 0;
+        padding: 1px 8px;
+        font-size: 11px;
+        font-weight: 700;
+        font-variant-numeric: tabular-nums;
+        color: $danger-light;
+        background: rgba($danger, .2);
+        border-radius: $radius-pill;
+    }
+
+    .pa-bd-paths {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        margin: 8px 0 0;
+        padding: 0;
+        list-style: none;
+
+        code {
+            display: block;
+            font-family: $font-family-monospace;
+            font-size: 11px;
+            line-height: 1.5;
+            color: rgba($light, .62);
             word-break: break-all;
         }
     }

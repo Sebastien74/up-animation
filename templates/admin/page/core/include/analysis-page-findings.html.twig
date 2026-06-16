@@ -46,17 +46,50 @@
                         {%- if finding.reco -%}
                             <span class="pa-finding-reco">{{ finding.reco }}</span>
                         {%- endif -%}
-                        {%- if finding.samples is defined and finding.samples|length -%}
+                        {%- if finding.breakdown is defined and finding.breakdown|length -%}
+                            {%- set total = finding.affected is defined ? finding.affected : finding.breakdown|length -%}
+                            <details class="pa-finding-acc">
+                                <summary class="pa-finding-acc-summary">
+                                    {{ total }} {{ total > 1 ? "éléments concernés"|trans : "élément concerné"|trans }} · {{ finding.breakdown|length }} {{ "type(s)"|trans }}
+                                </summary>
+                                <ul class="pa-finding-breakdown reset">
+                                    {%- for grp in finding.breakdown -%}
+                                        <li class="pa-bd-group">
+                                            <div class="pa-bd-head">
+                                                <code class="language-markup">{{ grp.signature }}</code>
+                                                <span class="pa-bd-count">&times;{{ grp.count }}</span>
+                                            </div>
+                                            {%- if grp.paths|length -%}
+                                                <ul class="pa-bd-paths reset">
+                                                    {%- for p in grp.paths -%}
+                                                        <li><code>{{ p }}</code></li>
+                                                    {%- endfor -%}
+                                                    {%- if grp.count > grp.paths|length -%}
+                                                        <li class="pa-finding-more">+{{ grp.count - grp.paths|length }} {{ "autres"|trans }}</li>
+                                                    {%- endif -%}
+                                                </ul>
+                                            {%- endif -%}
+                                        </li>
+                                    {%- endfor -%}
+                                </ul>
+                            </details>
+                        {%- elseif finding.samples is defined and finding.samples|length -%}
                             {%- set shown = finding.samples|length -%}
-                            {%- set extra = finding.affected is defined ? finding.affected - shown : 0 -%}
-                            <ul class="pa-finding-samples reset">
-                                {%- for sample in finding.samples -%}
-                                    <li><code class="language-markup">{{ sample }}</code></li>
-                                {%- endfor -%}
-                                {%- if extra > 0 -%}
-                                    <li class="pa-finding-more">+{{ extra }} {{ "autres"|trans }}</li>
-                                {%- endif -%}
-                            </ul>
+                            {%- set total = finding.affected is defined ? finding.affected : shown -%}
+                            {%- set extra = total - shown -%}
+                            <details class="pa-finding-acc">
+                                <summary class="pa-finding-acc-summary">
+                                    {{ total }} {{ total > 1 ? "éléments concernés"|trans : "élément concerné"|trans }}
+                                </summary>
+                                <ul class="pa-finding-samples reset">
+                                    {%- for sample in finding.samples -%}
+                                        <li><code class="language-markup">{{ sample }}</code></li>
+                                    {%- endfor -%}
+                                    {%- if extra > 0 -%}
+                                        <li class="pa-finding-more">+{{ extra }} {{ "autres"|trans }}</li>
+                                    {%- endif -%}
+                                </ul>
+                            </details>
                         {%- endif -%}
                     </div>
                     <span class="pa-finding-value">{{ finding.value }}</span>

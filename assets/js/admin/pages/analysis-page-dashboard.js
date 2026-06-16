@@ -324,4 +324,38 @@ if (detailContainer) {
                 .finally(() => window.location.reload());
         });
     }
+
+    const copyButton = detailContainer.querySelector('.pa-detail-copy-md');
+    const mdSource = document.getElementById('pa-md-source');
+
+    if (copyButton && mdSource) {
+        const flashCopied = function () {
+            const span = copyButton.querySelector('span');
+            const label = copyButton.getAttribute('data-copied-label') || 'OK';
+            if (span) {
+                const previous = span.textContent;
+                span.textContent = label;
+                setTimeout(() => { span.textContent = previous; }, 1500);
+            }
+        };
+        const fallbackCopy = function (text) {
+            mdSource.classList.remove('d-none');
+            mdSource.select();
+            try {
+                document.execCommand('copy');
+                flashCopied();
+            } catch (e) {
+                console.error(e.message);
+            }
+            mdSource.classList.add('d-none');
+        };
+        copyButton.addEventListener('click', function () {
+            const text = mdSource.value;
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(flashCopied).catch(() => fallbackCopy(text));
+            } else {
+                fallbackCopy(text);
+            }
+        });
+    }
 }
