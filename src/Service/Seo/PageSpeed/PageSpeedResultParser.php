@@ -176,6 +176,13 @@ final class PageSpeedResultParser
 
                 $entry = $this->auditEntry($id, $audit, $group, $ownHost);
                 ++$counts[$entry['severity']];
+
+                // Not-applicable and manual audits carry no fixable resource: keep them in
+                // the counts but drop them from the stored payload to keep snapshots lean.
+                if (in_array($entry['severity'], ['na', 'manual'], true)) {
+                    continue;
+                }
+
                 $entries[] = $entry;
             }
 
@@ -212,6 +219,7 @@ final class PageSpeedResultParser
         $score = $this->rawScore($audit);
         $mode = isset($audit['scoreDisplayMode']) ? (string) $audit['scoreDisplayMode'] : 'numeric';
         $savingsMs = $this->savingsMs($audit);
+        $severity = $this->severity($score, $mode);
 
         return [
             'id' => $id,
@@ -220,10 +228,12 @@ final class PageSpeedResultParser
             'description' => $this->plainText((string) ($audit['description'] ?? '')),
             'displayValue' => isset($audit['displayValue']) ? (string) $audit['displayValue'] : null,
             'score' => null === $score ? null : (int) round($score * 100),
-            'severity' => $this->severity($score, $mode),
+            'severity' => $severity,
             'savingsMs' => $savingsMs > 0 ? $savingsMs : null,
             'weight' => isset($audit['weight']) && is_numeric($audit['weight']) ? (int) $audit['weight'] : 0,
-            'items' => $this->auditItems($audit, $ownHost),
+            // Offending resources only matter where there is something to fix or diagnose;
+            // passing audits keep just their title and score.
+            'items' => 'pass' === $severity ? [] : $this->auditItems($audit, $ownHost),
         ];
     }
 

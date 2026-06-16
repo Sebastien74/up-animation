@@ -77,8 +77,8 @@
     {%- set toFix = cat.audits|filter(a => a.severity in ['fail', 'average']) -%}
     {%- set diagnostics = cat.audits|filter(a => a.severity == 'diagnostic') -%}
     {%- set passed = cat.audits|filter(a => a.severity == 'pass') -%}
-    {%- set manual = cat.audits|filter(a => a.severity == 'manual') -%}
-    {%- set notApplicable = cat.audits|filter(a => a.severity == 'na') -%}
+    {%- set manualCount = cat.counts.manual|default(0) -%}
+    {%- set naCount = cat.counts.na|default(0) -%}
 
     <section class="psi-category">
         <header class="psi-category-head">
@@ -108,11 +108,11 @@
             </details>
         {%- endif -%}
 
-        {%- if manual|length or notApplicable|length -%}
+        {%- if manualCount or naCount -%}
             <p class="perf-inspector-desc psi-na-note mb-0">
-                {%- if manual|length %}{{ manual|length }} {{ "à vérifier manuellement"|trans }}{% endif -%}
-                {%- if manual|length and notApplicable|length %} · {% endif -%}
-                {%- if notApplicable|length %}{{ notApplicable|length }} {{ "non applicable(s)"|trans }}{% endif -%}
+                {%- if manualCount %}{{ manualCount }} {{ "à vérifier manuellement"|trans }}{% endif -%}
+                {%- if manualCount and naCount %} · {% endif -%}
+                {%- if naCount %}{{ naCount }} {{ "non applicable(s)"|trans }}{% endif -%}
             </p>
         {%- endif -%}
     </section>
