@@ -67,6 +67,14 @@
                                aria-label="{{ "Filtrer les pages"|trans|striptags }}">
                     </div>
                 </div>
+                {%- if locales is defined and locales|length > 1 -%}
+                    <select class="form-select pa-lang-filter" aria-label="{{ "Filtrer par langue"|trans|striptags }}">
+                        <option value="">{{ "Toutes les langues"|trans }}</option>
+                        {%- for locale in locales -%}
+                            <option value="{{ locale }}">{{ locale|languageName|capitalize }} ({{ locale|upper }})</option>
+                        {%- endfor -%}
+                    </select>
+                {%- endif -%}
                 <button type="button" class="pa-run-all btn-app small d-inline-flex align-items-center gap-2">
                     <i class="icm-rocket"></i><span class="text-nowrap">{{ "Tout analyser"|trans|striptags }} ({{ rows|length }})</span>
                 </button>
@@ -131,7 +139,7 @@
                             {%- set scoreState = s is null ? 'is-none' : (s >= 90 ? 'is-good' : (s >= 60 ? 'is-warn' : 'is-bad')) -%}
                             {%- set hasSnapshot = row.date is not null -%}
                             {%- set localeCode = row.locale|lower -%}
-                            <tr class="pa-row" data-run-url="{{ row.runUrl }}" data-search="{{ (row.title ~ ' ' ~ row.code ~ ' ' ~ typeLabel)|lower }}">
+                            <tr class="pa-row" data-run-url="{{ row.runUrl }}" data-locale="{{ localeCode }}" data-search="{{ (row.title ~ ' ' ~ row.code ~ ' ' ~ typeLabel)|lower }}">
                                 <td class="align-middle px-4" data-label="{{ "Type"|trans|striptags }}" data-sort="{{ typeLabel|lower }}">
                                     <span class="pa-type-pill">{{ typeLabel }}</span>
                                 </td>

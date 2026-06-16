@@ -2171,6 +2171,12 @@
         width: 240px;
     }
 
+    .pa-lang-filter {
+        width: auto;
+        min-width: 160px;
+        flex-shrink: 0;
+    }
+
     .pa-run-all,
     .pa-detail-run {
         flex-shrink: 0;
@@ -3030,16 +3036,23 @@
         border-radius: 50%;
         background: $crumb-muted;
 
-        &.sev-high {
+        &.sev-high,
+        &.sev-fail {
             background: $danger;
         }
 
-        &.sev-medium {
+        &.sev-medium,
+        &.sev-average {
             background: $warning;
         }
 
-        &.sev-low {
+        &.sev-low,
+        &.sev-diagnostic {
             background: $crumb-muted;
+        }
+
+        &.sev-pass {
+            background: $success;
         }
     }
 
@@ -3111,6 +3124,11 @@
             color: $danger;
             background: rgba($danger, .12);
         }
+
+        &.psi-tag-node {
+            color: $crumb-text;
+            background: rgba($crumb-muted, .18);
+        }
     }
 
     .psi-source-label {
@@ -3130,5 +3148,180 @@
         width: 14px;
         height: 14px;
         border-width: 2px;
+    }
+
+    /* Detail-level tabs: internal analysis vs PageSpeed Insights. */
+    .pa-detail-tabs {
+        gap: $space-1;
+        border-bottom: 1px solid $crumb-border;
+
+        .nav-link {
+            display: inline-flex;
+            align-items: center;
+            gap: $space-2;
+            border: none;
+            border-bottom: 2px solid transparent;
+            color: $crumb-muted;
+            font-weight: 500;
+            background: transparent;
+
+            &:hover {
+                color: $crumb-text;
+            }
+
+            &.active {
+                color: $info;
+                border-bottom-color: $info;
+                background: transparent;
+            }
+        }
+    }
+
+    /* Strategy switch (Mobile / Desktop) inside the PSI panel. */
+    .psi-strat-nav {
+        gap: $space-1;
+
+        .nav-link {
+            display: inline-flex;
+            align-items: center;
+            gap: $space-1;
+            padding: 4px 12px;
+            font-size: 13px;
+            font-weight: 500;
+            color: $crumb-muted;
+            background: $crumb-surface;
+            border-radius: $radius-pill;
+
+            &.active {
+                color: #fff;
+                background: $info;
+            }
+        }
+    }
+
+    .psi-scores-lg {
+        grid-template-columns: repeat(4, 1fr);
+        margin-bottom: $space-4;
+    }
+
+    .psi-categories {
+        margin-top: $space-4;
+    }
+
+    .psi-category {
+        padding: $space-3 0;
+        border-top: 1px solid $crumb-border;
+
+        & + .psi-category {
+            margin-top: $space-1;
+        }
+    }
+
+    .psi-category-head {
+        display: flex;
+        align-items: center;
+        gap: $space-2;
+        margin-bottom: $space-2;
+    }
+
+    .psi-category-title {
+        margin: 0;
+        font-size: 15px;
+        font-weight: 600;
+        color: $crumb-text;
+    }
+
+    .psi-category-counts {
+        display: inline-flex;
+        flex-wrap: wrap;
+        gap: $space-1;
+        margin-left: auto;
+    }
+
+    .psi-count {
+        padding: 2px 8px;
+        font-size: 11px;
+        font-weight: 600;
+        border-radius: $radius-pill;
+        color: $crumb-muted;
+        background: $crumb-surface;
+
+        &.is-bad {
+            color: $danger;
+            background: rgba($danger, .12);
+        }
+
+        &.is-info {
+            color: $crumb-text;
+            background: rgba($crumb-muted, .16);
+        }
+
+        &.is-good {
+            color: $success;
+            background: rgba($success, .14);
+        }
+    }
+
+    .psi-group-label {
+        margin: $space-2 0 0;
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: .06em;
+        color: $crumb-muted;
+
+        &.is-bad {
+            color: $danger;
+        }
+
+        &.is-good {
+            color: $success;
+            cursor: pointer;
+        }
+    }
+
+    .psi-passed {
+        margin-top: $space-2;
+
+        > summary {
+            list-style: none;
+
+            &::-webkit-details-marker {
+                display: none;
+            }
+        }
+    }
+
+    .psi-na-note {
+        margin-top: $space-2;
+        font-size: 11px;
+    }
+
+    .psi-audit-score {
+        flex: 0 0 auto;
+        min-width: 22px;
+        padding: 1px 5px;
+        font-size: 11px;
+        font-weight: 700;
+        text-align: center;
+        border-radius: $radius-md;
+        font-variant-numeric: tabular-nums;
+        color: $crumb-muted;
+        background: $crumb-surface;
+
+        &.sev-fail {
+            color: $danger;
+            background: rgba($danger, .12);
+        }
+
+        &.sev-average {
+            color: $warning;
+            background: rgba($warning, .18);
+        }
+
+        &.sev-pass {
+            color: $success;
+            background: rgba($success, .14);
+        }
     }
 }

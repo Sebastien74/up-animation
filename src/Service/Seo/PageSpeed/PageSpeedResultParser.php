@@ -9,42 +9,31 @@ namespace App\Service\Seo\PageSpeed;
  *
  * Normalizes a raw PageSpeed Insights (Lighthouse v5) payload into a compact,
  * storable structure: category scores, lab Core Web Vitals, CrUX field data and the
- * actionable audits enriched with their code-source mapping.
+ * full per-category audit breakdown (Opportunities / Diagnostics / Passed), each audit
+ * enriched with its code-source mapping. The goal is to surface the same information as
+ * the public pagespeed.web.dev report, category by category.
  *
  * @author Sébastien FOURNIER <fournier.sebastien@outlook.com>
  */
 final class PageSpeedResultParser
 {
-    private const int MAX_ITEMS_PER_AUDIT = 8;
+    private const int MAX_ITEMS_PER_AUDIT = 12;
 
     /**
-     * Performance audits worth surfacing with their offending resources. Titles and
-     * descriptions are taken from the (localized) PSI payload, not hardcoded here.
+     * Lighthouse category id => the key used in the normalized report.
      */
-    private const array ACTIONABLE_AUDITS = [
-        'render-blocking-resources',
-        'unused-css-rules',
-        'unused-javascript',
-        'unminified-css',
-        'unminified-javascript',
-        'uses-optimized-images',
-        'modern-image-formats',
-        'uses-responsive-images',
-        'offscreen-images',
-        'efficient-animated-content',
-        'legacy-javascript',
-        'duplicated-javascript',
-        'uses-text-compression',
-        'uses-long-cache-ttl',
-        'server-response-time',
-        'third-party-summary',
-        'bootup-time',
-        'mainthread-work-breakdown',
-        'dom-size',
-        'total-byte-weight',
-        'unsized-images',
-        'prioritize-lcp-image',
+    private const array CATEGORY_KEYS = [
+        'performance' => 'performance',
+        'accessibility' => 'accessibility',
+        'best-practices' => 'bestPractices',
+        'seo' => 'seo',
     ];
+
+    /**
+     * Audit groups not worth listing: lab metrics (already shown as Core Web Vitals)
+     * and hidden helpers.
+     */
+    private const array SKIPPED_GROUPS = ['metrics', 'hidden'];
 
     public function __construct(private readonly PageSpeedSourceMapper $sourceMapper)
     {
@@ -71,7 +60,7 @@ final class PageSpeedResultParser
             ],
             'lab' => $this->labMetrics($audits),
             'field' => $this->fieldMetrics($raw),
-            'opportunities' => $this->opportunities($audits, $ownHost),
+            'categories' => $this->categories($categories, $audits, $ownHost),
         ];
     }
 
@@ -127,6 +116,7 @@ final class PageSpeedResultParser
             'inp' => $this->fieldMetric($metrics['INTERACTION_TO_NEXT_PAINT'] ?? null),
             'cls' => $this->fieldMetric($metrics['CUMULATIVE_LAYOUT_SHIFT_SCORE'] ?? null),
             'fcp' => $this->fieldMetric($metrics['FIRST_CONTENTFUL_PAINT_MS'] ?? null),
+            'ttfb' => $this->fieldMetric($metrics['EXPERIMENTAL_TIME_TO_FIRST_BYTE'] ?? null),
         ];
     }
 
@@ -148,42 +138,93 @@ final class PageSpeedResultParser
     }
 
     /**
+     * Per-category audit breakdown, mirroring the public PSI report: every audit listed
+     * under the category (via its auditRefs), grouped client-side by severity.
+     *
+     * @param array<string, mixed> $categories
      * @param array<string, mixed> $audits
      *
-     * @return array<int, array<string, mixed>>
+     * @return array<string, mixed>
      */
-    private function opportunities(array $audits, ?string $ownHost): array
+    private function categories(array $categories, array $audits, ?string $ownHost): array
     {
         $out = [];
-        foreach (self::ACTIONABLE_AUDITS as $id) {
-            $audit = $audits[$id] ?? null;
-            if (!is_array($audit)) {
+        foreach (self::CATEGORY_KEYS as $lhKey => $key) {
+            $category = is_array($categories[$lhKey] ?? null) ? $categories[$lhKey] : null;
+            if (null === $category) {
                 continue;
             }
 
-            $score = $this->rawScore($audit);
-            $savingsMs = $this->savingsMs($audit);
-            // Skip audits that already pass and bring nothing to fix.
-            if (null !== $score && $score >= 0.9 && $savingsMs <= 0) {
-                continue;
+            $auditRefs = is_array($category['auditRefs'] ?? null) ? $category['auditRefs'] : [];
+            $entries = [];
+            $counts = ['fail' => 0, 'average' => 0, 'diagnostic' => 0, 'pass' => 0, 'na' => 0, 'manual' => 0];
+
+            foreach ($auditRefs as $ref) {
+                if (!is_array($ref)) {
+                    continue;
+                }
+                $group = isset($ref['group']) ? (string) $ref['group'] : null;
+                if (null !== $group && in_array($group, self::SKIPPED_GROUPS, true)) {
+                    continue;
+                }
+
+                $id = isset($ref['id']) ? (string) $ref['id'] : '';
+                $audit = is_array($audits[$id] ?? null) ? $audits[$id] : null;
+                if ('' === $id || null === $audit) {
+                    continue;
+                }
+
+                $entry = $this->auditEntry($id, $audit, $group, $ownHost);
+                ++$counts[$entry['severity']];
+                $entries[] = $entry;
             }
 
-            $items = $this->auditItems($audit, $ownHost);
-            $out[] = [
-                'id' => $id,
-                'title' => (string) ($audit['title'] ?? $id),
-                'description' => $this->plainText((string) ($audit['description'] ?? '')),
-                'displayValue' => isset($audit['displayValue']) ? (string) $audit['displayValue'] : null,
-                'score' => null === $score ? null : (int) round($score * 100),
-                'severity' => $this->severity($score),
-                'savingsMs' => $savingsMs > 0 ? $savingsMs : null,
-                'items' => $items,
+            // Failing first (by potential savings, then weight), then everything else.
+            usort($entries, function (array $a, array $b): int {
+                $rank = fn (string $sev): int => ['fail' => 0, 'average' => 1, 'diagnostic' => 2, 'pass' => 3, 'na' => 4, 'manual' => 5][$sev] ?? 6;
+                $cmp = $rank($a['severity']) <=> $rank($b['severity']);
+                if (0 !== $cmp) {
+                    return $cmp;
+                }
+
+                return ($b['savingsMs'] ?? 0) <=> ($a['savingsMs'] ?? 0)
+                    ?: ($b['weight'] ?? 0) <=> ($a['weight'] ?? 0);
+            });
+
+            $out[$key] = [
+                'title' => (string) ($category['title'] ?? $lhKey),
+                'score' => $this->scoreOf($category),
+                'counts' => $counts,
+                'audits' => $entries,
             ];
         }
 
-        usort($out, static fn (array $a, array $b): int => ($b['savingsMs'] ?? 0) <=> ($a['savingsMs'] ?? 0));
-
         return $out;
+    }
+
+    /**
+     * @param array<string, mixed> $audit
+     *
+     * @return array<string, mixed>
+     */
+    private function auditEntry(string $id, array $audit, ?string $group, ?string $ownHost): array
+    {
+        $score = $this->rawScore($audit);
+        $mode = isset($audit['scoreDisplayMode']) ? (string) $audit['scoreDisplayMode'] : 'numeric';
+        $savingsMs = $this->savingsMs($audit);
+
+        return [
+            'id' => $id,
+            'group' => $group,
+            'title' => (string) ($audit['title'] ?? $id),
+            'description' => $this->plainText((string) ($audit['description'] ?? '')),
+            'displayValue' => isset($audit['displayValue']) ? (string) $audit['displayValue'] : null,
+            'score' => null === $score ? null : (int) round($score * 100),
+            'severity' => $this->severity($score, $mode),
+            'savingsMs' => $savingsMs > 0 ? $savingsMs : null,
+            'weight' => isset($audit['weight']) && is_numeric($audit['weight']) ? (int) $audit['weight'] : 0,
+            'items' => $this->auditItems($audit, $ownHost),
+        ];
     }
 
     /**
@@ -203,20 +244,23 @@ final class PageSpeedResultParser
             }
 
             $url = isset($row['url']) && is_string($row['url']) ? $row['url'] : null;
-            if (null === $url) {
+            if (null !== $url) {
+                $source = $this->sourceMapper->describe($url, $ownHost);
+                $items[] = ['type' => $source['type'], 'label' => $source['label'], 'detail' => $this->itemDetail($row)];
+            } elseif (null !== ($node = $this->nodeLabel($row))) {
+                // Accessibility / SEO audits point at a DOM node rather than a URL.
+                $items[] = ['type' => 'node', 'label' => $node, 'detail' => $this->itemDetail($row)];
+            } else {
                 $entity = $row['entity'] ?? null;
                 if (is_string($entity) && '' !== $entity) {
                     $items[] = ['type' => 'third-party', 'label' => $entity, 'detail' => $this->itemDetail($row)];
+                    continue;
                 }
-                continue;
+                $source = $this->scalarLabel($row);
+                if (null !== $source) {
+                    $items[] = ['type' => 'other', 'label' => $source, 'detail' => $this->itemDetail($row)];
+                }
             }
-
-            $source = $this->sourceMapper->describe($url, $ownHost);
-            $items[] = [
-                'type' => $source['type'],
-                'label' => $source['label'],
-                'detail' => $this->itemDetail($row),
-            ];
 
             if (count($items) >= self::MAX_ITEMS_PER_AUDIT) {
                 break;
@@ -224,6 +268,49 @@ final class PageSpeedResultParser
         }
 
         return $items;
+    }
+
+    /**
+     * Human label for a DOM-node based detail row (accessibility, SEO, best practices).
+     *
+     * @param array<string, mixed> $row
+     */
+    private function nodeLabel(array $row): ?string
+    {
+        $node = $row['node'] ?? null;
+        if (!is_array($node)) {
+            return null;
+        }
+
+        foreach (['selector', 'snippet', 'nodeLabel'] as $key) {
+            if (isset($node[$key]) && is_string($node[$key]) && '' !== trim($node[$key])) {
+                return $this->truncate(trim($node[$key]), 160);
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Fallback label for a detail row that is neither a URL nor a node (e.g. a source
+     * location or a plain string value).
+     *
+     * @param array<string, mixed> $row
+     */
+    private function scalarLabel(array $row): ?string
+    {
+        $source = $row['source'] ?? null;
+        if (is_array($source) && isset($source['url']) && is_string($source['url'])) {
+            return $this->truncate($source['url'], 160);
+        }
+
+        foreach (['label', 'name', 'statistic', 'source'] as $key) {
+            if (isset($row[$key]) && is_string($row[$key]) && '' !== trim($row[$key])) {
+                return $this->truncate(trim($row[$key]), 160);
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -248,19 +335,30 @@ final class PageSpeedResultParser
         return [] === $parts ? null : implode(' · ', $parts);
     }
 
-    private function severity(?float $score): string
+    /**
+     * Severity bucket used to group audits in the view, following PSI's own logic:
+     * manual checks, not-applicable and informative audits are neutral; scored audits
+     * fail / need improvement / pass on the 0.5 and 0.9 thresholds.
+     */
+    private function severity(?float $score, string $mode): string
     {
-        if (null === $score) {
-            return 'low';
+        if ('manual' === $mode) {
+            return 'manual';
         }
-        if ($score < 0.5) {
-            return 'high';
+        if ('notApplicable' === $mode) {
+            return 'na';
         }
-        if ($score < 0.9) {
-            return 'medium';
+        if ('informative' === $mode || null === $score) {
+            return 'diagnostic';
+        }
+        if ($score >= 0.9) {
+            return 'pass';
+        }
+        if ($score >= 0.5) {
+            return 'average';
         }
 
-        return 'low';
+        return 'fail';
     }
 
     /**
@@ -333,6 +431,11 @@ final class PageSpeedResultParser
         $text = preg_replace('/\[([^\]]+)\]\([^)]+\)/', '$1', $markdown) ?? $markdown;
 
         return trim((string) preg_replace('/\s+/', ' ', $text));
+    }
+
+    private function truncate(string $value, int $max): string
+    {
+        return mb_strlen($value) > $max ? mb_substr($value, 0, $max - 1).'…' : $value;
     }
 
     private function kb(int $bytes): string

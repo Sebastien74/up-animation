@@ -340,16 +340,27 @@ if (container) {
         });
     }
 
-    // Client-side filter.
+    // Client-side filters: free-text search + language selector (combined).
     const filter = container.querySelector('.pa-filter');
-    if (filter) {
-        filter.addEventListener('input', function () {
-            const term = filter.value.trim().toLowerCase();
-            container.querySelectorAll('.pa-row').forEach(function (row) {
-                const haystack = row.getAttribute('data-search') || '';
-                row.classList.toggle('d-none', term !== '' && haystack.indexOf(term) === -1);
-            });
+    const langFilter = container.querySelector('.pa-lang-filter');
+
+    const applyFilters = function () {
+        const term = filter ? filter.value.trim().toLowerCase() : '';
+        const lang = langFilter ? langFilter.value.trim().toLowerCase() : '';
+        container.querySelectorAll('.pa-row').forEach(function (row) {
+            const haystack = row.getAttribute('data-search') || '';
+            const locale = (row.getAttribute('data-locale') || '').toLowerCase();
+            const matchesTerm = term === '' || haystack.indexOf(term) !== -1;
+            const matchesLang = lang === '' || locale === lang;
+            row.classList.toggle('d-none', !(matchesTerm && matchesLang));
         });
+    };
+
+    if (filter) {
+        filter.addEventListener('input', applyFilters);
+    }
+    if (langFilter) {
+        langFilter.addEventListener('change', applyFilters);
     }
 
     // Column sorting: click a header to reorder rows by that column.

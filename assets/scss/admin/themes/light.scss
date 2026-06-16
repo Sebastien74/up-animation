@@ -3559,6 +3559,26 @@ th.fc-col-header-cell {
     .psi-source-label {
         color: $theme-text !important;
     }
+
+    .psi-category-title {
+        color: $theme-text !important;
+    }
+
+    .psi-category,
+    .pa-detail-tabs {
+        border-color: $theme-border-subtle !important;
+    }
+
+    .psi-count,
+    .psi-audit-score,
+    .psi-strat-nav .nav-link {
+        background: $theme-card-bg !important;
+    }
+
+    .pa-detail-tabs .nav-link,
+    .psi-group-label {
+        color: $theme-text-muted !important;
+    }
 }
 
 /*--- Index filters dropdown (light overrides) ---*/

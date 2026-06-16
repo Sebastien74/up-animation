@@ -143,10 +143,18 @@ class PageAnalysisController extends AdminController
         // other row in its existing order.
         usort($rows, static fn (array $a, array $b): int => ($b['home'] <=> $a['home']));
 
+        // Distinct locales present, for the language filter on the index.
+        $locales = array_values(array_unique(array_filter(array_map(
+            static fn (array $row): string => strtolower((string) $row['locale']),
+            $rows
+        ))));
+        sort($locales);
+
         $this->breadcrumb($request, ['Analyse des pages' => 'admin_page_analysis_dashboard']);
 
         return $this->render('admin/page/core/analysis-page-dashboard.html.twig', array_merge($this->arguments, [
             'rows' => $rows,
+            'locales' => $locales,
             'psiEnabled' => $pageSpeed->isEnabled(),
         ]));
     }

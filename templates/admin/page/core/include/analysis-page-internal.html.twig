@@ -1,0 +1,72 @@
+{%- trans_default_domain 'admin' -%}
+
+{%- if latest is null -%}
+    <div class="table-responsive app-table">
+        <table class="table mb-0">
+            <tbody>
+                <tr>
+                    <td class="px-4">
+                        <div class="py-3 d-flex flex-column align-items-center justify-content-center gap-2 text-center">
+                            <div class="d-flex align-items-center gap-2">
+                                <i class="btn-icon info icm-info"></i>{{ "Cette page n'a pas encore été analysée."|trans|raw }}
+                            </div>
+                            <p class="perf-inspector-desc mb-0">
+                                {{ "Lancez une première analyse pour visualiser les problèmes détectés."|trans|raw }}
+                            </p>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+{%- else -%}
+    {%- set report = latest.report -%}
+    {%- set meta = report.meta|default({}) -%}
+    {%- set score = latest.score -%}
+    {%- set httpStatus = latest.httpStatus -%}
+    {%- set httpState = httpStatus is null ? 'is-none' : (httpStatus >= 400 ? 'is-bad' : (httpStatus >= 300 ? 'is-warn' : 'is-good')) -%}
+    {%- set scoreState = score is null ? 'is-none' : (score >= 90 ? 'is-good' : (score >= 60 ? 'is-warn' : 'is-bad')) -%}
+
+    <div class="perf-inspector-summary mb-4">
+        <div class="perf-summary-tile pa-score-tile">
+            <span class="tile-label">{{ "Indice"|trans|raw }}</span>
+            <span class="score-pill score-pill-lg {{ scoreState }}">{{ score is null ? '-' : score }}</span>
+        </div>
+        <div class="perf-summary-tile pa-score-tile">
+            <span class="tile-label">{{ "Statut"|trans|raw }}</span>
+            <span class="score-pill score-pill-lg {{ httpState }}">{{ httpStatus is null ? '-' : httpStatus }}</span>
+        </div>
+        <div class="perf-summary-tile">
+            <span class="tile-label">{{ "Problèmes"|trans|raw }}</span>
+            <span class="tile-value">{{ latest.severityHigh + latest.severityMedium + latest.severityLow }}</span>
+            <span class="tile-sub">{{ latest.severityHigh }} {{ "critiques"|trans|raw }} · {{ latest.severityMedium }} {{ "à surveiller"|trans|raw }} · {{ latest.severityLow }} {{ "mineurs"|trans|raw }}</span>
+        </div>
+        <div class="perf-summary-tile">
+            <span class="tile-label">{{ "Poids HTML"|trans|raw }}</span>
+            <span class="tile-value">{{ latest.htmlKb }} Ko</span>
+        </div>
+        <div class="perf-summary-tile">
+            <span class="tile-label">{{ "Requêtes"|trans|raw }}</span>
+            <span class="tile-value">{{ latest.requests }}</span>
+        </div>
+        <div class="perf-summary-tile">
+            <span class="tile-label">{{ "DOM"|trans|raw }}</span>
+            <span class="tile-value">{{ latest.domCount }}</span>
+            <span class="tile-sub">{{ latest.imagesCount }} {{ "images"|trans|raw }}</span>
+        </div>
+        <div class="perf-summary-tile">
+            <span class="tile-label">{{ "Rendu"|trans|raw }}</span>
+            <span class="tile-value">{{ latest.renderMs is not null ? latest.renderMs ~ ' ms' : '-' }}</span>
+        </div>
+    </div>
+
+    {%- if latest.createdAt -%}
+        <p class="perf-inspector-desc mb-4">{{ "Dernière analyse :"|trans }} {{ latest.createdAt|date('d/m/Y H:i') }}</p>
+    {%- endif -%}
+
+    {%- include 'admin/page/core/include/analysis-page-findings.html.twig' with {groups: report.groups, meta: meta} only -%}
+
+    <div class="mt-4">
+        {%- include 'admin/page/core/include/analysis-page-history.html.twig' with {history: history} only -%}
+    </div>
+{%- endif -%}
