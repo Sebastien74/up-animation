@@ -153,3 +153,10 @@ if (document.querySelector('.btn-group-toggle')) {
         new btnToggle();
     }).catch(error => console.error(error.message));
 }
+
+/** 17 - Index filters dropdown panel */
+if (document.querySelector('.filters-form')) {
+    import('./filter-panel').then(({default: filterPanel}) => {
+        new filterPanel();
+    }).catch(error => console.error(error.message));
+}

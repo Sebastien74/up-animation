@@ -64,3 +64,119 @@
         }
     }
 }
+
+/*--- Index filters dropdown (EasyAdmin-style) ---*/
+
+.filters-dropdown {
+
+    .filters-active-dot {
+        display: inline-block;
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: $primary;
+    }
+
+    .filters-panel {
+        width: 360px;
+        max-width: calc(100vw - #{$space-4});
+        max-height: 72vh;
+        padding: 0;
+        overflow-y: auto;
+        background: $body-bg;
+        border: 1px solid $crumb-border;
+        border-radius: $radius-md;
+        box-shadow: 0 12px 32px rgba(0, 0, 0, .28);
+    }
+
+    .filters-panel-head {
+        position: sticky;
+        top: 0;
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: $space-2;
+        padding: $space-2 $space-3;
+        background: $crumb-surface;
+        border-bottom: 1px solid $crumb-border;
+    }
+
+    .filters-panel-title {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 12px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: .06em;
+        color: $crumb-muted;
+    }
+
+    .filters-clear {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 12px;
+        font-weight: 600;
+        color: $crumb-muted;
+        text-decoration: none;
+
+        &:hover {
+            color: $danger;
+        }
+
+        &.is-disabled {
+            opacity: .4;
+            pointer-events: none;
+        }
+    }
+
+    .filters-panel-body {
+        padding: $space-2 $space-3 $space-3;
+    }
+
+    .filters-row {
+        padding: $space-2 0;
+
+        & + .filters-row {
+            border-top: 1px solid $crumb-border;
+        }
+    }
+
+    .filters-row-head {
+        display: flex;
+        align-items: center;
+        gap: $space-2;
+        margin-bottom: 6px;
+        cursor: pointer;
+    }
+
+    .filters-row-toggle {
+        flex: 0 0 auto;
+    }
+
+    .filters-row-label {
+        font-size: 13px;
+        font-weight: 600;
+        color: $crumb-text;
+    }
+
+    .filters-row-control {
+
+        :disabled {
+            opacity: .55;
+        }
+
+        .form-control,
+        .form-select {
+            font-size: 13px;
+        }
+    }
+
+    .filters-empty {
+        margin: 0;
+        font-size: 13px;
+        color: $crumb-muted;
+    }
+}

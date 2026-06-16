@@ -1,50 +1,53 @@
 {%- trans_default_domain 'admin' -%}
 
-<button type="button" class="btn-app d-inline-flex align-items-center gap-2" data-bs-toggle="modal" data-bs-target="#filters-modal">
-    <i class="icm-filter"></i><span>{{ "Filtrer"|trans|raw }}</span>
-</button>
+{%- set isFiltered = app.request.query.has('filter') -%}
+{%- set resetPath = path('admin_'~interface.name~'_index', args) -%}
 
-<div class="modal-wrapper">
-    <div class="modal fade" id="filters-modal" tabindex="-1"
-         role="dialog" aria-labelledby="filters-modal-label" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
-            <div class="modal-content border refer-preloader pb-3">
-                {%- include 'admin/include/stripe-preloader.html.twig' with {preloaderId: 'modal-preloader', full: true} only -%}
-                <div class="modal-header flex-column align-items-center text-center border-0 pb-0">
-                    <span class="modal-icon w-100">
-                        <span class="icon-wrap">
-                            <i class="icm-filter"></i>
-                        </span>
-                    </span>
-                    <h2 id="filters-modal-label" class="modal-title fw-bold mt-3 mb-0">{{ "Filtrer"|trans|raw }}</h2>
-                    <button type="button" class="btn-close btn-icon position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="{{ "Fermer"|trans|raw }}">
-                        <i class="icm-times"></i>
-                    </button>
-                </div>
-                <div class="modal-body px-3 px-md-5">
-                    <div class="mx-auto ajax-content">
-                        {{ form_start(searchFiltersForm, { attr: {
-                            novalidate: "novalidate",
-                            id: "filters-form",
-                            action: path('admin_'~interface.name~'_index', args)
-                        }}) }}
-                            <div class="row">
-                                {%- include 'admin/core/form/edit-fields-base.html.twig' with {form: form} only -%}
-                            </div>
-                            <div class="w-100 text-center modal-buttons mt-4 d-flex flex-wrap justify-content-center gap-2">
-                                {%- if '?filter' in app.request.uri -%}
-                                    <a href="{{ path('admin_'~interface.name~'_index', args) }}" class="btn-app muted d-inline-flex align-items-center gap-2">
-                                        <i class="icm-sync"></i><span>{{ "Réinitialiser"|trans|raw }}</span>
-                                    </a>
-                                {%- endif -%}
-                                <button type="submit" class="btn-app d-inline-flex align-items-center gap-2">
-                                    <i class="icm-filter"></i><span>{{ "Filtrer"|trans|raw }}</span>
-                                </button>
-                            </div>
-                        {{ form_end(searchFiltersForm) }}
-                    </div>
-                </div>
+<div class="filters-dropdown dropdown">
+    <button type="button" class="btn-app d-inline-flex align-items-center gap-2 {{ isFiltered ? 'is-active' : '' }}"
+            data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+        <i class="icm-filter"></i><span>{{ "Filtres"|trans|raw }}</span>
+        {%- if isFiltered %}<span class="filters-active-dot" aria-hidden="true"></span>{% endif -%}
+    </button>
+
+    <div class="dropdown-menu filters-panel">
+        {{ form_start(searchFiltersForm, { attr: {
+            novalidate: "novalidate",
+            id: "filters-form",
+            class: "filters-form",
+            action: resetPath
+        }}) }}
+            <div class="filters-panel-head">
+                {%- if isFiltered -%}
+                    <a href="{{ resetPath }}" class="filters-clear">
+                        <i class="icm-times" aria-hidden="true"></i> {{ "Effacer"|trans|raw }}
+                    </a>
+                {%- else -%}
+                    <span class="filters-clear is-disabled"><i class="icm-times" aria-hidden="true"></i> {{ "Effacer"|trans|raw }}</span>
+                {%- endif -%}
+                <span class="filters-panel-title"><i class="icm-filter" aria-hidden="true"></i> {{ "Filtres"|trans|raw }}</span>
+                <button type="submit" class="filters-apply btn-app small d-inline-flex align-items-center gap-2">
+                    <i class="icm-check" aria-hidden="true"></i> {{ "Appliquer"|trans|raw }}
+                </button>
             </div>
-        </div>
+
+            <div class="filters-panel-body">
+                {%- if searchFiltersForm|length > 0 -%}
+                    {%- for child in searchFiltersForm -%}
+                        <div class="filters-row" data-filter-row>
+                            <label class="filters-row-head">
+                                <input type="checkbox" class="filters-row-toggle"{{ child.vars.value is not empty ? ' checked' : '' }}>
+                                <span class="filters-row-label">{{ child.vars.label|default(child.vars.name) }}</span>
+                            </label>
+                            <div class="filters-row-control">
+                                {{ form_widget(child) }}
+                            </div>
+                        </div>
+                    {%- endfor -%}
+                {%- else -%}
+                    <p class="filters-empty">{{ "Aucun filtre disponible."|trans|raw }}</p>
+                {%- endif -%}
+            </div>
+        {{ form_end(searchFiltersForm) }}
     </div>
 </div>

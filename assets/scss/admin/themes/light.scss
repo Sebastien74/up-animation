@@ -3561,6 +3561,39 @@ th.fc-col-header-cell {
     }
 }
 
+/*--- Index filters dropdown (light overrides) ---*/
+
+.filters-dropdown {
+
+    .filters-active-dot {
+        background: $theme-accent !important;
+    }
+
+    .filters-panel {
+        background: $theme-card-bg !important;
+        border-color: $theme-border-subtle !important;
+        box-shadow: $theme-shadow-lg !important;
+    }
+
+    .filters-panel-head {
+        background: $theme-bg !important;
+        border-bottom-color: $theme-border-subtle !important;
+    }
+
+    .filters-panel-title,
+    .filters-clear {
+        color: $theme-text-muted !important;
+    }
+
+    .filters-row + .filters-row {
+        border-top-color: $theme-border-subtle !important;
+    }
+
+    .filters-row-label {
+        color: $theme-text !important;
+    }
+}
+
 /*-----------------------------------
    5 ) Vendor
 -----------------------------------*/
