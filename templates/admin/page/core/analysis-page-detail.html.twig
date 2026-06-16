@@ -59,7 +59,13 @@
                 {%- if reportMarkdown -%}
                     <button type="button" class="pa-detail-copy-md btn-app small d-inline-flex align-items-center gap-2"
                             data-copied-label="{{ "Copié !"|trans|striptags }}">
-                        <i class="icm-copy"></i><span>{{ "Copier le rapport (.md)"|trans|striptags }}</span>
+                        <i class="icm-copy"></i><span>{{ "Copier l'analyse (.md)"|trans|striptags }}</span>
+                    </button>
+                {%- endif -%}
+                {%- if psiEnabled and psiMarkdown -%}
+                    <button type="button" class="psi-copy-md btn-app small d-inline-flex align-items-center gap-2"
+                            data-copied-label="{{ "Copié !"|trans|striptags }}">
+                        <i class="icm-copy"></i><span>{{ "Copier PageSpeed (.md)"|trans|striptags }}</span>
                     </button>
                 {%- endif -%}
                 {%- if latest is not null -%}
