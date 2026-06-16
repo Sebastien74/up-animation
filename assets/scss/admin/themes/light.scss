@@ -3586,6 +3586,10 @@ th.fc-col-header-cell {
     .psi-gauge-track {
         stroke: $theme-border-subtle !important;
     }
+
+    .psi-advice {
+        color: $theme-text !important;
+    }
 }
 
 /*--- Index filters dropdown (light overrides) ---*/

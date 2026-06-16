@@ -66,6 +66,19 @@
                         {%- endfor -%}
                     </ul>
                 {%- endif -%}
+                {%- if opp.advice is defined and opp.advice is not empty -%}
+                    {%- for tip in opp.advice -%}
+                        <div class="psi-advice">
+                            {%- if tip.title %}<span class="psi-advice-title">{{ tip.title }}</span>{% endif -%}
+                            <p class="mb-0">{{ tip.advice }}</p>
+                        </div>
+                    {%- endfor -%}
+                {%- endif -%}
+                {%- if opp.learnMoreUrl is defined and opp.learnMoreUrl -%}
+                    <a href="{{ opp.learnMoreUrl }}" target="_blank" rel="noopener" class="psi-learn-more">
+                        {{ "En savoir plus"|trans }} <i class="icm-external-link-alt" aria-hidden="true"></i>
+                    </a>
+                {%- endif -%}
             </div>
         </details>
     </li>
@@ -168,6 +181,14 @@
             {%- set field = strat.field|default(null) -%}
             {%- set cats = strat.categories|default({}) -%}
             <div class="tab-pane fade {{ first ? 'show active' : '' }}" id="psi-pane-{{ key }}" role="tabpanel" aria-labelledby="psi-tab-{{ key }}">
+
+                {%- if strat.warnings is defined and strat.warnings is not empty -%}
+                    <div class="psi-warnings">
+                        {%- for warning in strat.warnings -%}
+                            <p class="psi-warning"><i class="icm-exclamation-triangle" aria-hidden="true"></i> {{ warning }}</p>
+                        {%- endfor -%}
+                    </div>
+                {%- endif -%}
 
                 <div class="psi-gauges">
                     {%- for sk, sl in scoreLabels -%}

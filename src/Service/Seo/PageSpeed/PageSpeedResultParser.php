@@ -49,6 +49,8 @@ final class PageSpeedResultParser
         $lighthouse = is_array($raw['lighthouseResult'] ?? null) ? $raw['lighthouseResult'] : [];
         $categories = is_array($lighthouse['categories'] ?? null) ? $lighthouse['categories'] : [];
         $audits = is_array($lighthouse['audits'] ?? null) ? $lighthouse['audits'] : [];
+        $stackPacks = is_array($lighthouse['stackPacks'] ?? null) ? $lighthouse['stackPacks'] : [];
+        $advice = $this->stackAdvice($stackPacks);
 
         return [
             'finalUrl' => $lighthouse['finalDisplayedUrl'] ?? ($raw['id'] ?? null),
@@ -60,7 +62,8 @@ final class PageSpeedResultParser
             ],
             'lab' => $this->labMetrics($audits),
             'field' => $this->fieldMetrics($raw),
-            'categories' => $this->categories($categories, $audits, $ownHost),
+            'warnings' => $this->runWarnings($lighthouse),
+            'categories' => $this->categories($categories, $audits, $ownHost, $advice),
         ];
     }
 
@@ -146,7 +149,7 @@ final class PageSpeedResultParser
      *
      * @return array<string, mixed>
      */
-    private function categories(array $categories, array $audits, ?string $ownHost): array
+    private function categories(array $categories, array $audits, ?string $ownHost, array $advice = []): array
     {
         $out = [];
         foreach (self::CATEGORY_KEYS as $lhKey => $key) {
@@ -173,7 +176,7 @@ final class PageSpeedResultParser
                     continue;
                 }
 
-                $entries[] = $this->auditEntry($id, $audit, $group, $ownHost);
+                $entries[] = $this->auditEntry($id, $audit, $group, $ownHost, $advice[$id] ?? []);
             }
 
             // Failing first (by potential savings, then weight), then everything else.
@@ -203,18 +206,22 @@ final class PageSpeedResultParser
      *
      * @return array<string, mixed>
      */
-    private function auditEntry(string $id, array $audit, ?string $group, ?string $ownHost): array
+    private function auditEntry(string $id, array $audit, ?string $group, ?string $ownHost, array $advice = []): array
     {
         $score = $this->rawScore($audit);
         $mode = isset($audit['scoreDisplayMode']) ? (string) $audit['scoreDisplayMode'] : 'numeric';
         $savingsMs = $this->savingsMs($audit);
         $severity = $this->severity($score, $mode);
+        $rawDescription = (string) ($audit['description'] ?? '');
+        $actionable = in_array($severity, ['fail', 'average', 'diagnostic'], true);
 
         return [
             'id' => $id,
             'group' => $group,
             'title' => (string) ($audit['title'] ?? $id),
-            'description' => $this->plainText((string) ($audit['description'] ?? '')),
+            'description' => $this->plainText($rawDescription),
+            // Official "Learn more" documentation link kept from the description markdown.
+            'learnMoreUrl' => $this->docUrl($rawDescription),
             'displayValue' => isset($audit['displayValue']) ? (string) $audit['displayValue'] : null,
             'score' => null === $score ? null : (int) round($score * 100),
             'severity' => $severity,
@@ -223,8 +230,68 @@ final class PageSpeedResultParser
             // Offending resources only matter where there is something to fix or diagnose;
             // passing, manual and not-applicable audits keep their title, score and
             // description but list no resources (Google reports none for them either).
-            'items' => in_array($severity, ['fail', 'average', 'diagnostic'], true) ? $this->auditItems($audit, $ownHost) : [],
+            'items' => $actionable ? $this->auditItems($audit, $ownHost) : [],
+            // Stack-specific remediation advice (WordPress, React…), when Lighthouse
+            // detected a matching technology.
+            'advice' => $actionable ? $advice : [],
         ];
+    }
+
+    /**
+     * Build a map of "audit id => list of stack-specific remediation advice" from the
+     * Lighthouse stack packs (framework/CMS tailored fix instructions).
+     *
+     * @param array<int, mixed> $stackPacks
+     *
+     * @return array<string, array<int, array{title: string, advice: string}>>
+     */
+    private function stackAdvice(array $stackPacks): array
+    {
+        $map = [];
+        foreach ($stackPacks as $pack) {
+            if (!is_array($pack)) {
+                continue;
+            }
+            $title = (string) ($pack['title'] ?? '');
+            $descriptions = is_array($pack['descriptions'] ?? null) ? $pack['descriptions'] : [];
+            foreach ($descriptions as $auditId => $advice) {
+                if (is_string($advice) && '' !== trim($advice)) {
+                    $map[(string) $auditId][] = ['title' => $title, 'advice' => $this->plainText($advice)];
+                }
+            }
+        }
+
+        return $map;
+    }
+
+    /**
+     * @param array<string, mixed> $lighthouse
+     *
+     * @return array<int, string>
+     */
+    private function runWarnings(array $lighthouse): array
+    {
+        $warnings = is_array($lighthouse['runWarnings'] ?? null) ? $lighthouse['runWarnings'] : [];
+        $out = [];
+        foreach ($warnings as $warning) {
+            if (is_string($warning) && '' !== trim($warning)) {
+                $out[] = $this->plainText($warning);
+            }
+        }
+
+        return $out;
+    }
+
+    /**
+     * First documentation URL found in a markdown description (the "Learn more" link).
+     */
+    private function docUrl(string $markdown): ?string
+    {
+        if (1 === preg_match('/\[[^\]]+\]\((https?:\/\/[^)\s]+)\)/', $markdown, $matches)) {
+            return $matches[1];
+        }
+
+        return null;
     }
 
     /**

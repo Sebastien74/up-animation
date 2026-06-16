@@ -61,6 +61,7 @@ final class PageSpeedMarkdownFormatter
             $lines[] = '## '.$label;
             $lines[] = '';
             $this->appendScores($lines, $strat);
+            $this->appendWarnings($lines, $strat);
             $this->appendLab($lines, $strat);
             $this->appendCategories($lines, $strat);
         }
@@ -78,6 +79,24 @@ final class PageSpeedMarkdownFormatter
         foreach (self::CATEGORY_LABEL as $key => $label) {
             $score = $scores[$key] ?? null;
             $lines[] = '- '.$label.' : '.(null === $score ? 'N/A' : $score.'/100');
+        }
+        $lines[] = '';
+    }
+
+    /**
+     * @param array<int, string>  $lines
+     * @param array<string, mixed> $strat
+     */
+    private function appendWarnings(array &$lines, array $strat): void
+    {
+        $warnings = is_array($strat['warnings'] ?? null) ? $strat['warnings'] : [];
+        if ([] === $warnings) {
+            return;
+        }
+
+        $lines[] = '> Avertissements de mesure :';
+        foreach ($warnings as $warning) {
+            $lines[] = '> - '.$warning;
         }
         $lines[] = '';
     }
@@ -148,6 +167,18 @@ final class PageSpeedMarkdownFormatter
         $lines[] = '#### ['.$severity.'] '.$title.$value.$savings;
         if (!empty($audit['description'])) {
             $lines[] = (string) $audit['description'];
+        }
+
+        $advice = is_array($audit['advice'] ?? null) ? $audit['advice'] : [];
+        foreach ($advice as $tip) {
+            if (is_array($tip) && !empty($tip['advice'])) {
+                $prefix = '' !== (string) ($tip['title'] ?? '') ? '_'.$tip['title'].'_ : ' : '';
+                $lines[] = $prefix.$tip['advice'];
+            }
+        }
+
+        if (!empty($audit['learnMoreUrl'])) {
+            $lines[] = 'En savoir plus : '.$audit['learnMoreUrl'];
         }
 
         $items = is_array($audit['items'] ?? null) ? $audit['items'] : [];
