@@ -3499,6 +3499,15 @@ th.fc-col-header-cell {
         color: $warning !important;
         background: rgba(lighten($warning, 40%), .55) !important;
     }
+
+    .pa-psi-quota {
+        color: $theme-text-muted !important;
+        background: $theme-card-bg !important;
+
+        .pa-psi-quota-count {
+            color: $theme-text !important;
+        }
+    }
 }
 
 #analysis-page-detail {

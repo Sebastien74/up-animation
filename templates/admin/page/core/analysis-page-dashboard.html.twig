@@ -47,7 +47,9 @@
 
     {%- set labels = {page: "Pages"|trans, newscast: "Actualités"|trans, catalogproduct: "Produits"|trans} -%}
 
-    <div id="analysis-page" class="pt-2 pb-5">
+    <div id="analysis-page" class="pt-2 pb-5"
+         {%- if psiEnabled %} data-psi-remaining="{{ psiRemaining }}" data-psi-total="{{ psiTotal }}"{% endif -%}
+    >
 
         <div class="perf-inspector-head pa-head mb-4">
             <div class="pa-head-text">
@@ -79,7 +81,14 @@
                     <i class="icm-rocket"></i><span class="text-nowrap">{{ "Tout analyser"|trans|striptags }} (<span class="pa-run-all-count">{{ rows|length }}</span>)</span>
                 </button>
                 {%- if psiEnabled and rows is not empty -%}
-                    <button type="button" class="pa-psi-run-all btn-app small d-inline-flex align-items-center gap-2">
+                    {%- set psiBulkBlocked = psiRemaining < psiTotal -%}
+                    <span class="pa-psi-quota" title="{{ "Quota PageSpeed quotidien : %used% / %limit% requêtes"|trans({'%used%': psiQuotaUsed, '%limit%': psiQuotaLimit})|striptags }}">
+                        <i class="icm-rocket" aria-hidden="true"></i>
+                        <span class="pa-psi-quota-count">{{ psiRemaining }}</span> {{ "mesures restantes"|trans }}
+                    </span>
+                    <button type="button" class="pa-psi-run-all btn-app small d-inline-flex align-items-center gap-2{{ psiBulkBlocked ? ' is-quota-blocked' : '' }}"
+                            {{ psiBulkBlocked ? 'disabled' : '' }}
+                            title="{{ psiBulkBlocked ? "Quota insuffisant pour mesurer toutes les pages aujourd'hui"|trans|striptags : '' }}">
                         <i class="icm-rocket"></i><span class="text-nowrap">{{ "Tout PageSpeed"|trans|striptags }}</span>
                     </button>
                 {%- endif -%}
@@ -166,8 +175,9 @@
                                         <div class="pa-psi-cell-inner d-inline-flex align-items-center gap-1">
                                             <span class="pa-psi-pills">{{ pa.psiPill('M', row.psiMobile) }}{{ pa.psiPill('D', row.psiDesktop) }}</span>
                                             <button type="button" class="pa-psi-run btn-icon small info" data-psi-url="{{ row.psiUrl }}"
+                                                    {{ psiRemaining < 1 ? 'disabled' : '' }}
                                                     data-bs-toggle="tooltip" data-tooltip-variant="info"
-                                                    title="{{ "Lancer la mesure PageSpeed"|trans|striptags }}">
+                                                    title="{{ psiRemaining < 1 ? "Quota PageSpeed atteint"|trans|striptags : "Lancer la mesure PageSpeed"|trans|striptags }}">
                                                 <i class="icm-rocket"></i>
                                             </button>
                                         </div>

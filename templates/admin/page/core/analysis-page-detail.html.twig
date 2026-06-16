@@ -52,7 +52,9 @@
                 </button>
                 {%- if psiEnabled -%}
                     <button type="button" class="pa-psi-run btn-app small d-inline-flex align-items-center gap-2"
-                            data-running-label="{{ "Mesure en cours…"|trans|striptags }}">
+                            data-running-label="{{ "Mesure en cours…"|trans|striptags }}"
+                            {{ not psiCanMeasure ? 'disabled' : '' }}
+                            title="{{ not psiCanMeasure ? "Quota PageSpeed quotidien atteint"|trans|striptags : '' }}">
                         <i class="icm-google"></i><span>{{ "Lancer PageSpeed"|trans|striptags }}</span>
                     </button>
                 {%- endif -%}

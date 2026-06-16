@@ -15,6 +15,7 @@ parameters:
     env(PAGESPEED_ENABLED): 'false'
     env(PAGESPEED_API_KEY): ''
     env(PAGESPEED_STRATEGIES): 'mobile'
+    env(PAGESPEED_DAILY_QUOTA): '25000'
 
 services:
 
@@ -169,6 +170,10 @@ services:
             $apiKey: '%env(PAGESPEED_API_KEY)%'
             $enabled: '%env(bool:PAGESPEED_ENABLED)%'
             $strategies: '%env(PAGESPEED_STRATEGIES)%'
+
+    App\Service\Seo\PageSpeed\QuotaGuard:
+        arguments:
+            $dailyLimit: '%env(int:PAGESPEED_DAILY_QUOTA)%'
 
     #####################################
     #         Form extensions           #

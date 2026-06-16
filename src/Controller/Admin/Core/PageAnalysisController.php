@@ -18,6 +18,7 @@ use App\Service\Seo\PageSpeed\PageSpeedClient;
 use App\Service\Seo\PageSpeed\PageSpeedException;
 use App\Service\Seo\PageSpeed\PageSpeedRecorder;
 use App\Service\Seo\PageSpeed\PublicPageUrlResolver;
+use App\Service\Seo\PageSpeed\QuotaGuard;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -59,10 +60,11 @@ class PageAnalysisController extends AdminController
      * List all front pages (Page, Newscast, Product) with their last indicative score.
      */
     #[Route('/dashboard', name: 'admin_page_analysis_dashboard', methods: 'GET')]
-    public function dashboard(Request $request, Website $website, PageAnalysisRepository $analysisRepository, PageSpeedSnapshotRepository $pageSpeedRepository, PageSpeedClient $pageSpeed): Response
+    public function dashboard(Request $request, Website $website, PageAnalysisRepository $analysisRepository, PageSpeedSnapshotRepository $pageSpeedRepository, PageSpeedClient $pageSpeed, QuotaGuard $quota): Response
     {
+        $psiEnabled = $pageSpeed->isEnabled();
         $latest = $analysisRepository->findLatestPerPage($website);
-        $latestPsi = $pageSpeed->isEnabled() ? $pageSpeedRepository->findLatestPerPage($website) : [];
+        $latestPsi = $psiEnabled ? $pageSpeedRepository->findLatestPerPage($website) : [];
         $router = $this->coreLocator->router();
         $em = $this->coreLocator->em();
         $rows = [];
@@ -156,7 +158,11 @@ class PageAnalysisController extends AdminController
         return $this->render('admin/page/core/analysis-page-dashboard.html.twig', array_merge($this->arguments, [
             'rows' => $rows,
             'locales' => $locales,
-            'psiEnabled' => $pageSpeed->isEnabled(),
+            'psiEnabled' => $psiEnabled,
+            'psiQuotaLimit' => $psiEnabled ? $quota->dailyLimit() : 0,
+            'psiQuotaUsed' => $psiEnabled ? $quota->usedToday() : 0,
+            'psiRemaining' => $psiEnabled ? $quota->remainingMeasurements() : 0,
+            'psiTotal' => count($rows),
         ]));
     }
 
@@ -164,7 +170,7 @@ class PageAnalysisController extends AdminController
      * Detail view for a single page: latest full report (grouped findings) and history.
      */
     #[Route('/detail/{url}', name: 'admin_page_analysis_detail', methods: 'GET')]
-    public function detail(Request $request, Website $website, Url $url, PageAnalysisRepository $analysisRepository, PageAnalyzerInterface $analyzer, PageAnalysisRecorder $recorder, EventDispatcherInterface $dispatcher, PageAnalysisMarkdownFormatter $markdownFormatter, PageSpeedMarkdownFormatter $psiMarkdownFormatter, PageSpeedSnapshotRepository $pageSpeedRepository, PageSpeedClient $pageSpeed): Response
+    public function detail(Request $request, Website $website, Url $url, PageAnalysisRepository $analysisRepository, PageAnalyzerInterface $analyzer, PageAnalysisRecorder $recorder, EventDispatcherInterface $dispatcher, PageAnalysisMarkdownFormatter $markdownFormatter, PageSpeedMarkdownFormatter $psiMarkdownFormatter, PageSpeedSnapshotRepository $pageSpeedRepository, PageSpeedClient $pageSpeed, QuotaGuard $quota): Response
     {
         $interface = (string) $request->query->get('interface', 'page');
 
@@ -215,6 +221,8 @@ class PageAnalysisController extends AdminController
             'history' => $history,
             'reportMarkdown' => $reportMarkdown,
             'psiEnabled' => $psiEnabled,
+            'psiCanMeasure' => $psiEnabled && $quota->canMeasure(),
+            'psiRemaining' => $psiEnabled ? $quota->remainingMeasurements() : 0,
             'psi' => $psiSnapshot,
             'psiMarkdown' => $psiMarkdown,
             'psiUrl' => $this->coreLocator->router()->generate('admin_page_analysis_psi', [
@@ -340,10 +348,16 @@ class PageAnalysisController extends AdminController
      * runs at Google), so it is admin-triggered only, never on page load.
      */
     #[Route('/psi/{url}', name: 'admin_page_analysis_psi', methods: 'POST')]
-    public function pageSpeed(Request $request, Website $website, Url $url, PageSpeedClient $client, PageSpeedRecorder $recorder, PublicPageUrlResolver $urlResolver): JsonResponse
+    public function pageSpeed(Request $request, Website $website, Url $url, PageSpeedClient $client, PageSpeedRecorder $recorder, PublicPageUrlResolver $urlResolver, QuotaGuard $quota): JsonResponse
     {
         if (!$client->isEnabled()) {
             return new JsonResponse(['ok' => false, 'error' => 'PageSpeed Insights n\'est pas configuré.']);
+        }
+
+        // Hard guard against exceeding the daily API quota (the UI also disables the
+        // buttons, but a request could still be replayed).
+        if (!$quota->canMeasure()) {
+            return new JsonResponse(['ok' => false, 'remaining' => 0, 'error' => 'Quota PageSpeed quotidien atteint.']);
         }
 
         // Newscasts and products do not live at "/{code}" but behind a module path, so the
@@ -371,6 +385,7 @@ class PageAnalysisController extends AdminController
 
         try {
             $report = $client->measure($publicUrl, $url->getLocale());
+            $quota->consumeMeasurement();
             $recorder->record($website, $url->getCode(), $url->getLocale(), $report);
 
             $mobile = $report['strategies']['mobile'] ?? null;
@@ -380,6 +395,7 @@ class PageAnalysisController extends AdminController
                 'ok' => true,
                 'perfMobile' => $mobile['scores']['performance'] ?? null,
                 'perfDesktop' => $desktop['scores']['performance'] ?? null,
+                'remaining' => $quota->remainingMeasurements(),
                 'date' => (new \DateTime('now'))->format('d/m/Y H:i'),
             ]);
         } catch (PageSpeedException $e) {

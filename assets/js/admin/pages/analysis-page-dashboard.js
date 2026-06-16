@@ -230,6 +230,30 @@ if (container) {
     }
 
     // PageSpeed Insights: real Lighthouse runs (slow), admin-triggered per row or for all.
+    // Daily quota guard: keep the remaining-measurement counter in sync and disable the
+    // run buttons once there is not enough quota left (the server enforces it too).
+    const psiTotal = parseInt(container.getAttribute('data-psi-total') || '0', 10);
+    let psiRemaining = parseInt(container.getAttribute('data-psi-remaining') || '0', 10);
+    const psiQuotaCount = container.querySelector('.pa-psi-quota-count');
+
+    const applyPsiQuota = function (remaining) {
+        if (typeof remaining === 'number' && !isNaN(remaining)) {
+            psiRemaining = remaining;
+        }
+        if (psiQuotaCount) {
+            psiQuotaCount.textContent = psiRemaining;
+        }
+        container.querySelectorAll('.pa-psi-run').forEach(function (btn) {
+            btn.disabled = psiRemaining < 1;
+        });
+        const bulk = container.querySelector('.pa-psi-run-all');
+        if (bulk) {
+            const blocked = psiRemaining < psiTotal;
+            bulk.disabled = blocked;
+            bulk.classList.toggle('is-quota-blocked', blocked);
+        }
+    };
+
     const psiPillState = function (value) {
         if (value === null || value === undefined || value === '') {
             return 'is-none';
@@ -270,13 +294,21 @@ if (container) {
         setButtonLoading(button, true);
         row.classList.add('pa-psi-running');
 
+        let remaining;
         return fetch(url, {method: 'POST', headers: {'X-Requested-With': 'XMLHttpRequest'}})
             .then(response => response.ok ? response.json() : {ok: false})
-            .then(data => updatePsiCell(cell, data))
+            .then(data => {
+                updatePsiCell(cell, data);
+                if (data && data.remaining !== undefined) {
+                    remaining = data.remaining;
+                }
+            })
             .catch(() => {})
             .finally(() => {
                 row.classList.remove('pa-psi-running');
                 setButtonLoading(button, false);
+                // Re-apply quota state last so an exhausted button is not re-enabled.
+                applyPsiQuota(remaining);
             });
     };
 

@@ -2868,6 +2868,40 @@
         height: 14px;
         border-width: 2px;
     }
+
+    /* Daily quota: counter chip + blocked/opaque run buttons. */
+    .pa-psi-quota {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 10px;
+        font-size: 12px;
+        font-weight: 500;
+        white-space: nowrap;
+        color: $crumb-muted;
+        background: $crumb-surface;
+        border-radius: $radius-pill;
+
+        i {
+            color: $info;
+        }
+
+        .pa-psi-quota-count {
+            font-weight: 700;
+            color: $crumb-text;
+        }
+    }
+
+    .pa-psi-run-all:disabled,
+    .pa-psi-run-all.is-quota-blocked,
+    .pa-psi-run:disabled {
+        opacity: .45;
+        cursor: not-allowed;
+    }
+
+    .pa-psi-run-all.is-quota-blocked {
+        pointer-events: none;
+    }
 }
 
 /*--- PageSpeed Insights (detail panel) ---*/
