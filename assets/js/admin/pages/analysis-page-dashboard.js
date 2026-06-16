@@ -186,6 +186,9 @@ if (container) {
             if (progressWrap) {
                 progressWrap.classList.remove('d-none');
             }
+            if (mainPreloader) {
+                mainPreloader.classList.remove('d-none');
+            }
 
             let done = 0;
             const total = rows.length;
@@ -201,6 +204,9 @@ if (container) {
                 if (!rows.length) {
                     if (statusEl) {
                         statusEl.textContent = total + ' page(s) analysée(s).';
+                    }
+                    if (mainPreloader) {
+                        mainPreloader.classList.add('d-none');
                     }
                     runAllButton.disabled = false;
                     runAllButton.classList.remove('disabled');
