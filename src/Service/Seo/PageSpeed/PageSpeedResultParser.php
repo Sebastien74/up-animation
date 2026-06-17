@@ -17,7 +17,7 @@ namespace App\Service\Seo\PageSpeed;
  */
 final class PageSpeedResultParser
 {
-    private const int MAX_ITEMS_PER_AUDIT = 12;
+    private const int MAX_ITEMS_PER_AUDIT = 25;
 
     /**
      * Lighthouse category id => the key used in the normalized report.
