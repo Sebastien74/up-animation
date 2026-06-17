@@ -1139,6 +1139,13 @@ class ImageThumbnail implements ImageThumbnailInterface
             $thumbnails['infos']['height'] = (int) ceil(($thumbnails['infos']['width'] * $options['sizeInfo']->getHeight()) / $options['sizeInfo']->getWidth());
         }
 
+        // Fall back to the source intrinsic size so the <img> always reserves space (avoids CLS on unsized lazy media).
+        if (!$thumbnails['infos']['width'] && !$thumbnails['infos']['height']
+            && !empty($options['sizeInfo']) && $options['sizeInfo']->getWidth() && $options['sizeInfo']->getHeight()) {
+            $thumbnails['infos']['width'] = $options['sizeInfo']->getWidth();
+            $thumbnails['infos']['height'] = $options['sizeInfo']->getHeight();
+        }
+
         return $thumbnails;
     }
 

@@ -140,8 +140,9 @@
         {# bloc stylesheets déplacé après le framework CSS (cf. ligne 158)
            pour que les overrides page-spécifiques aient la priorité de cascade #}
 
-        {# Preload critical Hanken Grotesk faces (body 400 + LCP title 900) to avoid swap-induced CLS #}
+        {# Preload critical Hanken Grotesk faces (body 400, nav 600, LCP title 900) to avoid swap-induced CLS #}
         <link rel="preload" href="{{ asset('build/front/'~websiteTemplate~'/fonts/Hankengrotesk-Regular.woff2', webpack) }}" as="font" type="font/woff2" crossorigin nonce="{{ csp_nonce() }}">
+        <link rel="preload" href="{{ asset('build/front/'~websiteTemplate~'/fonts/Hankengrotesk-SemiBold.woff2', webpack) }}" as="font" type="font/woff2" crossorigin nonce="{{ csp_nonce() }}">
         <link rel="preload" href="{{ asset('build/front/'~websiteTemplate~'/fonts/Hankengrotesk-Black.woff2', webpack) }}" as="font" type="font/woff2" crossorigin nonce="{{ csp_nonce() }}">
         <link href="{{ asset('build/front/'~websiteTemplate~'/front-'~websiteTemplate~'-fonts.css', webpack) }}" rel="preload" as="style" class="preload-css" nonce="{{ csp_nonce() }}" onload="this.onload=null;this.rel='stylesheet'">
         <noscript><link rel="stylesheet" href="{{ asset('build/front/'~websiteTemplate~'/front-'~websiteTemplate~'-fonts.css', webpack) }}" nonce="{{ csp_nonce() }}"></noscript>
