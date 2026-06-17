@@ -315,12 +315,34 @@ final class PageSpeedResultParser
         $rows = is_array($details['items'] ?? null) ? $details['items'] : [];
 
         $items = [];
+        $this->appendItems($items, $rows, $ownHost);
+
+        return $items;
+    }
+
+    /**
+     * @param array<int, array{type: string, label: string, detail: string|null}> $items
+     * @param array<int, mixed>                                                    $rows
+     */
+    private function appendItems(array &$items, array $rows, ?string $ownHost): void
+    {
         foreach ($rows as $row) {
             if (!is_array($row)) {
                 continue;
             }
 
-            $url = isset($row['url']) && is_string($row['url']) ? $row['url'] : null;
+            // "Insight" audits (forced reflow, network tree…) nest sub-tables instead of flat
+            // rows: flatten them so their detail (function calls, timings…) is not lost.
+            if (isset($row['items']) && is_array($row['items'])) {
+                $this->appendItems($items, $row['items'], $ownHost);
+                if (count($items) >= self::MAX_ITEMS_PER_AUDIT) {
+                    return;
+                }
+                continue;
+            }
+
+            $url = isset($row['url']) && is_string($row['url']) ? $row['url']
+                : (isset($row['source']['url']) && is_string($row['source']['url']) ? $row['source']['url'] : null);
             if (null !== $url) {
                 $source = $this->sourceMapper->describe($url, $ownHost);
                 $items[] = ['type' => $source['type'], 'label' => $source['label'], 'detail' => $this->itemDetail($row), 'image' => $this->imageUrl($url)];
@@ -331,6 +353,9 @@ final class PageSpeedResultParser
                 $entity = $row['entity'] ?? null;
                 if (is_string($entity) && '' !== $entity) {
                     $items[] = ['type' => 'third-party', 'label' => $entity, 'detail' => $this->itemDetail($row)];
+                    if (count($items) >= self::MAX_ITEMS_PER_AUDIT) {
+                        return;
+                    }
                     continue;
                 }
                 $source = $this->scalarLabel($row);
@@ -340,11 +365,9 @@ final class PageSpeedResultParser
             }
 
             if (count($items) >= self::MAX_ITEMS_PER_AUDIT) {
-                break;
+                return;
             }
         }
-
-        return $items;
     }
 
     /**
@@ -380,6 +403,9 @@ final class PageSpeedResultParser
         if (is_array($source) && isset($source['url']) && is_string($source['url'])) {
             return $this->truncate($source['url'], 160);
         }
+        if (is_array($source) && isset($source['value']) && is_string($source['value']) && '' !== trim($source['value'])) {
+            return $this->truncate(trim($source['value']), 160);
+        }
 
         foreach (['label', 'name', 'statistic', 'source'] as $key) {
             if (isset($row[$key]) && is_string($row[$key]) && '' !== trim($row[$key])) {
@@ -407,6 +433,9 @@ final class PageSpeedResultParser
             $parts[] = (int) round((float) $row['blockingTime']).' ms bloquants';
         } elseif (isset($row['mainThreadTime']) && is_numeric($row['mainThreadTime']) && $row['mainThreadTime'] > 0) {
             $parts[] = (int) round((float) $row['mainThreadTime']).' ms (thread principal)';
+        }
+        if (isset($row['reflowTime']) && is_numeric($row['reflowTime']) && $row['reflowTime'] > 0) {
+            $parts[] = (int) round((float) $row['reflowTime']).' ms de reflow';
         }
 
         return [] === $parts ? null : implode(' · ', $parts);
