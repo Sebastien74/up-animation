@@ -345,23 +345,17 @@ final class PageSpeedResultParser
                 : (isset($row['source']['url']) && is_string($row['source']['url']) ? $row['source']['url'] : null);
             if (null !== $url) {
                 $source = $this->sourceMapper->describe($url, $ownHost);
-                $items[] = ['type' => $source['type'], 'label' => $source['label'], 'detail' => $this->itemDetail($row), 'image' => $this->imageUrl($url)];
+                $items[] = ['type' => $source['type'], 'label' => $source['label'], 'detail' => $this->itemDetail($row, $source['label']), 'image' => $this->imageUrl($url)];
             } elseif (null !== ($node = $this->nodeLabel($row))) {
                 // Accessibility / SEO audits point at a DOM node rather than a URL.
-                $items[] = ['type' => 'node', 'label' => $node, 'detail' => $this->itemDetail($row)];
-            } else {
-                $entity = $row['entity'] ?? null;
-                if (is_string($entity) && '' !== $entity) {
-                    $items[] = ['type' => 'third-party', 'label' => $entity, 'detail' => $this->itemDetail($row)];
-                    if (count($items) >= self::MAX_ITEMS_PER_AUDIT) {
-                        return;
-                    }
-                    continue;
-                }
-                $source = $this->scalarLabel($row);
-                if (null !== $source) {
-                    $items[] = ['type' => 'other', 'label' => $source, 'detail' => $this->itemDetail($row)];
-                }
+                $items[] = ['type' => 'node', 'label' => $node, 'detail' => $this->itemDetail($row, $node)];
+            } elseif (is_string($row['entity'] ?? null) && '' !== $row['entity']) {
+                $items[] = ['type' => 'third-party', 'label' => $row['entity'], 'detail' => $this->itemDetail($row, $row['entity'])];
+            } elseif (null !== ($label = $this->scalarLabel($row))) {
+                $items[] = ['type' => 'other', 'label' => $label, 'detail' => $this->itemDetail($row, $label)];
+            } elseif (null !== ($detail = $this->itemDetail($row, null))) {
+                // Row without an identifier (e.g. a main-thread task): keep its metrics anyway.
+                $items[] = ['type' => 'other', 'label' => '—', 'detail' => $detail];
             }
 
             if (count($items) >= self::MAX_ITEMS_PER_AUDIT) {
@@ -407,7 +401,7 @@ final class PageSpeedResultParser
             return $this->truncate(trim($source['value']), 160);
         }
 
-        foreach (['label', 'name', 'statistic', 'source'] as $key) {
+        foreach (['label', 'name', 'title', 'statistic', 'origin', 'groupLabel', 'group', 'cause', 'directive', 'source'] as $key) {
             if (isset($row[$key]) && is_string($row[$key]) && '' !== trim($row[$key])) {
                 return $this->truncate(trim($row[$key]), 160);
             }
@@ -417,28 +411,99 @@ final class PageSpeedResultParser
     }
 
     /**
+     * Every quantitative and textual field carried by a detail row, formatted, so the
+     * report keeps the same information as pagespeed.web.dev. $label is skipped to avoid
+     * repeating the resource identifier already shown as the item label.
+     *
      * @param array<string, mixed> $row
      */
-    private function itemDetail(array $row): ?string
+    private function itemDetail(array $row, ?string $label = null): ?string
     {
         $parts = [];
+
         if (isset($row['wastedBytes']) && is_numeric($row['wastedBytes']) && $row['wastedBytes'] > 0) {
             $parts[] = $this->kb((int) $row['wastedBytes']).' à économiser';
         } elseif (isset($row['totalBytes']) && is_numeric($row['totalBytes']) && $row['totalBytes'] > 0) {
             $parts[] = $this->kb((int) $row['totalBytes']);
+        } elseif (isset($row['transferSize']) && is_numeric($row['transferSize']) && $row['transferSize'] > 0) {
+            $parts[] = $this->kb((int) $row['transferSize']);
         }
-        if (isset($row['wastedMs']) && is_numeric($row['wastedMs']) && $row['wastedMs'] > 0) {
-            $parts[] = (int) round((float) $row['wastedMs']).' ms';
-        } elseif (isset($row['blockingTime']) && is_numeric($row['blockingTime']) && $row['blockingTime'] > 0) {
-            $parts[] = (int) round((float) $row['blockingTime']).' ms bloquants';
-        } elseif (isset($row['mainThreadTime']) && is_numeric($row['mainThreadTime']) && $row['mainThreadTime'] > 0) {
-            $parts[] = (int) round((float) $row['mainThreadTime']).' ms (thread principal)';
+
+        if (isset($row['wastedPercent']) && is_numeric($row['wastedPercent']) && $row['wastedPercent'] > 0) {
+            $parts[] = round((float) $row['wastedPercent']).' %';
         }
-        if (isset($row['reflowTime']) && is_numeric($row['reflowTime']) && $row['reflowTime'] > 0) {
-            $parts[] = (int) round((float) $row['reflowTime']).' ms de reflow';
+
+        $msFields = [
+            'wastedMs' => ' ms', 'blockingTime' => ' ms bloquants', 'mainThreadTime' => ' ms (thread principal)',
+            'reflowTime' => ' ms de reflow', 'duration' => ' ms', 'startTime' => ' ms (début)',
+            'responseTime' => ' ms (réponse serveur)', 'serverResponseTime' => ' ms (réponse serveur)',
+            'rtt' => ' ms (RTT)', 'scripting' => ' ms (script)', 'scriptParseCompile' => ' ms (parse/compile)',
+            'total' => ' ms (total)',
+        ];
+        foreach ($msFields as $key => $suffix) {
+            if (isset($row[$key]) && is_numeric($row[$key]) && (float) $row[$key] > 0) {
+                $parts[] = (int) round((float) $row[$key]).$suffix;
+            }
+        }
+
+        if (isset($row['requestCount']) && is_numeric($row['requestCount']) && $row['requestCount'] > 0) {
+            $parts[] = (int) $row['requestCount'].' requête(s)';
+        }
+        if (isset($row['score']) && is_numeric($row['score']) && (float) $row['score'] > 0) {
+            $parts[] = 'score '.rtrim(rtrim(sprintf('%.3f', (float) $row['score']), '0'), '.');
+        }
+
+        foreach (['statistic', 'value', 'description', 'directive', 'severity', 'resourceType', 'groupLabel', 'origin', 'mimeType'] as $key) {
+            $value = $row[$key] ?? null;
+            if (is_array($value) && isset($value['value']) && (is_string($value['value']) || is_numeric($value['value']))) {
+                $value = $value['value'];
+            }
+            if (!is_string($value) && !is_numeric($value)) {
+                continue;
+            }
+            $value = 'description' === $key ? $this->plainText((string) $value) : trim((string) $value);
+            if ('' !== $value && $value !== $label && !in_array($value, $parts, true)) {
+                $parts[] = $this->truncate($value, 160);
+            }
+        }
+
+        if (null !== ($sub = $this->subItemsDetail($row, $label))) {
+            $parts[] = $sub;
         }
 
         return [] === $parts ? null : implode(' · ', $parts);
+    }
+
+    /**
+     * Flatten a row's nested subItems (failing colours, layout-shift cause, image-delivery
+     * culprit…) into a compact string so that detail is not lost either.
+     *
+     * @param array<string, mixed> $row
+     */
+    private function subItemsDetail(array $row, ?string $label): ?string
+    {
+        $sub = $row['subItems'] ?? null;
+        $rows = is_array($sub) && is_array($sub['items'] ?? null) ? $sub['items'] : [];
+
+        $bits = [];
+        foreach ($rows as $item) {
+            if (!is_array($item)) {
+                continue;
+            }
+            $extra = is_array($item['extra'] ?? null) ? $item['extra'] : [];
+            $text = $this->nodeLabel($item)
+                ?? $this->nodeLabel(['node' => $extra])
+                ?? $this->scalarLabel($item)
+                ?? (isset($item['url']) && is_string($item['url']) ? $this->truncate($item['url'], 120) : null);
+            if (null !== $text && $text !== $label && !in_array($text, $bits, true)) {
+                $bits[] = $text;
+            }
+            if (count($bits) >= 3) {
+                break;
+            }
+        }
+
+        return [] === $bits ? null : implode(', ', $bits);
     }
 
     /**
