@@ -46,8 +46,14 @@ final class PageSpeedMarkdownFormatter
         }
 
         $lines = ['# PageSpeed Insights '.$heading, ''];
+        $measuredUrl = isset($report['url']) && is_string($report['url']) ? $report['url'] : null;
+        if (null !== $measuredUrl) {
+            $lines[] = 'URL mesurée : '.$measuredUrl;
+        }
         if (null !== $measuredAt) {
             $lines[] = 'Mesuré le '.$measuredAt->format('d/m/Y H:i');
+        }
+        if (null !== $measuredUrl || null !== $measuredAt) {
             $lines[] = '';
         }
 
