@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Command;
 
-use App\Entity\Core\Domain;
 use App\Entity\Core\Website;
 use App\Entity\Seo\Url;
 use App\Service\Admin\PageAnalysisRecorder;
 use App\Service\Admin\PageAnalyzerInterface;
+use App\Service\Seo\PageSpeed\PublicPageUrlResolver;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -24,9 +24,9 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
  *
  * Periodically analyzes published front pages (perf & rendering) over HTTP and
  * historizes the indicative score in upa_seo_page_analysis, so results can be
- * processed later. Covers every interface owning an online seo_url (Page,
- * Newscast, Product). It fetches the live public pages: no preview, no admin
- * context required, and no impact on front navigation.
+ * processed later. Covers the Page, Newscast and Product interfaces. Public URLs are
+ * built by PublicPageUrlResolver (same logic as the admin tool and PageSpeed): the
+ * home page resolves to the domain root, newscasts/products to their real module path.
  *
  * @doc php bin/console app:analysis-page:run --max-urls=500 --max-seconds=120
  *
@@ -38,12 +38,21 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 )]
 final class PageAnalysisRunCommand extends Command
 {
+    /**
+     * Analyzable interfaces: name => entity FQCN.
+     */
+    private const array INTERFACES = [
+        'page' => 'App\Entity\Layout\Page',
+        'newscast' => 'App\Entity\Module\Newscast\Newscast',
+        'catalogproduct' => 'App\Entity\Module\Catalog\Product',
+    ];
+
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
         private readonly HttpClientInterface $httpClient,
         private readonly PageAnalyzerInterface $analyzer,
         private readonly PageAnalysisRecorder $recorder,
-        private readonly string $appProtocol,
+        private readonly PublicPageUrlResolver $urlResolver,
     ) {
         parent::__construct();
     }
@@ -71,57 +80,50 @@ final class PageAnalysisRunCommand extends Command
         $totalFailed = 0;
 
         foreach ($this->resolveWebsites($input) as $website) {
-            $baseUrls = $this->baseUrls($website);
-            $defaultBase = $baseUrls['_default'] ?? null;
-            if (null === $defaultBase) {
-                $io->warning(sprintf('Website #%d has no domain, skipped.', $website->getId()));
-                continue;
-            }
-
-            $io->section($defaultBase);
-
-            $urls = $this->entityManager->getRepository(Url::class)->findOnlineForCrawl((int) $website->getId());
-            $urls = array_slice($urls, 0, $maxUrls);
-            if ([] === $urls) {
-                $io->writeln('No online URL.');
-                continue;
-            }
+            $io->section(sprintf('Website #%d', $website->getId()));
 
             $ok = 0;
             $failed = 0;
+            $crawled = 0;
             $stopped = false;
             $deadline = time() + $maxSeconds;
-            $io->progressStart(count($urls));
 
-            foreach ($urls as $row) {
-                $code = $row['code'] ?? null;
-                $locale = $row['locale'] ?? null;
-                // Fetch each page on the domain matching its locale (fallback: default domain).
-                $base = $baseUrls[(string) $locale] ?? $defaultBase;
-                $report = $this->analyzeUrl($base, (string) $code, $timeout, $userAgent);
-
-                if (null === $report) {
-                    ++$failed;
-                } else {
-                    $this->recorder->record($website, $code, $locale, $report, 'cron');
-                    ++$ok;
+            foreach (self::INTERFACES as $interface => $class) {
+                if (!class_exists($class) || $stopped) {
+                    continue;
                 }
 
-                $io->progressAdvance();
+                foreach ($this->onlineEntities($website, $class) as $entity) {
+                    foreach ($this->onlineUrls($entity) as $url) {
+                        if ($crawled >= $maxUrls) {
+                            $stopped = true;
+                            break 2;
+                        }
 
-                if (time() >= $deadline) {
-                    $stopped = true;
-                    break;
+                        $publicUrl = $this->urlResolver->resolve($website, $url, $interface, $entity, $class);
+                        $report = null === $publicUrl ? null : $this->analyzeUrl($publicUrl, (string) $url->getCode(), $timeout, $userAgent);
+
+                        if (null === $report) {
+                            ++$failed;
+                        } else {
+                            $this->recorder->record($website, $url->getCode(), $url->getLocale(), $report, 'cron');
+                            ++$ok;
+                        }
+                        ++$crawled;
+
+                        if (time() >= $deadline) {
+                            $stopped = true;
+                            break 2;
+                        }
+                    }
                 }
             }
 
-            $io->progressFinish();
             $io->writeln(sprintf(
-                '%d analyzed, %d failed%s (%d total).',
+                '%d analyzed, %d failed%s.',
                 $ok,
                 $failed,
-                $stopped ? ', stopped on time budget' : '',
-                count($urls),
+                $stopped ? ', stopped on budget' : '',
             ));
 
             $totalOk += $ok;
@@ -134,15 +136,48 @@ final class PageAnalysisRunCommand extends Command
     }
 
     /**
+     * Entities of an interface owning at least one online URL on the website.
+     *
+     * @return array<int, object>
+     */
+    private function onlineEntities(Website $website, string $class): array
+    {
+        try {
+            return $this->entityManager->createQuery(
+                sprintf('SELECT DISTINCT e FROM %s e JOIN e.urls u WHERE e.website = :website AND u.online = true ORDER BY e.id DESC', $class)
+            )
+                ->setParameter('website', $website)
+                ->getResult();
+        } catch (\Throwable) {
+            return [];
+        }
+    }
+
+    /**
+     * Online URLs owned by an entity.
+     *
+     * @return iterable<Url>
+     */
+    private function onlineUrls(object $entity): iterable
+    {
+        if (!method_exists($entity, 'getUrls')) {
+            return [];
+        }
+
+        foreach ($entity->getUrls() as $url) {
+            if ($url instanceof Url && $url->isOnline()) {
+                yield $url;
+            }
+        }
+    }
+
+    /**
      * Fetch a page over HTTP and return its analysis report (null on failure).
      *
      * @return array<string, mixed>|null
      */
-    private function analyzeUrl(string $baseUrl, string $code, int $timeout, string $userAgent): ?array
+    private function analyzeUrl(string $fullUrl, string $code, int $timeout, string $userAgent): ?array
     {
-        $path = trim($code, '/');
-        $fullUrl = rtrim($baseUrl, '/').('' === $path ? '/' : '/'.$path);
-
         try {
             $start = microtime(true);
             $response = $this->httpClient->request('GET', $fullUrl, [
@@ -180,34 +215,5 @@ final class PageAnalysisRunCommand extends Command
         }
 
         return $repository->findAll();
-    }
-
-    /**
-     * Base URLs keyed by locale (for multi-domain-per-locale sites), plus a '_default'
-     * fallback (the default domain, or the first one found).
-     *
-     * @return array<string, string|null>
-     */
-    private function baseUrls(Website $website): array
-    {
-        $domains = $this->entityManager->getRepository(Domain::class)
-            ->findBy(['configuration' => $website->getConfiguration()]);
-
-        $map = ['_default' => null];
-        foreach ($domains as $domain) {
-            $name = $domain->getName();
-            if (!$name) {
-                continue;
-            }
-            $url = $this->appProtocol.'://'.$name;
-            if ($domain->getLocale()) {
-                $map[$domain->getLocale()] = $url;
-            }
-            if ($domain->isAsDefault() || null === $map['_default']) {
-                $map['_default'] = $url;
-            }
-        }
-
-        return $map;
     }
 }

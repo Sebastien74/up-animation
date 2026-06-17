@@ -2910,7 +2910,7 @@
 
     .psi-panel {
         padding: $space-4;
-        background: $body-bg;
+        background: $dash-surface;
         border: 1px solid $crumb-border;
         border-radius: $radius-md;
     }
@@ -2948,6 +2948,12 @@
         color: $crumb-muted;
     }
 
+    .psi-vitals {
+        display: flex;
+        flex-direction: column;
+        gap: $space-2;
+    }
+
     .psi-vitals-row {
         display: flex;
         flex-wrap: wrap;
@@ -2957,34 +2963,38 @@
     .psi-vital {
         display: flex;
         flex-direction: column;
-        min-width: 62px;
-        padding: 4px 8px;
-        background: $body-bg;
-        border-left: 3px solid $crumb-border;
-        border-radius: $radius-md;
-
-        &.is-good {
-            border-left-color: $success;
-        }
-
-        &.is-warn {
-            border-left-color: $warning;
-        }
-
-        &.is-bad {
-            border-left-color: $danger;
-        }
+        gap: 2px;
+        min-width: 88px;
+        padding: $space-2 $space-3;
+        background: $dash-surface-2;
+        border: 1px solid $crumb-border;
+        border-radius: $radius-sm;
 
         .psi-vital-label {
             font-size: 10px;
             font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: .06em;
             color: $crumb-muted;
         }
 
         .psi-vital-value {
-            font-size: 13px;
+            font-size: 15px;
+            font-weight: 600;
             color: $crumb-text;
             font-variant-numeric: tabular-nums;
+        }
+
+        &.is-good .psi-vital-value {
+            color: $success;
+        }
+
+        &.is-warn .psi-vital-value {
+            color: $warning;
+        }
+
+        &.is-bad .psi-vital-value {
+            color: $danger;
         }
     }
 
@@ -2996,18 +3006,31 @@
     }
 
     .psi-opp-list {
-        margin-top: $space-3;
+        display: flex;
+        flex-direction: column;
+        gap: $space-1;
+        margin-top: $space-2;
     }
 
+    /* Each audit row is a surface tile; severity is carried by a leading glyph. */
     .psi-opp {
-        padding: $space-2 0;
-        border-top: 1px solid $crumb-border;
+        background: $crumb-surface;
+        border: 1px solid $crumb-border;
+        border-radius: $radius-sm;
+        transition: background $transition-fast, border-color $transition-fast;
+
+        &:hover {
+            background: $btn-surface-hover;
+            border-color: $crumb-border-hover;
+        }
     }
 
     .psi-opp-summary {
-        display: flex;
+        display: grid;
+        grid-template-columns: 14px 1fr auto auto;
         align-items: center;
-        gap: $space-2;
+        gap: $space-3;
+        padding: $space-2 $space-3;
         cursor: pointer;
         list-style: none;
 
@@ -3016,41 +3039,58 @@
         }
     }
 
-    .psi-opp-sev {
+    /* PSI-style severity marker: shape + colour, redundant encoding for accessibility. */
+    .psi-opp-glyph {
         flex: 0 0 auto;
-        width: 10px;
-        height: 10px;
+        width: 11px;
+        height: 11px;
         border-radius: 50%;
-        background: $crumb-muted;
+        border: 1.5px solid $crumb-muted;
+    }
 
-        &.sev-high,
-        &.sev-fail {
-            background: $danger;
-        }
+    .sev-high .psi-opp-glyph,
+    .sev-fail .psi-opp-glyph {
+        width: 11px;
+        height: 11px;
+        border: none;
+        border-radius: 2px;
+        background: $danger;
+    }
 
-        &.sev-medium,
-        &.sev-average {
-            background: $warning;
-        }
+    .sev-medium .psi-opp-glyph,
+    .sev-average .psi-opp-glyph {
+        width: 12px;
+        height: 11px;
+        border: none;
+        border-radius: 0;
+        background: $warning;
+        clip-path: polygon(50% 0, 100% 100%, 0 100%);
+    }
 
-        &.sev-low,
-        &.sev-diagnostic {
-            background: $crumb-muted;
-        }
+    .sev-pass .psi-opp-glyph {
+        border: none;
+        background: $success;
+    }
 
-        &.sev-pass {
-            background: $success;
-        }
+    .sev-manual .psi-opp-glyph {
+        border-color: $info;
     }
 
     .psi-opp-title {
-        flex: 1 1 auto;
         min-width: 0;
         font-weight: 500;
         color: $crumb-text;
     }
 
+    .psi-opp-meta {
+        display: inline-flex;
+        align-items: center;
+        gap: $space-2;
+        white-space: nowrap;
+    }
+
     .psi-opp-savings {
+        font-size: 12px;
         font-weight: 600;
         color: $danger;
         font-variant-numeric: tabular-nums;
@@ -3062,8 +3102,18 @@
         font-variant-numeric: tabular-nums;
     }
 
+    .psi-opp-chevron {
+        font-size: 12px;
+        color: $crumb-muted;
+        transition: transform $transition-fast;
+    }
+
+    .psi-opp-acc[open] .psi-opp-chevron {
+        transform: rotate(180deg);
+    }
+
     .psi-opp-body {
-        padding: $space-2 0 $space-1 calc(10px + #{$space-2});
+        padding: 0 $space-3 $space-3;
     }
 
     .psi-opp-desc {
@@ -3143,11 +3193,11 @@
 
     .psi-advice {
         margin-top: $space-2;
-        padding: $space-2;
+        padding: $space-2 $space-3;
         font-size: 12px;
         color: $crumb-text;
         background: rgba($info, .06);
-        border-left: 3px solid $info;
+        border: 1px solid rgba($info, .22);
         border-radius: $radius-md;
 
         .psi-advice-title {
@@ -3210,20 +3260,30 @@
         }
     }
 
-    /* Strategy switch (Mobile / Desktop) inside the PSI panel. */
+    /* Strategy switch (Mobile / Desktop): a segmented control, visible in both states. */
     .psi-strat-nav {
-        gap: $space-1;
+        display: inline-flex;
+        gap: 2px;
+        padding: 3px;
+        background: $dash-bg-1;
+        border: 1px solid $crumb-border;
+        border-radius: $radius-pill;
 
         .nav-link {
             display: inline-flex;
             align-items: center;
             gap: $space-1;
-            padding: 4px 12px;
+            padding: 4px 14px;
             font-size: 13px;
             font-weight: 500;
             color: $crumb-muted;
-            background: $crumb-surface;
+            background: transparent;
             border-radius: $radius-pill;
+            transition: color $transition-fast, background $transition-fast;
+
+            &:hover {
+                color: $crumb-text;
+            }
 
             &.active {
                 color: #fff;
@@ -3232,16 +3292,24 @@
         }
     }
 
+    /* Scorecard band: the four gauges + Core Web Vitals read as one results unit. */
+    .psi-scorecard {
+        margin-bottom: $space-4;
+        background: $dash-bg-1;
+        border: 1px solid $crumb-border;
+        border-radius: $radius-md;
+        overflow: hidden;
+    }
+
     /* Circular score gauges (per category, PSI style). */
     .psi-gauges {
         display: grid;
         grid-template-columns: repeat(4, minmax(0, 1fr));
-        gap: $space-3;
-        margin-bottom: $space-4;
+    }
 
-        @include mediaQuery(max-md) {
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-        }
+    .psi-scorecard .psi-vitals {
+        padding: $space-3 $space-4 $space-4;
+        border-top: 1px solid $crumb-border;
     }
 
     .psi-gauge {
@@ -3250,6 +3318,31 @@
         align-items: center;
         gap: $space-1;
         text-align: center;
+    }
+
+    .psi-gauges .psi-gauge {
+        padding: $space-4 $space-3;
+        border-right: 1px solid $crumb-border;
+
+        &:last-child {
+            border-right: none;
+        }
+
+        @include mediaQuery(max-md) {
+            &:nth-child(2n) {
+                border-right: none;
+            }
+
+            &:nth-child(-n+2) {
+                border-bottom: 1px solid $crumb-border;
+            }
+        }
+    }
+
+    @include mediaQuery(max-md) {
+        .psi-gauges {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
     }
 
     .psi-gauge-svg {
@@ -3368,7 +3461,7 @@
     }
 
     .psi-group-label {
-        margin: $space-2 0 0;
+        margin: $space-3 0 $space-2;
         font-size: 11px;
         font-weight: 700;
         text-transform: uppercase;
@@ -3394,34 +3487,6 @@
             &::-webkit-details-marker {
                 display: none;
             }
-        }
-    }
-
-    .psi-audit-score {
-        flex: 0 0 auto;
-        min-width: 22px;
-        padding: 1px 5px;
-        font-size: 11px;
-        font-weight: 700;
-        text-align: center;
-        border-radius: $radius-md;
-        font-variant-numeric: tabular-nums;
-        color: $crumb-muted;
-        background: $crumb-surface;
-
-        &.sev-fail {
-            color: $danger;
-            background: rgba($danger, .12);
-        }
-
-        &.sev-average {
-            color: $warning;
-            background: rgba($warning, .18);
-        }
-
-        &.sev-pass {
-            color: $success;
-            background: rgba($success, .14);
         }
     }
 }

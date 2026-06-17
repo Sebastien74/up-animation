@@ -156,7 +156,7 @@
                                 <td class="align-middle px-4" data-label="{{ "Page"|trans|striptags }}" data-sort="{{ row.title|lower }}">
                                     <span class="pa-page-cell">
                                         <a href="{{ row.detailUrl }}" class="pa-page-title">{{ row.title }}</a>
-                                        <a href="{{ row.previewUrl }}" target="_blank" rel="noopener" class="pa-page-url">/{{ row.code }}</a>
+                                        <a href="{{ row.previewUrl }}" target="_blank" rel="noopener" class="pa-page-url">{{ row.home ? '/' : '/' ~ row.code }}</a>
                                     </span>
                                 </td>
                                 <td class="align-middle text-center px-4" data-label="{{ "Langue"|trans|striptags }}" data-sort="{{ localeCode }}">

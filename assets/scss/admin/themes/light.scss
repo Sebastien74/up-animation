@@ -3532,25 +3532,28 @@ th.fc-col-header-cell {
         color: $theme-text-muted !important;
     }
 
+    .psi-scorecard {
+        background: $theme-bg !important;
+        border-color: $theme-border-subtle !important;
+    }
+
+    .psi-gauges .psi-gauge,
+    .psi-scorecard .psi-vitals {
+        border-color: $theme-border-subtle !important;
+    }
+
     .psi-vital {
         background: $theme-card-bg !important;
-        border-left-color: $theme-border-subtle !important;
-
-        &.is-good {
-            border-left-color: $success !important;
-        }
-
-        &.is-warn {
-            border-left-color: $warning !important;
-        }
-
-        &.is-bad {
-            border-left-color: $danger !important;
-        }
+        border-color: $theme-border-subtle !important;
     }
 
     .psi-opp {
-        border-top-color: $theme-border-subtle !important;
+        background: $theme-surface !important;
+        border-color: $theme-border-subtle !important;
+
+        &:hover {
+            background: $theme-overlay-soft !important;
+        }
     }
 
     .psi-source-tag {
@@ -3571,10 +3574,38 @@ th.fc-col-header-cell {
         border-color: $theme-border-subtle !important;
     }
 
-    .psi-count,
-    .psi-audit-score,
+    .psi-strat-nav {
+        background: $theme-bg !important;
+        border-color: $theme-border !important;
+    }
+
     .psi-strat-nav .nav-link {
-        background: $theme-card-bg !important;
+        background: transparent !important;
+
+        &.active {
+            color: $white !important;
+            background: $info !important;
+        }
+    }
+
+    .psi-count {
+        color: $theme-text-muted !important;
+        background: $theme-overlay-medium !important;
+
+        &.is-bad {
+            color: $danger !important;
+            background: rgba($danger, .10) !important;
+        }
+
+        &.is-good {
+            color: $success !important;
+            background: rgba($success, .12) !important;
+        }
+
+        &.is-info {
+            color: $theme-text !important;
+            background: $theme-overlay-strong !important;
+        }
     }
 
     .pa-detail-tabs .nav-link,

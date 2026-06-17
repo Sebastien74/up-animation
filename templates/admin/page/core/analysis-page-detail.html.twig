@@ -89,27 +89,29 @@
         </div>
 
         {%- if psiEnabled -%}
+            {# Activate the tab whose analysis exists; if only one is done, focus it. #}
+            {%- set psiActive = latest is null and psi is not null -%}
             <ul class="nav nav-tabs pa-detail-tabs mb-4" role="tablist">
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link active" id="pa-tab-internal" data-bs-toggle="tab"
+                    <button class="nav-link {{ psiActive ? '' : 'active' }}" id="pa-tab-internal" data-bs-toggle="tab"
                             data-bs-target="#pa-pane-internal" type="button" role="tab"
-                            aria-controls="pa-pane-internal" aria-selected="true">
+                            aria-controls="pa-pane-internal" aria-selected="{{ psiActive ? 'false' : 'true' }}">
                         <i class="icm-rocket" aria-hidden="true"></i> {{ "Analyse interne"|trans }}
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="pa-tab-psi" data-bs-toggle="tab"
+                    <button class="nav-link {{ psiActive ? 'active' : '' }}" id="pa-tab-psi" data-bs-toggle="tab"
                             data-bs-target="#pa-pane-psi" type="button" role="tab"
-                            aria-controls="pa-pane-psi" aria-selected="false">
+                            aria-controls="pa-pane-psi" aria-selected="{{ psiActive ? 'true' : 'false' }}">
                         <i class="icm-google" aria-hidden="true"></i> {{ "PageSpeed Insights"|trans }}
                     </button>
                 </li>
             </ul>
             <div class="tab-content pa-detail-tab-content">
-                <div class="tab-pane fade show active" id="pa-pane-internal" role="tabpanel" aria-labelledby="pa-tab-internal">
+                <div class="tab-pane fade {{ psiActive ? '' : 'show active' }}" id="pa-pane-internal" role="tabpanel" aria-labelledby="pa-tab-internal">
                     {%- include 'admin/page/core/include/analysis-page-internal.html.twig' with {latest: latest, history: history} only -%}
                 </div>
-                <div class="tab-pane fade" id="pa-pane-psi" role="tabpanel" aria-labelledby="pa-tab-psi">
+                <div class="tab-pane fade {{ psiActive ? 'show active' : '' }}" id="pa-pane-psi" role="tabpanel" aria-labelledby="pa-tab-psi">
                     {%- if psi is not null -%}
                         {%- include 'admin/page/core/include/analysis-page-psi.html.twig' with {psi: psi, psiMarkdown: psiMarkdown} only -%}
                     {%- else -%}

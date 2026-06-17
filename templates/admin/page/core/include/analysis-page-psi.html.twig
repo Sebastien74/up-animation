@@ -45,13 +45,15 @@
     <li class="psi-opp sev-{{ opp.severity }}">
         <details class="psi-opp-acc">
             <summary class="psi-opp-summary">
-                <span class="psi-opp-sev sev-{{ opp.severity }}" aria-hidden="true"></span>
-                {%- if opp.score is not null -%}
-                    <span class="psi-audit-score sev-{{ opp.severity }}">{{ opp.score }}</span>
-                {%- endif -%}
+                <span class="psi-opp-glyph" aria-hidden="true"></span>
                 <span class="psi-opp-title">{{ opp.title }}</span>
-                {%- if opp.savingsMs %}<span class="psi-opp-savings">~{{ (opp.savingsMs / 1000)|round(1) }} s</span>{% endif -%}
-                {%- if opp.displayValue %}<span class="psi-opp-display">{{ opp.displayValue }}</span>{% endif -%}
+                {%- if opp.savingsMs or opp.displayValue -%}
+                    <span class="psi-opp-meta">
+                        {%- if opp.savingsMs %}<span class="psi-opp-savings">~{{ (opp.savingsMs / 1000)|round(1) }} s</span>{% endif -%}
+                        {%- if opp.displayValue %}<span class="psi-opp-display">{{ opp.displayValue }}</span>{% endif -%}
+                    </span>
+                {%- endif -%}
+                <i class="icm-angle-down psi-opp-chevron" aria-hidden="true"></i>
             </summary>
             <div class="psi-opp-body">
                 {%- if opp.description %}<p class="psi-opp-desc">{{ opp.description }}</p>{% endif -%}
@@ -190,13 +192,14 @@
                     </div>
                 {%- endif -%}
 
-                <div class="psi-gauges">
-                    {%- for sk, sl in scoreLabels -%}
-                        {{ psiMacro.gauge(strat.scores[sk]|default(null), sl, false) }}
-                    {%- endfor -%}
-                </div>
+                <div class="psi-scorecard">
+                    <div class="psi-gauges">
+                        {%- for sk, sl in scoreLabels -%}
+                            {{ psiMacro.gauge(strat.scores[sk]|default(null), sl, false) }}
+                        {%- endfor -%}
+                    </div>
 
-                <div class="psi-vitals">
+                    <div class="psi-vitals">
                     <span class="psi-vitals-caption">{{ "Core Web Vitals (labo)"|trans }}</span>
                     <div class="psi-vitals-row">
                         {%- set lcpState = lab.lcpMs is null ? 'is-none' : (lab.lcpMs <= 2500 ? 'is-good' : (lab.lcpMs <= 4000 ? 'is-warn' : 'is-bad')) -%}
@@ -205,9 +208,12 @@
                         {{ psiMacro.vital('TBT', lab.display.tbt|default(null), tbtState) }}
                         {%- set clsState = lab.cls is null ? 'is-none' : (lab.cls <= 0.1 ? 'is-good' : (lab.cls <= 0.25 ? 'is-warn' : 'is-bad')) -%}
                         {{ psiMacro.vital('CLS', lab.display.cls|default(null), clsState) }}
-                        {{ psiMacro.vital('FCP', lab.display.fcp|default(null), 'is-none') }}
-                        {{ psiMacro.vital('Speed Index', lab.display.speedIndex|default(null), 'is-none') }}
-                        {{ psiMacro.vital('TTI', lab.display.tti|default(null), 'is-none') }}
+                        {%- set fcpState = lab.fcpMs is null ? 'is-none' : (lab.fcpMs <= 1800 ? 'is-good' : (lab.fcpMs <= 3000 ? 'is-warn' : 'is-bad')) -%}
+                        {{ psiMacro.vital('FCP', lab.display.fcp|default(null), fcpState) }}
+                        {%- set siState = lab.speedIndexMs is null ? 'is-none' : (lab.speedIndexMs <= 3400 ? 'is-good' : (lab.speedIndexMs <= 5800 ? 'is-warn' : 'is-bad')) -%}
+                        {{ psiMacro.vital('Speed Index', lab.display.speedIndex|default(null), siState) }}
+                        {%- set ttiState = lab.ttiMs is null ? 'is-none' : (lab.ttiMs <= 3800 ? 'is-good' : (lab.ttiMs <= 7300 ? 'is-warn' : 'is-bad')) -%}
+                        {{ psiMacro.vital('TTI', lab.display.tti|default(null), ttiState) }}
                     </div>
 
                     {%- if field -%}
@@ -223,6 +229,7 @@
                             {%- endfor -%}
                         </div>
                     {%- endif -%}
+                    </div>
                 </div>
 
                 {%- if cats is not empty -%}
