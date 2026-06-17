@@ -176,6 +176,14 @@ services:
             $dailyLimit: '%env(int:PAGESPEED_DAILY_QUOTA)%'
 
     #####################################
+    #     Documentation markdown        #
+    #####################################
+
+    # The doc portal renders markdown via the markdown_to_html filter, used ONLY by the
+    # documentation templates. Bind it to GitHub-Flavored Markdown so tables render.
+    Twig\Extra\Markdown\MarkdownInterface: '@App\Service\Development\DocumentationMarkdownConverter'
+
+    #####################################
     #         Form extensions           #
     #####################################
 
