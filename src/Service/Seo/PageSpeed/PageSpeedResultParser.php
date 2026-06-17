@@ -312,52 +312,54 @@ final class PageSpeedResultParser
     private function auditItems(array $audit, ?string $ownHost): array
     {
         $details = is_array($audit['details'] ?? null) ? $audit['details'] : [];
+        $headings = is_array($details['headings'] ?? null) ? $details['headings'] : [];
         $rows = is_array($details['items'] ?? null) ? $details['items'] : [];
 
         $items = [];
-        $this->appendItems($items, $rows, $ownHost);
+        $this->collectRows($items, $rows, $headings, $ownHost);
 
         return $items;
     }
 
     /**
+     * Headings-driven extraction: every column the audit declares (key, label, valueType)
+     * is emitted, so the report keeps the same information as pagespeed.web.dev. "Insight"
+     * audits nest sub-tables (each with their own headings): they are flattened recursively.
+     *
      * @param array<int, array{type: string, label: string, detail: string|null}> $items
      * @param array<int, mixed>                                                    $rows
+     * @param array<int, mixed>                                                    $headings
      */
-    private function appendItems(array &$items, array $rows, ?string $ownHost): void
+    private function collectRows(array &$items, array $rows, array $headings, ?string $ownHost): void
     {
         foreach ($rows as $row) {
             if (!is_array($row)) {
                 continue;
             }
 
-            // "Insight" audits (forced reflow, network tree…) nest sub-tables instead of flat
-            // rows: flatten them so their detail (function calls, timings…) is not lost.
-            if (isset($row['items']) && is_array($row['items'])) {
-                $this->appendItems($items, $row['items'], $ownHost);
+            // Insight "list" audits wrap each block in a titled/described list-section whose
+            // payload (a table or a critical-request tree) sits under "value".
+            if ('list-section' === ($row['type'] ?? null)) {
+                $this->collectSection($items, $row, $ownHost);
                 if (count($items) >= self::MAX_ITEMS_PER_AUDIT) {
                     return;
                 }
                 continue;
             }
 
-            $url = isset($row['url']) && is_string($row['url']) ? $row['url']
-                : (isset($row['source']['url']) && is_string($row['source']['url']) ? $row['source']['url'] : null);
-            if (null !== $url) {
-                $source = $this->sourceMapper->describe($url, $ownHost);
-                $items[] = ['type' => $source['type'], 'label' => $source['label'], 'detail' => $this->itemDetail($row, $source['label']), 'image' => $this->imageUrl($url)];
-            } elseif (null !== ($node = $this->nodeLabel($row))) {
-                // Accessibility / SEO audits point at a DOM node rather than a URL.
-                $items[] = ['type' => 'node', 'label' => $node, 'detail' => $this->itemDetail($row, $node)];
-            } elseif (is_string($row['entity'] ?? null) && '' !== $row['entity']) {
-                $items[] = ['type' => 'third-party', 'label' => $row['entity'], 'detail' => $this->itemDetail($row, $row['entity'])];
-            } elseif (null !== ($label = $this->scalarLabel($row))) {
-                $items[] = ['type' => 'other', 'label' => $label, 'detail' => $this->itemDetail($row, $label)];
-            } elseif (null !== ($detail = $this->itemDetail($row, null))) {
-                // Row without an identifier (e.g. a main-thread task): keep its metrics anyway.
-                $items[] = ['type' => 'other', 'label' => '—', 'detail' => $detail];
+            if (isset($row['items']) && is_array($row['items'])) {
+                $childHeadings = is_array($row['headings'] ?? null) ? $row['headings'] : $headings;
+                $this->collectRows($items, $row['items'], $childHeadings, $ownHost);
+                if (count($items) >= self::MAX_ITEMS_PER_AUDIT) {
+                    return;
+                }
+                continue;
             }
 
+            $item = $this->rowToItem($row, $headings, $ownHost);
+            if (null !== $item) {
+                $items[] = $item;
+            }
             if (count($items) >= self::MAX_ITEMS_PER_AUDIT) {
                 return;
             }
@@ -365,18 +367,217 @@ final class PageSpeedResultParser
     }
 
     /**
-     * Human label for a DOM-node based detail row (accessibility, SEO, best practices).
+     * A list-section: emit its title/description header, then its payload (nested table or
+     * critical-request tree).
+     *
+     * @param array<int, array{type: string, label: string, detail: string|null}> $items
+     * @param array<string, mixed>                                                 $section
+     */
+    private function collectSection(array &$items, array $section, ?string $ownHost): void
+    {
+        $title = is_string($section['title'] ?? null) ? trim($section['title']) : null;
+        $description = is_string($section['description'] ?? null) ? $this->plainText($section['description']) : null;
+        if (null !== $title || null !== $description) {
+            $items[] = ['type' => 'other', 'label' => $title ?? '—', 'detail' => '' !== (string) $description ? $description : null, 'image' => null];
+            if (count($items) >= self::MAX_ITEMS_PER_AUDIT) {
+                return;
+            }
+        }
+
+        $value = is_array($section['value'] ?? null) ? $section['value'] : [];
+        if ('network-tree' === ($value['type'] ?? null)) {
+            $longest = is_array($value['longestChain'] ?? null) && is_numeric($value['longestChain']['duration'] ?? null)
+                ? (int) round((float) $value['longestChain']['duration']) : null;
+            if (null !== $longest) {
+                $items[] = ['type' => 'other', 'label' => 'Latence maximale du chemin critique', 'detail' => $longest.' ms', 'image' => null];
+            }
+            $this->collectChain($items, is_array($value['chains'] ?? null) ? $value['chains'] : [], $ownHost);
+
+            return;
+        }
+
+        $headings = is_array($value['headings'] ?? null) ? $value['headings'] : [];
+        $rows = is_array($value['items'] ?? null) ? $value['items'] : [];
+        if ([] !== $rows) {
+            $this->collectRows($items, $rows, $headings, $ownHost);
+        }
+    }
+
+    /**
+     * Walk a critical-request chain tree, emitting each request with its time and weight.
+     *
+     * @param array<int, array{type: string, label: string, detail: string|null}> $items
+     * @param array<string, mixed>                                                 $chains
+     */
+    private function collectChain(array &$items, array $chains, ?string $ownHost): void
+    {
+        foreach ($chains as $node) {
+            if (!is_array($node)) {
+                continue;
+            }
+            if (is_string($node['url'] ?? null)) {
+                $source = $this->sourceMapper->describe($node['url'], $ownHost);
+                $parts = [];
+                if (is_numeric($node['navStartToEndTime'] ?? null)) {
+                    $parts[] = (int) round((float) $node['navStartToEndTime']).' ms';
+                }
+                if (is_numeric($node['transferSize'] ?? null) && $node['transferSize'] > 0) {
+                    $parts[] = $this->kb((int) $node['transferSize']);
+                }
+                $items[] = ['type' => $source['type'], 'label' => $source['label'], 'detail' => [] === $parts ? null : implode(' · ', $parts), 'image' => $this->imageUrl($node['url'])];
+            }
+            if (count($items) >= self::MAX_ITEMS_PER_AUDIT) {
+                return;
+            }
+            if (is_array($node['children'] ?? null)) {
+                $this->collectChain($items, $node['children'], $ownHost);
+                if (count($items) >= self::MAX_ITEMS_PER_AUDIT) {
+                    return;
+                }
+            }
+        }
+    }
+
+    /**
+     * One detail row -> displayable item: the first column becomes the label, every other
+     * column (and its subItems) becomes "Label : value" formatted by its valueType.
      *
      * @param array<string, mixed> $row
+     * @param array<int, mixed>    $headings
+     *
+     * @return array{type: string, label: string, detail: string|null, image: string|null}|null
      */
-    private function nodeLabel(array $row): ?string
+    private function rowToItem(array $row, array $headings, ?string $ownHost): ?array
     {
-        $node = $row['node'] ?? null;
-        if (!is_array($node)) {
+        $label = null;
+        $type = 'other';
+        $image = null;
+        $parts = [];
+
+        foreach ($headings as $heading) {
+            if (!is_array($heading)) {
+                continue;
+            }
+            $key = isset($heading['key']) && is_string($heading['key']) ? $heading['key'] : null;
+            $valueType = isset($heading['valueType']) ? (string) $heading['valueType'] : 'text';
+            $colLabel = isset($heading['label']) ? trim((string) $heading['label']) : '';
+
+            $value = null === $key ? null : $this->formatCell($row[$key] ?? null, $valueType, $ownHost);
+            if (null !== $value && '' !== $value) {
+                if (null === $label) {
+                    $label = $value;
+                    $type = $this->cellType($valueType, null === $key ? null : ($row[$key] ?? null), $ownHost);
+                    if ('url' === $valueType && is_string($row[$key] ?? null)) {
+                        $image = $this->imageUrl($row[$key]);
+                    }
+                } elseif (!in_array($value, $parts, true)) {
+                    $parts[] = ('' !== $colLabel ? $colLabel.' : ' : '').$value;
+                }
+            }
+
+            foreach ($this->subItemValues($row, $heading, $ownHost) as $subValue) {
+                if ($subValue !== $label && !in_array($subValue, $parts, true)) {
+                    $parts[] = $subValue;
+                }
+            }
+        }
+
+        if (null === $label && [] === $parts) {
             return null;
         }
 
-        foreach (['selector', 'snippet', 'nodeLabel'] as $key) {
+        return [
+            'type' => $type,
+            'label' => $label ?? '—',
+            'detail' => [] === $parts ? null : implode(' · ', $parts),
+            'image' => $image,
+        ];
+    }
+
+    /**
+     * Format a single cell value according to its Lighthouse valueType.
+     */
+    private function formatCell(mixed $value, string $valueType, ?string $ownHost): ?string
+    {
+        return match ($valueType) {
+            'bytes' => is_numeric($value) && (float) $value > 0 ? $this->kb((int) $value) : null,
+            'ms', 'timespanMs' => is_numeric($value) && (float) $value > 0 ? (int) round((float) $value).' ms' : null,
+            'numeric' => $this->numericText($value),
+            'url' => is_string($value) && '' !== $value ? $this->sourceMapper->describe($value, $ownHost)['label'] : null,
+            'node' => $this->nodeText($value),
+            'source-location' => $this->sourceLocationText($value, $ownHost),
+            'link' => $this->linkText($value),
+            default => $this->textCell($value),
+        };
+    }
+
+    private function cellType(string $valueType, mixed $value, ?string $ownHost): string
+    {
+        return match ($valueType) {
+            'url' => is_string($value) ? $this->sourceMapper->describe($value, $ownHost)['type'] : 'other',
+            'node' => 'node',
+            'source-location' => is_array($value) && is_string($value['url'] ?? null) ? $this->sourceMapper->describe($value['url'], $ownHost)['type'] : 'source',
+            default => 'other',
+        };
+    }
+
+    /**
+     * subItems of a row formatted through the column's subItemsHeading (related node,
+     * layout-shift cause, per-origin values…).
+     *
+     * @param array<string, mixed> $row
+     * @param array<string, mixed> $heading
+     *
+     * @return array<int, string>
+     */
+    private function subItemValues(array $row, array $heading, ?string $ownHost): array
+    {
+        $sub = $row['subItems'] ?? null;
+        $rows = is_array($sub) && is_array($sub['items'] ?? null) ? $sub['items'] : [];
+        $si = is_array($heading['subItemsHeading'] ?? null) ? $heading['subItemsHeading'] : null;
+        $key = is_array($si) && is_string($si['key'] ?? null) ? $si['key'] : null;
+        // Skip subItems that just repeat the parent column metric (e.g. wastedBytes/wastedBytes).
+        if (null === $key || [] === $rows || $key === ($heading['key'] ?? null)) {
+            return [];
+        }
+        $valueType = isset($si['valueType']) ? (string) $si['valueType'] : (string) ($heading['valueType'] ?? 'text');
+
+        $out = [];
+        foreach ($rows as $item) {
+            if (!is_array($item)) {
+                continue;
+            }
+            $value = $this->formatCell($item[$key] ?? null, $valueType, $ownHost);
+            if (null !== $value && '' !== $value && !in_array($value, $out, true)) {
+                $out[] = $value;
+            }
+            if (count($out) >= 3) {
+                break;
+            }
+        }
+
+        return $out;
+    }
+
+    private function numericText(mixed $value): ?string
+    {
+        if (is_array($value) && isset($value['value'])) {
+            $value = $value['value'];
+        }
+        if (!is_numeric($value)) {
+            return null;
+        }
+        $float = (float) $value;
+
+        return $float === (float) (int) $float ? (string) (int) $float : rtrim(rtrim(sprintf('%.3f', $float), '0'), '.');
+    }
+
+    private function nodeText(mixed $node): ?string
+    {
+        if (!is_array($node)) {
+            return null;
+        }
+        foreach (['selector', 'snippet', 'nodeLabel', 'value'] as $key) {
             if (isset($node[$key]) && is_string($node[$key]) && '' !== trim($node[$key])) {
                 return $this->truncate(trim($node[$key]), 160);
             }
@@ -385,125 +586,49 @@ final class PageSpeedResultParser
         return null;
     }
 
-    /**
-     * Fallback label for a detail row that is neither a URL nor a node (e.g. a source
-     * location or a plain string value).
-     *
-     * @param array<string, mixed> $row
-     */
-    private function scalarLabel(array $row): ?string
+    private function sourceLocationText(mixed $source, ?string $ownHost): ?string
     {
-        $source = $row['source'] ?? null;
-        if (is_array($source) && isset($source['url']) && is_string($source['url'])) {
-            return $this->truncate($source['url'], 160);
+        if (!is_array($source)) {
+            return null;
         }
-        if (is_array($source) && isset($source['value']) && is_string($source['value']) && '' !== trim($source['value'])) {
-            return $this->truncate(trim($source['value']), 160);
-        }
+        if (is_string($source['url'] ?? null)) {
+            $line = isset($source['line']) && is_numeric($source['line']) ? ':'.(int) $source['line'] : '';
 
-        foreach (['label', 'name', 'title', 'statistic', 'origin', 'groupLabel', 'group', 'cause', 'directive', 'source'] as $key) {
-            if (isset($row[$key]) && is_string($row[$key]) && '' !== trim($row[$key])) {
-                return $this->truncate(trim($row[$key]), 160);
-            }
+            return $this->sourceMapper->describe($source['url'], $ownHost)['label'].$line;
+        }
+        if (is_string($source['value'] ?? null) && '' !== trim($source['value'])) {
+            return $this->truncate(trim($source['value']), 160);
         }
 
         return null;
     }
 
-    /**
-     * Every quantitative and textual field carried by a detail row, formatted, so the
-     * report keeps the same information as pagespeed.web.dev. $label is skipped to avoid
-     * repeating the resource identifier already shown as the item label.
-     *
-     * @param array<string, mixed> $row
-     */
-    private function itemDetail(array $row, ?string $label = null): ?string
+    private function linkText(mixed $value): ?string
     {
-        $parts = [];
-
-        if (isset($row['wastedBytes']) && is_numeric($row['wastedBytes']) && $row['wastedBytes'] > 0) {
-            $parts[] = $this->kb((int) $row['wastedBytes']).' à économiser';
-        } elseif (isset($row['totalBytes']) && is_numeric($row['totalBytes']) && $row['totalBytes'] > 0) {
-            $parts[] = $this->kb((int) $row['totalBytes']);
-        } elseif (isset($row['transferSize']) && is_numeric($row['transferSize']) && $row['transferSize'] > 0) {
-            $parts[] = $this->kb((int) $row['transferSize']);
-        }
-
-        if (isset($row['wastedPercent']) && is_numeric($row['wastedPercent']) && $row['wastedPercent'] > 0) {
-            $parts[] = round((float) $row['wastedPercent']).' %';
-        }
-
-        $msFields = [
-            'wastedMs' => ' ms', 'blockingTime' => ' ms bloquants', 'mainThreadTime' => ' ms (thread principal)',
-            'reflowTime' => ' ms de reflow', 'duration' => ' ms', 'startTime' => ' ms (début)',
-            'responseTime' => ' ms (réponse serveur)', 'serverResponseTime' => ' ms (réponse serveur)',
-            'rtt' => ' ms (RTT)', 'scripting' => ' ms (script)', 'scriptParseCompile' => ' ms (parse/compile)',
-            'total' => ' ms (total)',
-        ];
-        foreach ($msFields as $key => $suffix) {
-            if (isset($row[$key]) && is_numeric($row[$key]) && (float) $row[$key] > 0) {
-                $parts[] = (int) round((float) $row[$key]).$suffix;
+        if (is_array($value)) {
+            foreach (['text', 'url'] as $key) {
+                if (is_string($value[$key] ?? null) && '' !== trim($value[$key])) {
+                    return $this->truncate(trim($value[$key]), 160);
+                }
             }
+
+            return null;
         }
 
-        if (isset($row['requestCount']) && is_numeric($row['requestCount']) && $row['requestCount'] > 0) {
-            $parts[] = (int) $row['requestCount'].' requête(s)';
-        }
-        if (isset($row['score']) && is_numeric($row['score']) && (float) $row['score'] > 0) {
-            $parts[] = 'score '.rtrim(rtrim(sprintf('%.3f', (float) $row['score']), '0'), '.');
-        }
-
-        foreach (['statistic', 'value', 'description', 'directive', 'severity', 'resourceType', 'groupLabel', 'origin', 'mimeType'] as $key) {
-            $value = $row[$key] ?? null;
-            if (is_array($value) && isset($value['value']) && (is_string($value['value']) || is_numeric($value['value']))) {
-                $value = $value['value'];
-            }
-            if (!is_string($value) && !is_numeric($value)) {
-                continue;
-            }
-            $value = 'description' === $key ? $this->plainText((string) $value) : trim((string) $value);
-            if ('' !== $value && $value !== $label && !in_array($value, $parts, true)) {
-                $parts[] = $this->truncate($value, 160);
-            }
-        }
-
-        if (null !== ($sub = $this->subItemsDetail($row, $label))) {
-            $parts[] = $sub;
-        }
-
-        return [] === $parts ? null : implode(' · ', $parts);
+        return $this->textCell($value);
     }
 
-    /**
-     * Flatten a row's nested subItems (failing colours, layout-shift cause, image-delivery
-     * culprit…) into a compact string so that detail is not lost either.
-     *
-     * @param array<string, mixed> $row
-     */
-    private function subItemsDetail(array $row, ?string $label): ?string
+    private function textCell(mixed $value): ?string
     {
-        $sub = $row['subItems'] ?? null;
-        $rows = is_array($sub) && is_array($sub['items'] ?? null) ? $sub['items'] : [];
-
-        $bits = [];
-        foreach ($rows as $item) {
-            if (!is_array($item)) {
-                continue;
-            }
-            $extra = is_array($item['extra'] ?? null) ? $item['extra'] : [];
-            $text = $this->nodeLabel($item)
-                ?? $this->nodeLabel(['node' => $extra])
-                ?? $this->scalarLabel($item)
-                ?? (isset($item['url']) && is_string($item['url']) ? $this->truncate($item['url'], 120) : null);
-            if (null !== $text && $text !== $label && !in_array($text, $bits, true)) {
-                $bits[] = $text;
-            }
-            if (count($bits) >= 3) {
-                break;
-            }
+        if (is_array($value) && isset($value['value'])) {
+            $value = $value['value'];
         }
+        if (!is_string($value) && !is_numeric($value)) {
+            return null;
+        }
+        $text = $this->plainText((string) $value);
 
-        return [] === $bits ? null : implode(', ', $bits);
+        return '' === $text ? null : $this->truncate($text, 500);
     }
 
     /**
