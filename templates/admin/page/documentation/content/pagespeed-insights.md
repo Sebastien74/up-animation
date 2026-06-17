@@ -33,13 +33,15 @@ et le panneau PSI disparaissent silencieusement (`PageSpeedClient::isEnabled()`)
   défaut), comme la commande de crawl `app:analysis-page:run`.
 - **Lent et quota-limité** : un appel = un run Lighthouse réel chez Google (10 à 30 s).
   Le test est donc **à la demande uniquement** (bouton par page, « Tout PageSpeed »
-  séquentiel), jamais au chargement.
+  séquentiel), jamais au chargement. Chaque scan lance désormais plusieurs runs par
+  stratégie (cf. « Fiabilité de la mesure ») : le quota interne reste à 1 mesure/scan,
+  mais la consommation côté Google est de `SAMPLES` requêtes par stratégie.
 
 ## Architecture
 
 | Composant                  | Rôle                                                                 |
 |----------------------------|----------------------------------------------------------------------|
-| `PageSpeedClient`          | Appelle l'API v5 par stratégie (mobile/desktop), oriente la normalisation. |
+| `PageSpeedClient`          | Warm-up + plusieurs runs concurrents par stratégie, conserve le run de score médian, oriente la normalisation. |
 | `PageSpeedResultParser`    | Normalise Lighthouse : scores, Core Web Vitals labo + terrain, audits actionnables. |
 | `PageSpeedSourceMapper`    | Relie une ressource fautive au code : entrypoint Webpack, média, tiers, document. |
 | `PageSpeedRecorder`        | Persiste le snapshot (`PageSpeedSnapshot`) et élague l'historique.   |
@@ -62,6 +64,27 @@ Le panneau en tête de la page de détail affiche, par stratégie :
   est dépliable et liste les ressources concernées avec leur origine projet.
 
 Seuils de couleur (alignés sur Lighthouse) : vert ≥ 90, orange 50-89, rouge < 50.
+
+## Fiabilité de la mesure (warm-up + médiane)
+
+Le score Lighthouse est **non déterministe** : deux runs de la même page varient de
+plusieurs points, et un run **à froid** (pool FPM recyclé, thumbnails Liip non encore
+générés) est nettement sous-évalué. C'est aussi pourquoi le score du back-office peut
+différer de `pagespeed.web.dev` : même moteur, mais run, stratégie (mobile/desktop) et
+état de cache différents — rien à « corriger », c'est inhérent.
+
+Pour stabiliser le chiffre affiché, `PageSpeedClient::measure()` :
+
+1. **réchauffe** la page (un GET préalable) pour réveiller le pool FPM ;
+2. lance **`SAMPLES` runs par stratégie en concurrence** (temps mural proche d'un seul
+   run) et conserve le run de **score de performance médian** ;
+3. retombe sur un run unique strict si tous les échantillons échouent (l'erreur API
+   remonte alors normalement).
+
+Pour comparer à `pagespeed.web.dev` : même URL, même stratégie, page déjà tiède. Le
+**CLS desktop** notamment peut afficher un pic intermittent en labo (image hero dans la
+fenêtre de paint ultra-rapide de Lighthouse) absent en navigateur réel — privilégier les
+**données terrain CrUX** pour juger l'expérience réelle.
 
 ## Stockage et nettoyage
 
