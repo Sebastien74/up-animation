@@ -283,6 +283,16 @@ final class PageSpeedResultParser
     }
 
     /**
+     * The resource URL when it points at an image, so the view can show a preview.
+     */
+    private function imageUrl(string $url): ?string
+    {
+        $path = (string) (parse_url($url, PHP_URL_PATH) ?: '');
+
+        return 1 === preg_match('/\.(jpe?g|png|gif|webp|avif|svg)$/i', $path) ? $url : null;
+    }
+
+    /**
      * First documentation URL found in a markdown description (the "Learn more" link).
      */
     private function docUrl(string $markdown): ?string
@@ -313,7 +323,7 @@ final class PageSpeedResultParser
             $url = isset($row['url']) && is_string($row['url']) ? $row['url'] : null;
             if (null !== $url) {
                 $source = $this->sourceMapper->describe($url, $ownHost);
-                $items[] = ['type' => $source['type'], 'label' => $source['label'], 'detail' => $this->itemDetail($row)];
+                $items[] = ['type' => $source['type'], 'label' => $source['label'], 'detail' => $this->itemDetail($row), 'image' => $this->imageUrl($url)];
             } elseif (null !== ($node = $this->nodeLabel($row))) {
                 // Accessibility / SEO audits point at a DOM node rather than a URL.
                 $items[] = ['type' => 'node', 'label' => $node, 'detail' => $this->itemDetail($row)];
