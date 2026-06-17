@@ -377,29 +377,39 @@ final class PageSpeedResultParser
     {
         $title = is_string($section['title'] ?? null) ? trim($section['title']) : null;
         $description = is_string($section['description'] ?? null) ? $this->plainText($section['description']) : null;
-        if (null !== $title || null !== $description) {
-            $items[] = ['type' => 'other', 'label' => $title ?? '—', 'detail' => '' !== (string) $description ? $description : null, 'image' => null];
+        $value = is_array($section['value'] ?? null) ? $section['value'] : [];
+        $valueType = is_string($value['type'] ?? null) ? $value['type'] : null;
+        $isTree = 'network-tree' === $valueType;
+        $isTable = is_array($value['items'] ?? null);
+
+        // A scalar value (text/code finding, e.g. "no preconnect candidate") belongs in the header.
+        $valueText = !$isTree && !$isTable ? $this->formatCell($value, $valueType ?? 'text', $ownHost) : null;
+        $headerDetail = implode(' · ', array_filter([
+            null !== $description && '' !== $description ? $description : null,
+            $valueText,
+        ]));
+
+        if (null !== $title || '' !== $headerDetail) {
+            $items[] = ['type' => 'other', 'label' => $title ?? '—', 'detail' => '' !== $headerDetail ? $headerDetail : null, 'image' => null];
             if (count($items) >= self::MAX_ITEMS_PER_AUDIT) {
                 return;
             }
         }
 
-        $value = is_array($section['value'] ?? null) ? $section['value'] : [];
-        if ('network-tree' === ($value['type'] ?? null)) {
+        if ($isTree) {
             $longest = is_array($value['longestChain'] ?? null) && is_numeric($value['longestChain']['duration'] ?? null)
                 ? (int) round((float) $value['longestChain']['duration']) : null;
             if (null !== $longest) {
                 $items[] = ['type' => 'other', 'label' => 'Latence maximale du chemin critique', 'detail' => $longest.' ms', 'image' => null];
             }
+            $items[] = ['type' => 'other', 'label' => 'Navigation initiale', 'detail' => null, 'image' => null];
             $this->collectChain($items, is_array($value['chains'] ?? null) ? $value['chains'] : [], $ownHost);
 
             return;
         }
 
-        $headings = is_array($value['headings'] ?? null) ? $value['headings'] : [];
-        $rows = is_array($value['items'] ?? null) ? $value['items'] : [];
-        if ([] !== $rows) {
-            $this->collectRows($items, $rows, $headings, $ownHost);
+        if ($isTable) {
+            $this->collectRows($items, $value['items'], is_array($value['headings'] ?? null) ? $value['headings'] : [], $ownHost);
         }
     }
 
@@ -462,14 +472,18 @@ final class PageSpeedResultParser
             $valueType = isset($heading['valueType']) ? (string) $heading['valueType'] : 'text';
             $colLabel = isset($heading['label']) ? trim((string) $heading['label']) : '';
 
-            $value = null === $key ? null : $this->formatCell($row[$key] ?? null, $valueType, $ownHost);
+            $raw = null === $key ? null : ($row[$key] ?? null);
+
+            // Thumbnail preview from any image URL column, not only the label one.
+            if (null === $image && 'url' === $valueType && is_string($raw)) {
+                $image = $this->imageUrl($raw);
+            }
+
+            $value = $this->formatCell($raw, $valueType, $ownHost);
             if (null !== $value && '' !== $value) {
                 if (null === $label) {
                     $label = $value;
-                    $type = $this->cellType($valueType, null === $key ? null : ($row[$key] ?? null), $ownHost);
-                    if ('url' === $valueType && is_string($row[$key] ?? null)) {
-                        $image = $this->imageUrl($row[$key]);
-                    }
+                    $type = $this->cellType($valueType, $raw, $ownHost);
                 } elseif (!in_array($value, $parts, true)) {
                     $parts[] = ('' !== $colLabel ? $colLabel.' : ' : '').$value;
                 }
