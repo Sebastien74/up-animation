@@ -140,17 +140,9 @@
         {# bloc stylesheets déplacé après le framework CSS (cf. ligne 158)
            pour que les overrides page-spécifiques aient la priorité de cascade #}
 
-{#REGARDER ISACAR POR LES PRELOAD FONT ETC#}
-{#REGARDER ISACAR POR LES PRELOAD FONT ETC#}
-{#REGARDER ISACAR POR LES PRELOAD FONT ETC#}
-{#REGARDER ISACAR POR LES PRELOAD FONT ETC#}
-
-{#<!-- Fonts -->#}
-{#<link rel="preload" href="{{ asset('fonts/Sora-Regular.woff2') }}" as="font" type="font/woff2" crossorigin nonce="{{ csp_nonce() }}">#}
-{#<link rel="preload" href="{{ asset('fonts/Sora-SemiBold.woff2') }}" as="font" type="font/woff2" crossorigin nonce="{{ csp_nonce() }}">#}
-{#<link rel="preload" href="{{ asset('fonts/Sora-Bold.woff2') }}" as="font" type="font/woff2" crossorigin nonce="{{ csp_nonce() }}">#}
-{#<link rel="preload" href="{{ asset('fonts/Sora-ExtraBold.woff2') }}" as="font" type="font/woff2" crossorigin nonce="{{ csp_nonce() }}">#}
-        {#<link rel="preload" href="{{ asset('build/front/'~websiteTemplate~'/fonts/icomoon.ttf', webpack) }}" as="font" type="font/truetype" crossorigin nonce="{{ csp_nonce() }}">#}
+        {# Preload critical Hanken Grotesk faces (body 400 + LCP title 900) to avoid swap-induced CLS #}
+        <link rel="preload" href="{{ asset('build/front/'~websiteTemplate~'/fonts/Hankengrotesk-Regular.woff2', webpack) }}" as="font" type="font/woff2" crossorigin nonce="{{ csp_nonce() }}">
+        <link rel="preload" href="{{ asset('build/front/'~websiteTemplate~'/fonts/Hankengrotesk-Black.woff2', webpack) }}" as="font" type="font/woff2" crossorigin nonce="{{ csp_nonce() }}">
         <link href="{{ asset('build/front/'~websiteTemplate~'/front-'~websiteTemplate~'-fonts.css', webpack) }}" rel="preload" as="style" class="preload-css" nonce="{{ csp_nonce() }}" onload="this.onload=null;this.rel='stylesheet'">
         <noscript><link rel="stylesheet" href="{{ asset('build/front/'~websiteTemplate~'/front-'~websiteTemplate~'-fonts.css', webpack) }}" nonce="{{ csp_nonce() }}"></noscript>
 

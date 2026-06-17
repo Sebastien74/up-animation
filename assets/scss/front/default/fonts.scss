@@ -14,4 +14,15 @@ $fontFamily: 'Roboto', sans-serif; /** Keep to admin font plugin */
 
 /*! purgecss start ignore */
 @import "../../../lib/fonts/icomoon";
+
+/* Metric-adjusted fallback shipped here so split builds get it (variables.scss only emits it when not $enable-medias-queries) */
+@font-face {
+    font-family: font-fallback;
+    src: local("Arial");
+    size-adjust: 95.07193974%;
+    ascent-override: 100%;
+    descent-override: 30.3%;
+    line-gap-override: 0%;
+    font-display: swap;
+}
 /*! purgecss end ignore */

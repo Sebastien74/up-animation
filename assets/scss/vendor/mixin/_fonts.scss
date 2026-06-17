@@ -32,7 +32,7 @@
    2 ) Font Face
 -----------------------------------*/
 
-@mixin font-face($fontName, $fonts, $serif: sans-serif, $extensions: eot woff2 woff ttf svg) {
+@mixin font-face($fontName, $fonts, $serif: sans-serif, $extensions: eot woff2 woff ttf svg, $display: swap) {
 
     .ff-#{to-lower-case(#{$fontName})} {
         @if $serif != null {
@@ -85,7 +85,7 @@
             }
 
             src: $src;
-            font-display: swap;
+            font-display: $display;
         }
     }
 }

@@ -36,4 +36,4 @@ $fonts: (
     'Hankengrotesk-BlackItalic': ('weight': 900, 'style': italic),
 );
 
-@include font-face("Hankengrotesk", $fonts, sans-serif, woff2);
+@include font-face("Hankengrotesk", $fonts, sans-serif, woff2, optional);
