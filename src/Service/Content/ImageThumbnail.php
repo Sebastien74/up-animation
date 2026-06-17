@@ -35,6 +35,7 @@ class ImageThumbnail implements ImageThumbnailInterface
     private const bool LAZY_SVG_DATA = false;
     private const bool LAZY_ORIGINAL = true;
     private const bool FORCE_QUALITY = false;
+    private const int FRONT_MAX_QUALITY = 80; // Front-only ceiling (webp ~80 = visually safe, cuts bytes); 0 disables
     private const int MAX_FILE_SIZE_OPTIMIZATION = 500 * 1024; // octets 500k
     private const int MAX_FILE_SIZE = 3145728; // octets 3145728 = 3M : https://www.convertworld.com/fr/mesures-informatiques/megaoctet-megabyte.html
     private const int MAX_FILE_WIDTH = 3840; // pixels 3840screensSizes
@@ -821,6 +822,11 @@ class ImageThumbnail implements ImageThumbnailInterface
         $extension = $thumbInfos->cropInfos->extension;
         $quality = isset($options['filter']) && !empty($this->yamlConfig['liip_imagine']['filter_sets'][$options['filter']]['quality'])
             ? $this->yamlConfig['liip_imagine']['filter_sets'][$options['filter']]['quality'] : ($media ? $media->getQuality() : 100);
+
+        // Front-only ceiling: only lowers (editor values below the cap are kept), admin untouched.
+        if (!$this->inAdmin && !isset($options['filter']) && self::FRONT_MAX_QUALITY > 0 && $quality > self::FRONT_MAX_QUALITY) {
+            $quality = self::FRONT_MAX_QUALITY;
+        }
 
         if (in_array($extension, self::ALLOWED_EXTENSIONS)) {
             $imagineWebp = (self::ACTIVE_WEBP && $this->isWebpSupported() && 'webp' !== $extension) || self::ALWAYS_WEBP;
