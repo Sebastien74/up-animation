@@ -1613,38 +1613,43 @@ class ImageThumbnail implements ImageThumbnailInterface
                 'ico'  => 'image/x-icon',
             ];
 
-            $mediaQueries = [
-                480  => '(max-width: 767px)',
-                768  => '(min-width: 768px) and (max-width: 991px)',
-                1200 => '(min-width: 992px) and (max-width: 1279px)',
-                1366 => '(min-width: 1280px) and (max-width: 1599px)',
-                1920 => '(min-width: 1600px)',
-            ];
-
             $linkProvider = $this->coreLocator->request()->attributes->get('_links', new GenericLinkProvider());
             $providerByHref = [];
             foreach ($linkProvider->getLinks() as $link) {
                 $providerByHref[$link->getHref()] = $link;
             }
 
-            $inPreload = [];
-            foreach ($thumbnails['files'] as $size => $file) {
-                if (!isset($mediaQueries[$size])) {
+            // Responsive preload matching the rendered <picture>: the browser preloads the variant it actually displays (DPR-aware), not a fixed full-width size.
+            $colSize = !empty($options['colSize']) && (float) $options['colSize'] > 0 ? (float) $options['colSize'] : 12;
+            $sizesDesktop = $colSize >= 12 ? '100vw' : round(100 * $colSize / 12, 2).'vw';
+            $imageSizes = '100vw' === $sizesDesktop ? '100vw' : '(min-width: 992px) '.$sizesDesktop.', 100vw';
+
+            $files = $thumbnails['files'];
+            ksort($files);
+            $srcset = [];
+            $fallbackHref = null;
+            $fallbackExt = '';
+            foreach ($files as $size => $file) {
+                if ((int) $size <= 0 || !$file) {
                     continue;
                 }
-                $ext = strtolower(pathinfo(parse_url($file, PHP_URL_PATH) ?? $file, PATHINFO_EXTENSION));
-                $attrMedia = $ext !== 'svg' && isset($mimeByExt[$ext]) ? $mediaQueries[$size] : 'all';
-                if (!array_key_exists($file, $inPreload) && !array_key_exists($file, $providerByHref)) {
-                    $link = (new Link('preload', $file))
-                        ->withAttribute('as', 'image')
-                        ->withAttribute('media', $attrMedia)
-                        ->withAttribute('fetchpriority', 'high');
-                    if ($ext !== '' && isset($mimeByExt[$ext])) {
-                        $link = $link->withAttribute('type', $mimeByExt[$ext]);
-                    }
-                    $linkProvider = $linkProvider->withLink($link);
-                    $inPreload[$file] = $link;
+                $srcset[] = $file.' '.(int) $size.'w';
+                if (null === $fallbackHref) {
+                    $fallbackHref = $file;
+                    $fallbackExt = strtolower(pathinfo(parse_url($file, PHP_URL_PATH) ?? $file, PATHINFO_EXTENSION));
                 }
+            }
+
+            if ($srcset && null !== $fallbackHref && !array_key_exists($fallbackHref, $providerByHref)) {
+                $link = (new Link('preload', $fallbackHref))
+                    ->withAttribute('as', 'image')
+                    ->withAttribute('fetchpriority', 'high')
+                    ->withAttribute('imagesrcset', implode(', ', $srcset))
+                    ->withAttribute('imagesizes', $imageSizes);
+                if ('' !== $fallbackExt && isset($mimeByExt[$fallbackExt])) {
+                    $link = $link->withAttribute('type', $mimeByExt[$fallbackExt]);
+                }
+                $linkProvider = $linkProvider->withLink($link);
             }
 
             $this->coreLocator->request()->attributes->set('_links', $linkProvider);
