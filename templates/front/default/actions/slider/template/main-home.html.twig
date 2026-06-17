@@ -120,7 +120,7 @@
                                         placeholder: true,
                                         maxWidth: fileSizes.width is defined ? fileSizes.width : null,
                                         maxHeight: fileSizes.height is defined ? fileSizes.height : null,
-                                        colSize: colSize,
+                                        colSize: colSize ? (colSize * 5 / 12) : 5,
                                         lazyLoad: not isFirstZone or (isFirstZone and not loop.first),
                                         priority: not isFirstZone or (isFirstZone and not loop.first) ? 'low': 'high',
                                         class: fileSizes.height is defined and medias|length > 1 ? 'force-size' : 'w-100'
