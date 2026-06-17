@@ -64,19 +64,11 @@ export function Collapse() {
 
 export function Tab() {
 
-    if (document.querySelectorAll('.nav-tabs, .nav-pills').length === 0) return;
+    if (document.querySelectorAll('[data-bs-toggle="tab"], [data-bs-toggle="pill"], [data-bs-toggle="list"]').length === 0) return;
 
-    import('./bootstrap/dist/tab').then(({default: Tab}) => {
-        document.querySelectorAll('.nav-tabs, .nav-pills').forEach(tabToggleEl => {
-            tabToggleEl.querySelectorAll('button').forEach(triggerEl => {
-                const tabTrigger = new Tab(triggerEl);
-                triggerEl.addEventListener('click', event => {
-                    event.preventDefault();
-                    tabTrigger.show();
-                });
-            });
-        });
-    }).catch(error => console.error(error.message));
+    // Importing the module registers Bootstrap's native data-api click delegation,
+    // which activates tabs without the broken per-button `new Tab()` interop.
+    import('./bootstrap/dist/tab').catch(error => console.error(error.message));
 }
 
 export function Modal() {
