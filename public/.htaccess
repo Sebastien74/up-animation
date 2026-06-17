@@ -117,8 +117,10 @@ AddDefaultCharset UTF-8
     AddCharset UTF-8 .htm .html .css .js .woff .woff2
 
 	# Header set Link "</fonts/custom-font.woff2>; rel=preload; as=font; type=font/woff2; crossorigin=anonymous"
-	Header append Link "<https://fonts.googleapis.com>; rel=preconnect"
-	Header append Link "<https://fonts.gstatic.com>; rel=preconnect; crossorigin"
+	# Google Fonts preconnect disabled: Hanken Grotesk is self-hosted; these were unused on ~all pages
+	# (only the calendar imports a Google font). Re-enable if a critical Google font is added.
+	# Header append Link "<https://fonts.googleapis.com>; rel=preconnect"
+	# Header append Link "<https://fonts.gstatic.com>; rel=preconnect; crossorigin"
 
     # 1 year: 60 seconds × 60 minutes × 24 hours × 365 days = 31536000 seconds
     <FilesMatch "\.(ico|jpe?g|png|gif|svg|webp|avif|css|js|woff2?|mp4|webm|ogv|ogg|mov|avi|mpeg)$">
