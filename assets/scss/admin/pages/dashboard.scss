@@ -2396,6 +2396,10 @@
         align-items: flex-end;
         justify-content: space-between;
         gap: $space-3;
+        padding: $space-4 $space-5;
+        background: $crumb-surface;
+        border: 1px solid $crumb-border;
+        border-radius: $radius-md;
     }
 
     .pa-detail-headline .pa-type-pill {
@@ -3010,6 +3014,8 @@
         flex-direction: column;
         gap: $space-1;
         margin-top: $space-2;
+        padding: 0;
+        list-style-type: none;
     }
 
     /* Each audit row is a surface tile; severity is carried by a leading glyph. */
@@ -3039,41 +3045,33 @@
         }
     }
 
-    /* PSI-style severity marker: shape + colour, redundant encoding for accessibility. */
+    /* Severity marker: a coloured dot, one colour per severity. */
     .psi-opp-glyph {
         flex: 0 0 auto;
-        width: 11px;
-        height: 11px;
+        width: 10px;
+        height: 10px;
         border-radius: 50%;
-        border: 1.5px solid $crumb-muted;
+        background: $crumb-muted;
     }
 
     .sev-high .psi-opp-glyph,
     .sev-fail .psi-opp-glyph {
-        width: 11px;
-        height: 11px;
-        border: none;
-        border-radius: 2px;
         background: $danger;
     }
 
     .sev-medium .psi-opp-glyph,
     .sev-average .psi-opp-glyph {
-        width: 12px;
-        height: 11px;
-        border: none;
-        border-radius: 0;
         background: $warning;
-        clip-path: polygon(50% 0, 100% 100%, 0 100%);
     }
 
     .sev-pass .psi-opp-glyph {
-        border: none;
         background: $success;
     }
 
+    .sev-diagnostic .psi-opp-glyph,
+    .sev-low .psi-opp-glyph,
     .sev-manual .psi-opp-glyph {
-        border-color: $info;
+        background: $info;
     }
 
     .psi-opp-title {
@@ -3125,14 +3123,44 @@
     .psi-source-list {
         display: flex;
         flex-direction: column;
-        gap: $space-1;
+        gap: $space-2;
     }
 
     .psi-source-item {
         display: flex;
+        align-items: flex-start;
+        gap: $space-3;
+
+        &.has-thumb {
+            align-items: center;
+        }
+    }
+
+    /* Image preview for image-resource audits: see which file, keep the text info. */
+    .psi-source-thumb {
+        flex: 0 0 auto;
+        display: block;
+        width: 52px;
+        height: 52px;
+        overflow: hidden;
+        border-radius: $radius-xs;
+        border: 1px solid $crumb-border;
+        background: $crumb-surface;
+
+        img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+
+    .psi-source-meta {
+        display: flex;
         flex-wrap: wrap;
         align-items: center;
         gap: $space-2;
+        min-width: 0;
     }
 
     .psi-source-tag {
@@ -3142,7 +3170,7 @@
         font-weight: 600;
         text-transform: uppercase;
         letter-spacing: .04em;
-        border-radius: $radius-pill;
+        border-radius: $radius-xs;
         color: $crumb-muted;
         background: $crumb-surface;
 
@@ -3320,6 +3348,37 @@
         text-align: center;
     }
 
+    .psi-gauge-link {
+        appearance: none;
+        border: none;
+        background: none;
+        font: inherit;
+        color: inherit;
+        transition: transform .15s ease;
+
+        @include mediaQuery(min-lg) {
+            cursor: pointer;
+
+            &:hover .psi-gauge-svg {
+                transform: scale(1.06);
+            }
+        }
+
+        .psi-gauge-svg {
+            transition: transform .15s ease;
+        }
+
+        &:focus-visible {
+            outline: 2px solid $primary;
+            outline-offset: 4px;
+            border-radius: $radius-sm;
+        }
+    }
+
+    .psi-category {
+        scroll-margin-top: 90px;
+    }
+
     .psi-gauges .psi-gauge {
         padding: $space-4 $space-3;
         border-right: 1px solid $crumb-border;
@@ -3345,18 +3404,23 @@
         }
     }
 
+    .psi-gauge {
+        gap: $space-2;
+    }
+
     .psi-gauge-svg {
-        width: 76px;
-        height: 76px;
+        width: 88px;
+        height: 88px;
     }
 
     .psi-gauge-track {
-        stroke: $crumb-border;
+        stroke: rgba($crumb-muted, .16);
     }
 
     .psi-gauge-text {
-        font-size: 10px;
-        font-weight: 700;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: -0.02em;
         fill: $crumb-text;
         font-variant-numeric: tabular-nums;
     }
@@ -3364,6 +3428,7 @@
     .psi-gauge-label {
         font-size: 12px;
         font-weight: 500;
+        letter-spacing: -0.01em;
         color: $crumb-muted;
     }
 
@@ -3440,7 +3505,7 @@
         padding: 2px 8px;
         font-size: 11px;
         font-weight: 600;
-        border-radius: $radius-pill;
+        border-radius: $radius-xs;
         color: $crumb-muted;
         background: $crumb-surface;
 

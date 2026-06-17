@@ -3512,6 +3512,7 @@ th.fc-col-header-cell {
 
 #analysis-page-detail {
 
+    .pa-detail-head,
     .psi-panel {
         background: $theme-card-bg !important;
         border-color: $theme-border-subtle !important;
@@ -3547,6 +3548,18 @@ th.fc-col-header-cell {
         border-color: $theme-border-subtle !important;
     }
 
+    .psi-vital.is-good .psi-vital-value {
+        color: $success !important;
+    }
+
+    .psi-vital.is-warn .psi-vital-value {
+        color: $warning !important;
+    }
+
+    .psi-vital.is-bad .psi-vital-value {
+        color: $danger !important;
+    }
+
     .psi-opp {
         background: $theme-surface !important;
         border-color: $theme-border-subtle !important;
@@ -3559,6 +3572,11 @@ th.fc-col-header-cell {
     .psi-source-tag {
         color: $theme-text-muted !important;
         background: $theme-card-bg !important;
+    }
+
+    .psi-source-thumb {
+        border-color: $theme-border-subtle !important;
+        background: $theme-surface !important;
     }
 
     .psi-source-label {
@@ -3580,7 +3598,12 @@ th.fc-col-header-cell {
     }
 
     .psi-strat-nav .nav-link {
+        color: $theme-text-muted !important;
         background: transparent !important;
+
+        &:hover {
+            color: $theme-text !important;
+        }
 
         &.active {
             color: $white !important;

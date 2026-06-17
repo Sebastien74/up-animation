@@ -491,6 +491,18 @@ if (detailContainer) {
         }
     }
 
+    // Clicking a category gauge smooth-scrolls to its audit section.
+    detailContainer.addEventListener('click', function (e) {
+        const gauge = e.target.closest('.psi-gauge-link');
+        if (!gauge) {
+            return;
+        }
+        const section = document.getElementById(gauge.getAttribute('data-scroll-to') || '');
+        if (section) {
+            section.scrollIntoView({behavior: 'smooth', block: 'start'});
+        }
+    });
+
     const detailButton = detailContainer.querySelector('.pa-detail-run');
     const detailUrl = detailContainer.getAttribute('data-run-url');
 

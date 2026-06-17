@@ -4,19 +4,21 @@
 
 {# Circular score gauge (PSI style). r = 15.915 makes the circumference ≈ 100, so the
    dash array maps the score straight to a percentage; offset 25 starts the arc at top. #}
-{%- macro gauge(value, label, small) -%}
+{%- macro gauge(value, label, small, target) -%}
     {%- set state = value is null ? 'is-none' : (value >= 90 ? 'is-good' : (value >= 50 ? 'is-warn' : 'is-bad')) -%}
     {%- set dash = value is null ? 0 : value -%}
-    <div class="psi-gauge {{ small ? 'psi-gauge-sm' : '' }} {{ state }}">
-        <svg class="psi-gauge-svg" viewBox="0 0 36 36" role="img"
+    {%- set tag = target ? 'button' : 'div' -%}
+    <{{ tag }} class="psi-gauge {{ small ? 'psi-gauge-sm' : '' }} {{ state }} {{ target ? 'psi-gauge-link' : '' }}"
+        {%- if target %} type="button" data-scroll-to="{{ target }}" aria-label="{{ "Aller à la section"|trans|striptags }} {{ label }}"{% endif -%}>
+        <svg class="psi-gauge-svg" viewBox="0 0 36 36" role="img" {{ target ? 'aria-hidden="true"' : '' }}
              aria-label="{{ label ? label ~ ' : ' : '' }}{{ value is null ? 'non mesuré' : value ~ ' / 100' }}">
-            <circle class="psi-gauge-track" cx="18" cy="18" r="15.915" fill="none" stroke-width="3"></circle>
-            <circle class="psi-gauge-arc" cx="18" cy="18" r="15.915" fill="none" stroke-width="3"
+            <circle class="psi-gauge-track" cx="18" cy="18" r="15.915" fill="none" stroke-width="{{ small ? 2.4 : 1.8 }}"></circle>
+            <circle class="psi-gauge-arc" cx="18" cy="18" r="15.915" fill="none" stroke-width="{{ small ? 2.4 : 1.8 }}"
                     stroke-dasharray="{{ dash }} {{ 100 - dash }}" stroke-dashoffset="25" stroke-linecap="round"></circle>
             <text class="psi-gauge-text" x="18" y="18" text-anchor="middle" dominant-baseline="central" aria-hidden="true">{{ value is null ? '–' : value }}</text>
         </svg>
         {%- if label and not small %}<span class="psi-gauge-label">{{ label }}</span>{% endif -%}
-    </div>
+    </{{ tag }}>
 {%- endmacro -%}
 
 {%- macro vital(label, display, state) -%}
@@ -60,10 +62,17 @@
                 {%- if opp.items is not empty -%}
                     <ul class="psi-source-list reset">
                         {%- for item in opp.items -%}
-                            <li class="psi-source-item">
-                                <span class="psi-source-tag psi-tag-{{ item.type }}">{{ psiMacro.sourceType(item.type) }}</span>
-                                <code class="psi-source-label">{{ item.label }}</code>
-                                {%- if item.detail %}<span class="psi-source-detail">{{ item.detail }}</span>{% endif -%}
+                            <li class="psi-source-item {{ item.image is defined and item.image ? 'has-thumb' : '' }}">
+                                {%- if item.image is defined and item.image -%}
+                                    <a href="{{ item.image }}" target="_blank" rel="noopener noreferrer" class="psi-source-thumb">
+                                        <img src="{{ item.image }}" loading="lazy" decoding="async" alt="{{ item.label }}">
+                                    </a>
+                                {%- endif -%}
+                                <span class="psi-source-meta">
+                                    <span class="psi-source-tag psi-tag-{{ item.type }}">{{ psiMacro.sourceType(item.type) }}</span>
+                                    <code class="psi-source-label">{{ item.label }}</code>
+                                    {%- if item.detail %}<span class="psi-source-detail">{{ item.detail }}</span>{% endif -%}
+                                </span>
                             </li>
                         {%- endfor -%}
                     </ul>
@@ -87,7 +96,7 @@
 {%- endmacro -%}
 
 {# A full category (Performance, Accessibility…) with its audits grouped by severity. #}
-{%- macro category(cat, title) -%}
+{%- macro category(cat, title, anchor) -%}
     {%- import _self as psiMacro -%}
     {%- set toFix = cat.audits|filter(a => a.severity in ['fail', 'average']) -%}
     {%- set diagnostics = cat.audits|filter(a => a.severity == 'diagnostic') -%}
@@ -95,7 +104,7 @@
     {%- set manual = cat.audits|filter(a => a.severity == 'manual') -%}
     {%- set notApplicable = cat.audits|filter(a => a.severity == 'na') -%}
 
-    <section class="psi-category">
+    <section class="psi-category"{% if anchor %} id="{{ anchor }}"{% endif %}>
         <header class="psi-category-head">
             {{ psiMacro.gauge(cat.score, null, true) }}
             <h3 class="psi-category-title">{{ title }}</h3>
@@ -195,7 +204,8 @@
                 <div class="psi-scorecard">
                     <div class="psi-gauges">
                         {%- for sk, sl in scoreLabels -%}
-                            {{ psiMacro.gauge(strat.scores[sk]|default(null), sl, false) }}
+                            {%- set hasCat = cats[sk] is defined and cats[sk] and cats[sk].audits is not empty -%}
+                            {{ psiMacro.gauge(strat.scores[sk]|default(null), sl, false, hasCat ? ('psi-cat-' ~ key ~ '-' ~ sk) : null) }}
                         {%- endfor -%}
                     </div>
 
@@ -239,7 +249,7 @@
                         {%- for ck, cl in scoreLabels -%}
                             {%- set cat = cats[ck]|default(null) -%}
                             {%- if cat and cat.audits is not empty -%}
-                                {{ psiMacro.category(cat, cl) }}
+                                {{ psiMacro.category(cat, cl, 'psi-cat-' ~ key ~ '-' ~ ck) }}
                             {%- endif -%}
                         {%- endfor -%}
                     </div>
