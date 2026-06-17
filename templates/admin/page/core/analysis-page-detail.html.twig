@@ -42,6 +42,12 @@
                 <p class="perf-inspector-desc">
                     {{ "Détail de la dernière analyse en preview. Indice indicatif, ce n'est pas une mesure Lighthouse."|trans|raw }}
                 </p>
+                {%- if crawlUrl is defined and crawlUrl -%}
+                    <p class="pa-crawl-url mb-0">
+                        <span class="pa-crawl-label">{{ "URL crawlée :"|trans }}</span>
+                        <a href="{{ crawlUrl }}" target="_blank" rel="noopener noreferrer">{{ crawlUrl }}</a>
+                    </p>
+                {%- endif -%}
             </div>
             <div class="pa-detail-actions d-flex align-items-center gap-2">
                 <a href="{{ previewUrl }}" target="_blank" rel="noopener" class="btn-app small d-inline-flex align-items-center gap-2">

@@ -70,10 +70,11 @@
                     </div>
                 </div>
                 {%- if locales is defined and locales|length > 1 -%}
+                    {%- set preLang = (defaultLocale is defined and defaultLocale in locales) ? defaultLocale : '' -%}
                     <select class="form-select pa-lang-filter" aria-label="{{ "Filtrer par langue"|trans|striptags }}">
-                        <option value="">{{ "Toutes les langues"|trans }}</option>
+                        <option value=""{{ '' == preLang ? ' selected' : '' }}>{{ "Toutes les langues"|trans }}</option>
                         {%- for locale in locales -%}
-                            <option value="{{ locale }}">{{ locale|languageName|capitalize }} ({{ locale|upper }})</option>
+                            <option value="{{ locale }}"{{ locale == preLang ? ' selected' : '' }}>{{ locale|languageName|capitalize }} ({{ locale|upper }})</option>
                         {%- endfor -%}
                     </select>
                 {%- endif -%}

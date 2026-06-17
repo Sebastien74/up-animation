@@ -158,6 +158,7 @@ class PageAnalysisController extends AdminController
         return $this->render('admin/page/core/analysis-page-dashboard.html.twig', array_merge($this->arguments, [
             'rows' => $rows,
             'locales' => $locales,
+            'defaultLocale' => strtolower((string) ($website->getConfiguration()?->getLocale() ?? '')),
             'psiEnabled' => $psiEnabled,
             'psiQuotaLimit' => $psiEnabled ? $quota->dailyLimit() : 0,
             'psiQuotaUsed' => $psiEnabled ? $quota->usedToday() : 0,
@@ -170,7 +171,7 @@ class PageAnalysisController extends AdminController
      * Detail view for a single page: latest full report (grouped findings) and history.
      */
     #[Route('/detail/{url}', name: 'admin_page_analysis_detail', methods: 'GET')]
-    public function detail(Request $request, Website $website, Url $url, PageAnalysisRepository $analysisRepository, PageAnalyzerInterface $analyzer, PageAnalysisRecorder $recorder, EventDispatcherInterface $dispatcher, PageAnalysisMarkdownFormatter $markdownFormatter, PageSpeedMarkdownFormatter $psiMarkdownFormatter, PageSpeedSnapshotRepository $pageSpeedRepository, PageSpeedClient $pageSpeed, QuotaGuard $quota): Response
+    public function detail(Request $request, Website $website, Url $url, PageAnalysisRepository $analysisRepository, PageAnalyzerInterface $analyzer, PageAnalysisRecorder $recorder, EventDispatcherInterface $dispatcher, PageAnalysisMarkdownFormatter $markdownFormatter, PageSpeedMarkdownFormatter $psiMarkdownFormatter, PageSpeedSnapshotRepository $pageSpeedRepository, PageSpeedClient $pageSpeed, QuotaGuard $quota, PublicPageUrlResolver $urlResolver): Response
     {
         $interface = (string) $request->query->get('interface', 'page');
 
@@ -231,12 +232,37 @@ class PageAnalysisController extends AdminController
                 'interface' => $interface,
             ]),
             'previewUrl' => $this->previewUrlFor($interface, $website, $url),
+            'crawlUrl' => $this->crawlUrl($urlResolver, $website, $url, $interface),
             'runUrl' => $this->coreLocator->router()->generate('admin_page_analysis_run', [
                 'website' => $website->getId(),
                 'url' => $url->getId(),
                 'interface' => $interface,
             ]),
         ]));
+    }
+
+    /**
+     * Absolute public URL the crawler (app:analysis-page:run) fetches for this page.
+     * Card interfaces (newscast, product) need their owning entity to build the URL.
+     */
+    private function crawlUrl(PublicPageUrlResolver $urlResolver, Website $website, Url $url, string $interface): ?string
+    {
+        $class = self::INTERFACES[$interface] ?? null;
+        $entity = null;
+        if (null !== $class && class_exists($class)) {
+            try {
+                $entity = $this->coreLocator->em()->createQuery(
+                    sprintf('SELECT e FROM %s e JOIN e.urls u WHERE u.id = :url', $class)
+                )
+                    ->setParameter('url', $url->getId())
+                    ->setMaxResults(1)
+                    ->getOneOrNullResult();
+            } catch (\Throwable) {
+                $entity = null;
+            }
+        }
+
+        return $urlResolver->resolve($website, $url, $interface, $entity, $class);
     }
 
     /**
@@ -360,25 +386,10 @@ class PageAnalysisController extends AdminController
             return new JsonResponse(['ok' => false, 'remaining' => 0, 'error' => 'Quota PageSpeed quotidien atteint.']);
         }
 
-        // Newscasts and products do not live at "/{code}" but behind a module path, so the
-        // resolver needs the owning entity to build the real public URL (as SEO does).
+        // Newscasts and products do not live at "/{code}" but behind a module path, and the
+        // home page (asIndex) at the domain root: crawlUrl() builds the real public URL.
         $interface = (string) $request->query->get('interface', 'page');
-        $class = self::INTERFACES[$interface] ?? null;
-        $entity = null;
-        if ('page' !== $interface && null !== $class && class_exists($class)) {
-            try {
-                $entity = $this->coreLocator->em()->createQuery(
-                    sprintf('SELECT e FROM %s e JOIN e.urls u WHERE u.id = :url', $class)
-                )
-                    ->setParameter('url', $url->getId())
-                    ->setMaxResults(1)
-                    ->getOneOrNullResult();
-            } catch (\Throwable) {
-                $entity = null;
-            }
-        }
-
-        $publicUrl = $urlResolver->resolve($website, $url, $interface, $entity, $class);
+        $publicUrl = $this->crawlUrl($urlResolver, $website, $url, $interface);
         if (null === $publicUrl) {
             return new JsonResponse(['ok' => false, 'error' => 'Aucun domaine public pour cette page.']);
         }

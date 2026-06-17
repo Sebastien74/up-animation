@@ -344,6 +344,9 @@ if (container) {
             if (progressWrap) {
                 progressWrap.classList.remove('d-none');
             }
+            if (mainPreloader) {
+                mainPreloader.classList.remove('d-none');
+            }
 
             let done = 0;
             const total = rows.length;
@@ -351,6 +354,9 @@ if (container) {
                 if (!rows.length) {
                     if (statusEl) {
                         statusEl.textContent = total + ' mesure(s) PageSpeed terminée(s).';
+                    }
+                    if (mainPreloader) {
+                        mainPreloader.classList.add('d-none');
                     }
                     psiRunAll.disabled = false;
                     psiRunAll.classList.remove('disabled');
@@ -403,6 +409,10 @@ if (container) {
     }
     if (langFilter) {
         langFilter.addEventListener('change', applyFilters);
+    }
+    // Apply the server-preselected language (site default locale) on load.
+    if (langFilter && langFilter.value) {
+        applyFilters();
     }
 
     // Column sorting: click a header to reorder rows by that column.

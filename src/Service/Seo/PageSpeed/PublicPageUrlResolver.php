@@ -46,7 +46,12 @@ final class PublicPageUrlResolver
             }
         }
 
-        return $this->pageUrl($website, $url->getLocale(), $url->getCode());
+        // The home page (asIndex) is served at the domain root: drop its code.
+        $code = (null !== $entity && method_exists($entity, 'isAsIndex') && $entity->isAsIndex())
+            ? null
+            : $url->getCode();
+
+        return $this->pageUrl($website, $url->getLocale(), $code);
     }
 
     private function pageUrl(Website $website, ?string $locale, ?string $code): ?string
