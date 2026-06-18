@@ -116,6 +116,13 @@ body.menu-open {
         white-space: initial !important;
     }
 
+    .btn-blur i,
+    .btn-blur .link-label,
+    .socials-list a,
+    .socials-list i {
+        transition: color .25s $transition-base-timing;
+    }
+
     .navbar-brand {
 
         z-index: 200;
@@ -240,6 +247,11 @@ body.menu-open {
 
         @include mediaQuery(min-lg) {
             .btn-blur, .btn-blur .link-label {
+                color: $secondary !important;
+            }
+
+            &.in-bg-primary .socials-list a,
+            &.in-bg-primary .socials-list i {
                 color: $secondary !important;
             }
         }

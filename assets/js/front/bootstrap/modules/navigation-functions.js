@@ -485,22 +485,18 @@ export function initMainNavigationContext(nav) {
                 continue;
             }
 
-            const footer = element.closest('footer');
-            if (footer) {
-                return 'in-footer';
-            }
-
-            // Vérifier n'importe quel élément qui contient la classe bg-
-            let bgElement = element.classList.contains('bg-') ? element : null;
-            if (!bgElement) {
-                // On cherche un élément avec une classe commençant par bg-
-                bgElement = element.closest('[class*=" bg-"], [class^="bg-"]');
-            }
+            // Detect an explicit bg-* first so a bg-primary section inside the footer
+            // is reported as in-bg-primary rather than the generic in-footer.
+            const bgElement = element.closest('[class*=" bg-"], [class^="bg-"]');
             if (bgElement) {
                 const bgClass = getBackgroundClass(bgElement);
                 if (bgClass) {
                     return `in-${bgClass}`;
                 }
+            }
+
+            if (element.closest('footer')) {
+                return 'in-footer';
             }
         }
 

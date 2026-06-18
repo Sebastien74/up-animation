@@ -111,7 +111,7 @@
                     {%- set subLabel = link.subTitle ? link.subTitle : link.title -%}
                     {%- set parentEl = link.link ? 'a' : 'div' -%}
                     {%- set asLink = 'a' == parentEl -%}
-                    <{{ parentEl }}{% if asLink %} href="{{ link.link }}" {% endif %} class="parent-label-wrap d-flex fw-700 align-items-center dropdown-back-level-{{ link.level }}{% if not displayBack %} d-none{% endif %}{% if asLink %} btn btn-blur btn-blur-secondary d-inline-flex{% endif %}">
+                    <{{ parentEl }}{% if asLink %} href="{{ link.link }}" {% endif %} class="parent-label-wrap d-flex fw-700 align-items-center{% if not asLink %} dropdown-back-level-{{ link.level }}{% endif %}{% if not displayBack %} d-none{% endif %}{% if asLink %} btn btn-blur btn-blur-secondary d-inline-flex{% endif %}">
                         {%- if not asLink -%}
                             <i class="icon-arrow-left text-primary me-2 me-md-3"></i>
                         {%- endif -%}
