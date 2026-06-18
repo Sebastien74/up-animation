@@ -188,6 +188,14 @@ Le workflow lance déjà, en SSH (étape **Post-deploy commands**) :
 - `assets:install public --env=prod` (assets des bundles vers `public/bundles`)
 - `fos:js-routing:dump --env=prod` (routes JS)
 
+Puis l'étape **Warm front (FPM + Liip thumbnails)** : depuis le runner, un `curl` de la
+home en rendu frais récupère les URLs de vignettes et les charge, ce qui **pré-génère les
+variantes Liip** (notamment l'image du carousel) et réveille le pool FPM. But : éviter qu'un
+1er visiteur tombe sur des thumbnails froids (décalage CLS transitoire sur le carousel).
+Cette étape requiert la **variable d'environnement GitHub `SITE_URL`** (par environnement :
+prod = URL publique de production, preprod = `https://www.up.abcvd.com`). Si `SITE_URL` est
+vide, l'étape est ignorée (non bloquante).
+
 À faire **manuellement** selon ce qui a changé (cf. `CLAUDE.md` « Systèmes de cache ») :
 
 - [ ] Si des données rendues derrière les fragments `{% cache %}` / result-cache ont changé :

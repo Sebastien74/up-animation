@@ -73,3 +73,24 @@ jobs:
              php bin/console cache:clear --env=$SYMFONY_ENV --no-debug && \
              php bin/console assets:install public --env=$SYMFONY_ENV --no-debug && \
              php bin/console fos:js-routing:dump --env=$SYMFONY_ENV"
+
+      # Pre-warm the home so the first real visitor never hits a cold FPM pool or
+      # ungenerated Liip thumbnails (avoids a transient CLS on the carousel image).
+      # Requires the environment variable SITE_URL (e.g. https://www.up-animation.fr).
+      - name: Warm front (FPM + Liip thumbnails)
+        if: ${{ vars.SITE_URL != '' }}
+        continue-on-error: true
+        run: |
+          BASE="${{ vars.SITE_URL }}"
+          echo "Warming $BASE"
+          # Fresh render (cache-busting query) to obtain the current thumbnail URLs and wake FPM.
+          HTML=$(curl -s --max-time 90 "$BASE/?warm=$(date +%s)" || true)
+          # Pre-generate every referenced Liip thumbnail (carousel + above-the-fold images).
+          printf '%s' "$HTML" | grep -oE '(https?://[^"]*)?/thumbnails/[^"]+\.(webp|jpe?g|png)' | sort -u | head -n 60 \
+            | while read -r u; do
+                case "$u" in https://*) URL="$u";; *) URL="$BASE$u";; esac
+                curl -s -o /dev/null --max-time 30 "$URL" || true
+              done
+          # Prime the canonical home (cached fragment) once thumbnails exist.
+          curl -s -o /dev/null --max-time 90 "$BASE/" || true
+          echo "Warm done"
