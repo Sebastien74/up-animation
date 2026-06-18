@@ -167,6 +167,8 @@ export default class Favorites {
             list.classList.add('d-none');
             emptyState.classList.remove('d-none');
             actions.forEach((el) => el.classList.add('d-none'));
+            const intro = document.querySelector('.favorites-intro');
+            if (intro) intro.classList.add('d-none');
         }
     }
 }
