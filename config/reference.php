@@ -1849,6 +1849,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *     twig_component?: TwigComponentConfig,
  *     live_component?: LiveComponentConfig,
  *     scheb_two_factor?: SchebTwoFactorConfig,
+ *     nelmio_api_doc?: NelmioApiDocConfig,
  *     "when@dev"?: array{
  *         imports?: ImportsConfig,
  *         parameters?: ParametersConfig,
@@ -1949,6 +1950,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         twig_component?: TwigComponentConfig,
  *         live_component?: LiveComponentConfig,
  *         scheb_two_factor?: SchebTwoFactorConfig,
+ *         nelmio_api_doc?: NelmioApiDocConfig,
  *     },
  *     "when@test"?: array{
  *         imports?: ImportsConfig,
