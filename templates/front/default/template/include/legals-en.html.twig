@@ -89,7 +89,7 @@
        As soon as <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a> becomes aware of the death of a User and in the absence of instructions from it, <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a> undertakes to destroy its data, unless their retention is necessary for evidentiary purposes or to meet a legal obligation.</li>
 </ul>
 <p>If the User wishes to know how <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a> uses his Personal Data, request to rectify them or oppose their processing, the User may contact <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a> in writing at the following address: {%- if managerEmail -%}{{ managerEmail }}{%- else -%} <span class="text-danger bold">Manager email</span>{%- endif -%}</p>
-<p>COMPANY – DPO,
+<p>COMPANY - DPO,
 {%- if protectionOfficerName -%}{{ protectionOfficerName|raw }}{%- else -%}<span class="text-danger bold">Nom du délégué à la protection des données</span>{%- endif -%}
 {%- if protectionOfficerAddress -%}{%- if protectionOfficerName -%} <br> {%- endif -%}{{ protectionOfficerAddress|raw }}{%- endif -%}</p>
 <p>In this case, the User must indicate the Personal Data that he would like <a href="{{ app.request.getSchemeAndHttpHost() }}" aria-label="{{ companyName|striptags }}">{{ app.request.getSchemeAndHttpHost() }}</a> to correct, update or delete, identifying himself precisely with a copy of an identity document (identity card or passport).</p>
