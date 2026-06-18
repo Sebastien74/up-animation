@@ -291,7 +291,7 @@ class SeoService implements SeoInterface
     /**
      * Get title.
      *
-     * @throws NonUniqueResultException|MappingException|QueryException
+     * @throws NonUniqueResultException|MappingException|QueryException|InvalidArgumentException
      */
     private function getTitle(bool $menuLink = false): ?string
     {

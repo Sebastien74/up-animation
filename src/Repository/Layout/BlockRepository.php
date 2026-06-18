@@ -173,8 +173,9 @@ class BlockRepository extends ServiceEntityRepository
         $layoutId = is_object($layout) ? $layout->getId() : $layout['id'];
         $asThumb = $options['asThumb'] ?? false;
         $haveContent = $options['haveContent'] ?? false;
+        $titleForce = $options['titleForce'] ?? null;
 
-        $cacheKey = $layoutId . '-' . $blockType . '-' . $locale . '-' . ($asThumb ? 'thumb' : 'no_thumb') . '-' . ($haveContent ? 'content' : 'no_content');
+        $cacheKey = $layoutId . '-' . $blockType . '-' . $locale . '-' . ($asThumb ? 'thumb' : 'no_thumb') . '-' . ($haveContent ? 'content' : 'no_content') . '-' . ($titleForce ?? 'any');
         if (isset($this->cache['block_type'][$cacheKey])) {
             return $this->cache['block_type'][$cacheKey];
         }
@@ -182,9 +183,6 @@ class BlockRepository extends ServiceEntityRepository
         $statement = $this->createQueryBuilder('b')
             ->leftJoin('b.blockType', 'bt')
             ->leftJoin('b.intls', 'i')
-//            ->leftJoin('b.mediaRelations', 'bmr')
-//            ->leftJoin('bmr.media', 'bmrm')
-//            ->leftJoin('b.actionIntls', 'bai')
             ->leftJoin('b.col', 'c')
             ->leftJoin('c.zone', 'z')
             ->leftJoin('z.layout', 'l')
@@ -196,9 +194,6 @@ class BlockRepository extends ServiceEntityRepository
             ->setParameter('layoutId', $layoutId)
             ->addSelect('bt')
             ->addSelect('i')
-//            ->addSelect('bmr')
-//            ->addSelect('bmrm')
-//            ->addSelect('bai')
             ->addSelect('c')
             ->addSelect('z')
             ->addSelect('l')
@@ -209,6 +204,10 @@ class BlockRepository extends ServiceEntityRepository
             $statement->andWhere('i.title IS NOT NULL');
         } elseif ($haveContent) {
             $statement->andWhere('i.body IS NOT NULL OR i.introduction IS NOT NULL');
+        }
+
+        if (null !== $titleForce) {
+            $statement->andWhere('i.titleForce = :titleForce')->setParameter('titleForce', $titleForce);
         }
 
         $blocks = $statement->getQuery()
@@ -244,6 +243,7 @@ class BlockRepository extends ServiceEntityRepository
         }
         $asThumb = $options['asThumb'] ?? false;
         $haveContent = $options['haveContent'] ?? false;
+        $titleForce = $options['titleForce'] ?? null;
 
         $statement = $this->createQueryBuilder('b')
             ->leftJoin('b.blockType', 'bt')
@@ -271,7 +271,11 @@ class BlockRepository extends ServiceEntityRepository
             $statement->andWhere('i.body IS NOT NULL OR i.introduction IS NOT NULL');
         }
 
-        $cacheKey = implode(',', $layoutIds).'-'.$blockType.'-'.$locale.'-'.($asThumb ? 'thumb' : 'no_thumb').'-'.($haveContent ? 'content' : 'no_content');
+        if (null !== $titleForce) {
+            $statement->andWhere('i.titleForce = :titleForce')->setParameter('titleForce', $titleForce);
+        }
+
+        $cacheKey = implode(',', $layoutIds).'-'.$blockType.'-'.$locale.'-'.($asThumb ? 'thumb' : 'no_thumb').'-'.($haveContent ? 'content' : 'no_content').'-'.($titleForce ?? 'any');
         $blocks = $statement->getQuery()
             ->enableResultCache(3600, 'block_type_batch_'.md5($cacheKey))
             ->getResult();

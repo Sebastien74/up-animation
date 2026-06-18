@@ -572,7 +572,7 @@ class LayoutRuntime implements RuntimeExtensionInterface
     {
         $locale = $locale ?: $this->coreLocator->request()->getLocale();
         $layoutId = is_object($layout) ? $layout->getId() : $layout['id'];
-        $cacheKey = $layoutId.'-'.$locale.'-'.($all ? 'all' : 'one');
+        $cacheKey = 'layout-'.$layoutId.'-'.$locale.'-'.($all ? 'all' : 'one');
 
         // array_key_exists, not isset: a cached null must short-circuit too.
         if (array_key_exists($cacheKey, $this->cache['main_title'] ?? [])) {
@@ -583,6 +583,7 @@ class LayoutRuntime implements RuntimeExtensionInterface
         $block = $repository->findByBlockTypeAndLocaleLayout($layout, 'title', $locale, [
             'asThumb' => true,
             'haveContent' => true,
+            'titleForce' => 1,
         ]);
         $intl = $block ? ViewModel::fromEntity($block, $this->coreLocator, ['disabledMedias' => true])->intl : null;
         $title = $intl && $intl->title ? $intl->title : null;
@@ -622,7 +623,7 @@ class LayoutRuntime implements RuntimeExtensionInterface
         $ids = array_keys($pending);
 
         $titles = [];
-        $blocks = $repository->findByBlockTypeAndLayouts($ids, 'title', $locale, ['asThumb' => true, 'haveContent' => true]);
+        $blocks = $repository->findByBlockTypeAndLayouts($ids, 'title', $locale, ['asThumb' => true, 'haveContent' => true, 'titleForce' => 1]);
         foreach ($ids as $layoutId) {
             $block = $blocks[$layoutId] ?? null;
             $intl = $block ? ViewModel::fromEntity($block, $this->coreLocator, ['disabledMedias' => true])->intl : null;
