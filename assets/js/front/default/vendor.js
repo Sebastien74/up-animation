@@ -308,6 +308,12 @@ document.addEventListener('DOMContentLoaded', function () {
         }).catch(error => console.error(error.message));
     }
 
+    if (window.matchMedia('(min-width: 992px)').matches && !window.matchMedia('(pointer: coarse)').matches) {
+        import('./components/cursor').then(({default: Cursor}) => {
+            new Cursor();
+        }).catch(error => console.error(error.message));
+    }
+
     import('./components/accessibility').then(({default: Accessibility}) => {
         new Accessibility();
     }).catch(error => console.error(error.message));
