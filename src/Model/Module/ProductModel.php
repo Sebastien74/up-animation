@@ -139,7 +139,7 @@ final class ProductModel extends BaseModel
             'asCustomLayout' => !$disabledLayout && $model->haveLayout ? $model->haveLayout : !$disabledLayout && $catalogLayout && !$catalogLayout->getZones()->isEmpty(),
             'mainFeature' => self::mainFeature($catalogDb, $values),
             'formPageUrl' => self::getFormPage($model),
-            'indexUrl' => $model->urlIndex && $model->urlCode ? self::$coreLocator->router()->generate('front_catalogproduct_view', ['pageUrl' => $model->urlIndex, 'url' => $model->urlCode], UrlGeneratorInterface::ABSOLUTE_URL) : null,
+            'indexUrl' => $model->urlIndex && $model->urlCode ? self::$coreLocator->router()->generate('front_index', ['url' => $model->urlIndex], UrlGeneratorInterface::ABSOLUTE_URL) : null,
             'contactUrl' => $contactPageUrl ? self::$coreLocator->router()->generate('front_index', $contactPageParams, UrlGeneratorInterface::ABSOLUTE_URL) : self::$coreLocator->router()->generate('front_index', [], UrlGeneratorInterface::ABSOLUTE_URL),
         ], $values['defaults'], $subCategories);
     }
