@@ -30,8 +30,12 @@ $cursor-arrow-stroke: '%23' + str-slice(inspect($body-bg), 2);
         transform: scale(.15);
     }
 
-    &.-hidden:before {
-        transform: scale(0);
+    &.-hidden {
+        opacity: 0 !important;
+
+        &:before {
+            transform: scale(0);
+        }
     }
 
     &.-large:before,
@@ -74,6 +78,25 @@ $cursor-arrow-stroke: '%23' + str-slice(inspect($body-bg), 2);
                 width: 32px;
             }
         }
+    }
+
+    &.-faded {
+        &:before {
+            opacity: .25 !important;
+            transform: scale(1.5);
+        }
+
+        .mf-cursor-text {
+            opacity: 0 !important;
+        }
+    }
+
+    &.-primary:before {
+        background: $primary;
+    }
+
+    &.-small:before {
+        transform: scale(.5);
     }
 }
 
