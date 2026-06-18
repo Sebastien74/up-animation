@@ -6,7 +6,7 @@
 {%- set type = information.alertType ? information.alertType : 'marquee' -%} {# 'basic', 'marquee' or 'flip' #}
 {%- set speed = information.alertDuration ? information.alertDuration * 1000 : 25000 -%}
 {%- set hide = app.session.get('front_website_alert_'~mode) -%}
-{%- set asMarquee = 'marquee' == type -%}
+{%- set asMarquee = 'marquee' == type and websiteAlertmessage|length > 1 -%}
 {%- set asflip = 'flip' == type -%}
 {%- set bg = 'bg-primary' -%}
 
