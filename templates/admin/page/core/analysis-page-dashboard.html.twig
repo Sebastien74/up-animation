@@ -25,24 +25,6 @@
     <span class="pa-psi-pill {{ state }}"><span class="pa-psi-strat">{{ letter }}</span>{{ value is null ? '-' : value }}</span>
 {%- endmacro -%}
 
-{%- macro issues(high, medium, low, hasSnapshot) -%}
-    {%- if not hasSnapshot -%}
-        <span class="pa-issue-empty" aria-label="{{ "Non analysé"|trans|striptags }}">-</span>
-    {%- elseif (high + medium + low) == 0 -%}
-        <span class="pa-issue-clean">
-            <i class="icm-check" aria-hidden="true"></i>
-            <span class="visually-hidden">{{ "Aucun problème"|trans|striptags }}</span>
-        </span>
-    {%- else -%}
-        {%- set summary = "%high% critiques, %medium% à surveiller, %low% mineurs"|trans({'%high%': high, '%medium%': medium, '%low%': low}) -%}
-        <span class="pa-issues-set" role="img" aria-label="{{ summary|striptags }}">
-            {%- if high > 0 %}<span class="issue-chip is-high" title="{{ "Critiques"|trans|striptags }}" aria-hidden="true">{{ high }}</span>{% endif -%}
-            {%- if medium > 0 %}<span class="issue-chip is-medium" title="{{ "À surveiller"|trans|striptags }}" aria-hidden="true">{{ medium }}</span>{% endif -%}
-            {%- if low > 0 %}<span class="issue-chip is-low" title="{{ "Mineurs"|trans|striptags }}" aria-hidden="true">{{ low }}</span>{% endif -%}
-        </span>
-    {%- endif -%}
-{%- endmacro -%}
-
 {%- block body -%}
 
     {%- set labels = {page: "Pages"|trans, newscast: "Actualités"|trans, catalogproduct: "Produits"|trans} -%}
@@ -55,7 +37,7 @@
             <div class="pa-head-text">
                 <h1 class="perf-inspector-title mt-3">{{ "Analyse des pages"|trans|raw }}</h1>
                 <p class="perf-inspector-desc">
-                    {{ "Analyse en preview des pages, actualités et produits (performance et rendu). Indice indicatif, ce n'est pas une mesure Lighthouse."|trans|raw }}
+                    {{ "Scores Google PageSpeed Insights (Lighthouse) des pages, actualités et produits en ligne."|trans|raw }}
                 </p>
             </div>
             <div class="pa-head-actions d-flex align-items-center gap-2">
@@ -78,9 +60,6 @@
                         {%- endfor -%}
                     </select>
                 {%- endif -%}
-                <button type="button" class="pa-run-all btn-app small d-inline-flex align-items-center gap-2">
-                    <i class="icm-rocket"></i><span class="text-nowrap">{{ "Tout analyser"|trans|striptags }} (<span class="pa-run-all-count">{{ rows|length }}</span>)</span>
-                </button>
                 {%- if psiEnabled and rows is not empty -%}
                     {%- set psiBulkBlocked = psiRemaining < psiTotal -%}
                     <span class="pa-psi-quota" title="{{ "Quota PageSpeed quotidien : %used% / %limit% requêtes"|trans({'%used%': psiQuotaUsed, '%limit%': psiQuotaLimit})|striptags }}">
@@ -93,7 +72,7 @@
                         <i class="icm-rocket"></i><span class="text-nowrap">{{ "Tout PageSpeed"|trans|striptags }}</span>
                     </button>
                 {%- endif -%}
-                {%- if rows is not empty -%}
+                {%- if psiEnabled and rows is not empty -%}
                     <button type="button" class="pa-delete-all btn-app danger small d-inline-flex align-items-center gap-2"
                             data-bs-toggle="modal" data-bs-target="#pa-delete-modal"
                             data-pa-action="{{ path('admin_page_analysis_clear', {website: websiteId()}) }}"
@@ -103,6 +82,22 @@
                 {%- endif -%}
             </div>
         </div>
+
+        {%- if not psiEnabled -%}
+            <div class="table-responsive app-table mb-3">
+                <table class="table mb-0">
+                    <tbody>
+                        <tr>
+                            <td class="px-4">
+                                <div class="py-2 d-flex align-items-center justify-content-center gap-2">
+                                    <i class="btn-icon info icm-info"></i>{{ "PageSpeed Insights n'est pas configuré (clé API manquante)."|trans|raw }}
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        {%- endif -%}
 
         <div class="progress pa-progress-wrap d-none mb-2" aria-hidden="true">
             <div class="progress-bar pa-progress" style="width: 0;"></div>
@@ -131,25 +126,18 @@
                             <th class="align-middle px-4 pa-sortable" data-sort-type="text">{{ "Type"|trans }}</th>
                             <th class="align-middle px-4 pa-sortable" data-sort-type="text">{{ "Page"|trans }}</th>
                             <th class="align-middle text-center px-4 pa-sortable" data-sort-type="text">{{ "Langue"|trans }}</th>
-                            <th class="align-middle text-center px-4 pa-sortable" data-sort-type="num">{{ "Statut"|trans }}</th>
-                            <th class="align-middle text-center px-4 pa-sortable" data-sort-type="num">{{ "Indice"|trans }}</th>
                             {%- if psiEnabled -%}
                                 <th class="align-middle text-center px-4 pa-sortable" data-sort-type="num">{{ "PageSpeed"|trans }}</th>
+                                <th class="align-middle px-4 pa-sortable" data-sort-type="num">{{ "Dernière mesure"|trans }}</th>
                             {%- endif -%}
-                            <th class="align-middle text-center px-4 pa-sortable" data-sort-type="num">{{ "Poids"|trans }}</th>
-                            <th class="align-middle text-center px-4 pa-sortable" data-sort-type="num">{{ "Problèmes"|trans }}</th>
-                            <th class="align-middle px-4 pa-sortable" data-sort-type="num">{{ "Dernière analyse"|trans }}</th>
                             <th class="align-middle text-end px-4">{{ "Action"|trans }}</th>
                         </tr>
                     </thead>
                     <tbody>
                         {%- for row in rows -%}
-                            {%- set s = row.score -%}
                             {%- set typeLabel = labels[row.interface]|default(row.interface) -%}
-                            {%- set scoreState = s is null ? 'is-none' : (s >= 90 ? 'is-good' : (s >= 60 ? 'is-warn' : 'is-bad')) -%}
-                            {%- set hasSnapshot = row.date is not null -%}
                             {%- set localeCode = row.locale|lower -%}
-                            <tr class="pa-row" data-run-url="{{ row.runUrl }}" data-locale="{{ localeCode }}" data-search="{{ (row.title ~ ' ' ~ row.code ~ ' ' ~ typeLabel)|lower }}">
+                            <tr class="pa-row" data-locale="{{ localeCode }}" data-search="{{ (row.title ~ ' ' ~ row.code ~ ' ' ~ typeLabel)|lower }}">
                                 <td class="align-middle px-4" data-label="{{ "Type"|trans|striptags }}" data-sort="{{ typeLabel|lower }}">
                                     <span class="pa-type-pill">{{ typeLabel }}</span>
                                 </td>
@@ -164,13 +152,6 @@
                                          class="pa-flag" width="19" height="14" loading="lazy"
                                          alt="{{ localeCode|languageName }}" title="{{ localeCode|languageName }}">
                                 </td>
-                                <td class="align-middle text-center px-4 pa-status-cell" data-label="{{ "Statut"|trans|striptags }}" data-sort="{{ row.httpStatus ?? -1 }}">
-                                    {%- set httpState = row.httpStatus is null ? 'is-none' : (row.httpStatus >= 400 ? 'is-bad' : (row.httpStatus >= 300 ? 'is-warn' : 'is-good')) -%}
-                                    <span class="score-pill pa-http {{ httpState }}">{{ row.httpStatus is null ? '-' : row.httpStatus }}</span>
-                                </td>
-                                <td class="align-middle text-center px-4 pa-score-cell" data-label="{{ "Indice"|trans|striptags }}" data-sort="{{ s ?? -1 }}">
-                                    <span class="score-pill pa-score {{ scoreState }}">{{ s is null ? '-' : s }}</span>
-                                </td>
                                 {%- if psiEnabled -%}
                                     <td class="align-middle text-center px-4 pa-psi-cell" data-label="{{ "PageSpeed"|trans|striptags }}" data-sort="{{ row.psiMobile ?? -1 }}">
                                         <div class="pa-psi-cell-inner d-inline-flex align-items-center gap-1">
@@ -183,22 +164,18 @@
                                             </button>
                                         </div>
                                     </td>
+                                    <td class="align-middle px-4 pa-date" data-label="{{ "Dernière mesure"|trans|striptags }}" data-sort="{{ row.psiDate ? row.psiDate|date('U') : 0 }}">
+                                        <span class="text-nowrap">{{ row.psiDate ? row.psiDate|date('d/m/Y H:i') : '-' }}</span>
+                                    </td>
                                 {%- endif -%}
-                                <td class="align-middle text-center px-4 pa-kb" data-label="{{ "Poids"|trans|striptags }}" data-sort="{{ row.kb ?? -1 }}">{{ row.kb is null ? '-' : row.kb ~ ' Ko' }}</td>
-                                <td class="align-middle text-center px-4 pa-issues" data-label="{{ "Problèmes"|trans|striptags }}" data-sort="{{ hasSnapshot ? (row.high|default(0) + row.medium|default(0) + row.low|default(0)) : -1 }}">
-                                    {{- pa.issues(row.high|default(0), row.medium|default(0), row.low|default(0), hasSnapshot) -}}
-                                </td>
-                                <td class="align-middle px-4 pa-date" data-label="{{ "Dernière analyse"|trans|striptags }}" data-sort="{{ row.date ? row.date|date('U') : 0 }}">
-                                    <span class="text-nowrap">{{ row.date ? row.date|date('d/m/Y H:i') : '-' }}</span>
-                                </td>
                                 <td class="align-middle text-end px-4" data-label="{{ "Action"|trans|striptags }}">
                                     <div class="d-flex justify-content-end align-items-center gap-2">
                                         <a href="{{ row.detailUrl }}" class="btn-icon small info"
                                            data-bs-toggle="tooltip" data-tooltip-variant="info"
-                                           title="{{ "Voir le détail des problèmes"|trans|striptags }}">
+                                           title="{{ "Voir le rapport PageSpeed"|trans|striptags }}">
                                             <i class="icm-eye"></i>
                                         </a>
-                                        {%- if row.date is not null -%}
+                                        {%- if psiEnabled and row.psiDate is not null -%}
                                             <button type="button" class="btn-icon small danger"
                                                     data-bs-toggle="modal" data-bs-target="#pa-delete-modal"
                                                     data-pa-action="{{ row.clearUrl }}" data-pa-scope="page"
@@ -207,9 +184,6 @@
                                                 <i class="icm-trash"></i>
                                             </button>
                                         {%- endif -%}
-                                        <button type="button" class="pa-run btn-app small d-inline-flex align-items-center gap-1">
-                                            <i class="icm-rocket"></i><span>{{ "Analyser"|trans|striptags }}</span>
-                                        </button>
                                     </div>
                                 </td>
                             </tr>

@@ -1,12 +1,8 @@
 # PageSpeed Insights (analyse de page)
 
-Le tableau de bord « Analyse des pages » (`admin_page_analysis_dashboard`) combine deux
-mesures complémentaires par page :
-
-- **l'indice statique** (`PageAnalyzer`) : analyse du HTML rendu en preview, instantanée,
-  indicative, sans appel externe ;
-- **PageSpeed Insights (PSI)** : une mesure **réelle Lighthouse** + les **données terrain
-  CrUX** de Google, déclenchée à la demande sur la page **en ligne**.
+Le tableau de bord « Analyse des pages » (`admin_page_analysis_dashboard`) mesure chaque
+page avec **PageSpeed Insights (PSI)** : une mesure **réelle Lighthouse** + les **données
+terrain CrUX** de Google, déclenchée à la demande sur la page **en ligne**.
 
 PSI répond aussi au besoin « où ça coince dans le code » : chaque diagnostic Google est
 relié à sa source dans le projet (entrypoint Webpack, média, tiers).
@@ -30,7 +26,7 @@ et le panneau PSI disparaissent silencieusement (`PageSpeedClient::isEnabled()`)
 - **URL publique obligatoire** : Google crawle la vraie page en ligne. Le test ne
   fonctionne donc qu'en production (pas sur le rendu preview admin ni sur `localhost`).
   L'URL est résolue par `PublicPageUrlResolver` (domaine de la locale, sinon domaine par
-  défaut), comme la commande de crawl `app:analysis-page:run`.
+  défaut).
 - **Lent et quota-limité** : un appel = un run Lighthouse réel chez Google (10 à 30 s).
   Le test est donc **à la demande uniquement** (bouton par page, « Tout PageSpeed »
   séquentiel), jamais au chargement. Chaque scan lance désormais plusieurs runs par
@@ -88,6 +84,6 @@ fenêtre de paint ultra-rapide de Lighthouse) absent en navigateur réel — pri
 
 ## Stockage et nettoyage
 
-Chaque mesure crée un `PageSpeedSnapshot` (20 derniers conservés par page, comme
-`PageAnalysis`). Les actions « Supprimer les données » et « Tout supprimer » du tableau
-de bord purgent **les deux** historiques (statique + PSI).
+Chaque mesure crée un `PageSpeedSnapshot` (20 derniers conservés par page). Les actions
+« Supprimer les données » et « Tout supprimer » du tableau de bord purgent l'historique
+PSI (par page ou pour tout le site).

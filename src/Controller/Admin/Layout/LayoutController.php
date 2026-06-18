@@ -5,19 +5,12 @@ declare(strict_types=1);
 namespace App\Controller\Admin\Layout;
 
 use App\Controller\Admin\AdminController;
-use App\Controller\Admin\PageAnalysisTrait;
-use App\Entity\Core\Website;
 use App\Entity\Layout\Layout;
-use App\Entity\Seo\Url;
-use App\Repository\Seo\PageAnalysisRepository;
 use App\Service\Admin\LayoutServiceInterface;
-use App\Service\Admin\PageAnalysisRecorder;
-use App\Service\Admin\PageAnalyzerInterface;
 use Doctrine\ORM\PersistentCollection;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
@@ -33,8 +26,6 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route('/admin-%security_token%/{website}/layouts', schemes: '%protocol%')]
 class LayoutController extends AdminController
 {
-    use PageAnalysisTrait;
-
     protected ?string $class = Layout::class;
 
     /**
@@ -102,59 +93,6 @@ class LayoutController extends AdminController
         $this->denyUnlessEntityWebsite($layout);
 
         return $service->restoreLayoutMargins($layout);
-    }
-
-    /**
-     * Analyze the front rendering of the page: renders it internally (preview mode),
-     * parses the HTML and returns a performance/rendering report for an admin modal.
-     *
-     * Admin/preview only: rendered with preview=true and gated by ROLE_ADMIN, it never
-     * runs during public front navigation.
-     */
-    #[IsGranted('ROLE_ADMIN')]
-    #[Route('/analyze/{url}', name: 'admin_layout_analyze', methods: 'POST')]
-    public function analyze(Request $request, Website $website, Url $url, PageAnalyzerInterface $analyzer, PageAnalysisRecorder $recorder, PageAnalysisRepository $analysisRepository, EventDispatcherInterface $dispatcher): JsonResponse
-    {
-        $interface = (string) $request->query->get('interface', 'page');
-        $history = [];
-
-        try {
-            $report = $this->analyzePreview($analyzer, $recorder, $dispatcher, $interface, $website, $url);
-            $history = $analysisRepository->findLatestSnapshots($website, $url->getCode(), $url->getLocale(), 12);
-        } catch (\Throwable $e) {
-            $report = [
-                'meta' => ['urlCode' => $url->getCode(), 'bytes' => 0, 'kb' => 0, 'dom' => 0, 'images' => 0, 'scripts' => 0, 'requests' => 0],
-                'score' => null,
-                'summary' => ['high' => 1, 'medium' => 0, 'low' => 0],
-                'groups' => [[
-                    'id' => 'error',
-                    'label' => 'Erreur',
-                    'counts' => ['high' => 1, 'medium' => 0, 'low' => 0],
-                    'findings' => [[
-                        'id' => 'error',
-                        'severity' => 'high',
-                        'label' => 'Analyse impossible',
-                        'value' => 'Erreur de rendu',
-                        'reco' => $this->coreLocator->isDebug() ? $e->getMessage() : "La page n'a pas pu être rendue pour analyse.",
-                    ]],
-                ]],
-            ];
-        }
-
-        $previewUrl = $this->previewUrlFor($interface, $website, $url);
-        $analyzeUrl = $this->coreLocator->router()->generate('admin_layout_analyze', [
-            'website' => $website->getId(),
-            'url' => $url->getId(),
-            'interface' => $interface,
-        ]);
-
-        return new JsonResponse(['html' => $this->renderView('admin/core/layout/analysis-page.html.twig', [
-            'report' => $report,
-            'url' => $url,
-            'previewUrl' => $previewUrl,
-            'analyzeUrl' => $analyzeUrl,
-            'history' => $history,
-        ])]);
     }
 
     /**

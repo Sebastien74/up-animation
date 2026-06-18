@@ -59,20 +59,6 @@ export default function (Routing) {
         });
     };
 
-    /**
-     * On analyze page (layout-level button, outside modals)
-     */
-    let analyzePage = function () {
-        document.body.addEventListener('click', function (e) {
-            let btn = e.target.closest('.analyze-page');
-            if (btn) {
-                e.preventDefault();
-                import('./../../plugins/analysis-page').then(({default: pageAnalysis}) => {
-                    new pageAnalysis(e, btn);
-                }).catch(error => console.error(error.message));
-            }
-        });
-    };
 
     /**
      * On submitting
@@ -327,7 +313,6 @@ export default function (Routing) {
         showSubmit();
         standardizeLayout();
         restoreLayout();
-        analyzePage();
         submit();
         backgroundModal();
         copyClass();

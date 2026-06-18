@@ -42,11 +42,10 @@
                            website: website.id,
                            url: analyzeUrl.id,
                            interface: interface.name,
-                           run: 1,
                        }) }}"
                        data-bs-toggle="tooltip"
-                       title="{{ "Analyse la page et ouvre le rapport (performance, rendu, SEO, accessibilité)"|trans|striptags }}">
-                        <i class="icm-tachometer"></i><span class="d-none d-xl-inline">{{ "Analyser la page"|trans|raw }}</span>
+                       title="{{ "Ouvre le rapport Google PageSpeed Insights de la page"|trans|striptags }}">
+                        <i class="icm-google"></i><span class="d-none d-xl-inline">{{ "PageSpeed"|trans|raw }}</span>
                     </a>
                 {%- endif -%}
                 <span class="standardize-margins-page btn-app small d-inline-flex align-items-center gap-2 cursor"

@@ -25,12 +25,7 @@
 {%- block body -%}
 
     <div id="analysis-page-detail" class="pt-2 pb-5"
-         data-run-url="{{ runUrl }}"
          {% if psiEnabled %}data-psi-url="{{ psiUrl }}"{% endif %}>
-
-        {%- if reportMarkdown -%}
-            <textarea id="pa-md-source" class="d-none" aria-hidden="true" tabindex="-1">{{ reportMarkdown }}</textarea>
-        {%- endif -%}
 
         <div class="perf-inspector-head pa-detail-head mb-4">
             <div class="pa-detail-headline">
@@ -40,11 +35,11 @@
                     <a href="{{ previewUrl }}" target="_blank" rel="noopener" class="pa-page-url d-inline-block mt-1">/{{ pageCode }}</a>
                 {%- endif -%}
                 <p class="perf-inspector-desc">
-                    {{ "Détail de la dernière analyse en preview. Indice indicatif, ce n'est pas une mesure Lighthouse."|trans|raw }}
+                    {{ "Mesure Google PageSpeed Insights (Lighthouse) de la page en ligne."|trans|raw }}
                 </p>
                 {%- if crawlUrl is defined and crawlUrl -%}
                     <p class="pa-crawl-url mb-0">
-                        <span class="pa-crawl-label">{{ "URL crawlée :"|trans }}</span>
+                        <span class="pa-crawl-label">{{ "URL mesurée :"|trans }}</span>
                         <a href="{{ crawlUrl }}" target="_blank" rel="noopener noreferrer">{{ crawlUrl }}</a>
                     </p>
                 {%- endif -%}
@@ -53,9 +48,6 @@
                 <a href="{{ previewUrl }}" target="_blank" rel="noopener" class="btn-app small d-inline-flex align-items-center gap-2">
                     <i class="icm-external-link-alt"></i><span>{{ "Ouvrir la page"|trans|striptags }}</span>
                 </a>
-                <button type="button" class="pa-detail-run btn-app small d-inline-flex align-items-center gap-2">
-                    <i class="icm-rocket"></i><span>{{ "Relancer l'analyse"|trans|striptags }}</span>
-                </button>
                 {%- if psiEnabled -%}
                     <button type="button" class="pa-psi-run btn-app small d-inline-flex align-items-center gap-2"
                             data-running-label="{{ "Mesure en cours…"|trans|striptags }}"
@@ -64,19 +56,13 @@
                         <i class="icm-google"></i><span>{{ "Lancer PageSpeed"|trans|striptags }}</span>
                     </button>
                 {%- endif -%}
-                {%- if reportMarkdown -%}
-                    <button type="button" class="pa-detail-copy-md btn-app small d-inline-flex align-items-center gap-2"
-                            data-copied-label="{{ "Copié !"|trans|striptags }}">
-                        <i class="icm-copy"></i><span>{{ "Copier l'analyse (.md)"|trans|striptags }}</span>
-                    </button>
-                {%- endif -%}
                 {%- if psiEnabled and psiMarkdown -%}
                     <button type="button" class="psi-copy-md btn-app small d-inline-flex align-items-center gap-2"
                             data-copied-label="{{ "Copié !"|trans|striptags }}">
                         <i class="icm-copy"></i><span>{{ "Copier PageSpeed (.md)"|trans|striptags }}</span>
                     </button>
                 {%- endif -%}
-                {%- if latest is not null -%}
+                {%- if psiEnabled and psi is not null -%}
                     <button type="button" class="btn-app danger small d-inline-flex align-items-center gap-2"
                             data-bs-toggle="modal" data-bs-target="#pa-delete-modal"
                             data-pa-action="{{ path('admin_page_analysis_clear_page', {website: websiteId(), url: url.id}) }}"
@@ -88,49 +74,27 @@
             </div>
         </div>
 
-        {%- if psiEnabled -%}
-            {# PageSpeed Insights is the primary tab; fall back to internal analysis when no PSI data. #}
-            {%- set psiActive = psi is not null -%}
-            <ul class="nav nav-tabs pa-detail-tabs mb-4" role="tablist">
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link {{ psiActive ? 'active' : '' }}" id="pa-tab-psi" data-bs-toggle="tab"
-                            data-bs-target="#pa-pane-psi" type="button" role="tab"
-                            aria-controls="pa-pane-psi" aria-selected="{{ psiActive ? 'true' : 'false' }}">
-                        <i class="icm-google" aria-hidden="true"></i> {{ "PageSpeed Insights"|trans }}
-                    </button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link {{ psiActive ? '' : 'active' }}" id="pa-tab-internal" data-bs-toggle="tab"
-                            data-bs-target="#pa-pane-internal" type="button" role="tab"
-                            aria-controls="pa-pane-internal" aria-selected="{{ psiActive ? 'false' : 'true' }}">
-                        <i class="icm-rocket" aria-hidden="true"></i> {{ "Analyse interne"|trans }}
-                    </button>
-                </li>
-            </ul>
-            <div class="tab-content pa-detail-tab-content">
-                <div class="tab-pane fade {{ psiActive ? 'show active' : '' }}" id="pa-pane-psi" role="tabpanel" aria-labelledby="pa-tab-psi">
-                    {%- if psi is not null -%}
-                        {%- include 'admin/page/core/include/analysis-page-psi.html.twig' with {psi: psi, psiMarkdown: psiMarkdown} only -%}
-                    {%- else -%}
-                        <div class="psi-panel psi-panel-empty mb-4">
-                            <span class="psi-badge"><i class="icm-rocket" aria-hidden="true"></i> {{ "PageSpeed Insights"|trans }}</span>
-                            <p class="perf-inspector-desc mb-0">
-                                {{ "Lancez une mesure PageSpeed pour obtenir les scores réels Google et la liste des points à corriger."|trans|raw }}
-                            </p>
-                        </div>
-                    {%- endif -%}
-                </div>
-                <div class="tab-pane fade {{ psiActive ? '' : 'show active' }}" id="pa-pane-internal" role="tabpanel" aria-labelledby="pa-tab-internal">
-                    {%- include 'admin/page/core/include/analysis-page-internal.html.twig' with {latest: latest, history: history} only -%}
-                </div>
+        {%- if not psiEnabled -%}
+            <div class="psi-panel psi-panel-empty mb-4">
+                <span class="psi-badge"><i class="icm-rocket" aria-hidden="true"></i> {{ "PageSpeed Insights"|trans }}</span>
+                <p class="perf-inspector-desc mb-0">
+                    {{ "PageSpeed Insights n'est pas configuré (clé API manquante)."|trans|raw }}
+                </p>
             </div>
+        {%- elseif psi is not null -%}
+            {%- include 'admin/page/core/include/analysis-page-psi.html.twig' with {psi: psi, psiMarkdown: psiMarkdown} only -%}
         {%- else -%}
-            {%- include 'admin/page/core/include/analysis-page-internal.html.twig' with {latest: latest, history: history} only -%}
+            <div class="psi-panel psi-panel-empty mb-4">
+                <span class="psi-badge"><i class="icm-rocket" aria-hidden="true"></i> {{ "PageSpeed Insights"|trans }}</span>
+                <p class="perf-inspector-desc mb-0">
+                    {{ "Lancez une mesure PageSpeed pour obtenir les scores réels Google et la liste des points à corriger."|trans|raw }}
+                </p>
+            </div>
         {%- endif -%}
 
     </div>
 
-    {%- if latest is not null -%}
+    {%- if psiEnabled and psi is not null -%}
         {%- include 'admin/page/core/include/analysis-page-delete-modal.html.twig' -%}
     {%- endif -%}
 

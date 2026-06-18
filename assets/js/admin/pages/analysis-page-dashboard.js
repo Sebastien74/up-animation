@@ -1,110 +1,13 @@
 /**
- * Page analysis dashboard: run preview analysis per row (AJAX) and "analyze all"
- * sequentially with a progress bar. Admin/preview only.
+ * PageSpeed Insights dashboard: run real Lighthouse measurements per row (AJAX) and
+ * "measure all" sequentially with a progress bar and a daily quota guard. Admin only.
  *
  * @author Sébastien FOURNIER <fournier.sebastien@outlook.com>
  */
 
-import '../../vendor/plugins/prism';
-import '../../../scss/vendor/components/_prism.scss';
-
 const container = document.getElementById('analysis-page');
 
 if (container) {
-
-    const scoreState = function (score) {
-        if (score === null || score === undefined) {
-            return 'is-none';
-        }
-        if (score >= 90) {
-            return 'is-good';
-        }
-        if (score >= 60) {
-            return 'is-warn';
-        }
-        return 'is-bad';
-    };
-
-    const issuesHtml = function (high, medium, low) {
-        high = high | 0;
-        medium = medium | 0;
-        low = low | 0;
-        if ((high + medium + low) === 0) {
-            return '<span class="pa-issue-clean"><i class="icm-check" aria-hidden="true"></i>'
-                + '<span class="visually-hidden">Aucun problème</span></span>';
-        }
-        const summary = high + ' critiques, ' + medium + ' à surveiller, ' + low + ' mineurs';
-        let html = '<span class="pa-issues-set" role="img" aria-label="' + summary + '">';
-        if (high > 0) {
-            html += '<span class="issue-chip is-high" title="Critiques" aria-hidden="true">' + high + '</span>';
-        }
-        if (medium > 0) {
-            html += '<span class="issue-chip is-medium" title="À surveiller" aria-hidden="true">' + medium + '</span>';
-        }
-        if (low > 0) {
-            html += '<span class="issue-chip is-low" title="Mineurs" aria-hidden="true">' + low + '</span>';
-        }
-        return html + '</span>';
-    };
-
-    const httpState = function (status) {
-        if (!status) {
-            return 'is-none';
-        }
-        if (status >= 400) {
-            return 'is-bad';
-        }
-        if (status >= 300) {
-            return 'is-warn';
-        }
-        return 'is-good';
-    };
-
-    const updateRow = function (row, data) {
-        const scoreEl = row.querySelector('.pa-score');
-        const httpEl = row.querySelector('.pa-http');
-        const kbEl = row.querySelector('.pa-kb');
-        const issuesEl = row.querySelector('.pa-issues');
-        const dateEl = row.querySelector('.pa-date');
-
-        if (!data.ok) {
-            if (scoreEl) {
-                scoreEl.className = 'score-pill pa-score is-none';
-                scoreEl.textContent = '-';
-            }
-            return;
-        }
-        const setSort = function (el, value) {
-            const cell = el ? el.closest('td') : null;
-            if (cell) {
-                cell.dataset.sort = value;
-            }
-        };
-
-        if (httpEl) {
-            httpEl.className = 'score-pill pa-http ' + httpState(data.httpStatus);
-            httpEl.textContent = data.httpStatus ? data.httpStatus : '-';
-            setSort(httpEl, data.httpStatus || -1);
-        }
-        if (scoreEl) {
-            scoreEl.className = 'score-pill pa-score ' + scoreState(data.score);
-            scoreEl.textContent = data.score === null ? '-' : data.score;
-            setSort(scoreEl, data.score === null ? -1 : data.score);
-        }
-        if (kbEl) {
-            kbEl.textContent = (data.kb || 0) + ' Ko';
-            kbEl.dataset.sort = data.kb || 0;
-        }
-        if (issuesEl) {
-            issuesEl.innerHTML = issuesHtml(data.high || 0, data.medium || 0, data.low || 0);
-            issuesEl.dataset.sort = (data.high || 0) + (data.medium || 0) + (data.low || 0);
-        }
-        if (dateEl) {
-            const dateSpan = dateEl.querySelector('.text-nowrap') || dateEl;
-            dateSpan.textContent = data.date || '';
-            dateEl.dataset.sort = Math.floor(Date.now() / 1000);
-        }
-    };
 
     const setButtonLoading = function (button, loading) {
         if (!button) {
@@ -129,105 +32,10 @@ if (container) {
         }
     };
 
-    const runRow = function (row) {
-        const url = row.getAttribute('data-run-url');
-        const button = row.querySelector('.pa-run');
-        if (!url) {
-            return Promise.resolve();
-        }
-        setButtonLoading(button, true);
-        row.classList.add('pa-running');
-
-        return fetch(url, {method: 'POST', headers: {'X-Requested-With': 'XMLHttpRequest'}})
-            .then(response => response.ok ? response.json() : {ok: false})
-            .then(data => updateRow(row, data))
-            .catch(() => updateRow(row, {ok: false}))
-            .finally(() => {
-                row.classList.remove('pa-running');
-                setButtonLoading(button, false);
-            });
-    };
-
-    // Single row analysis (shows the main loader for the duration).
     const mainPreloader = document.getElementById('main-preloader');
-    container.addEventListener('click', function (e) {
-        const button = e.target.closest('.pa-run');
-        if (!button) {
-            return;
-        }
-        e.preventDefault();
-        const row = button.closest('.pa-row');
-        if (row) {
-            if (mainPreloader) {
-                mainPreloader.classList.remove('d-none');
-            }
-            runRow(row).finally(function () {
-                if (mainPreloader) {
-                    mainPreloader.classList.add('d-none');
-                }
-            });
-        }
-    });
-
-    // Analyze all (sequential to avoid overloading the server).
-    const runAllButton = container.querySelector('.pa-run-all');
     const progressWrap = container.querySelector('.pa-progress-wrap');
     const progressBar = container.querySelector('.pa-progress');
     const statusEl = container.querySelector('.pa-status');
-
-    if (runAllButton) {
-        runAllButton.addEventListener('click', function () {
-            const rows = Array.from(container.querySelectorAll('.pa-row')).filter(row => !row.classList.contains('d-none'));
-            if (!rows.length || runAllButton.disabled) {
-                return;
-            }
-            runAllButton.disabled = true;
-            runAllButton.classList.add('disabled');
-            if (progressWrap) {
-                progressWrap.classList.remove('d-none');
-            }
-            if (mainPreloader) {
-                mainPreloader.classList.remove('d-none');
-            }
-
-            let done = 0;
-            const total = rows.length;
-            const rowLabel = function (row) {
-                const title = row.querySelector('.pa-page-title');
-                const url = row.querySelector('.pa-page-url');
-                if (title && title.textContent.trim()) {
-                    return title.textContent.trim();
-                }
-                return url && url.textContent.trim() ? url.textContent.trim() : '';
-            };
-            const next = function () {
-                if (!rows.length) {
-                    if (statusEl) {
-                        statusEl.textContent = total + ' page(s) analysée(s).';
-                    }
-                    if (mainPreloader) {
-                        mainPreloader.classList.add('d-none');
-                    }
-                    runAllButton.disabled = false;
-                    runAllButton.classList.remove('disabled');
-                    return;
-                }
-                const row = rows.shift();
-                if (statusEl) {
-                    const label = rowLabel(row);
-                    statusEl.textContent = 'Analyse ' + (done + 1) + ' / ' + total + (label ? ' · ' + label : '…');
-                }
-                runRow(row).finally(() => {
-                    done += 1;
-                    if (progressBar) {
-                        progressBar.style.width = Math.round((done / total) * 100) + '%';
-                    }
-                    next();
-                });
-            };
-            next();
-        });
-    }
 
     // PageSpeed Insights: real Lighthouse runs (slow), admin-triggered per row or for all.
     // Daily quota guard: keep the remaining-measurement counter in sync and disable the
@@ -282,6 +90,13 @@ if (container) {
             pills.innerHTML = psiPillHtml('M', data.perfMobile) + psiPillHtml('D', data.perfDesktop);
         }
         cell.dataset.sort = (data.perfMobile === null || data.perfMobile === undefined) ? -1 : data.perfMobile;
+        const row = cell.closest('.pa-row');
+        const dateEl = row ? row.querySelector('.pa-date') : null;
+        if (dateEl && data.date) {
+            const dateSpan = dateEl.querySelector('.text-nowrap') || dateEl;
+            dateSpan.textContent = data.date;
+            dateEl.dataset.sort = Math.floor(Date.now() / 1000);
+        }
     };
 
     const runPsiRow = function (row) {
@@ -382,26 +197,16 @@ if (container) {
     const filter = container.querySelector('.pa-filter');
     const langFilter = container.querySelector('.pa-lang-filter');
 
-    const runAllCount = container.querySelector('.pa-run-all-count');
-
     const applyFilters = function () {
         const term = filter ? filter.value.trim().toLowerCase() : '';
         const lang = langFilter ? langFilter.value.trim().toLowerCase() : '';
-        let visible = 0;
         container.querySelectorAll('.pa-row').forEach(function (row) {
             const haystack = row.getAttribute('data-search') || '';
             const locale = (row.getAttribute('data-locale') || '').toLowerCase();
             const matchesTerm = term === '' || haystack.indexOf(term) !== -1;
             const matchesLang = lang === '' || locale === lang;
-            const shown = matchesTerm && matchesLang;
-            row.classList.toggle('d-none', !shown);
-            if (shown) {
-                visible += 1;
-            }
+            row.classList.toggle('d-none', !(matchesTerm && matchesLang));
         });
-        if (runAllCount) {
-            runAllCount.textContent = visible;
-        }
     };
 
     if (filter) {
@@ -473,24 +278,16 @@ if (deleteModal) {
         }
         if (deleteText) {
             deleteText.textContent = scope === 'page' && label
-                ? 'Supprimer les analyses de « ' + label + ' » ? Cette action est irréversible.'
-                : 'Supprimer toutes les analyses enregistrées ? Cette action est irréversible.';
+                ? 'Supprimer les mesures PageSpeed de « ' + label + ' » ? Cette action est irréversible.'
+                : 'Supprimer toutes les mesures PageSpeed enregistrées ? Cette action est irréversible.';
         }
     });
 }
 
-// Detail page: re-run the analysis then reload to show the fresh report.
+// Detail page: run PageSpeed then reload to show the fresh report (slow, real Lighthouse).
 const detailContainer = document.getElementById('analysis-page-detail');
 
 if (detailContainer) {
-    // Land on the PageSpeed tab when coming back from a fresh measurement.
-    if (window.location.hash === '#psi') {
-        const psiTab = document.getElementById('pa-tab-psi');
-        if (psiTab) {
-            psiTab.click();
-        }
-    }
-
     // Clicking a category gauge smooth-scrolls to its audit section.
     detailContainer.addEventListener('click', function (e) {
         const gauge = e.target.closest('.psi-gauge-link');
@@ -503,23 +300,6 @@ if (detailContainer) {
         }
     });
 
-    const detailButton = detailContainer.querySelector('.pa-detail-run');
-    const detailUrl = detailContainer.getAttribute('data-run-url');
-
-    if (detailButton && detailUrl) {
-        const mainPreloader = document.getElementById('main-preloader');
-        detailButton.addEventListener('click', function () {
-            detailButton.disabled = true;
-            detailButton.classList.add('disabled');
-            if (mainPreloader) {
-                mainPreloader.classList.remove('d-none');
-            }
-            fetch(detailUrl, {method: 'POST', headers: {'X-Requested-With': 'XMLHttpRequest'}})
-                .finally(() => window.location.reload());
-        });
-    }
-
-    // Detail page: run PageSpeed then reload to show the fresh panel (slow, real Lighthouse).
     const psiButton = detailContainer.querySelector('.pa-psi-run');
     const psiUrl = detailContainer.getAttribute('data-psi-url');
 
@@ -540,7 +320,6 @@ if (detailContainer) {
                 .then(response => response.ok ? response.json() : {ok: false})
                 .then(function (data) {
                     if (data && data.ok) {
-                        window.location.hash = 'psi';
                         window.location.reload();
                         return;
                     }
@@ -563,7 +342,7 @@ if (detailContainer) {
         });
     }
 
-    // Copy a hidden Markdown source to the clipboard (internal report or PageSpeed report).
+    // Copy the hidden PageSpeed Markdown source to the clipboard.
     const wireCopyButton = function (button, source) {
         if (!button || !source) {
             return;
@@ -598,6 +377,5 @@ if (detailContainer) {
         });
     };
 
-    wireCopyButton(detailContainer.querySelector('.pa-detail-copy-md'), document.getElementById('pa-md-source'));
     wireCopyButton(detailContainer.querySelector('.psi-copy-md'), document.getElementById('psi-md-source'));
 }

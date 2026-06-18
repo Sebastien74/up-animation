@@ -8,18 +8,13 @@ use App\Controller\Admin\AdminController;
 use App\Controller\Admin\PageAnalysisTrait;
 use App\Entity\Core\Website;
 use App\Entity\Seo\Url;
-use App\Repository\Seo\PageAnalysisRepository;
 use App\Repository\Seo\PageSpeedSnapshotRepository;
-use App\Service\Admin\PageAnalysisMarkdownFormatter;
-use App\Service\Admin\PageAnalysisRecorder;
-use App\Service\Admin\PageAnalyzerInterface;
 use App\Service\Admin\PageSpeedMarkdownFormatter;
 use App\Service\Seo\PageSpeed\PageSpeedClient;
 use App\Service\Seo\PageSpeed\PageSpeedException;
 use App\Service\Seo\PageSpeed\PageSpeedRecorder;
 use App\Service\Seo\PageSpeed\PublicPageUrlResolver;
 use App\Service\Seo\PageSpeed\QuotaGuard;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,9 +26,9 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 /**
  * PageAnalysisController.
  *
- * Dashboard to batch-analyze (in preview) all front pages of the Page, Newscast and
- * Product interfaces. Analysis runs are admin-only (ROLE_ADMIN) and rendered with
- * preview=true: they never affect public front navigation.
+ * Google PageSpeed Insights dashboard for every front page (Page, Newscast, Product).
+ * Measurements run real Lighthouse at Google, so they are admin-only (ROLE_ADMIN) and
+ * triggered explicitly, never on page load.
  *
  * @author Sébastien FOURNIER <fournier.sebastien@outlook.com>
  */
@@ -57,13 +52,12 @@ class PageAnalysisController extends AdminController
     private const string CSRF_DELETE = 'pa-delete';
 
     /**
-     * List all front pages (Page, Newscast, Product) with their last indicative score.
+     * List all front pages (Page, Newscast, Product) with their latest PageSpeed scores.
      */
     #[Route('/dashboard', name: 'admin_page_analysis_dashboard', methods: 'GET')]
-    public function dashboard(Request $request, Website $website, PageAnalysisRepository $analysisRepository, PageSpeedSnapshotRepository $pageSpeedRepository, PageSpeedClient $pageSpeed, QuotaGuard $quota): Response
+    public function dashboard(Request $request, Website $website, PageSpeedSnapshotRepository $pageSpeedRepository, PageSpeedClient $pageSpeed, QuotaGuard $quota): Response
     {
         $psiEnabled = $pageSpeed->isEnabled();
-        $latest = $analysisRepository->findLatestPerPage($website);
         $latestPsi = $psiEnabled ? $pageSpeedRepository->findLatestPerPage($website) : [];
         $router = $this->coreLocator->router();
         $em = $this->coreLocator->em();
@@ -99,7 +93,6 @@ class PageAnalysisController extends AdminController
                 $code = (string) $record['code'];
                 $locale = (string) $record['locale'];
                 $urlId = (int) $record['urlId'];
-                $snapshot = $latest[$code.'|'.$locale] ?? null;
                 $psi = $latestPsi[$code.'|'.$locale] ?? null;
                 $title = ltrim((string) $record['title'], '_');
                 $rows[] = [
@@ -108,21 +101,9 @@ class PageAnalysisController extends AdminController
                     'title' => '' !== $title ? $title : ($code ?: '/'),
                     'code' => $code,
                     'locale' => $locale,
-                    'score' => $snapshot['score'] ?? null,
-                    'kb' => $snapshot['kb'] ?? null,
-                    'high' => $snapshot['high'] ?? null,
-                    'medium' => $snapshot['medium'] ?? null,
-                    'low' => $snapshot['low'] ?? null,
-                    'httpStatus' => $snapshot['httpStatus'] ?? null,
-                    'date' => $snapshot['date'] ?? null,
                     'psiMobile' => $psi['perfMobile'] ?? null,
                     'psiDesktop' => $psi['perfDesktop'] ?? null,
                     'psiDate' => $psi['date'] ?? null,
-                    'runUrl' => $router->generate('admin_page_analysis_run', [
-                        'website' => $website->getId(),
-                        'url' => $urlId,
-                        'interface' => $name,
-                    ]),
                     'psiUrl' => $router->generate('admin_page_analysis_psi', [
                         'website' => $website->getId(),
                         'url' => $urlId,
@@ -168,35 +149,13 @@ class PageAnalysisController extends AdminController
     }
 
     /**
-     * Detail view for a single page: latest full report (grouped findings) and history.
+     * Detail view for a single page: latest PageSpeed Insights report.
      */
     #[Route('/detail/{url}', name: 'admin_page_analysis_detail', methods: 'GET')]
-    public function detail(Request $request, Website $website, Url $url, PageAnalysisRepository $analysisRepository, PageAnalyzerInterface $analyzer, PageAnalysisRecorder $recorder, EventDispatcherInterface $dispatcher, PageAnalysisMarkdownFormatter $markdownFormatter, PageSpeedMarkdownFormatter $psiMarkdownFormatter, PageSpeedSnapshotRepository $pageSpeedRepository, PageSpeedClient $pageSpeed, QuotaGuard $quota, PublicPageUrlResolver $urlResolver): Response
+    public function detail(Request $request, Website $website, Url $url, PageSpeedMarkdownFormatter $psiMarkdownFormatter, PageSpeedSnapshotRepository $pageSpeedRepository, PageSpeedClient $pageSpeed, QuotaGuard $quota, PublicPageUrlResolver $urlResolver): Response
     {
         $interface = (string) $request->query->get('interface', 'page');
-
-        // Arriving from "Analyser la page" runs a fresh analysis, then redirects to the
-        // clean URL (PRG) so a reload does not re-run and an HTTP error gets recorded/shown.
-        if ($request->query->getBoolean('run')) {
-            try {
-                $this->analyzePreview($analyzer, $recorder, $dispatcher, $interface, $website, $url);
-            } catch (\Throwable) {
-            }
-
-            return $this->redirectToRoute('admin_page_analysis_detail', [
-                'website' => $website->getId(),
-                'url' => $url->getId(),
-                'interface' => $interface,
-            ]);
-        }
-
-        $history = $analysisRepository->findLatestSnapshots($website, $url->getCode(), $url->getLocale(), 12);
-        $latest = $history[0] ?? null;
         $name = $this->pageNameForUrl($interface, (int) $url->getId());
-
-        $reportMarkdown = null !== $latest && is_array($latest->getReport())
-            ? $markdownFormatter->format($latest->getReport(), $url->getCode() ?: '/', $name)
-            : null;
 
         $detailUrl = $this->coreLocator->router()->generate('admin_page_analysis_detail', [
             'website' => $website->getId(),
@@ -218,9 +177,6 @@ class PageAnalysisController extends AdminController
             'url' => $url,
             'interface' => $interface,
             'name' => $name,
-            'latest' => $latest,
-            'history' => $history,
-            'reportMarkdown' => $reportMarkdown,
             'psiEnabled' => $psiEnabled,
             'psiCanMeasure' => $psiEnabled && $quota->canMeasure(),
             'psiRemaining' => $psiEnabled ? $quota->remainingMeasurements() : 0,
@@ -233,17 +189,12 @@ class PageAnalysisController extends AdminController
             ]),
             'previewUrl' => $this->previewUrlFor($interface, $website, $url),
             'crawlUrl' => $this->crawlUrl($urlResolver, $website, $url, $interface),
-            'runUrl' => $this->coreLocator->router()->generate('admin_page_analysis_run', [
-                'website' => $website->getId(),
-                'url' => $url->getId(),
-                'interface' => $interface,
-            ]),
         ]));
     }
 
     /**
-     * Absolute public URL the crawler (app:analysis-page:run) fetches for this page.
-     * Card interfaces (newscast, product) need their owning entity to build the URL.
+     * Absolute public URL PageSpeed measures for this page. Card interfaces (newscast,
+     * product) need their owning entity to build the URL.
      */
     private function crawlUrl(PublicPageUrlResolver $urlResolver, Website $website, Url $url, string $interface): ?string
     {
@@ -266,10 +217,10 @@ class PageAnalysisController extends AdminController
     }
 
     /**
-     * Delete every stored analysis of the current website.
+     * Delete every stored PageSpeed snapshot of the current website.
      */
     #[Route('/clear', name: 'admin_page_analysis_clear', methods: 'POST')]
-    public function clear(Request $request, Website $website, PageAnalysisRepository $analysisRepository, PageSpeedSnapshotRepository $pageSpeedRepository, TranslatorInterface $translator): RedirectResponse
+    public function clear(Request $request, Website $website, PageSpeedSnapshotRepository $pageSpeedRepository, TranslatorInterface $translator): RedirectResponse
     {
         if (!$this->isCsrfTokenValid(self::CSRF_DELETE, (string) $request->request->get('_token'))) {
             $this->addFlash('error', $translator->trans('Token CSRF invalide.', [], 'admin'));
@@ -277,18 +228,17 @@ class PageAnalysisController extends AdminController
             return $this->redirectToRoute('admin_page_analysis_dashboard', ['website' => $website->getId()]);
         }
 
-        $pageSpeedRepository->deleteAllForWebsite($website);
-        $deleted = $analysisRepository->deleteAllForWebsite($website);
+        $deleted = $pageSpeedRepository->deleteAllForWebsite($website);
         $this->addFlash('success', $translator->trans('%count% analyse(s) supprimée(s).', ['%count%' => $deleted], 'admin'));
 
         return $this->redirectToRoute('admin_page_analysis_dashboard', ['website' => $website->getId()]);
     }
 
     /**
-     * Delete the stored analyses of a single page.
+     * Delete the stored PageSpeed snapshots of a single page.
      */
     #[Route('/clear/{url}', name: 'admin_page_analysis_clear_page', methods: 'POST')]
-    public function clearPage(Request $request, Website $website, Url $url, PageAnalysisRepository $analysisRepository, PageSpeedSnapshotRepository $pageSpeedRepository, TranslatorInterface $translator): RedirectResponse
+    public function clearPage(Request $request, Website $website, Url $url, PageSpeedSnapshotRepository $pageSpeedRepository, TranslatorInterface $translator): RedirectResponse
     {
         if (!$this->isCsrfTokenValid(self::CSRF_DELETE, (string) $request->request->get('_token'))) {
             $this->addFlash('error', $translator->trans('Token CSRF invalide.', [], 'admin'));
@@ -296,8 +246,7 @@ class PageAnalysisController extends AdminController
             return $this->redirectToRoute('admin_page_analysis_dashboard', ['website' => $website->getId()]);
         }
 
-        $pageSpeedRepository->deleteForPage($website, $url->getCode(), $url->getLocale());
-        $deleted = $analysisRepository->deleteForPage($website, $url->getCode(), $url->getLocale());
+        $deleted = $pageSpeedRepository->deleteForPage($website, $url->getCode(), $url->getLocale());
         $this->addFlash('success', $translator->trans('%count% analyse(s) supprimée(s).', ['%count%' => $deleted], 'admin'));
 
         $redirect = (string) $request->request->get('_redirect', '');
@@ -335,37 +284,6 @@ class PageAnalysisController extends AdminController
         $title = isset($rows[0]['title']) ? ltrim((string) $rows[0]['title'], '_') : '';
 
         return '' !== $title ? $title : null;
-    }
-
-    /**
-     * Run the analysis for a single page (AJAX) and return its metrics as JSON.
-     */
-    #[Route('/run/{url}', name: 'admin_page_analysis_run', methods: 'POST')]
-    public function run(Request $request, Website $website, Url $url, PageAnalyzerInterface $analyzer, PageAnalysisRecorder $recorder, EventDispatcherInterface $dispatcher): JsonResponse
-    {
-        $interface = (string) $request->query->get('interface', 'page');
-
-        try {
-            $report = $this->analyzePreview($analyzer, $recorder, $dispatcher, $interface, $website, $url);
-
-            return new JsonResponse([
-                'ok' => true,
-                'score' => $report['score'] ?? null,
-                'httpStatus' => $report['meta']['httpStatus'] ?? null,
-                'kb' => $report['meta']['kb'] ?? 0,
-                'requests' => $report['meta']['requests'] ?? 0,
-                'high' => $report['summary']['high'] ?? 0,
-                'medium' => $report['summary']['medium'] ?? 0,
-                'low' => $report['summary']['low'] ?? 0,
-                'renderMs' => $report['meta']['renderMs'] ?? 0,
-                'date' => (new \DateTime('now'))->format('d/m/Y H:i'),
-            ]);
-        } catch (\Throwable $e) {
-            return new JsonResponse([
-                'ok' => false,
-                'error' => $this->coreLocator->isDebug() ? $e->getMessage() : 'Erreur de rendu',
-            ]);
-        }
     }
 
     /**

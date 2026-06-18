@@ -14,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * Immutable history snapshot of a Google PageSpeed Insights run (real Lighthouse lab
  * scores + CrUX field data) for one front page. Standalone entity (no base class) so
- * the schema stays fully explicit, mirroring PageAnalysis.
+ * the schema stays fully explicit.
  *
  * @author Sébastien FOURNIER <fournier.sebastien@outlook.com>
  */
