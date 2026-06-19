@@ -20,7 +20,7 @@ export default class Cursor {
                 '-btn': '.btn',
                 '-link': 'a',
                 '-magnetic': '.is-magnetic',
-                '-card-arrow': '.card .card-header a:has(.img-hover-buttons-wrap)',
+                '-card-arrow': '.card .card-header:has(a)',
                 '-faded': '.favorite-toggle, .favorite-toggle *',
                 '-primary': '.footer-contact, .footer-contact *, .footer-main, .footer-main *, #footer-bottom, #footer-bottom *',
                 '-small': '.city, .city *, .footer-link, .footer-link *, .agencies-description-footer a, .agencies-description-footer a *, #footer-bottom a, #footer-bottom a *',
