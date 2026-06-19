@@ -454,3 +454,61 @@ $nestable-drop-border: transparentize($primary, .55);
         }
     }
 }
+
+/*-----------------------------------
+   10 ) Responsive (mobile : wrap row, no overflow)
+-----------------------------------*/
+
+// Below md the title + per-locale statuses + action buttons can't share one
+// line without spilling past the card. Let the row wrap: title first, then
+// statuses/actions on their own line, left-aligned under the title.
+@include mediaQuery(max-md) {
+
+    .dd3-handle {
+        width: 44px;
+    }
+
+    .dd3-content {
+        height: auto;
+        min-height: $nestable-item-height;
+        padding: $space-3 $space-3 $space-3 44px;
+
+        > .d-inline-flex {
+            flex-wrap: wrap;
+            row-gap: $space-3;
+        }
+
+        .title {
+            flex: 1 1 auto;
+            min-width: 0;
+        }
+
+        .dd3-content-right {
+            margin-left: 0 !important;
+            flex: 1 1 100%;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            row-gap: $space-2;
+        }
+
+        // Per-locale URL statuses are hidden on mobile to keep the row clean
+        .active-urls {
+            display: none !important;
+        }
+    }
+
+    .dd3-item.parent-row.disabled .dd3-content {
+        padding-left: $space-3;
+    }
+}
+
+// Touch devices: tappable action targets in the tree rows
+@media (pointer: coarse) {
+
+    .dd3-content-right .btn-icon.small,
+    .active-urls .btn-icon.small {
+        width: 40px;
+        height: 40px;
+        flex: 0 0 40px;
+    }
+}

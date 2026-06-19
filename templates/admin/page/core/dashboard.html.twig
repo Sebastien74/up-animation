@@ -36,7 +36,7 @@
     {%- set greetingKey = (hourNow >= 5 and hourNow < 18) ? "Bonjour" : "Bonsoir" -%}
     {%- set userFirstName = app.user.firstName is defined and app.user.firstName ? app.user.firstName : null -%}
 
-    <div id="dashboard" class="pb-5">
+    <div id="dashboard">
 
         {#-- 1 — Hero (editorial split: greeting block / meta column) --#}
         <section class="dashboard-hero reveal">

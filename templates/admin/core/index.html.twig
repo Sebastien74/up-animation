@@ -199,7 +199,7 @@
                                         </td>
 
                                         {%- if 'media' in columns -%}
-                                            <td class="align-middle as-media text-center">
+                                            <td class="align-middle as-media text-center" data-label="{{ "Média"|trans|striptags }}">
                                                 {%- if entity.mediaRelations is defined -%}
                                                     {%- set mainMedia = entity|mainMedia(defaultLocale) -%}
                                                     <a class="glightbox d-inline-block" href="{{ asset(mainMedia|file({}, {path: true, placeholder: true})) }}">
@@ -218,7 +218,8 @@
                                                 {%- set haveProperty = entityArray[property] is defined -%}
                                                 {%- set fieldValue = haveProperty ? entityValue(entity, property) : null -%}
                                                 {%- set centerText = fieldValue|isBool or property == 'locale' or 'status' in property|lower or 'count' in property|lower or property in centerColumns -%}
-                                                <td class="align-middle px-4{% if centerText %} text-center{% endif %}">
+                                                {%- set columnLabel = property|trans([], transDomain) and property|trans([], transDomain) != 'plural' ? property|trans([], transDomain) : property -%}
+                                                <td class="align-middle px-4{% if centerText %} text-center{% endif %}" data-label="{{ columnLabel|removeBetween(['(', ')'])|striptags }}">
                                                     <div class="d-flex align-items-center{% if centerText %} justify-content-center{% endif %}">
                                                         {%- if 'adminName' == property and entity.noSeo is defined and entity.noSeo -%}
                                                             <span class="btn-icon small me-2" data-bs-toggle="tooltip" title="{{"SEO non récupéré"|trans|striptags }}"><i class="icm-lock-alt"></i></span>
@@ -237,7 +238,7 @@
 
                                         {%- if displayUsedPages is defined and displayUsedPages -%}
                                             {%- set entityPages = usedPages[entity.id] is defined ? usedPages[entity.id] : [] -%}
-                                            <td class="align-middle px-4">
+                                            <td class="align-middle px-4" data-label="{{ "Pages associées"|trans|striptags }}">
                                                 {%- if entityPages -%}
                                                     <div class="d-flex flex-wrap gap-2 used-pages-cell">
                                                         {%- for usage in entityPages|slice(0, 8) -%}
@@ -265,11 +266,11 @@
                                         {%- if haveActiveColumn -%}
                                             {%- set property = 'active' -%}
                                             {%- set fieldValue = entityValue(entity, property) -%}
-                                            <td class="text-center align-middle px-4">{%- include 'admin/core/form/boolean-switcher.html.twig' -%}</td>
+                                            <td class="text-center align-middle px-4" data-label="{{ activeColumnTitle|striptags }}">{%- include 'admin/core/form/boolean-switcher.html.twig' -%}</td>
                                         {%- endif -%}
 
                                         {%- if haveInfos -%}
-                                            <td class="align-middle px-4">
+                                            <td class="align-middle px-4" data-label="{{ "Infos"|trans|striptags }}">
                                                 {%- if ('admin/core/include/informations/'~interface.name~'.html.twig')|fileExist -%}
                                                     {%- include 'admin/core/include/informations/'~interface.name~'.html.twig' -%}
                                                 {%- else -%}
@@ -279,7 +280,7 @@
                                         {%- endif -%}
 
                                         {%- if positionActive -%}
-                                            <td class="text-center align-middle px-4">
+                                            <td class="text-center align-middle px-4" data-label="{{ "Position"|trans|striptags }}">
                                                 {%- if routeExist('admin_'~interface['name']~'_position') -%}
                                                     <span class="position" data-bs-toggle="tooltip" title="{{"Modifier la position"|trans|striptags }}">
                                                         {%- set positionArgs = ('admin_'~interface['name']~'_position')|routeArgs(interface.entity, args) -%}
@@ -315,12 +316,13 @@
                                         {%- endif -%}
 
                                         {%- if interface.count is defined and interface.count -%}
-                                            <td class="text-center align-middle px-4">
+                                            {%- set countLabel = interface.count|trans([], transDomain) ? interface.count|trans([], transDomain) : interface.count -%}
+                                            <td class="text-center align-middle px-4" data-label="{{ countLabel|striptags }}">
                                                 <span class="btn-icon info small">{{ attribute(entity, interface.count)|length }}</span>
                                             </td>
                                         {%- endif -%}
 
-                                        <td class="text-end align-middle px-4">
+                                        <td class="text-end align-middle px-4" data-label="{{ "Actions"|trans|striptags }}">
                                             <div class="d-flex flex-lg-column flex-xl-row justify-content-end align-items-center gap-2">
 
                                                 {%- if entity.urls is defined and granted('ROLE_EDIT') and not disabledUrl -%}

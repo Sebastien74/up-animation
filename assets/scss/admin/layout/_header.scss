@@ -98,6 +98,26 @@ header.navbar {
     .actions {
         gap: $space-2 !important;
     }
+
+    // Small screens: tighten the action rail so the (up to 7) internal
+    // icons never overflow the fixed header and force horizontal scroll
+    @include mediaQuery(max-sm) {
+
+        .navbar-brand {
+            padding-left: $space-3 !important;
+            padding-right: $space-2 !important;
+        }
+
+        .actions {
+            gap: 6px !important;
+        }
+
+        .actions .btn-icon:not(.small) {
+            width: 36px;
+            height: 36px;
+            flex: 0 0 36px;
+        }
+    }
 }
 
 .notify {

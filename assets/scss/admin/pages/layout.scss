@@ -1323,6 +1323,163 @@ body.resizing-active {
 }
 
 /*-----------------------------------
+   9 bis ) Responsive (mobile editing)
+-----------------------------------*/
+
+@include mediaQuery(max-md) {
+
+    // Zone becomes a stacked card: action rail on top, columns below
+    .zone {
+        flex-direction: column;
+        min-height: 0 !important;
+        padding-right: 0;
+
+        &.hide-zone {
+            min-height: 0 !important;
+        }
+    }
+
+    // Vertical rail -> horizontal bar pinned top-right
+    .zone-sidebar {
+        flex-direction: row !important;
+        flex-wrap: wrap;
+        width: 100%;
+        align-items: center;
+        justify-content: flex-end;
+        gap: $space-2;
+        padding: $space-2 $space-3 !important;
+        border-bottom: 1px solid $border-color;
+
+        .d-flex.flex-column {
+            flex-direction: row !important;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: flex-end;
+            margin: 0 !important;
+            gap: $space-2;
+        }
+
+        .mt-auto {
+            margin-top: 0 !important;
+        }
+    }
+
+    .cols-sortable {
+        min-height: 0 !important;
+        padding-top: $space-3 !important;
+    }
+
+    .col-sortable {
+        min-width: 0;
+    }
+
+    // Blocks: one uniform mobile row, independent of the desktop col-md-* sizing.
+    // Drag handle pinned far-left, label in the middle, actions on the right.
+    // Negative gutters bleed the action icons past the card edge on mobile
+    .block-sortable {
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+
+    .block-sortable li.block .block-resizable,
+    .block-sortable li.block .block-row {
+        height: auto !important;
+        min-height: 56px !important;
+        text-align: left !important;
+    }
+
+    // Grid keeps the label and the action cluster in two non-overlapping tracks
+    .block-sortable li.block .block-row {
+        position: relative;
+        display: grid !important;
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: center;
+        gap: $space-3;
+        margin: 0;
+        padding: $space-2 $space-3 $space-2 42px;
+    }
+
+    .block-sortable li.block .handle-block {
+        position: absolute;
+        left: $space-2;
+        top: 50%;
+        transform: translateY(-50%);
+        margin: 0;
+    }
+
+    .block-sortable li.block .block-row > .col-6 {
+        width: auto;
+        min-width: 0;
+        max-width: none;
+        padding: 0;
+    }
+
+    .block-sortable li.block .btn-block-group {
+        gap: $space-2;
+        justify-content: flex-end;
+        flex-wrap: nowrap;
+    }
+
+    // Label cell: icon + title + ellipsized preview on a single line
+    .block-sortable li.block .infos-block {
+        display: flex !important;
+        width: 100%;
+        flex-wrap: nowrap;
+        align-items: center;
+        min-width: 0;
+        text-align: left;
+    }
+
+    .block-sortable li.block .block-title,
+    .block-sortable li.block .title-info {
+        display: inline-block !important;
+        flex: 0 0 auto;
+        white-space: nowrap;
+    }
+
+    .block-sortable li.block .info-text {
+        display: block !important;
+        flex: 1 1 0;
+        min-width: 0;
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .block-sortable li.block .infos-block i {
+        font-size: 16px !important;
+    }
+
+    // Pointer-precise resize affordances are useless on touch and overlap content
+    .cols-sortable .ui-resizable-handle,
+    .block-sortable .ui-resizable-handle,
+    .btn-resize {
+        display: none !important;
+    }
+}
+
+// Touch devices: tappable editor controls
+@media (pointer: coarse) {
+
+    .zone-sidebar .btn-icon,
+    #zones-sortable .col-actions .btn-action,
+    #zones-sortable .btn-block-group .btn-action {
+        min-width: 40px;
+        min-height: 40px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .cols-sortable .ui-resizable-handle,
+    .block-sortable .ui-resizable-handle,
+    .btn-resize {
+        display: none !important;
+    }
+}
+
+/*-----------------------------------
    10 ) Screens entity (configuration responsive)
 -----------------------------------*/
 

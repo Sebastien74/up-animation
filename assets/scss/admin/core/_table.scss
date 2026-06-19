@@ -129,6 +129,16 @@ $tbl-muted : $crumb-muted !default;
     }
 }
 
+// Touch devices: row actions need a tappable target (WCAG 2.5.5)
+@media (pointer: coarse) {
+
+    .app-table tbody td .btn-icon.small {
+        width: 40px;
+        height: 40px;
+        flex: 0 0 40px;
+    }
+}
+
 @include mediaQuery(between-lg-xl) {
 
     table.responsive-cards {

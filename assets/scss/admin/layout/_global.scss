@@ -24,6 +24,11 @@ html body {
     color: $theme-text-muted;
 }
 
+// Lock background scroll while an off-canvas drawer is open
+body.sidebar-open {
+    overflow: hidden;
+}
+
 // Skip-link: hidden until focused (Bootstrap .visually-hidden-focusable), then lifted above the fixed header.
 .skip-link:focus {
     position: fixed;

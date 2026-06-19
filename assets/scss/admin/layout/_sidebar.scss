@@ -37,7 +37,7 @@
     }
 
     @include mediaQuery(min-sm) {
-        width: 296px;
+        width: 280px;
     }
 
     // Soft accent halo top-left to break the flat surface
@@ -659,19 +659,21 @@
 
 .left-sidebar {
 
-    transition: left $transition-base;
+    left: 0;
+    transition: transform $transition-base;
 
-    @include mediaQuery(max-sm) {
-        left: -100%;
+    // Off-canvas drawer below xl — revealed by the burger (.open)
+    @include mediaQuery(max-xl) {
+        transform: translateX(-100%);
     }
 
-    @include mediaQuery(min-sm) {
-        left: 0;
+    // Permanent rail from xl up, where .page-wrapper gains its left margin
+    @include mediaQuery(min-xl) {
+        transform: none;
     }
 
     &.open {
-        left: 0;
-        transition: left $transition-base;
+        transform: none;
     }
 
     > nav > ul > li > ul > li {
@@ -685,20 +687,14 @@
 
 .right-sidebar {
 
-    transition: right $transition-base;
+    right: 0;
     box-shadow: inset 1px 0 0 rgba(255, 255, 255, 0.04);
+    transform: translateX(100%);
+    transition: transform $transition-base;
 
-    @include mediaQuery(max-sm) {
-        right: -100%;
-    }
-
-    @include mediaQuery(min-sm) {
-        right: -296px;
-    }
-
+    // Always an overlay drawer (config panel), at every breakpoint
     &.open {
-        right: 0;
-        transition: right $transition-base;
+        transform: none;
     }
 }
 
@@ -772,6 +768,25 @@
         svg {
             fill: $danger;
         }
+    }
+}
+
+/*-----------------------------------
+   10 ) Drawer backdrop (mobile menu + config panel overlay)
+-----------------------------------*/
+
+.sidebar-backdrop {
+    position: fixed;
+    inset: 70px 0 0 0;
+    z-index: 2900;
+    background: $backdrop-bg;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity $transition-base, visibility $transition-base;
+
+    &.show {
+        opacity: 1;
+        visibility: visible;
     }
 }
 
