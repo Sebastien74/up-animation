@@ -1,6 +1,6 @@
 {
-  "name": "UP Animations!",
-  "short_name": "UP",
+  "name": "Error",
+  "short_name": "Error",
   "icons": [
     {
       "src": "/web-app-manifest-192x192.png",
@@ -15,7 +15,7 @@
       "purpose": "maskable"
     }
   ],
-  "theme_color": "#ff7100",
-  "background_color": "#ff7100",
+  "theme_color": "#ffffff",
+  "background_color": "#ffffff",
   "display": "standalone"
 }

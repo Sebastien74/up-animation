@@ -9,6 +9,17 @@ use Symfony\Component\Dotenv\Dotenv;
 use Symfony\Component\ErrorHandler\Debug;
 use Symfony\Component\HttpFoundation\Request;
 
+defined('UNDER_MAINTENANCE') || define('UNDER_MAINTENANCE', false);
+defined('ALLOWED_WEBMASTER') || define('ALLOWED_WEBMASTER', false);
+
+if (UNDER_MAINTENANCE) {
+    $isWebmaster = ALLOWED_WEBMASTER && in_array($_SERVER['REMOTE_ADDR'] ?? '', require dirname(__DIR__).'/config/trusted_ips.php', true);
+    if (!$isWebmaster) {
+        require dirname(__DIR__).'/config/maintenance.php';
+        exit;
+    }
+}
+
 try {
     require_once dirname(__DIR__).'/vendor/autoload_runtime.php';
 } catch (\Throwable $platformException) {
