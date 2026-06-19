@@ -60,6 +60,7 @@ final class WebsiteModel extends BaseModel
         public readonly ?array $infoZones = null,
         public readonly ?string $contactPageUrl = null,
         public readonly ?bool $isEmpty = null,
+        public readonly ?string $cacheVersion = null,
     ) {
     }
 
@@ -111,6 +112,7 @@ final class WebsiteModel extends BaseModel
             infoZones: $information->zones,
             contactPageUrl: !empty($configuration->pages['contact']) ? $configuration->pages['contact']->path : null,
             isEmpty: !$website->getId(),
+            cacheVersion: $website->getCacheClearDate()?->format('U'),
         );
 
         return self::$cache['response'][$website->getId()][$locale];

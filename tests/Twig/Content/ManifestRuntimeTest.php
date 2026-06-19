@@ -49,26 +49,17 @@ final class ManifestRuntimeTest extends TestCase
 
     public function testManifestBuildsIconsFromExistingLogoFiles(): void
     {
-        $relativePath = 'uploads/up-animations/android-chrome-192x192.png';
-        $this->filesystem->dumpFile($this->projectDir.'/public/'.$relativePath, 'png-bytes');
+        $uploadedPath = '/uploads/'.$this->website([])->uploadDirname.'/any-uploaded-name.png';
+        $this->filesystem->dumpFile($this->projectDir.'/public'.$uploadedPath, 'png-bytes');
 
-        $data = $this->generate(logos: ['android-chrome-192x192' => $relativePath]);
+        $data = $this->generate(logos: ['web-app-manifest-192x192' => $uploadedPath]);
 
         self::assertCount(1, $data['icons']);
         $icon = $data['icons'][0];
-        self::assertSame('https://up-animations.test/uploads/up-animations/android-chrome-192x192.png', $icon['src']);
+        self::assertSame($uploadedPath, $icon['src'], 'Icon src must echo the dynamic stored media path, never a rebuilt one.');
         self::assertSame('192x192', $icon['sizes']);
         self::assertSame('image/png', $icon['type']);
-    }
-
-    public function testMaskIconIsFlaggedMaskable(): void
-    {
-        $relativePath = 'uploads/up-animations/mask-icon.png';
-        $this->filesystem->dumpFile($this->projectDir.'/public/'.$relativePath, 'png-bytes');
-
-        $data = $this->generate(logos: ['mask-icon' => $relativePath]);
-
-        self::assertSame('any maskable', $data['icons'][0]['purpose']);
+        self::assertSame('maskable', $icon['purpose']);
     }
 
     /**

@@ -85,13 +85,11 @@ class BrowserController extends FrontController
         $items = $sitemapService->execute($website->entity);
         foreach ($items as $locale => $localeItems) {
             foreach ($localeItems as $groupLocale => $localesItems) {
-                foreach ($localesItems as $key => $item) {
-                    if (!$item['url']) {
-                        unset($items[$locale][$groupLocale][$key]);
-                        if (empty($items[$locale][$groupLocale])) {
-                            unset($items[$locale][$groupLocale]);
-                        }
-                    }
+                $withUrl = array_filter($localesItems, static fn (array $item): bool => !empty($item['url']));
+                if ($withUrl) {
+                    $items[$locale][$groupLocale] = $withUrl;
+                } else {
+                    unset($items[$locale][$groupLocale]);
                 }
             }
         }

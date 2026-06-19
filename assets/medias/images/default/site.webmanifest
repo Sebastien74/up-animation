@@ -1,6 +1,6 @@
 {
-  "name": "Up Animation !",
-  "short_name": "Up!",
+  "name": "UP!",
+  "short_name": "UP!",
   "icons": [
     {
       "src": "/web-app-manifest-192x192.png",
@@ -16,6 +16,6 @@
     }
   ],
   "theme_color": "#ffffff",
-  "background_color": "#ffffff",
+  "background_color": "#f08019",
   "display": "standalone"
 }

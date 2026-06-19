@@ -3,7 +3,12 @@
 {%- set allLocales = website().configuration.allLocales -%}
 {%- set defaultLocale = website().configuration.locale -%}
 {%- set mediaCaregories = {
-    'favicon': "Favicon"|trans,
+    'favicon': "Favicon (.ico)"|trans,
+    'favicon-svg': "Favicon (.svg)"|trans,
+    'favicon-96x96': "Favicon 96x96"|trans,
+    'favicon-apple-touch-icon': "Apple touch icon (180x180)"|trans,
+    'web-app-manifest-192x192': "Icône PWA 192x192"|trans,
+    'web-app-manifest-512x512': "Icône PWA 512x512"|trans,
     'logo': "Logo principal"|trans,
     'logo-secondary': "Logo secondaire"|trans,
     'admin': "Logo administration"|trans,
@@ -23,7 +28,7 @@
 {%- set categories = {
     ('Logos'|trans): ['logo', 'logo-secondary', 'preloader', 'footer', 'admin', 'email'],
     ('Images par défaults'|trans): ['placeholder', 'title-header', 'share'],
-    ('Favicons'|trans): ['favicon', 'favicon-16x16', 'favicon-32x32', 'favicon-apple-touch-icon', 'manifest', 'mask-icon', 'mstile-150x150', 'android-chrome-144x144', 'android-chrome-192x192', 'android-chrome-512x512'],
+    ('Favicons'|trans): ['favicon', 'favicon-svg', 'favicon-96x96', 'favicon-apple-touch-icon', 'web-app-manifest-192x192', 'web-app-manifest-512x512'],
     ('Réseaux sociaux'|trans): ['instagram', 'facebook', 'pinterest', 'youtube', 'tiktok', 'linkedin', 'twitter', 'tripadvisor', 'google'],
     ('Sécurité'|trans): ['security-front-logo', 'security-logo', 'security-bg'],
     ('Maintenance'|trans): ['build-logo', 'build-bg'],

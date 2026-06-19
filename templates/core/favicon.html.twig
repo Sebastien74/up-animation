@@ -1,22 +1,22 @@
 <!-- Favicons -->
+{%- set v = website.cacheVersion is defined and website.cacheVersion ? '?v=' ~ website.cacheVersion : '' -%}
+{%- if logos['favicon-96x96'] is defined and logos['favicon-96x96'] -%}
+    <link rel="icon" type="image/png" sizes="96x96" href="{{ absolute_url(asset(logos['favicon-96x96']) ~ v) }}">
+{%- endif -%}
+{%- if logos['favicon-svg'] is defined and logos['favicon-svg'] -%}
+    <link rel="icon" type="image/svg+xml" href="{{ absolute_url(asset(logos['favicon-svg']) ~ v) }}">
+{%- endif -%}
 {%- if logos['favicon'] is defined and logos['favicon'] -%}
-    <link rel="shortcut icon" href="{{ absolute_url(asset(logos['favicon'])) }}">
-{%- endif -%}
-{%- if logos['favicon-32x32'] is defined and logos['favicon-32x32'] -%}
-    <link rel="icon" type="image/png" sizes="32x32" href="{{ absolute_url(asset(logos['favicon-32x32'])) }}">
-{%- endif -%}
-{%- if logos['favicon-16x16'] is defined and logos['favicon-16x16'] -%}
-    <link rel="icon" type="image/png" sizes="16x16" href="{{ absolute_url(asset(logos['favicon-16x16'])) }}">
+    <link rel="shortcut icon" href="{{ absolute_url(asset(logos['favicon']) ~ v) }}">
 {%- endif -%}
 {%- if logos['favicon-apple-touch-icon'] is defined and logos['favicon-apple-touch-icon'] -%}
-    <link rel="apple-touch-icon" sizes="180x180" href="{{ absolute_url(asset(logos['favicon-apple-touch-icon'])) }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ absolute_url(asset(logos['favicon-apple-touch-icon']) ~ v) }}">
+{%- endif -%}
+{%- if website.companyName -%}
+    <meta name="apple-mobile-web-app-title" content="{{ website.companyName|striptags }}">
 {%- endif -%}
 {%- if pwaEnabled is defined and pwaEnabled -%}
     <link rel="manifest" href="{{ absolute_url(asset(website|manifest)) }}">
-{%- endif -%}
-{%- set color = 'favicon'|color(website, 'mask-icon') -%}
-{%- if logos['mask-icon'] is defined and logos['mask-icon'] and color.active is defined and color.active -%}
-    <link rel="mask-icon" href="{{ absolute_url(asset(logos['mask-icon'])) }}" {% if color %} color="{{ color.color }}" {% endif %}>
 {%- endif -%}
 <!-- Themes -->
 {%- set color = 'favicon'|color(website, 'msapplication-TileColor') -%}

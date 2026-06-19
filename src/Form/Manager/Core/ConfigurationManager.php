@@ -290,18 +290,18 @@ class ConfigurationManager
         $background = $website instanceof Website ? $this->colorRuntime->color('favicon', $websiteModel, 'webmanifest-background') : null;
 
         $icons = [];
-        $uploadDirname = $website->getUploadDirname();
         $publicDir = $this->projectDir.'/public';
-        $files = ['android-chrome-144x144' => '144x144', 'android-chrome-192x192' => '192x192', 'android-chrome-512x512' => '512x512'];
-        foreach ($files as $fileName => $size) {
-            if (!empty($logos[$fileName])) {
-                $fileDirname = $publicDir.$logos[$fileName];
+        $files = ['web-app-manifest-192x192' => '192x192', 'web-app-manifest-512x512' => '512x512'];
+        foreach ($files as $key => $size) {
+            if (!empty($logos[$key])) {
+                $fileDirname = $publicDir.$logos[$key];
                 if ($filesystem->exists($fileDirname)) {
                     $file = new File(str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $fileDirname));
                     $icons[] = [
-                        'src' => '/uploads/'.$uploadDirname.'/'.$fileName.'.'.$file->getExtension(),
+                        'src' => $logos[$key],
                         'sizes' => $size,
                         'type' => 'image/'.$file->getExtension(),
+                        'purpose' => 'maskable',
                     ];
                 }
             }
