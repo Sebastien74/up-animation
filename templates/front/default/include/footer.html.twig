@@ -41,12 +41,14 @@
 
 {%- macro menu(catalogMenus, category, title) -%}
     {%- if catalogMenus[category] is not empty -%}
-        <h3 class="footer-title pb-2 mb-3 fw-900 text-uppercase text-white">{{ title|striptags }}</h3>
-        <ul class="list-unstyled d-grid gap-2 mb-4 ps-3">
-            {%- for item in catalogMenus[category] -%}
-                <li><a class="footer-link text-white-75 text-hover-primary d-inline-block{% if not loop.last %} mb-1{% endif %}" href="{{ item.url }}">{{ item.intl.title|striptags }}</a></li>
-            {%- endfor -%}
-        </ul>
+        <div class="col-12 col-md-6">
+            <h3 class="footer-title pb-2 mb-3 fw-900 text-uppercase text-white">{{ title|striptags }}</h3>
+            <ul class="list-unstyled d-grid gap-2 mb-4 ps-3">
+                {%- for item in catalogMenus[category] -%}
+                    <li><a class="footer-link text-white-75 text-hover-primary d-inline-block{% if not loop.last %} mb-1{% endif %}" href="{{ item.url }}">{{ item.intl.title|striptags }}</a></li>
+                {%- endfor -%}
+            </ul>
+        </div>
     {%- endif -%}
 {%- endmacro -%}
 
@@ -177,16 +179,15 @@
                 </div>
                 <div class="col-12 col-lg-8 ps-lg-5">
                     <div class="row g-4">
-                        {%- if catalogMenus.events is not empty or catalogMenus.performances is not empty -%}
-                            <div class="menus-left col-12 col-md-6">
+                        {%- if catalogMenus.animations is not empty
+                            or catalogMenus.events is not empty
+                            or catalogMenus.rentals is not empty
+                            or catalogMenus.performances is not empty -%}
+                            <div class="menus-left row">
+                                {{ macro.menu(catalogMenus, 'animations', 'Nos best sellers'|trans) }}
                                 {{ macro.menu(catalogMenus, 'events', 'Nos événements'|trans) }}
-                                {{ macro.menu(catalogMenus, 'performances', 'Spectacles'|trans) }}
-                            </div>
-                        {%- endif -%}
-                        {%- if catalogMenus.animations is not empty or catalogMenus.rentals is not empty -%}
-                            <div class="menus-right col-12 col-md-6">
-                                {{ macro.menu(catalogMenus, 'animations', 'Animations création'|trans) }}
                                 {{ macro.menu(catalogMenus, 'rentals', 'Nos locations'|trans) }}
+                                {{ macro.menu(catalogMenus, 'performances', 'Nos spectacles'|trans) }}
                             </div>
                         {%- endif -%}
                         {%- set labels = agencies|map(a =>

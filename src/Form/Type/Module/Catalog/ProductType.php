@@ -212,7 +212,7 @@ class ProductType extends AbstractType
                     'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
                     'choices' => [
                         $this->translator->trans('Nos événements', [], 'admin') => 'events',
-                        $this->translator->trans('Nos animations', [], 'admin') => 'animations',
+                        $this->translator->trans('Nos best sellers', [], 'admin') => 'animations',
                         $this->translator->trans('Nos spectacles', [], 'admin') => 'performances',
                         $this->translator->trans('Nos Locations', [], 'admin') => 'rentals',
                     ],
