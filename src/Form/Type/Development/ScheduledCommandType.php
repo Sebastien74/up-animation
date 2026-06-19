@@ -42,20 +42,20 @@ class ScheduledCommandType extends AbstractType
             'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
             'display' => 'search',
 
-            'row_attr' => ['class' => $isNew ? 'col-md-6' : 'col-md-4'],
+            'row_attr' => ['class' => $isNew ? 'col-12 col-md-6' : 'col-12 col-sm-6 col-lg-4'],
         ]);
 
         $builder->add('cronExpression', Type\TextType::class, [
             'label' => $this->translator->trans('Expression cron', [], 'admin'),
             'attr' => ['placeholder' => $this->translator->trans('*/10 * * * *', [], 'admin')],
-            'row_attr' => ['class' => $isNew ? 'col-md-6' : 'col-md-4'],
+            'row_attr' => ['class' => $isNew ? 'col-12 col-md-6' : 'col-12 col-sm-6 col-lg-4'],
             'help' => '<a href="http://www.abunchofutils.com/utils/developer/cron-expression-helper/" target="_blank">'.$this->translator->trans('Générer', [], 'admin').'</a>',
         ]);
 
         $builder->add('description', Type\TextType::class, [
             'label' => $this->translator->trans('Description', [], 'admin'),
             'attr' => ['placeholder' => $this->translator->trans('Saisissez une description*', [], 'admin')],
-            'row_attr' => ['class' => $isNew ? 'col-md-6' : 'col-md-9'],
+            'row_attr' => ['class' => $isNew ? 'col-12 col-md-6' : 'col-12 col-md-9'],
         ]);
 
         if (!$isNew) {

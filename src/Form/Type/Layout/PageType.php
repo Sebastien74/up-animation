@@ -102,7 +102,7 @@ class PageType extends AbstractType
                 ]);
             }
 
-            $templateClass = $isNew ? 'col-md-4' : (!$this->haveBackgroundsRole ? 'col-12' : 'col-md-6');
+            $templateClass = $isNew ? 'col-12 col-sm-6 col-lg-4' : (!$this->haveBackgroundsRole ? 'col-12' : 'col-12 col-md-6');
             $builder->add('template', Type\ChoiceType::class, [
                 'label' => $this->translator->trans('Template', [], 'admin'),
                 'display' => 'search',
@@ -126,7 +126,7 @@ class PageType extends AbstractType
                         'color' => 'app',
                         'label' => $this->translator->trans('Afficher dans le menu', [], 'admin'),
                         'attr' => ['class' => 'col-12 w-100'],
-                        'row_attr' => ['class' => $secureActive ? 'col-md-4 text-center' : 'col-md-6 text-center'],
+                        'row_attr' => ['class' => $secureActive ? 'col-6 col-md-4 text-center' : 'col-12 col-md-6 text-center'],
                     ]);
                 }
 
@@ -136,7 +136,7 @@ class PageType extends AbstractType
                     'color' => 'app',
                     'label' => $this->translator->trans('Page intercalaire', [], 'admin'),
                     'attr' => ['class' => 'col-12 w-100'],
-                    'row_attr' => ['class' => $secureActive && $mainMenu ? 'col-md-4 text-center' : 'col-md-6 text-center'],
+                    'row_attr' => ['class' => $secureActive && $mainMenu ? 'col-6 col-md-4 text-center' : 'col-12 col-md-6 text-center'],
                 ]);
             }
 

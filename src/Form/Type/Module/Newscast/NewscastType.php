@@ -71,7 +71,7 @@ class NewscastType extends AbstractType
             'display' => 'search',
             'attr' => [
                 'data-placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
-                'row_attr' => ['class' => $displayCategory ? 'col-md-3' : 'd-none'],
+                'row_attr' => ['class' => $displayCategory ? 'col-12 col-sm-6 col-lg-4 col-xl-3' : 'd-none'],
             ],
             'class' => Category::class,
             'query_builder' => function (EntityRepository $er) {

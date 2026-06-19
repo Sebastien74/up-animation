@@ -70,7 +70,7 @@ class NewscastDuplicateType extends AbstractType
                 return strip_tags($entity->getAdminName());
             },
 
-            'row_attr' => ['class' => $multiSites ? 'col-md-6' : 'd-none'],
+            'row_attr' => ['class' => $multiSites ? 'col-12 col-md-6' : 'd-none'],
         ]);
 
         $builder->add('newscast', EntityType::class, [

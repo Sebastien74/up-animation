@@ -86,7 +86,7 @@ class ZoneConfigurationType extends AbstractType
 
         $builder->add('alignment', AlignmentType::class, [
 
-            'row_attr' => ['class' => $zone->isFullSize() ? 'col-12' : 'col-md-6'],
+            'row_attr' => ['class' => $zone->isFullSize() ? 'col-12' : 'col-12 col-md-6'],
         ]);
 
         if (!$zone->isFullSize()) {
@@ -266,7 +266,7 @@ class ZoneConfigurationType extends AbstractType
 
         if ($multiLocales) {
             $builder->add('hideLocales', WebsiteLocalesType::class, [
-                'row_attr' => ['class' => $this->isInternalUser ? 'col-md-6' : 'col-12'],
+                'row_attr' => ['class' => $this->isInternalUser ? 'col-12 col-md-6' : 'col-12'],
             ]);
         }
 

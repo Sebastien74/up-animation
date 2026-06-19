@@ -50,7 +50,7 @@ class RedirectionType extends AbstractType
                 'choices' => $locales,
                 'choice_translation_domain' => false,
                 'attr' => ['class' => 'col-12 select-icons'],
-                'row_attr' => ['class' => $options['groups'] ?: 'col-md-3'],
+                'row_attr' => ['class' => $options['groups'] ?: 'col-12 col-sm-6 col-lg-4 col-xl-3'],
                 'choice_attr' => function ($iso, $key, $value) {
                     return [
                         'data-image' => '/medias/icons/flags/'.strtolower($iso).'.svg',
@@ -71,7 +71,7 @@ class RedirectionType extends AbstractType
 
         $oldArguments = [
             'label' => $options['labels'] ? $this->translator->trans('Ancienne URI / URL', [], 'admin') : false,
-            'row_attr' => ['class' => $options['groups'] ?: ($multiLocales ? 'col-md-4' : 'col-md-6'),
+            'row_attr' => ['class' => $options['groups'] ?: ($multiLocales ? 'col-12 col-sm-6 col-lg-4' : 'col-12 col-md-6'),
                 'placeholder' => $this->translator->trans('Saisissez une URI', [], 'admin'),
             ],
             'constraints' => [
@@ -89,7 +89,7 @@ class RedirectionType extends AbstractType
         $builder->add('new', Type\TextType::class, [
             'label' => $options['labels'] ? $this->translator->trans('Nouvelle URL', [], 'admin') : false,
 
-            'row_attr' => ['class' => $options['groups'] ?: ($multiLocales ? 'col-md-4' : 'col-md-6'),
+            'row_attr' => ['class' => $options['groups'] ?: ($multiLocales ? 'col-12 col-sm-6 col-lg-4' : 'col-12 col-md-6'),
                 'placeholder' => $this->translator->trans('Saisissez une nouvelle', [], 'admin'),
             ],
             'constraints' => [

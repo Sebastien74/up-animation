@@ -49,7 +49,7 @@ class BlockTypeType extends AbstractType
         $builder->add('iconClass', WidgetType\FontawesomeType::class, [
             'required' => true,
             'attr' => ['class' => 'col-12 select-icons'],
-            'row_attr' => ['class' => $isNew ? 'col-md-4' : 'col-md-3'],
+            'row_attr' => ['class' => $isNew ? 'col-6 col-md-4' : 'col-6 col-md-3'],
             'constraints' => [new Assert\NotBlank()],
         ]);
 
@@ -57,7 +57,7 @@ class BlockTypeType extends AbstractType
             'label' => $this->translator->trans('Catégorie', [], 'admin'),
             'attr' => [
                 'placeholder' => $this->translator->trans('Saisissez un nom', [], 'admin'),
-                'row_attr' => ['class' => $isNew ? 'col-md-4' : 'col-md-3'],
+                'row_attr' => ['class' => $isNew ? 'col-6 col-md-4' : 'col-6 col-md-3'],
             ],
         ]);
 
@@ -68,7 +68,7 @@ class BlockTypeType extends AbstractType
             'choices' => $this->getRoles(),
             'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
 
-            'row_attr' => ['class' => $isNew ? 'col-md-4' : 'col-md-3'],
+            'row_attr' => ['class' => $isNew ? 'col-6 col-md-4' : 'col-6 col-md-3'],
         ]);
 
         $builder->add('dropdown', Type\CheckboxType::class, [
@@ -77,7 +77,7 @@ class BlockTypeType extends AbstractType
             'color' => 'app',
             'label' => $this->translator->trans('Ajouter à la zone non prioritaire', [], 'admin'),
             'attr' => ['class' => 'col-12 w-100'],
-            'row_attr' => ['class' => $isNew ? 'col-md-4' : 'col-md-3 d-flex align-items-end'],
+            'row_attr' => ['class' => $isNew ? 'col-6 col-md-4' : 'col-6 col-md-3 d-flex align-items-end'],
         ]);
 
         $builder->add('editable', Type\CheckboxType::class, [
@@ -86,7 +86,7 @@ class BlockTypeType extends AbstractType
             'color' => 'app',
             'label' => $this->translator->trans('Éditable', [], 'admin'),
             'attr' => ['class' => 'col-12 w-100'],
-            'row_attr' => ['class' => $isNew ? 'col-md-4' : 'col-md-3 d-flex align-items-end'],
+            'row_attr' => ['class' => $isNew ? 'col-6 col-md-4' : 'col-6 col-md-3 d-flex align-items-end'],
         ]);
 
         $builder->add('inAdvert', Type\CheckboxType::class, [
@@ -95,7 +95,7 @@ class BlockTypeType extends AbstractType
             'color' => 'app',
             'label' => $this->translator->trans('Afficher aux extensions', [], 'admin'),
             'attr' => ['class' => 'col-12 w-100'],
-            'row_attr' => ['class' => $isNew ? 'col-md-4' : 'col-md-3 d-flex align-items-end'],
+            'row_attr' => ['class' => $isNew ? 'col-6 col-md-4' : 'col-6 col-md-3 d-flex align-items-end'],
         ]);
 
         if (!$isNew) {

@@ -79,7 +79,7 @@ class BlockConfigurationType extends AbstractType
             'label' => $this->translator->trans('Alignement du bloc', [], 'admin'),
             'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
 
-            'row_attr' => ['class' => $this->isInternalUser ? 'col-md-6' : 'col-12'],
+            'row_attr' => ['class' => $this->isInternalUser ? 'col-12 col-md-6' : 'col-12'],
             'display' => 'search',
             'choices' => [
                 $this->translator->trans('À gauche', [], 'admin') => 'd-flex justify-content-start',

@@ -39,7 +39,7 @@ class CompanyType extends AbstractType
             'label' => $this->translator->trans("Nom de l'entreprise", [], 'admin'),
             'attr' => [
                 'placeholder' => $this->translator->trans('Saisissez un nom', [], 'admin'),
-                'row_attr' => ['class' => $isNew ? 'col-12' : 'col-md-9'],
+                'row_attr' => ['class' => $isNew ? 'col-12' : 'col-12 col-md-9'],
             ],
             'constraints' => [new Assert\NotBlank()],
         ]);

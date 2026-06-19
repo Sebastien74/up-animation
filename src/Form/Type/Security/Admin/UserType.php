@@ -56,7 +56,7 @@ class UserType extends AbstractType
             'label' => $this->translator->trans("Nom d'utilisateur", [], 'admin'),
             'attr' => [
                 'placeholder' => $this->translator->trans("Saisissez un nom d'utilisateur", [], 'admin'),
-                'row_attr' => ['class' => $isNew ? 'col-md-3' : 'col-md-4'],
+                'row_attr' => ['class' => $isNew ? 'col-12 col-sm-6 col-lg-4 col-xl-3' : 'col-12 col-sm-6 col-lg-4'],
             ],
         ]);
 
@@ -64,7 +64,7 @@ class UserType extends AbstractType
             'label' => $this->translator->trans('E-mail', [], 'admin'),
             'attr' => [
                 'placeholder' => $this->translator->trans('Saisissez un e-mail', [], 'admin'),
-                'row_attr' => ['class' => $isNew ? 'col-md-3' : 'col-md-4'],
+                'row_attr' => ['class' => $isNew ? 'col-12 col-sm-6 col-lg-4 col-xl-3' : 'col-12 col-sm-6 col-lg-4'],
             ],
             'constraints' => [new Assert\Email()],
         ]);
@@ -110,7 +110,7 @@ class UserType extends AbstractType
                 },
                 'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
 
-                'row_attr' => ['class' => $isNew ? 'col-md-3' : 'col-md-4'],
+                'row_attr' => ['class' => $isNew ? 'col-12 col-sm-6 col-lg-4 col-xl-3' : 'col-12 col-sm-6 col-lg-4'],
                 'constraints' => [new Assert\NotBlank()],
             ]);
         }
@@ -118,7 +118,7 @@ class UserType extends AbstractType
         $builder->add('locale', WidgetType\LanguageIconType::class, [
             'label' => $this->translator->trans('Langue', [], 'admin'),
 
-            'row_attr' => ['class' => $isNew ? 'col-md-3' : 'col-md-4'],
+            'row_attr' => ['class' => $isNew ? 'col-12 col-sm-6 col-lg-4 col-xl-3' : 'col-12 col-sm-6 col-lg-4'],
             'constraints' => [new Assert\NotBlank()],
         ]);
 
@@ -160,7 +160,7 @@ class UserType extends AbstractType
                 'display' => 'search',
                 'attr' => [
                     'placeholder' => $this->translator->trans('Sélectionnez', [], 'security_cms'),
-                    'row_attr' => ['class' => $isNew ? 'col-md-6' : 'col-12'],
+                    'row_attr' => ['class' => $isNew ? 'col-12 col-md-6' : 'col-12'],
                 ],
             ]);
         }

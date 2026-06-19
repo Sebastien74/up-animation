@@ -48,7 +48,7 @@ class ConfigurationType extends AbstractType
 
         $builder->add('locale', WidgetType\LanguageIconType::class, [
             'label' => $this->translator->trans('Langue par défaut', [], 'admin'),
-            'row_attr' => ['class' => $isNew ? 'col-md-3' : 'col-12'],
+            'row_attr' => ['class' => $isNew ? 'col-12 col-sm-6 col-lg-4 col-xl-3' : 'col-12'],
         ]);
 
         if (!$isNew) {
