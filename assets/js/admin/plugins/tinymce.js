@@ -99,6 +99,24 @@ export function tinymcePlugin() {
     let pluginsData = document.getElementById('cms-plugins-data');
     let editors = document.querySelectorAll('.tinymce');
 
+    /**
+     * Garde anti-scroll : à l'initialisation, TinyMCE focalise automatiquement un
+     * éditeur (le dernier rendu), ce qui amène le navigateur à faire défiler la page
+     * pour révéler son iframe — d'où un « scroll vers le milieu » tardif (une fois
+     * tous les éditeurs rendus). On neutralise donc la prise de focus automatique
+     * tant que l'utilisateur n'a pas interagi : aucun focus => aucun scroll. La garde
+     * est levée à la première interaction réelle (l'utilisateur peut alors cliquer
+     * dans un éditeur normalement), ou après un court délai de sécurité.
+     */
+    const focusGuard = { active: true };
+    const releaseFocusGuard = () => {
+        focusGuard.active = false;
+    };
+    ['pointerdown', 'keydown', 'wheel', 'touchstart'].forEach((ev) => {
+        window.addEventListener(ev, releaseFocusGuard, { once: true, capture: true });
+    });
+    setTimeout(releaseFocusGuard, 2500);
+
     let colors = [];
     let colorsData = pluginsData.dataset.colorsEditor;
     if (typeof colorsData != "undefined") {
@@ -180,6 +198,46 @@ export function tinymcePlugin() {
                     color_map: colors,
                     content_style: contentStyle,
                     setup: (tinymceEl) => {
+
+                        /**
+                         * Empêche l'éditeur de voler le focus pendant la fenêtre d'init
+                         * (cause du scroll auto de la page vers son iframe). On intercepte
+                         * editor.focus() ainsi que le focus de l'iframe (body + window),
+                         * tant que la garde est active.
+                         */
+                        const editorNativeFocus = tinymceEl.focus.bind(tinymceEl);
+                        tinymceEl.focus = function (skipFocus) {
+                            if (focusGuard.active) {
+                                return;
+                            }
+                            return editorNativeFocus(skipFocus);
+                        };
+                        tinymceEl.on('init', () => {
+                            try {
+                                const body = tinymceEl.getBody();
+                                const win = tinymceEl.getWin();
+                                if (body) {
+                                    const bodyNativeFocus = body.focus.bind(body);
+                                    body.focus = function (opts) {
+                                        if (focusGuard.active) {
+                                            return;
+                                        }
+                                        return bodyNativeFocus(opts);
+                                    };
+                                }
+                                if (win) {
+                                    const winNativeFocus = win.focus.bind(win);
+                                    win.focus = function () {
+                                        if (focusGuard.active) {
+                                            return;
+                                        }
+                                        return winNativeFocus();
+                                    };
+                                }
+                            } catch (e) {
+                                console.log(e);
+                            }
+                        });
 
                         const runAccessibility = () => accessibilityFields(tinymceEl, editor);
                         const closePopups = () => {
