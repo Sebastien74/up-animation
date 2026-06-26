@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model;
 
+use App\Entity\Layout\Block;
 use App\Entity\Layout\Page;
 use App\Entity\Module\Catalog\Product;
 use App\Entity\Module\Menu\Link;
@@ -106,6 +107,9 @@ final class IntlModel extends BaseModel
         $titleForce = self::getContent('titleForce', $intl) ? self::getContent('titleForce', $intl) : 2;
         $subTitleForce = $titleForce + 1;
         $title = self::getContent('title', $intl);
+        if (!$title && property_exists($entity, 'customLayout') && $entity->isCustomLayout()) {
+            $title = self::$coreLocator->em()->getRepository(Block::class)->findTitleByForceAndLocaleLayout($entity->getLayout(), $locale, 1);
+        }
         $intro = self::getContent('introduction', $intl);
         $body = self::getContent('body', $intl);
         $link = self::intlLink($entity, $intl, $toLinkMenu, $options);

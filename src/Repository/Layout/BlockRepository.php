@@ -170,7 +170,7 @@ class BlockRepository extends ServiceEntityRepository
      */
     public function findByBlockTypeAndLocaleLayout(mixed $layout, string $blockType, string $locale, array $options = []): mixed
     {
-        $layoutId = is_object($layout) ? $layout->getId() : $layout['id'];
+        $layoutId = is_object($layout) ? $layout->getId() : (is_array($layout) && empty($layout['id']) ? $layout['id'] : null);
         $asThumb = $options['asThumb'] ?? false;
         $haveContent = $options['haveContent'] ?? false;
         $titleForce = $options['titleForce'] ?? null;
@@ -222,6 +222,15 @@ class BlockRepository extends ServiceEntityRepository
                 if ($block->isUseForThumb()) {
                     $result = $block;
                     break;
+                }
+            }
+            foreach ($blocks as $block) {
+                if ($blockType === 'media') {
+                    foreach ($block->getMediaRelations() as $mediaRelation) {
+                        if ($mediaRelation->isMain() && $mediaRelation->getLocale() === $locale) {
+                            return $block;
+                        }
+                    }
                 }
             }
         }

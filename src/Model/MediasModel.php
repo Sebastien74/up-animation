@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model;
 
+use App\Entity\Layout\Block;
 use App\Entity\Module\Catalog\Product;
 use App\Entity\Module\Newscast\Newscast;
 use App\Service\Interface\CoreLocatorInterface;
@@ -78,6 +79,20 @@ final class MediasModel extends BaseModel
         $mainSet = $videoAsFirst = false;
         $mainPosition = $headerPosition = $mainVideo = null;
         $main = $header = $medias = $mediasAndVideos = $mediaRelations = $file = $files = $videos = $mediasWithoutMain = [];
+
+        if ($entity && property_exists($entity, 'customLayout') && $entity->isCustomLayout()) {
+            $blockMedia = self::$coreLocator->em()->getRepository(Block::class)->findByBlockTypeAndLocaleLayout($entity->getLayout(), 'media', $locale, [
+                'asThumb' => true,
+                'haveContent' => false,
+            ]);
+            $blockMedias = $blockMedia ? $blockMedia->getMediaRelations() : [];
+            $mediaRelationsDb = [];
+            foreach ($blockMedias as $blockMedia) {
+                if ($blockMedia->getLocale() === $locale) {
+                    $mediaRelationsDb[] = $blockMedia;
+                }
+            }
+        }
 
         foreach ($mediaRelationsDb as $key => $mediaRelation) {
             $mediaModel = MediaModel::fromEntity($mediaRelation, $coreLocator, $query);
