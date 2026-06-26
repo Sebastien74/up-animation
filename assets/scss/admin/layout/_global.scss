@@ -249,13 +249,6 @@ tr.bg-info-darken > th {
     background-color: $info-darken !important;
 }
 
-#users-switcher-box {
-    .card-body {
-        background-color: $info-darken !important;
-        border-radius: $radius-lg;
-    }
-}
-
 .btn-close:focus {
     box-shadow: none !important;
 }
