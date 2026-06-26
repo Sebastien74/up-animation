@@ -26,7 +26,7 @@ if (clientId && !gtmInjection) {
             ad_personalization: "denied",
             wait_for_update: 500
         }
-    }
+    };
 
     (function (d, s) {
         let t = d.getElementsByTagName(s)[0], e = d.createElement(s);
