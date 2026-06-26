@@ -110,6 +110,9 @@ class Block extends BaseConfiguration
     private bool $autoplay = false;
 
     #[ORM\Column(type: Types::BOOLEAN)]
+    private bool $portrait = false;
+
+    #[ORM\Column(type: Types::BOOLEAN)]
     private bool $asLoop = false;
 
     #[ORM\Column(type: Types::BOOLEAN)]
@@ -505,6 +508,18 @@ class Block extends BaseConfiguration
     public function setAutoplay(bool $autoplay): static
     {
         $this->autoplay = $autoplay;
+
+        return $this;
+    }
+
+    public function isPortrait(): ?bool
+    {
+        return $this->portrait;
+    }
+
+    public function setPortrait(bool $portrait): static
+    {
+        $this->portrait = $portrait;
 
         return $this;
     }

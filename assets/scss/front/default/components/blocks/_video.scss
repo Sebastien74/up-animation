@@ -11,6 +11,8 @@
 
 ------------------------------------------------------------------ */
 
+$video-radius: 1.5rem;
+
 .video-fluid, .body iframe {
     max-width: 100%;
     max-height: 100dvh;
@@ -149,6 +151,21 @@
     }
 }
 
+.video-block.portrait,
+.video-block-html.portrait,
+.block-video.portrait {
+    width: 100%;
+    max-width: calc(400px * 9 / 16); // jamais plus de 400px de haut en 9:16
+    max-height: 400px;
+    margin-inline: auto;
+}
+
+.video-block.radius .block-video,
+.video-block-html.radius {
+    overflow: hidden;
+    border-radius: $video-radius;
+}
+
 @if ($enable-youtube) {
 
     $player-color: $primary;
@@ -157,9 +174,13 @@
         max-width: 100%;
     }
 
+    .embed-youtube.portrait:not(.novideo) {
+        padding-top: 177.7777777778%;
+    }
+
     .video-block.radius {
         picture > img, .embed-youtube {
-            border-radius: $border-radius-small;
+            border-radius: $video-radius;
         }
     }
 

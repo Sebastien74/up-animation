@@ -18,10 +18,11 @@
 {%- set havePoster = media.media.originalName is defined and media.media.originalName -%}
 {%- set thumbConfiguration = thumbConfiguration is defined ? thumbConfiguration : {} -%}
 {%- set radius = block.radius is defined ? block.radius : false -%}
+{%- set portrait = portrait is defined ? portrait : (block.portrait is defined ? block.portrait : false) -%}
 
 {%- if intlVideo -%}
-    <div id="video-{{ videoId }}" class="video-block {% if radius %} radius{% endif %}">
-        {{ intlVideo|video(media, {thumbConfiguration: thumbConfiguration}) }}
+    <div id="video-{{ videoId }}" class="video-block {% if radius %} radius{% endif %}{% if portrait %} portrait{% endif %}">
+        {{ intlVideo|video(media, {thumbConfiguration: thumbConfiguration, portrait: portrait}) }}
     </div>
 {%- elseif intlMedia.media is defined and intlMedia.media -%}
     {%- set haveVideo = false -%}
@@ -31,7 +32,7 @@
         {%- endif -%}
     {%- endfor -%}
     {%- if haveVideo -%}
-        <div id="video-{{ videoId }}" class="video-block-html position-relative w-100{% if radius %} radius{% endif %}">
+        <div id="video-{{ videoId }}" class="video-block-html position-relative w-100{% if radius %} radius{% endif %}{% if portrait %} portrait{% endif %}">
             <div class="video-container position-relative w-100">
                 {%- set poster = havePoster ? intlMedia|file(thumbConfiguration, {path: true}) : null -%}
                 {%- if (havePoster and not isMain) or (havePoster and isMain and not isMobile()) -%}

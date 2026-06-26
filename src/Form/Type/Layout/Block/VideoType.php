@@ -109,6 +109,15 @@ class VideoType extends AbstractType
             'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
         ]);
 
+        $builder->add('portrait', CheckboxType::class, [
+            'required' => false,
+            'display' => 'button',
+            'color' => 'app',
+            'label' => $this->translator->trans('Format portrait', [], 'admin'),
+            'attr' => ['class' => 'col-12 w-100'],
+            'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
+        ]);
+
         $radiusType = new WidgetType\RadiusType($this->coreLocator);
         $radiusType->add($builder);
 

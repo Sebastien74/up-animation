@@ -1,6 +1,8 @@
 {%- trans_default_domain 'gdpr' -%}
 
-<div class="block-video ratio ratio-16x9">
+{%- set portrait = portrait is defined and portrait ? portrait : false -%}
+
+<div class="block-video ratio {{ portrait ? 'ratio-9x16 portrait' : 'ratio-16x9' }}">
     {%- if 'youtube' in embed -%}
         {%- set screen = screen is defined and screen ? screen : screen() -%}
         {%- set title = media.intl.title is defined and media.intl.title ? media.intl.title : 'Poster'|trans -%}
@@ -11,7 +13,7 @@
         {%- set poster = havePoster and width and height ? media|file({}, {maxWidth: width, maxHeight: height, path: true})
             : (havePoster ? media|file({}, {filter: 'youtube_poster', path: true})) -%}
         <div id="youtube-{{ uniqId() }}"
-             class="w-100 embed-youtube embed-data"
+             class="w-100 embed-youtube embed-data{% if portrait %} portrait{% endif %}"
              data-title="{{ title|striptags }}"
              data-poster="{{ poster }}"
              data-autoplay="{{ autoplay }}"
