@@ -85,6 +85,11 @@ if (container) {
         if (!cell || !data || !data.ok) {
             return;
         }
+        // Measurement runs after the response (kernel.terminate): keep the previous
+        // score visible; the fresh one shows on the next page load.
+        if (data.running) {
+            return;
+        }
         const pills = cell.querySelector('.pa-psi-pills');
         if (pills) {
             pills.innerHTML = psiPillHtml('M', data.perfMobile) + psiPillHtml('D', data.perfDesktop);
@@ -116,6 +121,9 @@ if (container) {
                 updatePsiCell(cell, data);
                 if (data && data.remaining !== undefined) {
                     remaining = data.remaining;
+                }
+                if (data && data.running && statusEl) {
+                    statusEl.textContent = 'Analyse lancée - le score apparaîtra après rafraîchissement (~1 min).';
                 }
             })
             .catch(() => {})
@@ -319,6 +327,19 @@ if (detailContainer) {
             fetch(psiUrl, {method: 'POST', headers: {'X-Requested-With': 'XMLHttpRequest'}})
                 .then(response => response.ok ? response.json() : {ok: false})
                 .then(function (data) {
+                    // Measurement runs after the response (kernel.terminate); the report
+                    // is not ready yet, so inform and let the admin reload shortly.
+                    if (data && data.running) {
+                        if (preloader) {
+                            preloader.classList.add('d-none');
+                        }
+                        psiButton.disabled = false;
+                        psiButton.classList.remove('disabled');
+                        if (span) {
+                            span.textContent = 'Analyse lancée - rechargez dans ~1 min';
+                        }
+                        return;
+                    }
                     if (data && data.ok) {
                         window.location.reload();
                         return;

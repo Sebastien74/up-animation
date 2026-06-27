@@ -11,10 +11,9 @@ use App\Entity\Seo\Url;
 use App\Repository\Seo\PageSpeedSnapshotRepository;
 use App\Service\Admin\PageSpeedMarkdownFormatter;
 use App\Service\Seo\PageSpeed\PageSpeedClient;
-use App\Service\Seo\PageSpeed\PageSpeedException;
-use App\Service\Seo\PageSpeed\PageSpeedRecorder;
 use App\Service\Seo\PageSpeed\PublicPageUrlResolver;
 use App\Service\Seo\PageSpeed\QuotaGuard;
+use Psr\Cache\CacheItemPoolInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -291,8 +290,11 @@ class PageAnalysisController extends AdminController
      * snapshot and return its headline scores as JSON. Slow by nature (real Lighthouse
      * runs at Google), so it is admin-triggered only, never on page load.
      */
+    public const string PSI_LOCK_KEY = 'psi_running_lock';
+    private const int PSI_LOCK_TTL = 120;
+
     #[Route('/psi/{url}', name: 'admin_page_analysis_psi', methods: 'POST')]
-    public function pageSpeed(Request $request, Website $website, Url $url, PageSpeedClient $client, PageSpeedRecorder $recorder, PublicPageUrlResolver $urlResolver, QuotaGuard $quota): JsonResponse
+    public function pageSpeed(Request $request, Website $website, Url $url, PageSpeedClient $client, PublicPageUrlResolver $urlResolver, QuotaGuard $quota, CacheItemPoolInterface $cache): JsonResponse
     {
         if (!$client->isEnabled()) {
             return new JsonResponse(['ok' => false, 'error' => 'PageSpeed Insights n\'est pas configuré.']);
@@ -312,28 +314,33 @@ class PageAnalysisController extends AdminController
             return new JsonResponse(['ok' => false, 'error' => 'Aucun domaine public pour cette page.']);
         }
 
-        try {
-            $report = $client->measure($publicUrl, $url->getLocale());
-            $quota->consumeMeasurement();
-            $recorder->record($website, $url->getCode(), $url->getLocale(), $report);
-
-            $mobile = $report['strategies']['mobile'] ?? null;
-            $desktop = $report['strategies']['desktop'] ?? null;
-
-            return new JsonResponse([
-                'ok' => true,
-                'perfMobile' => $mobile['scores']['performance'] ?? null,
-                'perfDesktop' => $desktop['scores']['performance'] ?? null,
-                'remaining' => $quota->remainingMeasurements(),
-                'date' => (new \DateTime('now'))->format('d/m/Y H:i'),
-            ]);
-        } catch (PageSpeedException $e) {
-            return new JsonResponse(['ok' => false, 'error' => $e->getMessage()]);
-        } catch (\Throwable $e) {
-            return new JsonResponse([
-                'ok' => false,
-                'error' => $this->coreLocator->isDebug() ? $e->getMessage() : 'Erreur PageSpeed.',
-            ]);
+        // A measurement runs 6 Google API calls (up to 70 s each): far longer than the
+        // Varnish backend timeout, so running it inline would 503. Instead the request
+        // returns immediately and the measurement runs on kernel.terminate, after the
+        // response is flushed. A single-slot lock serialises runs so triggering several
+        // pages at once cannot pile up and exhaust the PHP worker pool.
+        $lock = $cache->getItem(self::PSI_LOCK_KEY);
+        if ($lock->isHit()) {
+            return new JsonResponse(['ok' => false, 'running' => true, 'error' => 'Une analyse PageSpeed est déjà en cours, réessaie dans un instant.']);
         }
+        $lock->set(time());
+        $lock->expiresAfter(self::PSI_LOCK_TTL);
+        $cache->save($lock);
+
+        $request->attributes->set('_psi_job', [
+            'publicUrl' => $publicUrl,
+            'locale' => $url->getLocale(),
+            'websiteId' => $website->getId(),
+            'code' => $url->getCode(),
+        ]);
+
+        return new JsonResponse([
+            'ok' => true,
+            'running' => true,
+            'perfMobile' => null,
+            'perfDesktop' => null,
+            'remaining' => $quota->remainingMeasurements(),
+            'date' => null,
+        ]);
     }
 }
