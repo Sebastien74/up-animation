@@ -152,7 +152,15 @@ class CatalogSearchService implements CatalogSearchServiceInterface
                 $featuresValuesDb[$featureValue->getId()] = $featureValue;
                 unset($featuresValuesDb[$key]);
             }
-            $query = $this->coreLocator->em()->createQuery('SELECT e.id, e.featurePosition, e.displayInArray, IDENTITY(e.value) as valueId, IDENTITY(e.product) as productId FROM '.FeatureValueProduct::class.' e');
+            $productIds = array_keys($this->products);
+            $dql = 'SELECT e.id, e.featurePosition, e.displayInArray, IDENTITY(e.value) as valueId, IDENTITY(e.product) as productId FROM '.FeatureValueProduct::class.' e';
+            if ($productIds) {
+                $dql .= ' WHERE IDENTITY(e.product) IN (:productIds)';
+            }
+            $query = $this->coreLocator->em()->createQuery($dql);
+            if ($productIds) {
+                $query->setParameter('productIds', $productIds);
+            }
             $values = $query->toIterable();
             foreach ($values as $value) {
                 if (!empty($featuresValuesDb[$value['valueId']]) && !empty($this->products[$value['productId']])) {
