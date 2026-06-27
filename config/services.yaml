@@ -9,8 +9,6 @@
 
 parameters:
     .container.dumper.inline_factories: true
-    # Default when the env var is unset (.env is gitignored): web-cron enabled.
-    env(SCHEDULER_WEB_CRON_ENABLED): 'true'
     # PageSpeed Insights defaults when the env var is unset (.env is gitignored).
     env(PAGESPEED_ENABLED): 'false'
     env(PAGESPEED_API_KEY): ''
@@ -100,15 +98,6 @@ services:
             $logDir: '%kernel.logs_dir%'
             $cache: '@cache.app'
         lazy: true
-
-    App\Service\Core\CronHeartbeatService:
-        arguments:
-            $schedulerLogger: '@monolog.logger.scheduler'
-            $enabled: '%env(bool:SCHEDULER_WEB_CRON_ENABLED)%'
-
-    App\EventSubscriber\FeedAutoSyncTerminateSubscriber:
-        arguments:
-            $webCronEnabled: '%env(bool:SCHEDULER_WEB_CRON_ENABLED)%'
 
     #####################################
     #         Translation               #

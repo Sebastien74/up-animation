@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace App\Controller\Admin\Core;
 
 use App\Controller\Admin\AdminController;
-use App\Entity\Api\FeedPost;
-use App\Service\Content\Feed\FeedAutoSyncService;
 use App\Service\Content\Feed\FeedSyncService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -33,7 +31,6 @@ class FeedSyncController extends AdminController
     public function sync(
         Request $request,
         FeedSyncService $feedSyncService,
-        FeedAutoSyncService $feedAutoSyncService,
         TranslatorInterface $translator,
     ): RedirectResponse {
         $website = $this->getWebsite();
@@ -43,11 +40,6 @@ class FeedSyncController extends AdminController
             return $this->redirectToRoute('admin_dashboard', ['website' => $website->id]);
         }
 
-        $providers = [FeedPost::PROVIDER_INSTAGRAM, FeedPost::PROVIDER_TIKTOK];
-        foreach ($providers as $provider) {
-            $feedAutoSyncService->clearLock($provider);
-        }
-
         try {
             $results = $feedSyncService->sync();
             $this->addFlash('success', $this->formatStats($results, $translator));
@@ -55,10 +47,6 @@ class FeedSyncController extends AdminController
             $this->addFlash('error', $translator->trans('Erreur lors de la synchronisation : %message%', [
                 '%message%' => $e->getMessage(),
             ], 'admin'));
-        } finally {
-            foreach ($providers as $provider) {
-                $feedAutoSyncService->markSynced($provider);
-            }
         }
 
         return $this->redirectToRoute('admin_dashboard', ['website' => $website->id]);

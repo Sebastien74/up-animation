@@ -26,7 +26,7 @@ class YouTubeService
      * Get YouTube channel videos (raw API response).
      *
      * No caching here: callers (FeedSyncService via YouTubeFeedFetcher)
-     * already throttle invocations via FeedAutoSyncService's 12 h lock.
+     * are throttled by the app:feed:sync cron cadence (external cron, no traffic-driven sync).
      */
     public function getVideos(GoogleModel $googleModel): array
     {

@@ -7,10 +7,23 @@ Commits concernés sur `main` :
 - `b92fc93f` auto-déverrouillage des verrous orphelins
 - `c520f464` installeur généralisé `app:scheduler:install` + catalogue source unique
 
-> Rappel : hébergement mutualisé, pas de daemon. Le cron est déclenché par le trafic
-> via `kernel.terminate` (throttle 1 run / 60 s). `public/cron.php` reste un filet externe.
+> Rappel : hébergement mutualisé, pas de daemon. **Le cron est entièrement externalisé** :
+> plus aucune exécution sur `kernel.terminate` (le déclenchement par trafic bloquait un
+> worker PHP et provoquait des 503 Varnish ; la variable `SCHEDULER_WEB_CRON_ENABLED`
+> n'existe plus). Brancher un cron de l'hébergeur, 1×/min, sur
+> `bin/console scheduler:execute` (idéal, hors pool web) ou sur
+> `https://<domaine>/cron.php?secret=<CRON_SECRET>`.
 > Base réelle = **`up_animations`** (pluriel).
 > Adapter `--env=prod` au nom d'environnement réel de chaque cible.
+
+## 0bis. Externalisation du cron (OBLIGATOIRE)
+
+- [ ] Poser `CRON_SECRET=<valeur aléatoire>` dans l'env serveur (`.env.local` / `.env.<env>`).
+- [ ] Créer le cron hébergeur **1×/min** :
+      `*/1 * * * * /usr/local/php8.5/bin/php /home/<compte>/www/bin/console scheduler:execute`
+      (ou, à défaut de CLI cron : GET `https://<domaine>/cron.php?secret=<CRON_SECRET>`).
+- [ ] Vérifier après quelques minutes que `core_scheduled_command.lastExecution` avance
+      et que `var/log/cron-scheduler.log` se remplit.
 
 ---
 

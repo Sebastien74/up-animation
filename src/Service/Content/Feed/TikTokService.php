@@ -32,7 +32,7 @@ class TikTokService
      * Get TikTok feed (raw API response).
      *
      * No caching here: callers (FeedSyncService via TikTokFeedFetcher)
-     * already throttle invocations via FeedAutoSyncService's 12 h lock.
+     * are throttled by the app:feed:sync cron cadence (external cron, no traffic-driven sync).
      */
     public function getFeed(TikTokModel $tiktokModel): array
     {

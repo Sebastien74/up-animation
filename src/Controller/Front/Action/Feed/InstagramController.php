@@ -8,7 +8,6 @@ use App\Controller\Front\ActionController;
 use App\Entity\Api\FeedPost;
 use App\Repository\Api\FeedPostRepository;
 use App\Service\Content\ActionService;
-use App\Service\Content\Feed\FeedAutoSyncService;
 use App\Service\Interface\CoreLocatorInterface;
 use App\Service\Interface\FrontLocatorInterface;
 use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
@@ -26,7 +25,6 @@ class InstagramController extends ActionController
 {
     public function __construct(
         private readonly FeedPostRepository $feedPostRepository,
-        private readonly FeedAutoSyncService $feedAutoSyncService,
         #[AutowireLocator(ActionService::class, indexAttribute: 'key')] ServiceLocator $actionLocator,
         FrontLocatorInterface $frontLocator,
         CoreLocatorInterface $coreLocator
@@ -40,10 +38,6 @@ class InstagramController extends ActionController
         $website = $this->getWebsite();
         $instagramModel = $website->api?->instagram;
         $limit = $instagramModel?->nbrItems ?: 10;
-
-        if ($instagramModel?->accessToken) {
-            $this->feedAutoSyncService->scheduleIfStale(FeedPost::PROVIDER_INSTAGRAM);
-        }
 
         $posts = $this->feedPostRepository->findActiveByProvider(FeedPost::PROVIDER_INSTAGRAM, $limit);
         if ($posts === []) {

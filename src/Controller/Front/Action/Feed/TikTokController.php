@@ -8,7 +8,6 @@ use App\Controller\Front\ActionController;
 use App\Entity\Api\FeedPost;
 use App\Repository\Api\FeedPostRepository;
 use App\Service\Content\ActionService;
-use App\Service\Content\Feed\FeedAutoSyncService;
 use App\Service\Interface\CoreLocatorInterface;
 use App\Service\Interface\FrontLocatorInterface;
 use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
@@ -25,7 +24,6 @@ class TikTokController extends ActionController
 {
     public function __construct(
         private readonly FeedPostRepository $feedPostRepository,
-        private readonly FeedAutoSyncService $feedAutoSyncService,
         #[AutowireLocator(ActionService::class, indexAttribute: 'key')] ServiceLocator $actionLocator,
         FrontLocatorInterface $frontLocator,
         CoreLocatorInterface $coreLocator
@@ -38,10 +36,6 @@ class TikTokController extends ActionController
         $website = $this->getWebsite();
         $tiktokModel = $website->api?->tiktok;
         $limit = $tiktokModel?->nbrItems ?: 10;
-
-        if ($tiktokModel?->accessToken) {
-            $this->feedAutoSyncService->scheduleIfStale(FeedPost::PROVIDER_TIKTOK);
-        }
 
         $posts = $this->feedPostRepository->findActiveByProvider(FeedPost::PROVIDER_TIKTOK, $limit);
         if ($posts === []) {
