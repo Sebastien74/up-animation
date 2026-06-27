@@ -106,6 +106,10 @@ services:
             $schedulerLogger: '@monolog.logger.scheduler'
             $enabled: '%env(bool:SCHEDULER_WEB_CRON_ENABLED)%'
 
+    App\EventSubscriber\FeedAutoSyncTerminateSubscriber:
+        arguments:
+            $webCronEnabled: '%env(bool:SCHEDULER_WEB_CRON_ENABLED)%'
+
     #####################################
     #         Translation               #
     #####################################

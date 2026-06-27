@@ -19,8 +19,10 @@ use Symfony\Component\HttpKernel\KernelEvents;
  */
 final readonly class FeedAutoSyncTerminateSubscriber implements EventSubscriberInterface
 {
-    public function __construct(private FeedAutoSyncService $autoSyncService)
-    {
+    public function __construct(
+        private FeedAutoSyncService $autoSyncService,
+        private bool $webCronEnabled = true,
+    ) {
     }
 
     public static function getSubscribedEvents(): array
@@ -32,7 +34,7 @@ final readonly class FeedAutoSyncTerminateSubscriber implements EventSubscriberI
 
     public function onKernelTerminate(TerminateEvent $event): void
     {
-        if (!$event->isMainRequest()) {
+        if (!$event->isMainRequest() || !$this->webCronEnabled) {
             return;
         }
         $this->autoSyncService->runScheduled();
