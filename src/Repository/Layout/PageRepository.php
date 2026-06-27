@@ -80,13 +80,69 @@ class PageRepository extends ServiceEntityRepository
      */
     public function findIndex(WebsiteModel $website, string $locale, bool $preview = false): ?Page
     {
-        $cacheKey = 'page-index-id-'.$website->id.'-'.$locale.'-'.(int) $preview;
-        return $this->optimizedQueryBuilder($website, $locale, $preview)
+        $page = $this->optimizedQueryBuilder($website, $locale, $preview)
             ->andWhere('p.asIndex = :asIndex')
             ->setParameter('asIndex', true)
             ->getQuery()
             ->enableResultCache(3600, 'page-index-'.$website->id.'-'.$locale)
             ->getOneOrNullResult();
+
+        if ($page instanceof Page) {
+            $this->hydratePageCollections($page, $locale);
+        }
+
+        return $page;
+    }
+
+    /**
+     * Populate the locale-filtered LAZY collections via one fetch-join per collection.
+     * Avoids the cartesian explosion of joining every to-many in the main query.
+     */
+    private function hydratePageCollections(Page $page, string $locale): void
+    {
+        $pageId = $page->getId();
+
+        $this->createQueryBuilder('p')
+            ->leftJoin('p.layout', 'l')->leftJoin('l.zones', 'z')->leftJoin('z.cols', 'c')->leftJoin('c.blocks', 'b')
+            ->leftJoin('b.intls', 'bi', 'WITH', 'bi.locale = :locale')
+            ->addSelect('l', 'z', 'c', 'b', 'bi')
+            ->andWhere('p.id = :id')
+            ->setParameter('id', $pageId)
+            ->setParameter('locale', $locale)
+            ->getQuery()
+            ->enableResultCache(3600, 'page-bi-'.$pageId.'-'.$locale)
+            ->getResult();
+
+        $this->createQueryBuilder('p')
+            ->leftJoin('p.layout', 'l')->leftJoin('l.zones', 'z')->leftJoin('z.cols', 'c')->leftJoin('c.blocks', 'b')
+            ->leftJoin('b.actionIntls', 'bai', 'WITH', 'bai.locale = :locale')
+            ->addSelect('l', 'z', 'c', 'b', 'bai')
+            ->andWhere('p.id = :id')
+            ->setParameter('id', $pageId)
+            ->setParameter('locale', $locale)
+            ->getQuery()
+            ->enableResultCache(3600, 'page-bai-'.$pageId.'-'.$locale)
+            ->getResult();
+
+        $this->createQueryBuilder('p')
+            ->leftJoin('p.intls', 'pi', 'WITH', 'pi.locale = :locale')
+            ->addSelect('pi')
+            ->andWhere('p.id = :id')
+            ->setParameter('id', $pageId)
+            ->setParameter('locale', $locale)
+            ->getQuery()
+            ->enableResultCache(3600, 'page-pi-'.$pageId.'-'.$locale)
+            ->getResult();
+
+        $this->createQueryBuilder('p')
+            ->leftJoin('p.mediaRelations', 'pmr')->leftJoin('pmr.media', 'pmrm')->leftJoin('pmr.intl', 'pmri')
+            ->leftJoin('pmrm.thumbs', 'pmrmt')->leftJoin('pmrm.intls', 'pmrmi')
+            ->addSelect('pmr', 'pmrm', 'pmri', 'pmrmt', 'pmrmi')
+            ->andWhere('p.id = :id')
+            ->setParameter('id', $pageId)
+            ->getQuery()
+            ->enableResultCache(3600, 'page-pmr-'.$pageId.'-'.$locale)
+            ->getResult();
     }
 
     /**
@@ -149,6 +205,10 @@ class PageRepository extends ServiceEntityRepository
             ->getResult();
 
         $page = $this->pickPreferredPage($pages, $urlCode, $locale);
+
+        if ($page instanceof Page) {
+            $this->hydratePageCollections($page, $locale);
+        }
 
         if ($page instanceof Page && $page->isInFill() && $page->getPages()->count() > 0) {
             foreach ($page->getPages() as $page) {
@@ -689,26 +749,18 @@ class PageRepository extends ServiceEntityRepository
             ->leftJoin('c.blocks', 'b')
             ->leftJoin('b.blockType', 'bt')
             ->leftJoin('b.action', 'ba')
-            ->leftJoin('b.intls', 'bi', 'WITH', 'bi.locale = :locale')
-            ->leftJoin('b.actionIntls', 'bai', 'WITH', 'bai.locale = :locale')
             ->leftJoin('b.mediaRelations', 'bmr')
             ->leftJoin('bmr.media', 'bmrm')
             ->leftJoin('bmr.intl', 'bmri')
             ->leftJoin('bmrm.thumbs', 'bmrmt')
             ->leftJoin('bmrm.intls', 'bmrmi')
             ->leftJoin('b.fieldConfiguration', 'bfc')
-            ->leftJoin('p.intls', 'pi', 'WITH', 'pi.locale = :locale')
-            ->leftJoin('p.mediaRelations', 'pmr')
-            ->leftJoin('pmr.media', 'pmrm')
-            ->leftJoin('pmr.intl', 'pmri')
-            ->leftJoin('pmrm.thumbs', 'pmrmt')
-            ->leftJoin('pmrm.intls', 'pmrmi')
             ->andWhere('u.website = :website')
             ->andWhere('u.locale = :locale')
             ->setParameter('website', $website->id)
             ->setParameter('locale', $locale)
-            ->addSelect('u', 'w', 'l', 'z', 'c', 'b', 'bt', 'ba', 'bi', 'bai', 'bmr', 'bfc', 'pi')
-            ->addSelect('bmrm', 'bmri', 'bmrmt', 'bmrmi', 'pmr', 'pmrm', 'pmri', 'pmrmt', 'pmrmi');
+            ->addSelect('u', 'w', 'l', 'z', 'c', 'b', 'bt', 'ba', 'bmr', 'bfc')
+            ->addSelect('bmrm', 'bmri', 'bmrmt', 'bmrmi');
 
         if (!$preview) {
             $qb->andWhere('p.publicationStart IS NULL OR p.publicationStart < CURRENT_TIMESTAMP()')
