@@ -42,7 +42,16 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: Build assets
-        run: yarn build
+        run: |
+          set +e
+          yarn build 2>&1 | tee build-output.log
+          code=${PIPESTATUS[0]}
+          if [ "$code" != "0" ]; then
+            echo "==================== BUILD ERRORS (détail) ===================="
+            grep -nE "ERROR in|Module not found|Can't resolve|SassError|Error:|throw|Unexpected" -A 25 build-output.log | grep -vE "webpack\.Progress" | head -200
+            echo "==============================================================="
+          fi
+          exit $code
 
       - name: Configure SSH
         run: |
