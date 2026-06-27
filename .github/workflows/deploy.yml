@@ -13,7 +13,7 @@ jobs:
   deploy:
     name: Build and deploy
     runs-on: ubuntu-latest
-    environment: ${{ github.ref_name == 'main' && 'prod' || 'preprod' }}
+    environment: prod
     env:
       SYMFONY_ENV: ${{ vars.SYMFONY_ENV || 'prod' }}
       DEPLOY_PATH: ${{ vars.OVH_DEPLOY_PATH || '.' }}
@@ -66,7 +66,7 @@ jobs:
             [ -z "${!v}" ] && missing="$missing $v"
           done
           if [ -n "$missing" ]; then
-            echo "::error::Secret(s) manquant(s) dans l'environnement '${{ github.ref_name == 'main' && 'prod' || 'preprod' }}' :$missing"
+            echo "::error::Secret(s) manquant(s) dans l'environnement 'prod' :$missing"
             echo "Définir ces secrets dans Settings > Environments > l'environnement correspondant à la branche poussée."
             exit 1
           fi
