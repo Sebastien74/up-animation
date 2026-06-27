@@ -83,10 +83,22 @@ jobs:
             --exclude='.github/' \
             --exclude='node_modules/' \
             --exclude='tests/' \
+            --exclude='.env' \
             --exclude='.env.local' \
             --exclude='.env.*.local' \
+            --exclude='.env.preprod' \
+            --exclude='.env.prod' \
+            --exclude='.env.dev' \
+            --exclude='.env.test' \
             --exclude='var/' \
             --exclude='public/medias/' \
+            --exclude='public/uploads/' \
+            --exclude='public/thumbnails/' \
+            --exclude='public/geo-json/' \
+            --exclude='public/feed/' \
+            --exclude='public/compressor/' \
+            --exclude='public/log/' \
+            --exclude='public/manifest.*' \
             ./ "${{ secrets.OVH_SSH_USER }}@${{ secrets.OVH_SSH_HOST }}:$DEPLOY_PATH/"
 
       # OVH mutualisé (cluster homez) n'expose pas PHP 8.5 en CLI : le web tourne en
