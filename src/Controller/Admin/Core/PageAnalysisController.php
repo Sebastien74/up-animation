@@ -76,12 +76,14 @@ class PageAnalysisController extends AdminController
                 $records = $em->createQuery(
                     sprintf(
                         'SELECT e.adminName AS title, u.code AS code, u.locale AS locale, u.id AS urlId%s '
-                        .'FROM %s e JOIN e.urls u WHERE e.website = :website AND u.online = true ORDER BY e.id DESC',
+                        .'FROM %s e JOIN e.urls u WHERE e.website = :website AND u.online = true '
+                        .'AND (u.code IS NULL OR u.code != :excludedCode) ORDER BY e.id DESC',
                         $indexSelect,
                         $class,
                     )
                 )
                     ->setParameter('website', $website)
+                    ->setParameter('excludedCode', 'error')
                     ->setMaxResults(self::MAX_PER_INTERFACE)
                     ->getArrayResult();
             } catch (\Throwable) {
@@ -117,7 +119,11 @@ class PageAnalysisController extends AdminController
                         'website' => $website->getId(),
                         'url' => $urlId,
                     ]),
-                    'previewUrl' => $this->previewUrlForId($name, $website, $urlId),
+                    'frontUrl' => $router->generate('admin_page_analysis_front', [
+                        'website' => $website->getId(),
+                        'url' => $urlId,
+                        'interface' => $name,
+                    ]),
                 ];
             }
         }
@@ -189,6 +195,17 @@ class PageAnalysisController extends AdminController
             'previewUrl' => $this->previewUrlFor($interface, $website, $url),
             'crawlUrl' => $this->crawlUrl($urlResolver, $website, $url, $interface),
         ]));
+    }
+
+    #[Route('/front/{url}', name: 'admin_page_analysis_front', methods: 'GET')]
+    public function front(Request $request, Website $website, Url $url, PublicPageUrlResolver $urlResolver): Response
+    {
+        $target = $this->crawlUrl($urlResolver, $website, $url, (string) $request->query->get('interface', 'page'));
+        if (null === $target) {
+            throw $this->createNotFoundException('Aucune URL publique pour cette page.');
+        }
+
+        return $this->redirect($target);
     }
 
     /**

@@ -35,7 +35,7 @@
 
         <div class="perf-inspector-head pa-head mb-4">
             <div class="pa-head-text">
-                <h1 class="perf-inspector-title mt-3">{{ "Analyse des pages"|trans|raw }}</h1>
+                <h1 class="perf-inspector-title mt-3">{{ "Analyse des pages"|trans|raw }} <span class="badge bg-secondary pa-page-count">{{ psiTotal }}</span></h1>
                 <p class="perf-inspector-desc">
                     {{ "Scores Google PageSpeed Insights (Lighthouse) des pages, actualités et produits en ligne."|trans|raw }}
                 </p>
@@ -144,7 +144,7 @@
                                 <td class="align-middle px-4" data-label="{{ "Page"|trans|striptags }}" data-sort="{{ row.title|lower }}">
                                     <span class="pa-page-cell">
                                         <a href="{{ row.detailUrl }}" class="pa-page-title">{{ row.title }}</a>
-                                        <a href="{{ row.previewUrl }}" target="_blank" rel="noopener" class="pa-page-url">{{ row.home ? '/' : '/' ~ row.code }}</a>
+                                        <a href="{{ row.frontUrl }}" target="_blank" rel="noopener" class="pa-page-url">{{ row.home ? '/' : '/' ~ row.code }}</a>
                                     </span>
                                 </td>
                                 <td class="align-middle text-center px-4" data-label="{{ "Langue"|trans|striptags }}" data-sort="{{ localeCode }}">
