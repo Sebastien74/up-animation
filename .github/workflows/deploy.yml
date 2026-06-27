@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: prod
     env:
-      SYMFONY_ENV: ${{ vars.SYMFONY_ENV || 'prod' }}
+      SYMFONY_ENV: ${{ vars.SYMFONY_ENV || 'preprod' }}
       DEPLOY_PATH: ${{ vars.OVH_DEPLOY_PATH || '.' }}
 
     steps:
@@ -45,11 +45,11 @@ jobs:
       - name: Build assets
         run: |
           set +e
-          yarn build 2>&1 | tee build-output.log
+          yarn build 2>&1 | tee /tmp/build-output.log
           code=${PIPESTATUS[0]}
           if [ "$code" != "0" ]; then
             echo "==================== BUILD ERRORS (détail) ===================="
-            grep -nE "ERROR in|Module not found|Can't resolve|SassError|Error:|throw|Unexpected" -A 25 build-output.log | grep -vE "webpack\.Progress" | head -200
+            grep -nE "ERROR in|Module not found|Can't resolve|SassError|Error:|throw|Unexpected" -A 25 /tmp/build-output.log | grep -vE "webpack\.Progress" | head -200
             echo "==============================================================="
           fi
           exit $code
@@ -106,29 +106,34 @@ jobs:
       # 8.5 mais le `php` SSH est une vieille version. On ne lance donc aucune commande
       # `php` sur le serveur. On vide le cache prod (shell pur) ; Symfony le reconstruit
       # au premier accès web (PHP 8.5), pré-réchauffé par l'étape suivante.
-      - name: Post-deploy (vidage cache prod, sans PHP CLI sur l'hôte)
+      - name: Post-deploy (vidage cache, sans PHP CLI sur l'hôte)
         run: |
           ssh -i ~/.ssh/id_deploy -p "${{ secrets.OVH_SSH_PORT }}" \
             "${{ secrets.OVH_SSH_USER }}@${{ secrets.OVH_SSH_HOST }}" \
-            "cd '$DEPLOY_PATH' && rm -rf var/cache/$SYMFONY_ENV && echo 'prod cache cleared'"
+            "cd '$DEPLOY_PATH' && rm -rf var/cache/$SYMFONY_ENV && echo \"cache $SYMFONY_ENV cleared\""
 
-      # Pre-warm the home so the first real visitor never hits a cold FPM pool or
-      # ungenerated Liip thumbnails (avoids a transient CLS on the carousel image).
-      # Requires the environment variable SITE_URL (e.g. https://www.up-animation.fr).
+      # Pre-warm the home so the first real visitor never hits a cold cache rebuild
+      # (the post-deploy step cleared var/cache, so the next hit recompiles everything).
+      # The runner absorbs that cold rebuild here, not a real visitor.
       - name: Warm front (FPM + Liip thumbnails)
-        if: ${{ vars.SITE_URL != '' }}
         continue-on-error: true
+        env:
+          BASE: ${{ vars.SITE_URL || 'https://www.up.abcvd.com' }}
         run: |
-          BASE="${{ vars.SITE_URL }}"
           echo "Warming $BASE"
-          # Fresh render (cache-busting query) to obtain the current thumbnail URLs and wake FPM.
-          HTML=$(curl -s --max-time 90 "$BASE/?warm=$(date +%s)" || true)
-          # Pre-generate every referenced Liip thumbnail (carousel + above-the-fold images).
+          # Retry until 200: the first hit rebuilds the cache and may exceed Varnish timeout once.
+          for i in 1 2 3 4 5 6; do
+            code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 120 "$BASE/?warm=$i" || echo 000)
+            echo "warm try $i -> HTTP $code"
+            [ "$code" = "200" ] && break
+            sleep 4
+          done
+          # Pre-generate referenced Liip thumbnails (carousel + above-the-fold images).
+          HTML=$(curl -s --max-time 90 "$BASE/?warm=final" || true)
           printf '%s' "$HTML" | grep -oE '(https?://[^"]*)?/thumbnails/[^"]+\.(webp|jpe?g|png)' | sort -u | head -n 60 \
             | while read -r u; do
                 case "$u" in https://*) URL="$u";; *) URL="$BASE$u";; esac
                 curl -s -o /dev/null --max-time 30 "$URL" || true
               done
-          # Prime the canonical home (cached fragment) once thumbnails exist.
           curl -s -o /dev/null --max-time 90 "$BASE/" || true
           echo "Warm done"
