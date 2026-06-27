@@ -51,12 +51,15 @@ readonly class LocaleSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $session = $request->getSession();
-        $inAdmin = $this->coreLocator->inAdmin();
+        if (!$this->coreLocator->inAdmin()) {
+            $this->applyFrontLocale($request);
 
-        if (!$inAdmin) {
-            $this->applyFrontLocale($request, $session);
-        } elseif ($locale = $request->attributes->get('_locale')) {
+            return;
+        }
+
+        $session = $request->getSession();
+
+        if ($locale = $request->attributes->get('_locale')) {
             $session->set('_locale', $locale);
             $request->setLocale($locale);
         } else {
@@ -67,13 +70,12 @@ readonly class LocaleSubscriber implements EventSubscriberInterface
     /**
      * Apply locale for front requests.
      */
-    private function applyFrontLocale(object $request, object $session): void
+    private function applyFrontLocale(object $request): void
     {
         $website = $this->coreLocator->website();
 
         if (!$website) {
             $request->setLocale($this->defaultLocale);
-            $session->set('_locale', $this->defaultLocale);
             return;
         }
 
@@ -85,7 +87,6 @@ readonly class LocaleSubscriber implements EventSubscriberInterface
             ?? ($configuration instanceof ConfigurationModel ? $configuration->locale : $locale)
             ?? $this->defaultLocale;
 
-        $session->set('_locale', $locale);
         $request->setLocale($locale);
     }
 

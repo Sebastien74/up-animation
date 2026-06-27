@@ -41,7 +41,7 @@
     {%- set isUserFront = app.user|isUserFront -%}
     {%- set websiteAlertmessage = information.alerts is defined and information.alerts is not empty ? information.alerts : false -%}
     {%- set websiteAlertHideMode = infoIntl.linkBlank is defined ? infoIntl.linkBlank : true -%}
-    {%- set websiteAlertAlreadyShow = websiteAlertHideMode and app.session.get('front_website_alert_show') is defined and app.session.get('front_website_alert_show') -%}
+    {%- set websiteAlertAlreadyShow = websiteAlertHideMode and app.request.hasPreviousSession and app.session.get('front_website_alert_show') -%}
     {%- set websiteAlertIsActive = infoIntl.active is defined and infoIntl.active and websiteAlertmessage and not websiteAlertAlreadyShow -%}
     {%- set haveInternalError = granted('ROLE_INTERNAL') and app.request.session.get('config_error') -%}
     {%- set stickyColClass = entity.haveStickyCol is defined and entity.haveStickyCol ? ' body-sticky-col'
@@ -252,7 +252,7 @@
 
         <div id="content-page"{% if not configuration.fullWidth or pageBg or pageSlug %} class="{% if not configuration.fullWidth %}content-page-box{% endif %}{% if pageBg %} {{ pageBg }}{% endif %}{% if pageSlug %} {{ pageSlug }}{% endif %}" {% endif %}>
 
-            {%- if app.session.get('as_switch_user') -%}
+            {%- if app.request.hasPreviousSession and app.session.get('as_switch_user') -%}
                 {%- include 'core/switcher-modal.html.twig' with {website: website} only -%}
             {%- endif -%}
 
