@@ -12,7 +12,6 @@ use App\Model\Core\WebsiteModel;
 use App\Service\Interface\CoreLocatorInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
-use Symfony\Component\Stopwatch\Stopwatch;
 use Symfony\Component\WebLink\GenericLinkProvider;
 use Symfony\Component\WebLink\Link;
 
@@ -37,7 +36,6 @@ class ThumbService
     public function __construct(
         private readonly ImageThumbnailInterface $thumbnail,
         private readonly CoreLocatorInterface $coreLocator,
-        private readonly ?Stopwatch $stopwatch = null,
     ) {
     }
 
@@ -48,12 +46,7 @@ class ThumbService
      */
     public function preload(mixed $mediaModel, array $thumbConfiguration = []): array
     {
-        $sw = $this->stopwatch?->start('ThumbService::preload', 'thumb');
-        try {
-            return $this->doPreload($mediaModel, $thumbConfiguration);
-        } finally {
-            $sw?->stop();
-        }
+        return $this->doPreload($mediaModel, $thumbConfiguration);
     }
 
     private function doPreload(mixed $mediaModel, array $thumbConfiguration = []): array
@@ -110,12 +103,7 @@ class ThumbService
      */
     public function thumbConfiguration(WebsiteModel $website, string $classname, ?string $action = null, mixed $filter = null, ?string $type = null): array
     {
-        $sw = $this->stopwatch?->start('ThumbService::thumbConfiguration', 'thumb');
-        try {
-            return $this->doThumbConfiguration($website, $classname, $action, $filter, $type);
-        } finally {
-            $sw?->stop();
-        }
+        return $this->doThumbConfiguration($website, $classname, $action, $filter, $type);
     }
 
     private function doThumbConfiguration(WebsiteModel $website, string $classname, ?string $action = null, mixed $filter = null, ?string $type = null): array

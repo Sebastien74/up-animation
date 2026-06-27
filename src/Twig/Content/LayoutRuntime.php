@@ -22,7 +22,6 @@ use Exception;
 use Psr\Cache\InvalidArgumentException;
 use ReflectionException;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Stopwatch\Stopwatch;
 use Twig\Environment;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
@@ -54,7 +53,6 @@ class LayoutRuntime implements RuntimeExtensionInterface
         private readonly MediaRuntime $mediaRuntime,
         private readonly ThumbService $thumbService,
         private readonly bool $isDebug,
-        private readonly ?Stopwatch $stopwatch = null,
     ) {
         $this->screen = $browserRuntime->screen();
     }
@@ -170,7 +168,6 @@ class LayoutRuntime implements RuntimeExtensionInterface
 
         $thumbSlug = $block->isLarge() && 'title-header' === $slugBlock ? $slugBlock.'-large' : $slugBlock;
 
-        $swArgs = $this->stopwatch?->start('renderBlock.args.'.$blockTemplate, 'twig');
         $arguments = array_merge($options, (array) BlockModel::fromEntity($block, $this->coreLocator), [
             $options['interfaceName'] => !empty($options['entity']) ? EntityModel::fromEntity($options['entity'], $this->coreLocator, ['disabledMedias' => true, 'disabledLayout' => true])->response : null,
             'logos' => $website->configuration->logos,
@@ -187,14 +184,8 @@ class LayoutRuntime implements RuntimeExtensionInterface
             'asBlock' => true,
         ]);
         ksort($arguments);
-        $swArgs?->stop();
 
-        $swRender = $this->stopwatch?->start('renderBlock.twig.'.$blockTemplate, 'twig');
-        try {
-            return $this->templating->render($template, $arguments);
-        } finally {
-            $swRender?->stop();
-        }
+        return $this->templating->render($template, $arguments);
     }
 
     private function templateExists(string $template): bool
@@ -238,7 +229,6 @@ class LayoutRuntime implements RuntimeExtensionInterface
      */
     public function zoneClasses(mixed $zone, bool $defaultBg = true): string
     {
-        $sw = $this->stopwatch?->start('LayoutRuntime::zoneClasses', 'layout');
         $backgroundColor = $this->getValue($zone, 'backgroundColor');
         $zIndex = $this->getValue($zone, 'zIndex');
         $transition = $this->getValue($zone, 'transition');
@@ -278,8 +268,6 @@ class LayoutRuntime implements RuntimeExtensionInterface
 
         $this->zoneClasses = preg_replace('/\s+/', ' ', trim($class));
 
-        $sw?->stop();
-
         return $this->zoneClasses;
     }
 
@@ -288,7 +276,6 @@ class LayoutRuntime implements RuntimeExtensionInterface
      */
     public function colClasses(mixed $col, mixed $zone, ?string $grid = null): string
     {
-        $sw = $this->stopwatch?->start('LayoutRuntime::colClasses', 'layout');
         $backgroundColorFullHeight = $this->getValue($col, 'backgroundFullHeight');
         $backgroundColor = $backgroundColorFullHeight ? $this->getValue($col, 'backgroundColor') : null;
         $zIndex = $this->getValue($col, 'zIndex');
@@ -319,8 +306,6 @@ class LayoutRuntime implements RuntimeExtensionInterface
             $class .= str_contains($transitionSlug, '-parallax') ? ' '.$transitionSlug : '';
         }
 
-        $sw?->stop();
-
         return preg_replace('/\s+/', ' ', trim($class));
     }
 
@@ -329,7 +314,6 @@ class LayoutRuntime implements RuntimeExtensionInterface
      */
     public function blockClasses(mixed $block, mixed $col, ?string $colClasses = null): string
     {
-        $sw = $this->stopwatch?->start('LayoutRuntime::blockClasses', 'layout');
         $blockType = $this->getValue($block, 'blockType');
         $blockTypeSlug = $blockType ? $this->getValue($blockType, 'slug') : false;
         $transition = $this->getValue($block, 'transition');
@@ -376,8 +360,6 @@ class LayoutRuntime implements RuntimeExtensionInterface
                 $class .= ' pe-3';
             }
         }
-
-        $sw?->stop();
 
         return preg_replace('/\s+/', ' ', trim($class));
     }
@@ -513,7 +495,6 @@ class LayoutRuntime implements RuntimeExtensionInterface
      */
     public function mediasSizes(WebsiteModel $website, Layout\Zone $zone, string $locale): array
     {
-        $sw = $this->stopwatch?->start('LayoutRuntime::mediasSizes', 'layout');
         $isSet = false;
         $width = 0;
         $height = $initHeight = 100000000000;
@@ -554,8 +535,6 @@ class LayoutRuntime implements RuntimeExtensionInterface
                 }
             }
         }
-
-        $sw?->stop();
 
         return [
             'width' => null,
