@@ -167,20 +167,37 @@ class WebsiteRepository extends ServiceEntityRepository
         $website = $this->createQueryBuilder('w')
             ->leftJoin('w.configuration', 'c')
             ->leftJoin('w.seoConfiguration', 'sc')
-            ->leftJoin('c.modules', 'm')
-            ->leftJoin('c.transDomains', 'td')
             ->leftJoin('c.colors', 'co')
             ->andWhere('w.id = :id')
             ->setParameter('id', $id)
             ->addSelect('c')
             ->addSelect('sc')
-            ->addSelect('m')
-            ->addSelect('td')
             ->addSelect('co')
+            ->addOrderBy('co.id', 'ASC')
             ->getQuery()
             ->getOneOrNullResult();
 
-        return $website ? WebsiteModel::fromEntity($website, $this->coreLocator) : null;
+        if (!$website) {
+            return null;
+        }
+
+        // Populate the remaining to-many collections with one fetch-join per
+        // collection: joining modules alongside colors in the main query produces
+        // a cartesian product (modules x colors) that is expensive to hydrate on
+        // every admin request.
+        foreach (['modules', 'transDomains'] as $assoc) {
+            $this->createQueryBuilder('w')
+                ->leftJoin('w.configuration', 'c')
+                ->leftJoin('c.'.$assoc, 'x')
+                ->andWhere('w.id = :id')
+                ->setParameter('id', $id)
+                ->addSelect('c')
+                ->addSelect('x')
+                ->getQuery()
+                ->getResult();
+        }
+
+        return WebsiteModel::fromEntity($website, $this->coreLocator);
     }
 
     /**
