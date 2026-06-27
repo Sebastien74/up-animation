@@ -35,15 +35,20 @@ final class PublicPageUrlResolver
      */
     public function resolve(Website $website, Url $url, string $interface = 'page', ?object $entity = null, ?string $classname = null): ?string
     {
-        if ('page' !== $interface && null !== $entity && null !== $classname) {
+        // Cards (products, newscasts...) are only reachable through their module path; their
+        // canonical URL comes from SeoService (same source the sitemap uses). We never fall back
+        // to "domain/{code}" for them, which is a non-existent URL Google would fail to analyse.
+        if ('page' !== $interface) {
+            if (null === $entity || null === $classname) {
+                return null;
+            }
             try {
                 $card = $this->seoService->getAsCardUrl($url, $entity, $classname);
             } catch (\Throwable) {
                 $card = null;
             }
-            if (is_string($card) && '' !== $card) {
-                return $card;
-            }
+
+            return is_string($card) && '' !== $card ? $card : null;
         }
 
         // The home page (asIndex) is served at the domain root: drop its code.

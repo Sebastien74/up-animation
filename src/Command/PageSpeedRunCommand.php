@@ -43,7 +43,7 @@ final class PageSpeedRunCommand extends Command
 
     protected function configure(): void
     {
-        $this->addOption('limit', null, InputOption::VALUE_REQUIRED, 'How many queued measurements to process this run.', 1);
+        $this->addOption('max-seconds', null, InputOption::VALUE_REQUIRED, 'Soft wall-time budget per run (drains several jobs while the lock serialises across cron ticks).', 45);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -58,8 +58,13 @@ final class PageSpeedRunCommand extends Command
         }
 
         try {
+            $budget = max(1, (int) $input->getOption('max-seconds'));
+            $start = time();
             $processed = 0;
-            foreach ($this->queue->pending((int) $input->getOption('limit')) as $path => $job) {
+            foreach ($this->queue->pending(100) as $path => $job) {
+                if ($processed > 0 && (time() - $start) >= $budget) {
+                    break;
+                }
                 if (!$this->quota->canMeasure()) {
                     break;
                 }
