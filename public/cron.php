@@ -13,6 +13,9 @@ require dirname(__DIR__).'/vendor/autoload.php';
 
 (new Dotenv())->bootEnv(dirname(__DIR__).'/.env');
 
+// Long tasks (e.g. PageSpeed Google calls) must finish even if the cron pinger times out.
+ignore_user_abort(true);
+
 // External cron entry point. Runs scheduler:execute in-process (no shell_exec,
 // shared-hosting safe), independently of the traffic-triggered heartbeat.
 // Protected by a shared secret (?secret= or X-Cron-Secret header) or an IP allowlist.
@@ -37,11 +40,12 @@ $kernel = new Kernel((string) ($_SERVER['APP_ENV'] ?? 'prod'), (bool) ($_SERVER[
 $application = new Application($kernel);
 $application->setAutoExit(false);
 
-$input = new ArrayInput(['command' => 'scheduler:execute']);
 $output = new BufferedOutput();
 
 try {
-    $returnCode = $application->run($input, $output);
+    $returnCode = $application->run(new ArrayInput(['command' => 'scheduler:execute']), $output);
+    // Drain queued PageSpeed measurements here (cron context), never on a web request.
+    $application->run(new ArrayInput(['command' => 'app:pagespeed:run']), $output);
     echo json_encode(['result' => 'Cron executed.', 'code' => $returnCode]);
 } catch (\Throwable $exception) {
     // Detail goes to the log only; the protected response stays generic.

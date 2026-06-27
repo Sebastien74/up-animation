@@ -11,9 +11,9 @@ use App\Entity\Seo\Url;
 use App\Repository\Seo\PageSpeedSnapshotRepository;
 use App\Service\Admin\PageSpeedMarkdownFormatter;
 use App\Service\Seo\PageSpeed\PageSpeedClient;
+use App\Service\Seo\PageSpeed\PageSpeedQueue;
 use App\Service\Seo\PageSpeed\PublicPageUrlResolver;
 use App\Service\Seo\PageSpeed\QuotaGuard;
-use Psr\Cache\CacheItemPoolInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -290,11 +290,8 @@ class PageAnalysisController extends AdminController
      * snapshot and return its headline scores as JSON. Slow by nature (real Lighthouse
      * runs at Google), so it is admin-triggered only, never on page load.
      */
-    public const string PSI_LOCK_KEY = 'psi_running_lock';
-    private const int PSI_LOCK_TTL = 120;
-
     #[Route('/psi/{url}', name: 'admin_page_analysis_psi', methods: 'POST')]
-    public function pageSpeed(Request $request, Website $website, Url $url, PageSpeedClient $client, PublicPageUrlResolver $urlResolver, QuotaGuard $quota, CacheItemPoolInterface $cache): JsonResponse
+    public function pageSpeed(Request $request, Website $website, Url $url, PageSpeedClient $client, PublicPageUrlResolver $urlResolver, QuotaGuard $quota, PageSpeedQueue $queue): JsonResponse
     {
         if (!$client->isEnabled()) {
             return new JsonResponse(['ok' => false, 'error' => 'PageSpeed Insights n\'est pas configuré.']);
@@ -314,20 +311,10 @@ class PageAnalysisController extends AdminController
             return new JsonResponse(['ok' => false, 'error' => 'Aucun domaine public pour cette page.']);
         }
 
-        // A measurement runs 6 Google API calls (up to 70 s each): far longer than the
-        // Varnish backend timeout, so running it inline would 503. Instead the request
-        // returns immediately and the measurement runs on kernel.terminate, after the
-        // response is flushed. A single-slot lock serialises runs so triggering several
-        // pages at once cannot pile up and exhaust the PHP worker pool.
-        $lock = $cache->getItem(self::PSI_LOCK_KEY);
-        if ($lock->isHit()) {
-            return new JsonResponse(['ok' => false, 'running' => true, 'error' => 'Une analyse PageSpeed est déjà en cours, réessaie dans un instant.']);
-        }
-        $lock->set(time());
-        $lock->expiresAfter(self::PSI_LOCK_TTL);
-        $cache->save($lock);
-
-        $request->attributes->set('_psi_job', [
+        // A measurement runs several Google Lighthouse calls (tens of seconds): doing it in
+        // the web request would hold an FPM worker behind Varnish and 503 on shared hosting.
+        // Queue the job; the cron-run app:pagespeed:run command measures off the worker pool.
+        $queue->enqueue([
             'publicUrl' => $publicUrl,
             'locale' => $url->getLocale(),
             'websiteId' => $website->getId(),
