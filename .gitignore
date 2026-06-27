@@ -42,6 +42,7 @@ changes.rar
 /public/compressor/
 /public/bundles/*
 !public/bundles/tinymce
+!public/bundles/fosjsrouting
 /public/js/*
 !public/js/langs
 /public/medias/webp/*
