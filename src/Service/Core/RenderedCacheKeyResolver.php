@@ -36,6 +36,9 @@ final class RenderedCacheKeyResolver
             $keys[] = 'page-url-'.md5($page->getId().'_'.$locale);
             $keys[] = 'page_url_id_'.$url->getId().'_'.$locale;
             $keys[] = 'pages_index_url_'.md5($page->getId().'_'.$locale);
+            foreach (['page-bi-', 'page-bai-', 'page-pi-', 'page-pmr-'] as $prefix) {
+                $keys[] = $prefix.$page->getId().'-'.$locale;
+            }
             foreach ([0, 1] as $previewFlag) {
                 if ($page->isAsIndex()) {
                     $keys[] = 'page-stamp-'.$website->id.'-index-'.$locale.'-'.$previewFlag;
