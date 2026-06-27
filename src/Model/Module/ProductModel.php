@@ -408,8 +408,10 @@ final class ProductModel extends BaseModel
         $response = [];
         foreach ($jsonValues as $jsonValue) {
             $jsonValue = (object) $jsonValue;
-            $value = !empty(self::$cache['featuresValues'][$jsonValue->value]) ? self::$cache['featuresValues'][$jsonValue->value] : null;
-            $feature = !empty(self::$cache['features'][$jsonValue->feature]) ? self::$cache['features'][$jsonValue->feature] : null;
+            $valueKey = $jsonValue->value ?? '';
+            $featureKey = $jsonValue->feature ?? '';
+            $value = !empty(self::$cache['featuresValues'][$valueKey]) ? self::$cache['featuresValues'][$valueKey] : null;
+            $feature = !empty(self::$cache['features'][$featureKey]) ? self::$cache['features'][$featureKey] : null;
             if ($value) {
                 $value = (object) $value;
                 $response['byIds'][$value->value->id] = $value;
