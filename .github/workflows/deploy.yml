@@ -65,14 +65,15 @@ jobs:
             --exclude='public/medias/' \
             ./ "${{ secrets.OVH_SSH_USER }}@${{ secrets.OVH_SSH_HOST }}:${{ secrets.OVH_DEPLOY_PATH }}/"
 
-      - name: Post-deploy commands
+      # OVH mutualisé (cluster homez) n'expose pas PHP 8.5 en CLI : le web tourne en
+      # 8.5 mais le `php` SSH est une vieille version. On ne lance donc aucune commande
+      # `php` sur le serveur. On vide le cache prod (shell pur) ; Symfony le reconstruit
+      # au premier accès web (PHP 8.5), pré-réchauffé par l'étape suivante.
+      - name: Post-deploy (vidage cache prod, sans PHP CLI sur l'hôte)
         run: |
           ssh -i ~/.ssh/id_deploy -p "${{ secrets.OVH_SSH_PORT }}" \
             "${{ secrets.OVH_SSH_USER }}@${{ secrets.OVH_SSH_HOST }}" \
-            "cd ${{ secrets.OVH_DEPLOY_PATH }} && \
-             php bin/console cache:clear --env=$SYMFONY_ENV --no-debug && \
-             php bin/console assets:install public --env=$SYMFONY_ENV --no-debug && \
-             php bin/console fos:js-routing:dump --env=$SYMFONY_ENV"
+            "cd ${{ secrets.OVH_DEPLOY_PATH }} && rm -rf var/cache/$SYMFONY_ENV && echo 'prod cache cleared'"
 
       # Pre-warm the home so the first real visitor never hits a cold FPM pool or
       # ungenerated Liip thumbnails (avoids a transient CLS on the carousel image).
