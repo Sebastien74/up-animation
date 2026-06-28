@@ -17,6 +17,8 @@ use Twig\Extension\RuntimeExtensionInterface;
  */
 class ColorRuntime implements RuntimeExtensionInterface
 {
+    private array $colorsCache = [];
+
     /**
      * ColorRuntime constructor.
      */
@@ -52,10 +54,13 @@ class ColorRuntime implements RuntimeExtensionInterface
         $request = $this->coreLocator->request();
         $website = !$website ? $this->coreLocator->em()->getRepository(Website::class)->findOneByHost($request?->getHost()) : $website;
         $configurationId = $website->configuration->id;
-        $session = $request && $request->hasSession() ? $request->getSession() : null;
-        $colorsSession = $session && $session->get('website_colors_'.$configurationId) ? $session->get('website_colors_'.$configurationId) : [];
-        $colors = !$colorsSession && $configurationId ? $this->coreLocator->em()->getRepository(Color::class)->findByConfiguration($configurationId) : $colorsSession;
-        $session?->set('website_colors_'.$configurationId, $colors);
+        // Per-request memo (was cached in the session, which opened a session on every
+        // front page and blocked shared-cache caching). Colors are website-global data.
+        $colors = $this->colorsCache[$configurationId] ?? null;
+        if (null === $colors) {
+            $colors = $configurationId ? $this->coreLocator->em()->getRepository(Color::class)->findByConfiguration($configurationId) : [];
+            $this->colorsCache[$configurationId] = $colors;
+        }
 
         foreach ($colors as $color) {
             if ($color['category'] === $category && $color['slug'] === $slug) {
@@ -67,7 +72,7 @@ class ColorRuntime implements RuntimeExtensionInterface
         }
 
         if (!$refresh) {
-            $session?->remove('website_colors_'.$configurationId);
+            unset($this->colorsCache[$configurationId]);
             $this->color($category, $website, $slug, true);
         }
 

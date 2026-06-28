@@ -29,6 +29,7 @@ class ThumbService
 {
     private static array $preloadJsonRaw = [];
     private array $thumbConfigurationCache = [];
+    private array $thumbsActionsCache = [];
 
     /**
      * ThumbService constructor.
@@ -126,10 +127,10 @@ class ThumbService
             }
         }
 
-        $request = $this->coreLocator->request();
-        $session = $request && $request->hasSession() ? $request->getSession() : null;
-        $sessionKey = 'thumbs_actions_' . $website->uploadDirname;
-        $thumbs = $session ? $session->get($sessionKey, []) : [];
+        // Per-request memo of the website's thumb actions (was cached in the session, which
+        // opened a session on every page with images and blocked shared-cache caching).
+        $memoKey = $website->uploadDirname;
+        $thumbs = $bustCache ? [] : ($this->thumbsActionsCache[$memoKey] ?? []);
 
         if (!$thumbs || $bustCache) {
             $thumbs = [];
@@ -151,7 +152,7 @@ class ThumbService
                     array_unshift($thumbs[$thumbAction->getNamespace()], $thumbConfig);
                 }
             }
-            $session?->set($sessionKey, $thumbs);
+            $this->thumbsActionsCache[$memoKey] = $thumbs;
         }
 
         $configurations = [];
