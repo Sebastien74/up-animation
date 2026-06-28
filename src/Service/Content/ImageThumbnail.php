@@ -110,16 +110,9 @@ class ImageThumbnail implements ImageThumbnailInterface
             return $this->webpSupport = true;
         }
 
-        $session = $this->request?->hasSession() ? $this->request->getSession() : null;
-        if ($session?->has('WEBP_SUPPORT')) {
-            return $this->webpSupport = $session->get('WEBP_SUPPORT');
-        }
-
-        $this->webpSupport = !empty($_SERVER['HTTP_ACCEPT']) && str_contains($_SERVER['HTTP_ACCEPT'], 'image/webp');
-
-        $session?->set('WEBP_SUPPORT', $this->webpSupport);
-
-        return $this->webpSupport;
+        // Derived from the Accept header per request (was cached in the session, which
+        // opened a session on every page with images and blocked shared-cache caching).
+        return $this->webpSupport = !empty($_SERVER['HTTP_ACCEPT']) && str_contains($_SERVER['HTTP_ACCEPT'], 'image/webp');
     }
 
     private function isAvifSupported(): bool
@@ -132,18 +125,7 @@ class ImageThumbnail implements ImageThumbnailInterface
             return $this->avifSupport;
         }
 
-        $session = $this->request?->hasSession() ? $this->request->getSession() : null;
-        if ($session?->has('AVIF_SUPPORT')) {
-            return $this->avifSupport = $session->get('AVIF_SUPPORT');
-        }
-
-        $this->avifSupport = !empty($_SERVER['HTTP_ACCEPT']) && str_contains($_SERVER['HTTP_ACCEPT'], 'image/avif') && function_exists('imageavif');
-
-        if ($session) {
-            $session->set('AVIF_SUPPORT', $this->avifSupport);
-        }
-
-        return $this->avifSupport;
+        return $this->avifSupport = !empty($_SERVER['HTTP_ACCEPT']) && str_contains($_SERVER['HTTP_ACCEPT'], 'image/avif') && function_exists('imageavif');
     }
 
     /**
