@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\EventSubscriber;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
@@ -29,7 +30,22 @@ final class PublicCacheSubscriber implements EventSubscriberInterface
 
     public static function getSubscribedEvents(): array
     {
-        return [KernelEvents::RESPONSE => ['onResponse', -1024]];
+        return [
+            KernelEvents::REQUEST => ['onRequest', 4096],
+            KernelEvents::RESPONSE => ['onResponse', -1024],
+        ];
+    }
+
+    /**
+     * Disable PHP's session cache-limiter before any session starts, so session_start()
+     * never emits no-store/no-cache headers. Symfony controls Cache-Control itself.
+     */
+    public function onRequest(RequestEvent $event): void
+    {
+        if ($event->isMainRequest()) {
+            @ini_set('session.cache_limiter', '');
+            @session_cache_limiter('');
+        }
     }
 
     public function onResponse(ResponseEvent $event): void
