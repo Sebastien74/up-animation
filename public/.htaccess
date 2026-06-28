@@ -132,8 +132,10 @@ AddDefaultCharset UTF-8
         Header set Access-Control-Allow-Origin "*"
     </FilesMatch>
 
+	# Force no-store on dynamic responses, EXCEPT those the app explicitly marks public
+	# (anonymous pages via PublicCacheSubscriber) so the shared cache can store them.
 	<FilesMatch "\.(x?html?|php)$">
-	    Header set Cache-Control "no-cache, no-store, must-revalidate"
+	    Header set Cache-Control "no-cache, no-store, must-revalidate" "expr=%{resp:Cache-Control} !~ /public/"
 	</FilesMatch>
 
 	<FilesMatch "\.(json)$">
