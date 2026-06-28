@@ -59,12 +59,11 @@ final class PublicCacheSubscriber implements EventSubscriberInterface
             header_remove('Pragma');
         }
 
+        // Drop any existing Cache-Control (raw string with no-store survives the directive
+        // API) and rebuild a clean public one. Expires/Pragma removed too.
         $response->headers->remove('Expires');
         $response->headers->remove('Pragma');
-        $response->headers->removeCacheControlDirective('no-cache');
-        $response->headers->removeCacheControlDirective('no-store');
-        $response->setPublic();
-        $response->setMaxAge(0);
-        $response->setSharedMaxAge(self::SHARED_MAX_AGE);
+        $response->headers->remove('Cache-Control');
+        $response->headers->set('Cache-Control', 'public, s-maxage='.self::SHARED_MAX_AGE.', max-age=0');
     }
 }
