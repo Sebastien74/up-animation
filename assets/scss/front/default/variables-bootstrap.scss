@@ -185,24 +185,25 @@ $enable-reboot-progress:    true !default;
 
 // Font-sizes utility (.fs-1 à .fs-6) — désactiver tout ou par niveau
 $enable-fs-1: true !default;
-$enable-fs-2: true !default;
-$enable-fs-3: true !default;
-$enable-fs-4: true !default;
-$enable-fs-5: true !default;
+$enable-fs-2: false !default;
+$enable-fs-3: false !default;
+$enable-fs-4: false !default;
+$enable-fs-5: false !default;
 $enable-fs-6: true !default;
 
-// Border-widths utility (.border-1 à .border-5)
-$enable-border-width-1: true !default;
-$enable-border-width-2: true !default;
-$enable-border-width-3: true !default;
-$enable-border-width-4: true !default;
-$enable-border-width-5: true !default;
+// Border-widths utility (.border-1 à .border-5) — aucune référence front
+$enable-border-width-1: false !default;
+$enable-border-width-2: false !default;
+$enable-border-width-3: false !default;
+$enable-border-width-4: false !default;
+$enable-border-width-5: false !default;
 
 // Aspect-ratios utility (.ratio-1x1, .ratio-4x3, .ratio-16x9, .ratio-21x9)
-$enable-ratio-1x1:  true !default;
-$enable-ratio-4x3:  true !default;
+// Seul 16x9 est utilisé ; .ratio base et le 9x16 custom (bloc vidéo) sont indépendants
+$enable-ratio-1x1:  false !default;
+$enable-ratio-4x3:  false !default;
 $enable-ratio-16x9: true !default;
-$enable-ratio-21x9: true !default;
+$enable-ratio-21x9: false !default;
 
 $_aspect-ratios: ();
 @if $enable-ratio-1x1  { $_aspect-ratios: map-merge($_aspect-ratios, ("1x1":  100%)); }
@@ -214,12 +215,12 @@ $aspect-ratios: $_aspect-ratios !default;
 // Rounded utility — granularité par niveau (en plus du flag global $enable-rounded).
 // Chaque niveau correspond à un palier de border-radius Bootstrap.
 $enable-rounded-base:   true !default; // .rounded (sans suffixe)
-$enable-rounded-0:      true !default; // .rounded-0
-$enable-rounded-1:      true !default; // .rounded-1 (sm)
-$enable-rounded-2:      true !default; // .rounded-2 (base)
+$enable-rounded-0:      false !default; // .rounded-0
+$enable-rounded-1:      false !default; // .rounded-1 (sm)
+$enable-rounded-2:      false !default; // .rounded-2 (base)
 $enable-rounded-3:      true !default; // .rounded-3 (lg)
-$enable-rounded-4:      true !default; // .rounded-4 (xl)
-$enable-rounded-5:      true !default; // .rounded-5 (xxl)
+$enable-rounded-4:      false !default; // .rounded-4 (xl)
+$enable-rounded-5:      false !default; // .rounded-5 (xxl)
 $enable-rounded-circle: true !default; // .rounded-circle
 $enable-rounded-pill:   true !default; // .rounded-pill
 
@@ -506,7 +507,7 @@ $enable-badge: false !default;
 $enable-card: true !default;
 $enable-card-group: false !default;
 $enable-card-img: false !default;
-$enable-card-columns: true !default;
+$enable-card-columns: false !default;
 $enable-border: false !default;
 $enable-button: true !default;
 $enable-button-outline: true !default;
