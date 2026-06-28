@@ -12,7 +12,7 @@ const fs = require('fs');
 const path = require('path');
 const postcss = require('postcss');
 
-const DIR = path.join(__dirname, '..', 'public', 'build', 'front', 'default');
+const DIR = path.join(__dirname, '..', '..', '..', 'public', 'build', 'front', 'default');
 const MIN_DESKTOP = 992;
 const NAME_RE = /^front-default-(light|dark)(\.[0-9a-f]+)?\.css$/;
 
