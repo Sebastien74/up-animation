@@ -38,7 +38,7 @@
         "dev-server": "encore dev-server",
         "dev": "encore dev",
         "watch": "encore dev --watch",
-        "build": "encore production --progress",
+        "build": "encore production --progress && node scripts/split-mobile-css.js",
         "build:font-fallbacks": "node assets/js/vendor/font-metrics.js --target assets/lib/fonts/Hankengrotesk/Hankengrotesk-Regular.woff2 --fallback assets/lib/fonts/Arial/Arial.ttf --family font-fallback --out assets/font-fallbacks/generated.scss",
         "xss-check": "node tools/xss-check.mjs"
     },

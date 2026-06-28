@@ -144,8 +144,17 @@
         <link href="{{ asset('build/front/'~websiteTemplate~'/front-'~websiteTemplate~'-fonts.css', webpack) }}" rel="preload" as="style" class="preload-css" nonce="{{ csp_nonce() }}" onload="this.onload=null;this.rel='stylesheet'">
         <noscript><link rel="stylesheet" href="{{ asset('build/front/'~websiteTemplate~'/front-'~websiteTemplate~'-fonts.css', webpack) }}" nonce="{{ csp_nonce() }}"></noscript>
 
-        <!-- Framework stylesheets (loaded once, cached, applied for all viewports) -->
-        {{ encore_entry_link_tags('front-'~websiteTemplate~'-'~frontTheme, null, webpack, {nonce: csp_nonce()}) }}
+        <!-- Framework stylesheets: lighter base (mobile) blocks the first paint; the
+             desktop-only rules (min-width>=992px, split out at build into a -desktop file)
+             load via media="(min-width:992px)" so they never block the mobile first paint
+             and still apply on desktop (no FOUC, no jump). No SRI here: the build splits the
+             base file after hashing, so a stale integrity hash would block it. In dev (no
+             split) the base is the full bundle and the -desktop link 404s harmlessly. -->
+        {%- for cssFile in encore_entry_css_files('front-'~websiteTemplate~'-'~frontTheme, webpack) -%}
+            {%- set desktopFile = cssFile|replace({('front-'~websiteTemplate~'-'~frontTheme~'.'): ('front-'~websiteTemplate~'-'~frontTheme~'-desktop.')}) -%}
+            <link rel="stylesheet" href="{{ cssFile }}" data-turbo-track="reload" nonce="{{ csp_nonce() }}">
+            <link rel="stylesheet" href="{{ desktopFile }}" media="(min-width:992px)" data-turbo-track="reload" nonce="{{ csp_nonce() }}">
+        {%- endfor -%}
 
         <!-- Page-specific stylesheets (after framework so page rules win the cascade) -->
         {%- block stylesheets -%}{%- endblock -%}
