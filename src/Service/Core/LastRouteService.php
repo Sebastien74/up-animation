@@ -39,6 +39,13 @@ class LastRouteService
             $securityToken = $_ENV['SECURITY_TOKEN'] ?? '';
             $isAdminPath = $securityToken && str_contains($uri, '/admin-' . $securityToken);
 
+            // Anonymous front browsing must not open a session just to track navigation,
+            // or every front page becomes non-cacheable. Track only once a session exists
+            // (logged-in, post-form) or in the admin. Login redirects use Symfony's target path.
+            if (!$isAdminPath && !$request->hasPreviousSession()) {
+                return;
+            }
+
             if ($isAdminPath && str_contains($uri, 'index') && !$request->isMethod('POST')) {
                 $page = intval(($request->attributes->get('page') ?? $request->query->get('page')));
                 if ($session->get('last_route_back_page') !== $page) {

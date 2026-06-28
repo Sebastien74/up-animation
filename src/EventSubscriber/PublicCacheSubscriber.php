@@ -32,19 +32,8 @@ final class PublicCacheSubscriber implements EventSubscriberInterface
     {
         return [
             KernelEvents::REQUEST => ['onRequest', 4096],
-            KernelEvents::RESPONSE => [['onResponse', -1024], ['debugSession', 1000]],
+            KernelEvents::RESPONSE => ['onResponse', -1024],
         ];
-    }
-
-    public function debugSession(ResponseEvent $event): void
-    {
-        if (!$event->isMainRequest()) {
-            return;
-        }
-        $request = $event->getRequest();
-        $started = $request->hasSession() && $request->getSession()->isStarted();
-        $keys = $started ? implode(',', array_keys($request->getSession()->all())) : '';
-        $event->getResponse()->headers->set('X-Dbg-Sess', $started ? 'started['.$keys.']' : 'no');
     }
 
     /**
