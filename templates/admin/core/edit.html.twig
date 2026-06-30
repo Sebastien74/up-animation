@@ -28,6 +28,7 @@
     {%- include 'admin/core/form/edit-form-base.html.twig' -%}
     {%- if granted('ROLE_LAYOUT_'~interface.name|upper) -%}
         <div id="layout-grid" class="mb-4">
+            {%- set layout = entity.layout is defined and entity.layout ? entity.layout : (layout is defined ? layout : null) -%}
             {%- include 'admin/core/layout/cache-invalidate-button.html.twig' -%}
             {%- include 'admin/core/layout/zones.html.twig' -%}
         </div>
