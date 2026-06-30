@@ -12,7 +12,6 @@
                 novalidate: "novalidate",
                 'data-modal': "#"~modalId
             }}) }}
-            {%- include 'front/'~websiteTemplate~'/include/recaptcha-fields.html.twig' with {entity: campaign} -%}
             <div class="container">
                 <div class="row align-items-lg-center m-0">
                     <div class="col-12 col-lg-6 col-xl-5 pe-lg-5 text-center text-lg-start mb-4 mb-lg-0">
@@ -29,6 +28,7 @@
                     </div>
                     <div class="refer-group col-12 col-lg-6 col-xl-7">
                         <div id="newsletter-fields{{ idSuffix }}" class="newsletter-fields">
+                            {%- include 'front/'~websiteTemplate~'/include/recaptcha-fields.html.twig' with {entity: campaign} -%}
                             <div class="newsletter-input flex-grow-1">{{ form_widget(form.email, {id: 'front_newsletter_email'~idSuffix}) }}</div>
                             <div class="btn-container">
                                 <button aria-label="{{"Je m'inscris"|trans|raw }}" class="newsletter-submit newsletter-track btn btn-secondary w-100 fw-900 text-uppercase">
@@ -41,6 +41,7 @@
                             </div>
                         </div>
                         {{ form_errors(form.email) }}
+                        <div class="newsletter-consent mt-2">{{ form_row(form.consent) }}</div>
                         {%- for type, flashes in app.session.flashbag.all -%}
                             {%- for flash in flashes -%}
                                 <span class="{% if 'error' in type %}invalid{% else %}valid{% endif %}-feedback d-block mt-2">

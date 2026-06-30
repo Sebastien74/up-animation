@@ -16,6 +16,11 @@ $placeholder-color-news: $placeholder-color;
 
 ------------------------------------------------------------------ */
 
+html body form .form-field-none {
+    position: absolute;
+    left: -1000%;
+}
+
 .newsletter-form-container {
 
     .newsletter-eyebrow {
@@ -207,6 +212,32 @@ $placeholder-color-news: $placeholder-color;
         &:hover *, &:active *, &:focus * {
             color: $white !important;
             fill: $white !important;
+        }
+
+        &:focus .spinner-border,
+        &:focus-visible .spinner-border {
+            color: $secondary !important;
+        }
+    }
+
+    .newsletter-consent {
+
+        .form-check {
+            display: flex;
+            align-items: flex-start;
+            gap: .5rem;
+            padding-left: 0;
+            margin: 0;
+        }
+
+        .form-check-input {
+            margin-top: rem(2px) !important;
+        }
+
+        .form-check-label {
+            font-size: rem(13px);
+            line-height: 1.4;
+            color: $white !important;
         }
     }
 }

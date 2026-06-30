@@ -60,6 +60,17 @@ class FrontType extends AbstractType
             ],
             'constraints' => $constraints,
         ]);
+
+        $builder->add('consent', Type\CheckboxType::class, [
+            'label' => $this->translator->trans('J’accepte que mes données soient utilisées pour me recontacter dans le cadre de cette demande.', [], 'front_form'),
+            'mapped' => false,
+            'display' => 'custom',
+            'row_attr' => ['class' => 'col-12 newsletter-consent-group'],
+            'label_attr' => ['class' => 'small'],
+            'constraints' => [
+                new Assert\IsTrue(message: $this->translator->trans('Vous devez accepter l’utilisation de vos données.', [], 'front_form')),
+            ],
+        ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
