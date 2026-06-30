@@ -214,7 +214,10 @@ html body form .form-field-none {
             border-color: $secondary !important;
         }
 
-        &:hover *, &:active *, &:focus * {
+        &.btn .newsletter-submit-label,
+        &.btn .newsletter-submit-icon,
+        &.btn .spinner-border,
+        &.btn svg {
             color: $white !important;
             fill: $white !important;
         }
