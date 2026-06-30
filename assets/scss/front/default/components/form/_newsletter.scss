@@ -209,14 +209,14 @@ html body form .form-field-none {
             }
         }
 
+        &:hover, &:focus, &:focus-visible, &:active {
+            background-color: $secondary !important;
+            border-color: $secondary !important;
+        }
+
         &:hover *, &:active *, &:focus * {
             color: $white !important;
             fill: $white !important;
-        }
-
-        &:focus .spinner-border,
-        &:focus-visible .spinner-border {
-            color: $secondary !important;
         }
     }
 
