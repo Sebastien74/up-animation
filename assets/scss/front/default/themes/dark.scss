@@ -21,27 +21,27 @@
 -----------------------------------*/
 
 $enable-card: true;
-$enable-form: true;
+$enable-form: false;
 $enable-modal: true;
-$enable-button-close: true;
-$enable-thanks-modal: true;
-$enable-form-preloader: true;
-$enable-breadcrumb: true;
-$enable-title-header: true;
-$enable-pagination: true;
-$enable-faq: true;
-$enable-table: true;
-$enable-youtube: true;
-$enable-icon: true;
+$enable-button-close: false;
+$enable-thanks-modal: false;
+$enable-form-preloader: false;
+$enable-breadcrumb: false;
+$enable-title-header: false;
+$enable-pagination: false;
+$enable-faq: false;
+$enable-table: false;
+$enable-youtube: false;
+$enable-icon: false;
 $enable-tooltip: true;
-$enable-spinner: true;
-$enable-toast: true;
-$enable-progress: true;
-$enable-badge: true;
-$enable-alert: true;
-$enable-nav: true;
-$enable-code: true;
-$enable-gdpr-page: true;
+$enable-spinner: false;
+$enable-toast: false;
+$enable-progress: false;
+$enable-badge: false;
+$enable-alert: false;
+$enable-nav: false;
+$enable-code: false;
+$enable-gdpr-page: false;
 
 /*-----------------------------------
    3 ) Full framework
