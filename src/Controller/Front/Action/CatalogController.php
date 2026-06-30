@@ -305,7 +305,6 @@ class CatalogController extends ActionController
         $searchProducts = ($listing->isShowMap() && $this->coreLocator->request()->query->get('ajax')) || !$listing->isShowMap();
         $searchService = $this->frontLocator->catalogSearch();
 
-        $productIdsDisplay = [];
         $products = [];
         if ($searchProducts && !empty($data['text']) && !$listing->isCombineFieldsText()) {
             $products = $this->coreLocator->em()->getRepository(Catalog\Product::class)->findLikeInTitle($website->entity, $request->getLocale(), $data['text'], $listing);
@@ -313,9 +312,7 @@ class CatalogController extends ActionController
             $products = $searchService->execute($listing, $data)['searchResults'];
             $listing->setCounter(true);
         } elseif ($searchProducts) {
-            $results = $searchService->execute($listing);
-            $products = $results['initialResults'];
-            $productIdsDisplay = $results['productIdsDisplay'];
+            $products = $searchService->execute($listing)['initialResults'];
         }
 
         $listingService = $this->coreLocator->listingService();
@@ -329,10 +326,11 @@ class CatalogController extends ActionController
 
         $items = [];
         if ($listing->isGroupByCategories()) {
+            $renderedIds = array_map(static fn ($p) => $p->getId(), is_array($products) ? $products : iterator_to_array($products));
             foreach ($products as $product) {
                 $productModel = $this->arguments['microdataEntities'][] = ProductModel::fromEntity($product, $this->coreLocator, [
                     'urlsIndex' => $this->arguments['urlsIndex'],
-                    'entitiesIds' => $productIdsDisplay,
+                    'entitiesIds' => $renderedIds,
                     'disabledProducts' => true,
                 ]);
                 foreach ($product->getCategories() as $category) {
@@ -347,10 +345,12 @@ class CatalogController extends ActionController
                 }
             }
         } else {
-            foreach ($this->arguments['products']->getItems() as $item) {
+            $pageItems = $this->arguments['products']->getItems();
+            $renderedIds = array_map(static fn ($p) => $p->getId(), $pageItems);
+            foreach ($pageItems as $item) {
                 $items[] = $this->arguments['microdataEntities'][] = ProductModel::fromEntity($item, $this->coreLocator, [
                     'urlsIndex' => $this->arguments['urlsIndex'],
-                    'entitiesIds' => $productIdsDisplay,
+                    'entitiesIds' => $renderedIds,
                     'disabledProducts' => true,
                 ]);
             }

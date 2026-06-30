@@ -245,6 +245,11 @@ final class MediasModel extends BaseModel
         }
         $medias = !empty(self::$cache['medias'][get_class($entity)][$entityId]) ? self::$cache['medias'][get_class($entity)][$entityId] : [];
 
+        // Entity outside the prefetch batch (e.g. paginated beyond itemsPerPage): query its medias directly.
+        if (empty($medias)) {
+            return self::fromEntity($entity, $coreLocator, self::$coreLocator->locale(), true, ['disableMediasLayout' => $disableMediasLayout]);
+        }
+
         return self::fromEntity($entity, $coreLocator, self::$coreLocator->locale(), false, ['medias' => $medias, 'disableMediasLayout' => $disableMediasLayout]);
     }
 
