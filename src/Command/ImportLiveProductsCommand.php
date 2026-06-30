@@ -46,6 +46,7 @@ final class ImportLiveProductsCommand extends Command
         $this->addOption('apply', null, InputOption::VALUE_NONE, 'Write to DB (default: dry-run)');
         $this->addOption('tmp', null, InputOption::VALUE_REQUIRED, 'Temp dir for image downloads', sys_get_temp_dir());
         $this->addOption('report', null, InputOption::VALUE_REQUIRED, 'Write a JSON report of created/filled ids to this path');
+        $this->addOption('catalog', null, InputOption::VALUE_REQUIRED, 'Catalog id for NEW products', (string) self::CATALOG_ID);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -64,7 +65,7 @@ final class ImportLiveProductsCommand extends Command
         }
 
         $website = $this->em->getRepository(Website::class)->find(self::WEBSITE_ID);
-        $catalog = $this->em->getRepository(Catalog::class)->find(self::CATALOG_ID);
+        $catalog = $this->em->getRepository(Catalog::class)->find((int) $input->getOption('catalog'));
         $io->title(($apply ? 'APPLY' : 'DRY-RUN').' import: '.count($targets).' targets');
 
         // 1) Ensure event-type categories exist

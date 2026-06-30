@@ -40,6 +40,7 @@ final class ImportRepairMediaCommand extends Command
     protected function configure(): void
     {
         $this->addOption('apply', null, InputOption::VALUE_NONE, 'Write to DB (default: dry-run)');
+        $this->addOption('catalog', null, InputOption::VALUE_REQUIRED, 'Catalog id to repair', (string) self::CATALOG_ID);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -55,7 +56,7 @@ final class ImportRepairMediaCommand extends Command
         $defaultLocale = $website->getConfiguration()->getLocale();
         $uploadBase = rtrim($this->coreLocator->uploadDir(), '/\\').'/'.$website->getUploadDirname();
 
-        $products = $this->em->getRepository(Product::class)->findBy(['catalog' => $this->em->getReference(\App\Entity\Module\Catalog\Catalog::class, self::CATALOG_ID)]);
+        $products = $this->em->getRepository(Product::class)->findBy(['catalog' => $this->em->getReference(\App\Entity\Module\Catalog\Catalog::class, (int) $input->getOption('catalog'))]);
         $io->title(($apply ? 'APPLY' : 'DRY-RUN').' repair media | locales: '.implode(',', $locales));
 
         $stats = ['media' => 0, 'mediaIntl' => 0, 'relIntl' => 0, 'localeRel' => 0, 'sized' => 0];
