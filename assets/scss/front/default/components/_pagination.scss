@@ -30,9 +30,14 @@
 
         .pagination {
 
+            display: flex;
+            list-style: none;
+            padding-left: 0;
+
             li {
 
                 padding-left: 0 !important;
+                display: flex;
 
                 &:before {
                     display: none;

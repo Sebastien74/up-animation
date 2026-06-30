@@ -10,8 +10,8 @@
     ================
 
     1 ) Modules
-    3 ) Core import
-    4 ) Core
+    2 ) Core import
+    3 ) Core
 
 ------------------------------------------------------------------ */
 
@@ -19,11 +19,18 @@
    1 ) Modules
 --------------------------------------*/
 
+$enable-title-header: true;
+$enable-breadcrumb: true;
+$enable-pagination: true;
 
 /*-----------------------------------
    2 ) Core import
 -----------------------------------*/
 
+@import "../components/information";
+@import "../layout/breadcrumb";
+@import "../components/blocks/title-header";
+@import "../components/pagination";
 
 /*-----------------------------------
    3 ) Core

@@ -19,10 +19,18 @@
    1 ) Modules
 --------------------------------------*/
 
+$enable-title-header: true;
+$enable-breadcrumb: true;
+$enable-pagination: true;
 
 /*-----------------------------------
    2 ) Core import
 -----------------------------------*/
+
+@import "../components/information";
+@import "../layout/breadcrumb";
+@import "../components/blocks/title-header";
+@import "../components/pagination";
 
 
 /*-----------------------------------
