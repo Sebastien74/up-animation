@@ -102,11 +102,17 @@ body {
     z-index: 10;
 
     &.generating, &.generating .inner {
+
         width: 100% !important;
         height: 100% !important;
         background-size: cover !important;
         background-position: center !important;
         display: inline-block !important;
+
+        .img-loader {
+            max-width: initial !important;
+            max-height: initial !important;
+        }
     }
 
     .spinner-wrap {
