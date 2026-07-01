@@ -1,11 +1,11 @@
 {%- trans_default_domain 'front_default' -%}
 
-{%- set mode = information.newTab is defined and information.newTab ? 'remove' : 'hide' -%}
+{%- set mode = 'hide' -%} {# 'remove' or 'hide' #}
 {%- set remove = mode == 'remove' -%}
 {%- set postion = 'top' -%} {# 'top' or 'bottom' #}
 {%- set type = information.alertType ? information.alertType : 'marquee' -%} {# 'basic', 'marquee' or 'flip' #}
 {%- set speed = information.alertDuration ? information.alertDuration * 1000 : 25000 -%}
-{%- set hide = app.session.get('front_website_alert_'~mode) -%}
+{%- set hide = remove and app.request.cookies.get('front_website_alert_remove') == '1' -%}
 {%- set asMarquee = 'marquee' == type and websiteAlertmessage|length > 1 -%}
 {%- set asflip = 'flip' == type -%}
 {%- set bg = 'bg-primary' -%}
@@ -16,6 +16,7 @@
 {%- if not hide -%}
     <div id="website-alert" class="{{ classes }}"
          data-type="{{ type }}"
+         data-mode="{{ mode }}"
          data-position="{{ postion }}"
          data-gap="0"
          data-duplicate="2"

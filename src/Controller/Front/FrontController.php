@@ -33,6 +33,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -209,15 +210,29 @@ class FrontController extends CacheController
     }
 
     /**
-     * To set website alert user session.
+     * To set website alert dismissal cookie.
+     *
+     * Le rejet est stocké dans un cookie de session (sans date d'expiration) :
+     * il est supprimé à la fermeture du navigateur, ce qui fait réapparaître le
+     * bandeau à chaque nouvelle session de navigation.
      */
     #[Route('/front/website-alert/{mode}', name: 'website_alert', options: ['expose' => true, 'isMainRequest' => false], methods: 'GET', schemes: '%protocol%')]
     public function websiteAlert(Request $request, string $mode): JsonResponse
     {
         $hide = 'show' === $request->query->get('currentStatus');
-        $request->getSession()->set('front_website_alert_'.$mode, $hide);
 
-        return new JsonResponse(['success' => true, 'hide' => $hide], 200);
+        $response = new JsonResponse(['success' => true, 'hide' => $hide], 200);
+        $response->headers->setCookie(
+            Cookie::create('front_website_alert_'.$mode)
+                ->withValue($hide ? '1' : '0')
+                ->withExpires(0) // Cookie de session : supprimé à la fermeture du navigateur.
+                ->withPath('/')
+                ->withSecure($request->isSecure())
+                ->withHttpOnly(true)
+                ->withSameSite(Cookie::SAMESITE_LAX)
+        );
+
+        return $response;
     }
 
     /**

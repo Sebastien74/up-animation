@@ -356,7 +356,9 @@ final class InformationModel extends BaseModel
     private static function alerts(IntlModel $intl): array
     {
         $request = self::$coreLocator->request();
-        $hideAlerts = $request && $request->hasSession() && true === $request->getSession()->get('front_website_alert_hide');
+        // Seul le mode 'remove' masque l'alerte côté serveur (cookie persistant).
+        // Le mode 'hide' est géré côté client (sessionStorage), donc jamais gaté ici.
+        $hideAlerts = $request && '1' === $request->cookies->get('front_website_alert_remove');
         $message = !$hideAlerts ? self::getContent('placeholder', $intl, true) : [];
         $alerts = [];
 

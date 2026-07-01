@@ -16,6 +16,17 @@ export default function () {
 
     const navigation = document.getElementById('menu-container-main');
     const type = boxAlert ? boxAlert.dataset.type : false;
+    const mode = boxAlert.dataset.mode; // 'hide' ou 'remove'
+    const sessionKey = 'front_website_alert_hide';
+
+    // Mode 'hide' : le rejet est mémorisé côté client pour la session de
+    // navigation courante via sessionStorage. Contrairement aux cookies de
+    // session (restaurés par les navigateurs à la réouverture), sessionStorage
+    // repart vide à chaque nouvelle visite : l'alerte se réaffiche donc bien.
+    if ('hide' === mode && '1' === sessionStorage.getItem(sessionKey)) {
+        boxAlert.remove();
+        return;
+    }
 
     boxAlert.classList.remove('d-none');
 
@@ -85,49 +96,56 @@ export default function () {
 
         if (closeAlert) {
 
-            closeAlert.addEventListener('click', () => {
-                let isActive = !boxAlert.classList.contains('disabled');
-                let currentStatus = isActive ? 'show' : 'hide';
-                let oReq = new XMLHttpRequest();
-                oReq.onload = reqListener;
-                oReq.open("get", closeAlert.dataset.path + '?currentStatus=' + currentStatus, true);
-                oReq.send();
-            })
-
-            function reqListener() {
-                let response = JSON.parse(this.responseText);
-                if (response.success) {
-                    const height = boxAlert.clientHeight + 'px';
-                    const navigationContainer = document.querySelector('#menu-container-main');
-                    let stickyNav = navigationContainer ? window.getComputedStyle(navigationContainer).position === 'sticky' : false;
-                    if (!stickyNav) {
-                        const navigation = document.querySelector('#main-navigation');
-                        stickyNav = navigation ? window.getComputedStyle(navigation).position === 'sticky' : false;
-                    }
-                    body.classList.add('remove-alert-' + position);
-                    body.classList.remove('alert-active');
-                    if ('top' === position && stickyNav) {
-                        body.style.marginTop = '-' + height;
-                        if (navigation) {
-                            navigation.style.transition = 'top .5s ease-in-out';
-                            navigation.style.top = '0px';
-                        }
-                    } else if ('top' === position) {
-                        boxAlert.style.marginTop = '-' + height;
-                        boxAlert.style.transition = 'margin-top .5s ease-in-out';
-                        if (navigation) {
-                            navigation.style.transition = 'top .5s ease-in-out';
-                            navigation.style.top = '0px';
-                        }
-                    } else if ('bottom' === position) {
-                        boxAlert.style.bottom = '-' + height;
-                        body.style.marginBottom = '0';
-                    }
-                    setTimeout(function () {
-                        boxAlert.remove();
-                    }, 1000);
+            const dismissAlert = function () {
+                const height = boxAlert.clientHeight + 'px';
+                const navigationContainer = document.querySelector('#menu-container-main');
+                let stickyNav = navigationContainer ? window.getComputedStyle(navigationContainer).position === 'sticky' : false;
+                if (!stickyNav) {
+                    const navigation = document.querySelector('#main-navigation');
+                    stickyNav = navigation ? window.getComputedStyle(navigation).position === 'sticky' : false;
                 }
-            }
+                body.classList.add('remove-alert-' + position);
+                body.classList.remove('alert-active');
+                if ('top' === position && stickyNav) {
+                    body.style.marginTop = '-' + height;
+                    if (navigation) {
+                        navigation.style.transition = 'top .5s ease-in-out';
+                        navigation.style.top = '0px';
+                    }
+                } else if ('top' === position) {
+                    boxAlert.style.marginTop = '-' + height;
+                    boxAlert.style.transition = 'margin-top .5s ease-in-out';
+                    if (navigation) {
+                        navigation.style.transition = 'top .5s ease-in-out';
+                        navigation.style.top = '0px';
+                    }
+                } else if ('bottom' === position) {
+                    boxAlert.style.bottom = '-' + height;
+                    body.style.marginBottom = '0';
+                }
+                setTimeout(function () {
+                    boxAlert.remove();
+                }, 1000);
+            };
+
+            closeAlert.addEventListener('click', () => {
+                if ('hide' === mode) {
+                    // Rejet valable pour la session de navigation courante uniquement.
+                    sessionStorage.setItem(sessionKey, '1');
+                    dismissAlert();
+                    return;
+                }
+                // Mode 'remove' : persistance côté serveur via cookie.
+                const oReq = new XMLHttpRequest();
+                oReq.onload = function () {
+                    const response = JSON.parse(this.responseText);
+                    if (response.success) {
+                        dismissAlert();
+                    }
+                };
+                oReq.open('get', closeAlert.dataset.path + '?currentStatus=show', true);
+                oReq.send();
+            });
         }
     }
 
