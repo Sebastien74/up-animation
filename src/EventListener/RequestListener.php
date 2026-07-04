@@ -206,7 +206,7 @@ class RequestListener
             $redirectUrl = $query ? $baseUrl . '?' . http_build_query($query) : $baseUrl;
 
             $response = new RedirectResponse($redirectUrl);
-            $response->headers->setCookie(Cookie::create('FRONT_THEME', $status, $expire, '/', null, false, true, false, 'lax'));
+            $response->headers->setCookie(Cookie::create('FRONT_THEME', $status, $expire, '/', null, true, true, false, 'lax'));
             $this->event->setResponse($response);
             return;
         }
@@ -274,7 +274,7 @@ class RequestListener
             $redirectUrl = $query ? $baseUrl . '?' . http_build_query($query) : $baseUrl;
 
             $response = new RedirectResponse($redirectUrl);
-            $response->headers->setCookie(new Cookie('ADMIN_THEME', $status, $expire, '/', null, false, true, false, 'lax'));
+            $response->headers->setCookie(new Cookie('ADMIN_THEME', $status, $expire, '/', null, true, true, false, 'lax'));
             $this->event->setResponse($response);
             return;
         }
