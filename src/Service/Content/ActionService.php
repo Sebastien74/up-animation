@@ -168,8 +168,16 @@ class ActionService
         }
 
         if (!$disabledRelation && method_exists($referEntity, 'getMediaRelations')) {
-            $qb->leftJoin('e.mediaRelations', 'mediaRelations')
-                ->addSelect('mediaRelations');
+            // Fetch-join the full media graph in one query. mediaRelations.media and
+            // mediaRelations.intl are EAGER (to-one) and media.thumbs/media.intls are EAGER
+            // (to-many): without joining them here, Doctrine loads each one with a separate
+            // SELECT per row while hydrating the listing (N+1). The remaining cartesian is
+            // bounded (media × thumbs × intls), the same shape ProductRepository::primeForRendering uses.
+            $qb->leftJoin('e.mediaRelations', 'mediaRelations')->addSelect('mediaRelations')
+                ->leftJoin('mediaRelations.intl', 'mediaRelationIntl')->addSelect('mediaRelationIntl')
+                ->leftJoin('mediaRelations.media', 'media')->addSelect('media')
+                ->leftJoin('media.thumbs', 'mediaThumbs')->addSelect('mediaThumbs')
+                ->leftJoin('media.intls', 'mediaIntls')->addSelect('mediaIntls');
         }
 
         if (method_exists($listing, 'isPromote') && $listing->isPromote()) {
