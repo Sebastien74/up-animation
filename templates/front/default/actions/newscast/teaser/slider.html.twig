@@ -202,7 +202,7 @@
                     {%- endfor -%}
                 </ul>
             </div>
-            {%- if teaser.progress and entities|length >= teaser.itemsPerSlide -%}
+            {%- if teaser.progress and entities|length >= teaser.itemsPerSlide and teaser.progress -%}
                 <div class="row m-0">
                     <div class="col-12 col-md-9">
                         <div class="slider-progress-container d-flex justify-content-start align-items-center w-100 mt-4 mt-md-5">

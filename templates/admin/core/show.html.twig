@@ -25,7 +25,7 @@
 {%- block body -%}
 
     {%- set fields = [] -%}
-    {%- set unsetElements = ['contactValues.label', 'contactValues.value', 'submissionPageUrl'] -%}
+    {%- set unsetElements = ['contactValues.label', 'contactValues.value', 'submissionPageUrl', 'referer'] -%}
     {%- set elementsToShow = interface.configuration.showView is defined ? interface.configuration.showView : null -%}
     {%- for element in elementsToShow -%}
         {%- if element not in unsetElements -%}
@@ -60,6 +60,14 @@
                             <td class="align-middle px-4">{{ 'Page de soumission'|trans|raw }}</td>
                             <td class="align-middle px-4">
                                 {%- include 'core/data-formater.html.twig' with {dataValue: entity.submissionPageUrl, property: 'submissionPageUrl', view: 'show'} only -%}
+                            </td>
+                        </tr>
+                    {%- endif -%}
+                    {%- if entity.referer is defined and entity.referer -%}
+                        <tr>
+                            <td class="align-middle px-4">{{ 'Referer'|trans|raw }}</td>
+                            <td class="align-middle px-4">
+                                {%- include 'core/data-formater.html.twig' with {dataValue: entity.referer, property: 'referer', view: 'show'} only -%}
                             </td>
                         </tr>
                     {%- endif -%}

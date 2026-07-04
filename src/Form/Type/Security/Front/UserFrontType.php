@@ -76,7 +76,7 @@ class UserFrontType extends AbstractType
             'row_attr' => ['class' => 'col-12 col-md-12 col-lg-6'],
             'constraints' => [
                 new Assert\NotBlank(message: $this->translator->trans('Veuillez saisir un email.', [], 'admin')),
-                new Assert\Email(),
+                new Assert\Email(mode: Assert\Email::VALIDATION_MODE_STRICT),
                 new UniqUserEmail(),
             ],
         ]);

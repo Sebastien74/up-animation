@@ -26,7 +26,7 @@ final class CaptchaService
         private readonly ClockInterface $clock,
         private readonly int $maxNumber = 120_000,
         private readonly int $expirySeconds = 600,
-        private readonly int $minSolveSeconds = 2,
+        private readonly int $minSolveSeconds = 3,
     ) {
     }
 

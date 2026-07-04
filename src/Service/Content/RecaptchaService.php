@@ -41,14 +41,15 @@ class RecaptchaService
      */
     public function execute(Website $website, mixed $entity, FormInterface $form, ?string $email = null): bool
     {
-        if (method_exists($entity, 'isRecaptcha') && !$entity->isRecaptcha()) {
-            return true;
-        }
-
         $request = $this->requestStack->getCurrentRequest();
 
+        /** Rate limit by IP: applies to all front form posts, even without captcha */
         if (!$this->withinRateLimit($request)) {
-            return $this->reject($request, $email, 'rate limited');
+            return $this->reject($request, $email, 'rate limited', $this->translator->trans('Trop de tentatives. Veuillez patienter quelques instants et réessayer.', [], 'front_form'));
+        }
+
+        if (method_exists($entity, 'isRecaptcha') && !$entity->isRecaptcha()) {
+            return true;
         }
 
         $fields = $request instanceof Request ? (array) $request->request->all($form->getName()) : [];
@@ -69,12 +70,12 @@ class RecaptchaService
         return $this->formSubmissionLimiter->create($clientIp)->consume()->isAccepted();
     }
 
-    private function reject(?Request $request, ?string $email, string $reason): bool
+    private function reject(?Request $request, ?string $email, string $reason, ?string $message = null): bool
     {
         if ($request?->hasSession()) {
             $request->getSession()->getFlashBag()->add(
                 'error_form',
-                $this->translator->trans('Erreur de sécurité !! Rechargez la page et réessayez.', [], 'front_form')
+                $message ?? $this->translator->trans('Erreur de sécurité !! Rechargez la page et réessayez.', [], 'front_form')
             );
         }
 

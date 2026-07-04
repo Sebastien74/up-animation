@@ -60,4 +60,13 @@
             }
         }
     }
+
+    // La .row parente est un flex-item d'une .layout-col en d-flex : sans largeur
+    // définie elle se dimensionne en shrink-to-fit, sa largeur suit alors le
+    // contenu et s'agrandit à l'ouverture d'un volet (min-content de la réponse
+    // plus large). On fige la largeur sur la colonne ; le centrage réduit reste
+    // assuré par le justify-content-lg-center de la .row elle-même.
+    .layout-col.d-flex > .row:has(.faq-container) {
+        width: 100%;
+    }
 }

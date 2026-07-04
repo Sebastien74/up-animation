@@ -180,6 +180,10 @@ export function tinymcePlugin() {
                 tinymce.init({
                     selector: '#' + editor.getAttribute('id'),
                     extended_valid_elements: 'script[src|async|defer|type|charset]',
+                    /** Encodage des caractères : accents en entités nommées, emojis (et autres
+                     *  caractères 4 octets) en entités numériques (&#128197;) pour rester
+                     *  compatibles avec des colonnes latin1 qui sinon les corrompent en « ? ». */
+                    entity_encoding: 'named+numeric',
                     menubar: false,
                     statusbar: false,
                     height: 400,
@@ -264,6 +268,21 @@ export function tinymcePlugin() {
                         tinymceEl.on('CloseWindow', closePopups);
                         tinymceEl.on('init', runAccessibility);        // déclenche à l’ouverture
                         tinymceEl.on('LoadContent', runAccessibility); // Bonus : appel initial après le rendu
+
+                        /**
+                         * Filet de sécurité encodage : à l'enregistrement, convertit tout
+                         * caractère hors latin1 (emojis astraux > U+FFFF, mais aussi guillemets
+                         * typographiques, tirets longs, etc.) en entité HTML numérique (&#128197;).
+                         * Sans ça, une colonne DB en latin1 les remplace par « ? » à l'insertion.
+                         * Complète entity_encoding qui laisse souvent les caractères astraux bruts.
+                         */
+                        const encodeNonLatin1 = (str) => str.replace(
+                            /[\uD800-\uDBFF][\uDC00-\uDFFF]|[Ā-퟿-￿]/g,
+                            (ch) => '&#' + ch.codePointAt(0) + ';'
+                        );
+                        tinymceEl.on('SaveContent', (e) => {
+                            e.content = encodeNonLatin1(e.content);
+                        });
 
                         /** https://www.tiny.cloud/docs/advanced/editor-icon-identifiers/ */
                         tinymceEl.ui.registry.addMenuButton('paragraph', {

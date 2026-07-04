@@ -144,6 +144,14 @@ class TeaserType extends AbstractType
                     'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
                 ]);
 
+                $builder->add('progress', Type\CheckboxType::class, [
+                    'required' => false,
+                    'display' => 'button',
+                    'color' => 'outline-info-darken',
+                    'label' => $this->translator->trans('Barre de progression', [], 'admin'),
+                    'attr' => ['group' => 'col-md-3', 'class' => 'w-100', 'data-config' => true],
+                ]);
+
                 $builder->add('promote', Type\CheckboxType::class, [
                     'required' => false,
                     'display' => 'button',

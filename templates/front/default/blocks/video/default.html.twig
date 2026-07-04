@@ -68,7 +68,7 @@
                     <video id="video-{{ block.id }}" data-elements-to-hide=""
                         {% if title %} aria-label="{{ title }}" {% endif %}
                            class="html-video video-fluid lazy-video w-100{% if autoplay %} autoplay playing{% endif %}{% if playInHover %} play-in-hover{% endif %}"
-                           preload="none" inert
+                           preload="none"
                         {% if autoplay or playInHover %} muted loop playsinline{% if not playInHover %} autoplay{% endif %}{% endif %}
                         {% if controls %} controls{% endif %}>
                         {%- for video in intlMedia.media.mediaScreens -%}
@@ -102,6 +102,12 @@
                         <span class="player-control control-pause-btn btn btn-primary btn-circle p-0 d-inline-flex justify-content-center align-items-center position-relative">
                             <i class="icon-pause"></i>
                         </span>
+                    </div>
+                    <div class="player-control-wrap control-fullscreen position-absolute text-end">
+                        <button type="button" title="{{ 'Plein écran'|trans }}" aria-label="{{ 'Plein écran'|trans }}"
+                                class="player-control control-fullscreen-btn btn btn-primary btn-circle p-0 d-inline-flex justify-content-center align-items-center position-relative cursor">
+                            {{ 'fal expand'|icon(20, 20) }}
+                        </button>
                     </div>
                 {%- endif -%}
                 {%- if soundControl -%}

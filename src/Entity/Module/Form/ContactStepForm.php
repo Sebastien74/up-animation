@@ -50,6 +50,9 @@ class ContactStepForm extends BaseInterface
     #[ORM\Column(type: Types::STRING, length: 2048, nullable: true)]
     private ?string $submissionPageUrl = null;
 
+    #[ORM\Column(type: Types::STRING, length: 2048, nullable: true)]
+    private ?string $referer = null;
+
     #[ORM\OneToMany(targetEntity: ContactValue::class, mappedBy: 'contactStepForm', cascade: ['persist'])]
     private ArrayCollection|PersistentCollection $contactValues;
 
@@ -126,6 +129,18 @@ class ContactStepForm extends BaseInterface
     public function setSubmissionPageUrl(?string $submissionPageUrl): static
     {
         $this->submissionPageUrl = $submissionPageUrl;
+
+        return $this;
+    }
+
+    public function getReferer(): ?string
+    {
+        return $this->referer;
+    }
+
+    public function setReferer(?string $referer): static
+    {
+        $this->referer = $referer;
 
         return $this;
     }

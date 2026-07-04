@@ -66,7 +66,7 @@ class UserType extends AbstractType
                 'placeholder' => $this->translator->trans('Saisissez un e-mail', [], 'admin'),
                 'row_attr' => ['class' => $isNew ? 'col-12 col-sm-6 col-lg-4 col-xl-3' : 'col-12 col-sm-6 col-lg-4'],
             ],
-            'constraints' => [new Assert\Email()],
+            'constraints' => [new Assert\Email(mode: Assert\Email::VALIDATION_MODE_STRICT)],
         ]);
 
         if (!$isNew) {

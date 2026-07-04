@@ -6,6 +6,7 @@ namespace App\Form\Type\Module\Newsletter;
 
 use App\Entity\Module\Newsletter\Campaign;
 use App\Entity\Module\Newsletter\Email;
+use App\Form\Validator\EmailDomain;
 use App\Form\Validator\UniqEmailCampaign;
 use App\Form\Widget as WidgetType;
 use App\Service\Interface\CoreLocatorInterface;
@@ -43,11 +44,13 @@ class FrontType extends AbstractType
 
         $constraints = $campaign->isInternalRegistration() ? [
             new Assert\NotBlank(message: $this->translator->trans('Vous devez renseigner votre e-mail.', [], 'front_form')),
-            new Assert\Email(),
+            new Assert\Email(mode: Assert\Email::VALIDATION_MODE_STRICT),
+            new EmailDomain(),
             new UniqEmailCampaign(),
         ] : [
             new Assert\NotBlank(message: $this->translator->trans('Vous devez renseigner votre e-mail.', [], 'front_form')),
-            new Assert\Email(),
+            new Assert\Email(mode: Assert\Email::VALIDATION_MODE_STRICT),
+            new EmailDomain(),
         ];
 
         $builder->add('email', Type\EmailType::class, [

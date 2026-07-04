@@ -75,7 +75,7 @@ class ConfigurationType extends AbstractType
             'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],
             'constraints' => [
                 new Assert\NotBlank(),
-                new Assert\Email(),
+                new Assert\Email(mode: Assert\Email::VALIDATION_MODE_STRICT),
             ],
         ]);
 

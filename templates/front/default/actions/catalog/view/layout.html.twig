@@ -137,7 +137,7 @@
 
     {%- include 'front/'~websiteTemplate~'/include/gallery.html.twig' with {gallery: entity, slug: 'product'} -%}
 
-{%- elseif blockType == 'layout-slider' and entity.medias is not empty -%}
+{%- elseif blockType == 'layout-slider' and entity.mediasWithoutMain is not empty -%}
 
     {%- set slideType = 'thumbnails' -%}
 

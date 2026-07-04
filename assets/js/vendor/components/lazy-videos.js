@@ -6,6 +6,27 @@
 
 let allYouTubePlayers = [];
 
+/**
+ * Génère un UUID avec repli hors contexte sécurisé.
+ * crypto.randomUUID() n'existe qu'en HTTPS ou sur localhost ;
+ * en HTTP (ex. domaine .local) il faut un fallback.
+ */
+function generateUUID() {
+    if (window.crypto && typeof window.crypto.randomUUID === 'function') {
+        return window.crypto.randomUUID();
+    }
+    if (window.crypto && typeof window.crypto.getRandomValues === 'function') {
+        return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
+            (c ^ window.crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+        );
+    }
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+        const r = Math.random() * 16 | 0;
+        const v = c === 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+    });
+}
+
 export function lazyVideos(videosYoutube = [], videos = []) {
 
     /** Controls */
@@ -58,6 +79,28 @@ export function lazyVideos(videosYoutube = [], videos = []) {
                 if (pauseIcon) pauseIcon.classList.toggle('d-none');
                 if (playIcon) playIcon.classList.toggle('d-none');
                 soundControl.classList.toggle('active');
+            }
+        }
+
+        /** Fullscreen control */
+        let fullscreenBtn = videoBlock.querySelector('.control-fullscreen-btn');
+        if (fullscreenBtn) {
+            fullscreenBtn.onclick = function (event) {
+                event.preventDefault();
+                let isFullscreen = document.fullscreenElement || document.webkitFullscreenElement;
+                if (!isFullscreen) {
+                    if (video.requestFullscreen) {
+                        video.requestFullscreen();
+                    } else if (video.webkitRequestFullscreen) {
+                        video.webkitRequestFullscreen();
+                    } else if (video.webkitEnterFullscreen) {
+                        video.webkitEnterFullscreen(); // iOS Safari
+                    }
+                } else if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.webkitExitFullscreen) {
+                    document.webkitExitFullscreen();
+                }
             }
         }
     }
@@ -278,7 +321,7 @@ export function playYoutube(playerYoutube, type) {
             if (player.dataset.randomId) {
                 return;
             }
-            const randomUUID = 'loaded-' + window.crypto.randomUUID();
+            const randomUUID = 'loaded-' + generateUUID();
             player.setAttribute('id', randomUUID);
             player.dataset.randomId = randomUUID;
 

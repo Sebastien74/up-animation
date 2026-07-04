@@ -504,7 +504,8 @@ class FrontType extends AbstractType
         $excludes = [Type\SubmitType::class];
         if (!in_array($fieldType, $excludes)) {
             if (Type\EmailType::class === $fieldType) {
-                $this->options['constraints'][] = new Assert\Email();
+                $this->options['constraints'][] = new Assert\Email(mode: Assert\Email::VALIDATION_MODE_STRICT);
+                $this->options['constraints'][] = new Validator\EmailDomain();
             } elseif (Type\UrlType::class === $fieldType) {
                 $this->options['constraints'][] = new Assert\Url();
             }

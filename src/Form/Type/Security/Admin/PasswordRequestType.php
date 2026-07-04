@@ -39,7 +39,7 @@ class PasswordRequestType extends AbstractType
             ],
             'constraints' => [
                 new Assert\NotBlank(),
-                new Assert\Email(),
+                new Assert\Email(mode: Assert\Email::VALIDATION_MODE_STRICT),
             ],
         ]);
     }

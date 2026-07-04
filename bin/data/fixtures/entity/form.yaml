@@ -138,6 +138,9 @@ App\Entity\Module\Form\ContactForm:
         submissionPageUrl:
             fr: 'Page de soumission'
             en: 'Submission page'
+        referer:
+            fr: 'Referer'
+            en: 'Referer'
         appointment:
             fr: 'Rendez-vous'
             en: 'Appointment'
@@ -156,6 +159,7 @@ App\Entity\Module\Form\ContactForm:
         - infos
     show:
         - submissionPageUrl
+        - referer
         - email
         - phone
         - createdAt
@@ -222,6 +226,9 @@ App\Entity\Module\Form\ContactStepForm:
         submissionPageUrl:
             fr: 'Page de soumission'
             en: 'Submission page'
+        referer:
+            fr: 'Referer'
+            en: 'Referer'
         contactValues:
             fr: 'Message'
             en: 'Message'
@@ -233,6 +240,7 @@ App\Entity\Module\Form\ContactStepForm:
         - infos
     show:
         - submissionPageUrl
+        - referer
         - email
         - createdAt
         - contactValues
