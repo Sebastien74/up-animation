@@ -108,32 +108,20 @@
                              {% if colEffects %} {{ colEffects|raw }}{% endif %}
                                 {% if not innerColBackground and col.hexadecimalCode %} style="background: {{ col.hexadecimalCode }};" data-hexadecimal="{{ col.hexadecimalCode }}"{% endif %}>
                             {%- set blocksCount = 0 -%}
-                            {%- set colMediaBlocks = 0 -%}
                             {%- for block in blocks -%}
                                 {%- set blockHide = block.hide or app.request.locale in block.hideLocales -%}
                                 {%- if not blockHide -%}
                                     {%- set blocksCount = blocksCount + 1 -%}
-                                    {%- if (block.blockType.slug ?? null) == 'media' -%}
-                                        {%- set colMediaBlocks = colMediaBlocks + 1 -%}
-                                    {%- endif -%}
                                 {%- endif -%}
                             {%- endfor -%}
-                            {# Home : une colonne composée uniquement d'images (>= 2) devient un carrousel Bootstrap. #}
-                            {%- set colIsCarousel = (entity.slug ?? null) == 'home' and blocksCount >= 2 and colMediaBlocks == blocksCount -%}
-                            {%- set carouselId = 'carousel-col-' ~ colId -%}
                             {%- set colInnerClasses = innerColBackground ? (paddings(col) ~ ' ' ~ innerColBackground)|trim : '' -%}
                             {%- set colInnerClasses = col.radius ? 'radius ' ~ colInnerClasses : colInnerClasses -%}
                             {%- set colInnerClasses = align ? colInnerClasses~' d-flex align-items-center' : colInnerClasses -%}
                             {%- set colInnerClasses = blocksCount == 1 ? colInnerClasses~' h-100' : colInnerClasses -%}
                             {%- set colInnerClasses = colAlignment ? colInnerClasses~' '~colAlignment : colInnerClasses -%}
                             {%- set colInnerClasses = fullSize or asFluidRight ? colInnerClasses~' m-0' : colInnerClasses -%}
-                            <div class="{{ colInnerClasses|trim }}{% if not colIsCarousel %} row{% endif %} m-0 w-100"
+                            <div class="{{ colInnerClasses|trim }} row m-0 w-100"
                                  {% if innerColBackground and col.hexadecimalCode %} style="background: {{ col.hexadecimalCode }};" data-hexadecimal="{{ col.hexadecimalCode }}" {% endif %}>
-                                {%- if colIsCarousel -%}
-                                    <div id="{{ carouselId }}" class="carousel slide same-height w-100" data-component="carousel-bootstrap" data-bs-interval="5000" data-bs-autoplay="1" data-bs-pause="1">
-                                        <div class="carousel-inner">
-                                {%- endif -%}
-                                {%- set carouselActive = true -%}
                                 {%- for block in blocks -%}
                                     {%- set blockHide = block.hide or app.request.locale in block.hideLocales -%}
                                     {%- if not blockHide -%}
@@ -153,7 +141,6 @@
                                         {# --- DISPLAY CONTEXT --- #}
                                         {%- set isIndex = (interface.name ?? null) == 'page' and (entity.asIndex ?? false) -%}
                                         {%- set pageBg = pageBg ?? null -%}
-                                        {%- if colIsCarousel -%}<div class="carousel-item{% if carouselActive %} active{% endif %}">{%- endif -%}
                                         <div id="layout-block-{{ blockId }}" class="layout-block position-relative {{ blockClasses }} {{ margins(block) }}" {% if blockEffects %} {{ blockEffects|raw }}{% endif %}
                                              {% if bgColorHexaZone %} style="background: {{ bgColorHexaZone }};" data-hexadecimal="{{ bgColorHexaZone }}" {% endif %}>
                                             <div class="layout-block-content{% if bgFullHeight and 'align-items-end' not in blockClasses and 'zones-navigation' != blockSlug %} h-100{% endif %}{% if innerBlockBackground or bgColorHexaInner %} {{ innerBlockBackground }}{% if innerBgPaddings %} {{ innerBgPaddings }}{% endif %}{% if block.radius %} radius{% endif %}{% endif %}"
@@ -212,28 +199,8 @@
                                                 {%- endif -%}
                                             </div>
                                         </div>
-                                        {%- if colIsCarousel -%}</div>{%- set carouselActive = false -%}{%- endif -%}
                                     {%- endif -%}
                                 {%- endfor -%}
-                                {%- if colIsCarousel -%}
-                                        </div>{# .carousel-inner #}
-                                        {%- if blocksCount > 1 -%}
-                                            <ol class="carousel-indicators">
-                                                {%- for i in 0..(blocksCount - 1) -%}
-                                                    <li data-bs-target="#{{ carouselId }}" data-bs-slide-to="{{ i }}" class="{% if i == 0 %}active{% endif %}" aria-label="{{ i + 1 }}"></li>
-                                                {%- endfor -%}
-                                            </ol>
-                                            <button class="carousel-control-prev" type="button" data-bs-target="#{{ carouselId }}" data-bs-slide="prev">
-                                                <i class="icon-chevron-left" aria-hidden="true"></i>
-                                                <span class="visually-hidden">{{ 'Précédent'|trans }}</span>
-                                            </button>
-                                            <button class="carousel-control-next" type="button" data-bs-target="#{{ carouselId }}" data-bs-slide="next">
-                                                <i class="icon-chevron-right" aria-hidden="true"></i>
-                                                <span class="visually-hidden">{{ 'Suivant'|trans }}</span>
-                                            </button>
-                                        {%- endif -%}
-                                    </div>{# .carousel #}
-                                {%- endif -%}
                             </div>
                         </div>
                     {%- endif -%}
