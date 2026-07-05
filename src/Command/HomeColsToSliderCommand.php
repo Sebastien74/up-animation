@@ -132,7 +132,7 @@ final class HomeColsToSliderCommand extends Command
         $slider->setPause(true);
         $slider->setPopup(false);
         if (method_exists($slider, 'setEffect')) {
-            $slider->setEffect('slide');
+            $slider->setEffect('fade');
         }
         if (method_exists($slider, 'setIntervalDuration')) {
             $slider->setIntervalDuration(5000);
