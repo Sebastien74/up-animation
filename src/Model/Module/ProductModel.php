@@ -137,6 +137,7 @@ final class ProductModel extends BaseModel
             'template' => $model->layout ? self::getTemplate($model, $catalog->entity, $catalogLayout) : false,
             'haveLayout' => !$disabledLayout && $model->haveLayout ? $model->haveLayout : !$disabledLayout && $catalogLayout && !$catalogLayout->getZones()->isEmpty(),
             'asCustomLayout' => !$disabledLayout && $model->haveLayout ? $model->haveLayout : !$disabledLayout && $catalogLayout && !$catalogLayout->getZones()->isEmpty(),
+            'faq' => $product->getFaq() ? $product->getFaq()->getId() : null,
             'mainFeature' => self::mainFeature($catalogDb, $values),
             'formPageUrl' => self::getFormPage($model),
             'indexUrl' => $model->urlIndex && $model->urlCode ? self::$coreLocator->router()->generate('front_index', ['url' => $model->urlIndex], UrlGeneratorInterface::ABSOLUTE_URL) : null,

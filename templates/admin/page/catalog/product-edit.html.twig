@@ -55,6 +55,9 @@
                                     {%- if form.customLayout is defined -%}
                                         {{ form_row(form.customLayout) }}
                                     {%- endif -%}
+                                    {%- if form.faq is defined -%}
+                                        {{ form_row(form.faq) }}
+                                    {%- endif -%}
                                     {%- if form.startDate is defined and form.endDate is defined -%}
                                         <div class="col-12">
                                             <h4 class="main-subtitle"><i class="icm-calendar"></i>{{ "Dates"|trans|raw }}</h4>

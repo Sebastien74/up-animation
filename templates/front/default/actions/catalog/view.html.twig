@@ -28,5 +28,12 @@
         {%- else -%}
             {%- include 'front/'~websiteTemplate~'/actions/catalog/view/default-product.html.twig' -%}
         {%- endif -%}
+        {%- if entity.faq -%}
+            <section class="product-faq-container pb-lg">
+                <div class="container">
+                    {{ render_esi(controller('App\\Controller\\Front\\Action\\FaqController::view', {filter: entity.faq})) }}
+                </div>
+            </section>
+        {%- endif -%}
     </div>
 {%- endblock -%}

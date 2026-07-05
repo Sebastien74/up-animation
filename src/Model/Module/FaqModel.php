@@ -56,6 +56,13 @@ final class FaqModel extends BaseModel
             return $microdata;
         }
 
+        // Embeds without a layout Block (e.g. product page FAQ) must still emit the FAQPage JSON-LD
+        if (!self::$microdata && !$block instanceof Block) {
+            self::$microdata = true;
+
+            return !$faq->isDisabledMicrodata() ? $questions : [];
+        }
+
         if (!self::$microdata && $block instanceof Block) {
             $microdata = !$faq->isDisabledMicrodata() ? $questions : [];
             $layout = $block->getCol()->getZone()->getLayout();

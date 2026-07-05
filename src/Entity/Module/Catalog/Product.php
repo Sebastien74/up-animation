@@ -7,6 +7,7 @@ namespace App\Entity\Module\Catalog;
 use App\Entity\BaseEntity;
 use App\Entity\Core\Website;
 use App\Entity\Layout\Layout;
+use App\Entity\Module\Faq\Faq;
 use App\Entity\Seo\Url;
 use App\Repository\Module\Catalog\ProductRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -143,6 +144,10 @@ class Product extends BaseEntity
     #[ORM\ManyToOne(targetEntity: Category::class)]
     #[ORM\JoinColumn(nullable: true)]
     private ?Category $mainCategory = null;
+
+    #[ORM\ManyToOne(targetEntity: Faq::class)]
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    private ?Faq $faq = null;
 
     #[ORM\ManyToOne(targetEntity: Website::class)]
     #[ORM\JoinColumn(nullable: false)]
@@ -468,6 +473,18 @@ class Product extends BaseEntity
     public function setMainCategory(?Category $mainCategory): static
     {
         $this->mainCategory = $mainCategory;
+
+        return $this;
+    }
+
+    public function getFaq(): ?Faq
+    {
+        return $this->faq;
+    }
+
+    public function setFaq(?Faq $faq): static
+    {
+        $this->faq = $faq;
 
         return $this;
     }

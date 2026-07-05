@@ -11,6 +11,7 @@ use App\Entity\Module\Catalog\Catalog;
 use App\Entity\Module\Catalog\Category;
 use App\Entity\Module\Catalog\Product;
 use App\Entity\Module\Catalog\SubCategory;
+use App\Entity\Module\Faq\Faq;
 use App\Form\Widget as WidgetType;
 use App\Service\Interface\CoreLocatorInterface;
 use Doctrine\ORM\EntityManagerInterface;
@@ -335,6 +336,29 @@ class ProductType extends AbstractType
                     'label' => $this->translator->trans('Template personnalisé', [], 'admin'),
                     'attr' => ['class' => 'col-12 w-100', 'data-config' => true],
                     'row_attr' => ['class' => 'col-12 col-lg-4'],
+                ]);
+            }
+
+            if (in_array('configuration', $activesFields)) {
+                $builder->add('faq', EntityType::class, [
+                    'label' => $this->translator->trans('FAQ associée', [], 'admin'),
+                    'required' => false,
+                    'display' => 'search',
+                    'class' => Faq::class,
+                    'placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
+                    'attr' => [
+                        'data-placeholder' => $this->translator->trans('Sélectionnez', [], 'admin'),
+                    ],
+                    'row_attr' => ['class' => 'col-12 col-lg-4'],
+                    'query_builder' => function (EntityRepository $er) {
+                        return $er->createQueryBuilder('f')
+                            ->where('f.website = :website')
+                            ->setParameter('website', $this->website)
+                            ->orderBy('f.adminName', 'ASC');
+                    },
+                    'choice_label' => function ($entity) {
+                        return strip_tags($entity->getAdminName());
+                    },
                 ]);
             }
 
