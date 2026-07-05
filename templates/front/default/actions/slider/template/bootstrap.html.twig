@@ -61,6 +61,11 @@
      data-bs-autoplay="{{ autoplay }}"
      data-bs-pause="{{ pause ? 'hover' : 0 }}"
      data-component="carousel-bootstrap">
+    {%- if arrows and 'top' in arrowAlignment -%}
+        <div class="top-arrows">
+            {{ macro.arrows(autoplay, sliderSlug, arrowsSide, arrowsColor, arrowsAsBtn, 'top') }}
+        </div>
+    {%- endif -%}
     <div class="carousel-inner">
         {%- set isFirst = true -%}
         {%- for media in medias -%}
@@ -80,17 +85,7 @@
             {%- set link = intlMedia.link is defined and intlMedia.link ? intlMedia.link : false -%}
             {%- if display -%}
                 <div class="carousel-item {% if isFirst %} active{% endif %}">
-                    {%- if arrows and 'center' in arrowAlignment -%}
-                        <div class="center-arrows vertical-align w-100">
-                            {{ macro.arrows(sliderSlug, autoplay, arrowsSide, arrowsColor, arrowsAsBtn, 'center') }}
-                        </div>
-                    {%- endif -%}
                     <div class="inner d-inline-block">
-                        {%- if arrows and 'top' in arrowAlignment -%}
-                            <div class="top-arrows">
-                                {{ macro.arrows(sliderSlug, autoplay, arrowsSide, arrowsColor, arrowsAsBtn, 'top') }}
-                            </div>
-                        {%- endif -%}
                         {%- if mediaType == 'video' -%}
                             {%- include 'front/'~websiteTemplate~'/blocks/video/default.html.twig' with {
                                 block: media,
@@ -118,12 +113,9 @@
                                 class: mediaClass
                             }) }}
                         {%- endif -%}
-                        {%- if haveContent or displayArrows or link -%}
+                        {%- if mediaTitle or haveContent or link -%}
                             <div class="carousel-caption text-start position-relative bg-transparent border-0 p-0">
                                 <div class="d-flex align-items-center">
-                                    {%- if arrows and 'bottom' in arrowAlignment -%}
-                                        {{ macro.arrows(slider, autoplay, sliderSlug, arrowsSide, arrowsColor, arrowsAsBtn, 'bottom') }}
-                                    {%- endif -%}
                                     {%- if mediaTitle and not disabledTitleForce -%}
                                         <h{{ mediaTitleForce }} class="caption-title mt-4 mb-0 ms-auto">{{ mediaTitle|unescape|raw }}</h{{ mediaTitleForce }}>
                                     {%- elseif mediaTitle -%}
@@ -156,6 +148,15 @@
             {%- endif -%}
         {%- endfor -%}
     </div>
+    {%- if arrows and 'center' in arrowAlignment -%}
+        <div class="center-arrows vertical-align w-100 position-absolute top-50 start-0 translate-middle-y">
+            {{ macro.arrows(autoplay, sliderSlug, arrowsSide, arrowsColor, arrowsAsBtn, 'center') }}
+        </div>
+    {%- elseif arrows and 'bottom' in arrowAlignment -%}
+        <div class="bottom-arrows">
+            {{ macro.arrows(autoplay, sliderSlug, arrowsSide, arrowsColor, arrowsAsBtn, 'bottom') }}
+        </div>
+    {%- endif -%}
     {%- if displayIndicators -%}
         <ul class="carousel-indicators reset position-relative ms-0 me-0 mb-0 mt-4 justify-content-start">
             {%- set isFirst = true -%}
