@@ -53,6 +53,15 @@
                                 <i class="icm-sync"></i><span>{{ "Invalider le cache"|trans|raw }}</span>
                             </button>
                         </form>
+                        <button type="button"
+                                id="thumbs-generate"
+                                class="btn-app small d-inline-flex align-items-center gap-2"
+                                data-urls-endpoint="{{ path('admin_website_thumbs_urls', {website: websiteId()}) }}"
+                                data-done-label="{{ "Vignettes générées"|trans|striptags }}"
+                                data-empty-label="{{ "Aucune vignette à générer"|trans|striptags }}"
+                                data-error-label="{{ "erreur(s)"|trans|striptags }}">
+                            <i class="icm-images"></i><span>{{ "Générer les vignettes"|trans|raw }}</span>
+                        </button>
                     </span>
                     {%- if app.user.lastLogin is defined and app.user.lastLogin -%}
                         <span class="hero-last-login">
@@ -60,6 +69,17 @@
                             <span>{{ "Dernière connexion"|trans|raw }} {{ app.user.lastLogin|ago }}</span>
                         </span>
                     {%- endif -%}
+                </div>
+            </div>
+
+            {#-- Thumbnails generator progress (sitemap crawl) --#}
+            <div id="thumbs-progress" class="dashboard-thumbs-progress mt-3 d-none" aria-live="polite">
+                <div class="progress" role="progressbar" aria-label="{{ "Génération des vignettes"|trans|striptags }}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 0%"></div>
+                </div>
+                <div class="thumbs-progress-meta d-flex justify-content-between align-items-center gap-3 mt-2 small">
+                    <span class="thumbs-progress-count text-muted">0 / 0</span>
+                    <span class="thumbs-progress-current flex-fill text-end text-truncate text-muted"></span>
                 </div>
             </div>
         </section>

@@ -3555,3 +3555,10 @@
         }
     }
 }
+
+.dashboard-thumbs-progress {
+    // min-width: 0 permet à .text-truncate de rétrécir dans le flex (pas d'utility Bootstrap dédiée).
+    .thumbs-progress-current {
+        min-width: 0;
+    }
+}

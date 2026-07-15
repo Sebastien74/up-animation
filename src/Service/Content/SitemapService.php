@@ -85,6 +85,29 @@ class SitemapService
     }
 
     /**
+     * Get every online front URL (absolute), across all online locales.
+     *
+     * Reuses the full sitemap build (index + pages + cards) and flattens every
+     * 'url' entry. Consumed by the admin thumbnails generator to crawl the site.
+     *
+     * @return list<string>
+     *
+     * @throws Exception|InvalidArgumentException
+     */
+    public function urls(Website $website): array
+    {
+        $items = $this->execute($website);
+        $urls = [];
+        array_walk_recursive($items, static function (mixed $value, int|string $key) use (&$urls): void {
+            if ('url' === $key && is_string($value) && str_starts_with($value, 'http')) {
+                $urls[$value] = true;
+            }
+        });
+
+        return array_keys($urls);
+    }
+
+    /**
      * Set mains vars.
      *
      * @throws MappingException|NonUniqueResultException|InvalidArgumentException|ReflectionException|QueryException

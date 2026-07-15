@@ -13,12 +13,14 @@ use App\Entity\Seo\Url;
 use App\Repository\Analytics\AnalyticsDailyRepository;
 use App\Repository\Core\MailLogRepository;
 use App\Repository\Core\ScheduledCommandRepository;
+use App\Service\Content\SitemapService;
 use App\Service\Core\ScheduledCommandLogReader;
 use App\Service\Core\ScheduledCommandReportService;
 use App\Service\Core\SlowRequestStatsService;
 use App\Service\Core\WebsiteCacheInvalidator;
 use Doctrine\DBAL\Exception as DBALException;
 use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -123,6 +125,17 @@ class DashboardController extends AdminController
         $this->addFlash('success', $translator->trans('Le cache du site a été invalidé.', [], 'admin'));
 
         return $this->redirectToRoute('admin_dashboard', ['website' => $website->id]);
+    }
+
+    /**
+     * List every front URL of the website (all online locales) for the thumbnails generator.
+     *
+     * @throws \Exception
+     */
+    #[Route('/dashboard/thumbs/urls/{website}', name: 'admin_website_thumbs_urls', defaults: ['website' => null], methods: 'GET')]
+    public function thumbsUrls(SitemapService $sitemapService): JsonResponse
+    {
+        return new JsonResponse(['urls' => $sitemapService->urls($this->getWebsite()->entity)]);
     }
 
     /**
