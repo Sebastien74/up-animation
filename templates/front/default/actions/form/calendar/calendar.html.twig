@@ -80,7 +80,7 @@
                                     {%- for date in dates.dates -%}
                                         <div class="col text-center">
                                             {{ date.datetime|format_datetime(pattern='cccc', locale=app.request.locale)|capitalize }}<br>
-                                            {{ date.datetime|format_datetime(pattern='dd/MM/Y', locale=app.request.locale)|capitalize }}
+                                            {{ date.datetime|format_datetime(pattern='dd/MM/y', locale=app.request.locale)|capitalize }}
                                         </div>
                                     {%- endfor -%}
                                 </div>

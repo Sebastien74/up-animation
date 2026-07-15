@@ -38,7 +38,7 @@
     {%- set protectionOfficerAddress = legacy.protectionOfficerAddress is defined and legacy.protectionOfficerAddress ? legacy.protectionOfficerAddress : null -%}
     {%- set updatedAt = legacy.updatedAt is defined and legacy.updatedAt ? legacy.updatedAt : null -%}
     {%- set updatedAt = not updatedAt and legacy.createdAt is defined and legacy.createdAt ? legacy.createdAt : updatedAt -%}
-    {%- set updatedAt = updatedAt ? updatedAt|format_datetime(pattern='dd/MM/Y', locale=app.request.locale) : null -%}
+    {%- set updatedAt = updatedAt ? updatedAt|format_datetime(pattern='dd/MM/y', locale=app.request.locale) : null -%}
     {%- set isCookiePage = 'cookies' in app.request.uri -%}
 
     <div id="content-{{ templateName }}" class="template-page {% if not isCookiePage %} pb-lg-5{% endif %}">

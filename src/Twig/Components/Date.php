@@ -29,7 +29,7 @@ class Date
     public ?\DateTime $endDate = null;
 
     #[LiveProp]
-    public ?string $formatDate = 'dd MMM Y';
+    public ?string $formatDate = 'dd MMM y';
     #[LiveProp]
     public ?bool $disabledHours = false;
 

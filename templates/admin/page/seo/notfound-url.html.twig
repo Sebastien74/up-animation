@@ -82,7 +82,7 @@
                 <tbody>
                     {%- for entity in pagination -%}
                         <tr id="entity-row-{{ entity.id }}">
-                            <td class="align-middle px-4" data-label="{{"Jour"|trans|raw }}">{{ entity.createdAt|format_datetime(pattern='cccc dd MMMM Y HH:mm', locale=app.request.locale) }}</td>
+                            <td class="align-middle px-4" data-label="{{"Jour"|trans|raw }}">{{ entity.createdAt|format_datetime(pattern='cccc dd MMMM y HH:mm', locale=app.request.locale) }}</td>
                             <td class="align-middle px-4" data-label="{{"URL"|trans|raw }}">{{ entity.url }}</td>
                             <td class="align-middle text-end px-4" data-label="{{"Actions"|trans|raw }}">
                                 <div class="d-flex justify-content-end align-items-center gap-2">

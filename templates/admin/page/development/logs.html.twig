@@ -61,7 +61,7 @@
                             <article class="logs-panel">
                                 <header class="logs-panel-head">
                                     <i class="icm-calendar"></i>
-                                    <span>{{ logDay|format_datetime(pattern='EEEE d MMMM YYYY', locale=app.request.locale)|capitalize }}</span>
+                                    <span>{{ logDay|format_datetime(pattern='EEEE d MMMM y', locale=app.request.locale)|capitalize }}</span>
                                     <span class="logs-panel-count">{{ logFiles|length }}</span>
                                 </header>
                                 <ul class="logs-feed">

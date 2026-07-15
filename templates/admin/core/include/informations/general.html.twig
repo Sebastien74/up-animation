@@ -8,32 +8,32 @@
 
             {%- set fieldExist = entity.publishedAt is defined and entity.publishedAt -%}
             {%- if property == 'publishedAt' and fieldExist or property == 'infos' and fieldExist -%}
-                <li><small><b class="fw-600">{{ "Date de publication :"|trans|raw }}</b> {{ entity.publishedAt|format_datetime(pattern="cccc dd MMMM Y", locale=app.request.locale) }}</small></li>
+                <li><small><b class="fw-600">{{ "Date de publication :"|trans|raw }}</b> {{ entity.publishedAt|format_datetime(pattern="cccc dd MMMM y", locale=app.request.locale) }}</small></li>
             {%- endif -%}
 
             {%- set fieldExist = entity.publicationStart is defined and entity.publicationStart -%}
             {%- if property == 'publicationStart' and fieldExist or property == 'infos' and fieldExist -%}
-                <li><small><b class="fw-600">{{ "Début de publication :"|trans|raw }}</b> {{ entity.publicationStart|format_datetime(pattern="cccc dd MMMM Y", locale=app.request.locale) }}</small></li>
+                <li><small><b class="fw-600">{{ "Début de publication :"|trans|raw }}</b> {{ entity.publicationStart|format_datetime(pattern="cccc dd MMMM y", locale=app.request.locale) }}</small></li>
             {%- endif -%}
 
             {%- set fieldExist = entity.publicationEnd is defined and entity.publicationEnd -%}
             {%- if property == 'publicationEnd' and fieldExist or property == 'infos' and fieldExist -%}
-                <li><small><b class="fw-600">{{ "Fin de publication :"|trans|raw }}</b> {{ entity.publicationEnd|format_datetime(pattern="cccc dd MMMM Y", locale=app.request.locale) }}</small></li>
+                <li><small><b class="fw-600">{{ "Fin de publication :"|trans|raw }}</b> {{ entity.publicationEnd|format_datetime(pattern="cccc dd MMMM y", locale=app.request.locale) }}</small></li>
             {%- endif -%}
 
             {%- set fieldExist = entity.startDate is defined and entity.startDate -%}
             {%- if property == 'startDate' and fieldExist or property == 'infos' and fieldExist -%}
-                <li><small><b class="fw-600">{{ "Date de début :"|trans|raw }}</b> {{ entity.startDate|format_datetime(pattern="cccc dd MMMM Y", locale=app.request.locale) }}</small></li>
+                <li><small><b class="fw-600">{{ "Date de début :"|trans|raw }}</b> {{ entity.startDate|format_datetime(pattern="cccc dd MMMM y", locale=app.request.locale) }}</small></li>
             {%- endif -%}
 
             {%- set fieldExist = entity.endDate is defined and entity.endDate -%}
             {%- if property == 'endDate' and fieldExist or property == 'infos' and fieldExist -%}
-                <li><small><b class="fw-600">{{ "Date de fin :"|trans|raw }}</b> {{ entity.endDate|format_datetime(pattern="cccc dd MMMM Y", locale=app.request.locale) }}</small></li>
+                <li><small><b class="fw-600">{{ "Date de fin :"|trans|raw }}</b> {{ entity.endDate|format_datetime(pattern="cccc dd MMMM y", locale=app.request.locale) }}</small></li>
             {%- endif -%}
 
             {%- set fieldExist = entity.createdAt is defined and entity.createdAt -%}
             {%- if property == 'createdAt' and fieldExist or property == 'infos' and fieldExist -%}
-                <li><small><b class="fw-600">{{ "Créé le :"|trans|raw }}</b> {{ entity.createdAt|format_datetime(pattern="cccc dd MMMM Y 'à' HH:mm", locale=app.request.locale) }}</small></li>
+                <li><small><b class="fw-600">{{ "Créé le :"|trans|raw }}</b> {{ entity.createdAt|format_datetime(pattern="cccc dd MMMM y 'à' HH:mm", locale=app.request.locale) }}</small></li>
             {%- endif -%}
 
             {%- set fieldExist = entity.createdBy is defined and entity.createdBy -%}
@@ -50,7 +50,7 @@
 
             {%- set fieldExist = entity.updatedAt is defined and entity.updatedAt -%}
             {%- if property == 'updatedAt' and fieldExist or property == 'infos' and fieldExist -%}
-                <li><small><b class="fw-600">{{ "Modifié le :"|trans|raw }}</b> {{ entity.updatedAt|format_datetime(pattern="cccc dd MMMM Y 'à' HH:mm", locale=app.request.locale) }}</small></li>
+                <li><small><b class="fw-600">{{ "Modifié le :"|trans|raw }}</b> {{ entity.updatedAt|format_datetime(pattern="cccc dd MMMM y 'à' HH:mm", locale=app.request.locale) }}</small></li>
             {%- endif -%}
 
             {%- set fieldExist = entity.updatedBy is defined and entity.updatedBy -%}

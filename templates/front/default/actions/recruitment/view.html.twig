@@ -112,7 +112,7 @@
                         <p class="mb-2 text-primary"><strong class="text-primary fw-700">{{ "Type de contrat :"|trans|striptags }}</strong> {{ entity.contract.title|raw }}</p>
                     {%- endif -%}
                     {%- if entity.date -%}
-                        {%- set date = entity.date|isDateTime ? entity.date|format_datetime(pattern='MM/Y', locale=app.request.locale)|capitalize : entity.date -%}
+                        {%- set date = entity.date|isDateTime ? entity.date|format_datetime(pattern='MM/y', locale=app.request.locale)|capitalize : entity.date -%}
                         <p class="mb-2 text-primary"><strong class="text-primary fw-700">{{ "Disponibilité :"|trans|striptags }}</strong> {{  date }}</p>
                     {%- endif -%}
                     {%- if entity.duration -%}

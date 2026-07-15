@@ -67,7 +67,7 @@
                             <strong class="category d-inline-block mb-4">{{ entity.category.intl.title|raw }}</strong>
                         {%- endif -%}
                         {%- if entity.showDate -%}
-                            <span class="date mb-3 d-inline-block w-100">{{ entity.date|format_datetime(pattern=entity.category.formatDate, locale=app.request.locale)|capitalize }}</span>
+                            <span class="date mb-3 d-inline-block w-100">{{ entity.date|format_datetime(pattern=entity.category.formatDate|replace({'Y': 'y'}), locale=app.request.locale)|capitalize }}</span>
                         {%- endif -%}
                         {%- if entity.showIntro -%}
                             <p class="introduction text-bold mt-3">{{ entity.intl.introduction|truncate(200) }}</p>

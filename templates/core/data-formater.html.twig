@@ -16,7 +16,7 @@
     {%- elseif 'hour' in property|lower -%}
         {{ dataValue|format_datetime(pattern="HH:mm"|trans, locale=app.request.locale) }}
     {%- else -%}
-        {{ dataValue|format_datetime(pattern="cccc d MMMM Y 'à' HH:mm"|trans, locale=app.request.locale) }}
+        {{ dataValue|format_datetime(pattern="cccc d MMMM y 'à' HH:mm"|trans, locale=app.request.locale) }}
     {%- endif -%}
 
 {%- elseif property is defined and property == 'locale' or property is defined and '.locale' in property -%}
@@ -92,7 +92,7 @@
                                             {%- set matches = metaFieldValue|split('/') -%}
                                             <a href="{{ path('admin_medias_downloader', {website: websiteId(), fileDirname: metaFieldValue|url_encode}) }}" download="{{ matches|last }}">{{ matches|last }}</a>
                                         {%- elseif stringToDate -%}
-                                            {{ stringToDate.datetime|format_datetime(pattern="cccc dd MMMM Y", locale=app.request.locale) }}
+                                            {{ stringToDate.datetime|format_datetime(pattern="cccc dd MMMM y", locale=app.request.locale) }}
                                         {%- elseif metaFieldValue == '["true"]' or metaFieldValue == 'true' -%}
                                             {{ 'fas check'|icon(null, 14, 'success') }}
                                         {%- elseif metaFieldValue == '["false"]' or metaFieldValue == 'false' -%}

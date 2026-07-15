@@ -252,6 +252,7 @@ class IntlRuntime implements RuntimeExtensionInterface
         string $calendar = 'gregorian',
         ?string $locale = null): bool|string
     {
+        $pattern = str_replace('Y', 'y', $pattern);
         $date = $env->getExtension(CoreExtension::class)->convertDate($date, $timezone);
         $formatterTimezone = $timezone;
         if (null === $formatterTimezone) {
@@ -262,11 +263,6 @@ class IntlRuntime implements RuntimeExtensionInterface
         $formatter = $this->createDateFormatter($locale, $dateFormat, $timeFormat, $pattern, $formatterTimezone, $calendar);
         if (false === $ret = $formatter->format($date)) {
             throw new RuntimeError('Unable to format the given date.');
-        }
-        if ($date instanceof \DateTime) {
-            $year = $date->format('Y');
-            $nextYear = strval(intval($year) + 1);
-            $ret = str_contains($ret, $nextYear) ? str_replace($nextYear, $year, $ret) : $ret;
         }
 
         return $ret;

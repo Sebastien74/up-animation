@@ -15,7 +15,7 @@
                     {{ 'fas check'|icon(null, 60, 'primary') }}
                     <p class="m-0 mt-4 mb-3">{{ "Votre rendez-vous a été enregistré avec succès."|trans|raw }}</p>
                     {%- if appointment.appointmentDate is defined and appointment.appointmentDate -%}
-                        <p class="text-bold mb-0">{{ "Date :"|trans|raw }} {{ appointment.appointmentDate|format_datetime(pattern="cccc d MMMM Y 'à' HH:mm"|trans, locale=app.request.locale) }}</p>
+                        <p class="text-bold mb-0">{{ "Date :"|trans|raw }} {{ appointment.appointmentDate|format_datetime(pattern="cccc d MMMM y 'à' HH:mm"|trans, locale=app.request.locale) }}</p>
                     {%- endif -%}
                     {%- if calendarTitle -%}
                         <p class="text-bold">{{ "Calendrier :"|trans|raw }} {{ calendarTitle|raw }}</p>
