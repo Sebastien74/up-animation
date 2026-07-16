@@ -193,6 +193,32 @@ $video-radius: 1.5rem;
     border-radius: $video-radius;
 }
 
+// Embed (YouTube/Vimeo…) : le helper Bootstrap `.ratio` n'est pas compilé
+// ($enable-ratio: false), on porte donc le ratio nativement sur .block-video
+// (idiome du projet, cf. aspect-ratio) et on fait remplir la boîte à l'embed,
+// au poster et à l'iframe pour occuper 100% de la colonne.
+.block-video {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+
+    &.portrait {
+        aspect-ratio: 9 / 16;
+    }
+
+    .embed-youtube,
+    .iframe-wrap,
+    .poster,
+    iframe {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+}
+
 @if ($enable-youtube) {
 
     $player-color: $primary;
