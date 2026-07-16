@@ -31,7 +31,6 @@
     {%- endif -%}
 
     {%- set screensSizes = {} -%}
-    {%- set thumbSizes = {} -%}
     {%- if asAgency -%}
         {%- set screensSizes = {
             mobile: {width: 575, height: 455},
@@ -69,7 +68,7 @@
         bodyTitle: entity.intl.introductionTitle,
         template: websiteTemplate,
         screensSizes: screensSizes,
-        thumbConfiguration: thumbSizes
+        thumbConfiguration: thumbConfiguration
     } -%}
 
 {%- elseif blockType == 'layout-title' and entity.intl.title -%}
@@ -154,7 +153,7 @@
                     thumbnails: true,
                     pause: true,
                     control: true,
-                    autoplay: false,
+                    autoplay: true,
                     indicators: false,
                     progress: false,
                     popup: false,
