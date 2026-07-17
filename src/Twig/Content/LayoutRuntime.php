@@ -167,6 +167,10 @@ class LayoutRuntime implements RuntimeExtensionInterface
         $blockTransitions = $this->transitionsCache[$blockTemplate];
 
         $thumbSlug = $block->isLarge() && 'title-header' === $slugBlock ? $slugBlock.'-large' : $slugBlock;
+        $thumbConfiguration = $this->thumbService->thumbConfiguration($website, Layout\Block::class, 'block', $block->getId(), $thumbSlug);
+        if (!$thumbConfiguration && $thumbSlug && str_contains($thumbSlug, 'layout-')) {
+            $thumbConfiguration = $this->thumbService->thumbConfiguration($website, Layout\Block::class, 'block', $block->getId(), str_replace('layout-', '', $thumbSlug));
+        }
 
         $arguments = array_merge($options, (array) BlockModel::fromEntity($block, $this->coreLocator), [
             $options['interfaceName'] => !empty($options['entity']) ? EntityModel::fromEntity($options['entity'], $this->coreLocator, ['disabledMedias' => true, 'disabledLayout' => true])->response : null,
@@ -177,7 +181,7 @@ class LayoutRuntime implements RuntimeExtensionInterface
             'mediaHeight' => $mediasSizes ? $mediasSizes['height'] : null,
             'configuration' => $configuration,
             'websiteTemplate' => $websiteTemplate,
-            'thumbConfiguration' => $this->thumbService->thumbConfiguration($website, Layout\Block::class, 'block', $block->getId(), $thumbSlug),
+            'thumbConfiguration' => $thumbConfiguration,
             'blockTransitions' => $blockTransitions,
             'url' => $seo ? $seo['url'] : null,
             'seo' => $seo,

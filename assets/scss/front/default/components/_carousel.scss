@@ -449,6 +449,14 @@
         }
     }
 
+    // Bouton pause/lecture (accessibilité) dans le coin inférieur droit des images.
+    .slider-pause-wrap {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        z-index: 300;
+    }
+
     .slider-progress-container {
 
         .slider-progress {
@@ -491,7 +499,10 @@
 
 .splide.thumbnails-slider {
 
-
+    .splide__slide .img-loader {
+        height: 100% !important;
+        aspect-ratio: initial !important;
+    }
 
     .splide__track::before,
     .splide__track::after {

@@ -52,6 +52,24 @@ class MediaSizesType
             'row_attr' => ['class' => 'col-12 col-md-'.$fieldSize],
         ]);
 
+        $builder->add('laptopMaxWidth', IntegerType::class, [
+            'required' => false,
+            'label' => $this->translator->trans('Largeur (px) - Ordinateur portable', [], 'admin'),
+            'attr' => [
+                'placeholder' => $this->translator->trans('Saisissez une largeur', [], 'admin'),
+            ],
+            'row_attr' => ['class' => 'col-12 col-md-'.$fieldSize],
+        ]);
+
+        $builder->add('laptopMaxHeight', IntegerType::class, [
+            'required' => false,
+            'label' => $this->translator->trans('Hauteur (px) - Ordinateur portable', [], 'admin'),
+            'attr' => [
+                'placeholder' => $this->translator->trans('Saisissez une hauteur', [], 'admin'),
+            ],
+            'row_attr' => ['class' => 'col-12 col-md-'.$fieldSize],
+        ]);
+
         $builder->add('tabletMaxWidth', IntegerType::class, [
             'required' => false,
             'label' => 'Largeur (px) - Tablette',

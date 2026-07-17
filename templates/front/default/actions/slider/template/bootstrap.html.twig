@@ -30,7 +30,7 @@
     {%- set icon = asBtn ? 'chevron' : 'arrow' -%}
     {%- set btnClasses = asBtn ? 'btn-circle btn btn-'~color : '' -%}
     <div class="controls d-inline-flex align-items-start justify-content-{{ side }}{% if 'end' == side %} w-100{% endif %} {% if 'top' == position %}mb-4{% else %}mt-4{% endif %}{% if 'end' == side %} {% endif %}{% if asBtn %} as-btn{% endif %}">
-        <button class="carousel-control-prev position-relative cursor{% if btnClasses %} {{ btnClasses }}{% endif %}{% if 'center' != position %}me-2{% endif %}"
+        <button class="carousel-control-prev position-relative cursor{% if btnClasses %} {{ btnClasses }}{% endif %}{% if 'center' != position %} me-2{% endif %}"
                 data-bs-slide="prev"
                 data-bs-target="#carousel-{{ sliderSlug }}"
                 aria-label="{{"Précédent"|trans|raw }}"
@@ -76,7 +76,10 @@
             {%- set mediaIntro = intlMedia.introduction is defined and intlMedia.introduction|striptags|length > 0 ? intlMedia.introduction : null -%}
             {%- set mediaBody = intlMedia.body is defined and intlMedia.body|striptags|length > 0 ? intlMedia.body : null -%}
             {%- set popup = popup or media.popup -%}
-            {%- set mediaClass = fileSizes.height is defined and medias|length > 1 ? 'force-size main-media' : 'w-100 main-media' -%}
+            {%- set hasCrop = screensSizes is defined and screensSizes is not empty -%}
+            {#- Avec des tailles de crop, l'image s'affiche à sa largeur de crop (pas de w-100
+                qui la ferait suivre le conteneur shrink-to-fit) : le slider prend la largeur du crop. -#}
+            {%- set mediaClass = fileSizes.height is defined and medias|length > 1 ? 'force-size main-media' : (hasCrop ? 'main-media' : 'w-100 main-media') -%}
             {%- set mediaType = (media.media.screen is defined and media.media.screen == 'poster')
                 or (media.intl.video is defined and media.intl.video) ? 'video' : 'image' -%}
             {%- set haveContent = mediaIntro or mediaBody -%}

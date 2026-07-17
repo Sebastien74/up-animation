@@ -6,8 +6,6 @@ namespace App\Form\Widget;
 
 use App\Form\Validator\UniqDate;
 use App\Service\Interface\CoreLocatorInterface;
-use DateTimeImmutable;
-use DateTimeZone;
 use Exception;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -53,6 +51,7 @@ class PublicationDatesType
             'label' => !empty($options['startLabel']) ? $options['startLabel'] : $this->translator->trans('Début de la publication', [], 'admin'),
             'placeholder' => $asDatePicker ? $this->translator->trans('Sélectionnez une date', [], 'admin') : $this->placeholders(),
             'widget' => $asDatePicker ? 'single_text' : null,
+            'html5' => !$asDatePicker,
             'format' => $asDatePicker ? 'dd/MM/YYYY HH:mm' : DateTimeType::HTML5_FORMAT,
             'years' => $years,
             'attr' => [
@@ -83,6 +82,7 @@ class PublicationDatesType
             'label' => !empty($options['endLabel']) ? $options['endLabel'] : $this->translator->trans('Fin de la publication', [], 'admin'),
             'placeholder' => $asDatePicker ? $this->translator->trans('Sélectionnez une date', [], 'admin') : $this->placeholders(),
             'widget' => $asDatePicker ? 'single_text' : null,
+            'html5' => !$asDatePicker,
             'format' => $asDatePicker ? 'dd/MM/YYYY HH:mm' : DateTimeType::HTML5_FORMAT,
             'years' => $years,
             'attr' => [
@@ -102,7 +102,7 @@ class PublicationDatesType
      */
     private function getYears(): array
     {
-        $today = new DateTimeImmutable('now', new DateTimeZone('Europe/Paris'));
+        $today = new \DateTimeImmutable('now', new \DateTimeZone('Europe/Paris'));
         $currentYear = intval($today->format('Y'));
         $years = [$currentYear];
         for ($i = $currentYear; $i <= ($currentYear + 10); ++$i) {

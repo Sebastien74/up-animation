@@ -165,7 +165,7 @@
                                                             'App\\Controller\\Front\\Action\\InformationController::view',
                                                             'App\\Controller\\Front\\Action\\MapController::view'
                                                         ] -%}
-                                                        {%- set fragmentCacheable = (action.controller ~ '::' ~ action.action) in cacheableFragmentActions and not granted('ROLE_ADMIN') and (preview ?? false) == false and app.request.query.all is empty -%}
+                                                        {%- set fragmentCacheable = (action.controller ~ '::' ~ action.action) in cacheableFragmentActions and not granted('ROLE_ADMIN') and (preview ?? false) == false and app.request.query.all is empty and app.environment != 'dev' -%}
                                                         {%- if fragmentCacheable -%}
                                                             {%- set fragmentVersion = website.entity.cacheClearDate ? website.entity.cacheClearDate.timestamp : 'na' -%}
                                                             {%- set blockVersion = block.updatedAt ? block.updatedAt.timestamp : 'na' -%}

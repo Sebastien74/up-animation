@@ -5,6 +5,12 @@
     {%- set arrowsAsBtn = arrowsAsBtn is defined ? arrowsAsBtn : false -%}
     {%- set arrowsSide = arrowsSide is defined ? arrowsSide : false -%}
     {%- set arrowsColor = arrowsColor is defined ? arrowsColor : false -%}
+    {# Flèches sur les côtés : même rendu que les galeries de fiche (boutons ronds floutés, centrés verticalement). #}
+    {%- if slider.arrowAlignment is defined and 'side' == slider.arrowAlignment -%}
+        {%- set arrowsAsBtn = true -%}
+        {%- set arrowsSide = 'side' -%}
+        {%- set arrowsColor = 'blur' -%}
+    {%- endif -%}
     {%- set logo = website.logos.logo is defined ? website.logos.logo : null -%}
     {%- set companyName = website.information.companyName is defined ? website.information.companyName : null -%}
     {%- set isMainHome = slider.slug == 'main-home' -%}
@@ -19,6 +25,8 @@
     {%- set pauseOnHover = slider.pause -%}
     {%- set focus = slider.focus is defined and slider.focus ? slider.focus : '' -%}
     {%- set fileSizes = thumbConfiguration is empty and slider.standardizeMedia ? mediasSize(slider, 'height', 'less') : null -%}
+    {#- Tailles de crop des vignettes par écran (fournies par SliderController depuis CropSizes) : prioritaires sur maxWidth/Height. -#}
+    {%- set screensSizes = screensSizes is defined ? screensSizes : {} -%}
     {%- set zone = block.col.zone is defined ? block.col.zone : null -%}
     {%- set selectedTemplate = 'front/'~websiteTemplate~'/actions/slider/template/'~slider.template~'.html.twig' -%}
     {%- set selectedTemplate = 'two-columns-text-right' == slider.template ? 'front/'~websiteTemplate~'/actions/slider/template/two-columns.html.twig' : selectedTemplate -%}
@@ -43,6 +51,7 @@
             sliderSlug: slider.slug~'-'~uniqId(),
             medias: medias,
             fileSizes: fileSizes,
+            screensSizes: screensSizes,
             thumbConfiguration: thumbConfiguration,
             block: block,
             isMainHome: isMainHome,

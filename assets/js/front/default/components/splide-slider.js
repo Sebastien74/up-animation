@@ -29,8 +29,6 @@ export default function (sliders) {
 
     if (sliders.length > 0) {
         import('../../../../scss/vendor/components/_splide.scss');
-        // Splide overrides (.btn-vertical, .with-thumbnails...) live in _carousel.scss,
-        // otherwise only loaded by the Bootstrap carousel module.
         if (document.documentElement.dataset.theme === 'dark') {
             import('../../../../scss/front/default/components/_carousel-dark.scss');
         } else {
@@ -41,11 +39,13 @@ export default function (sliders) {
     import('@splidejs/splide').then(({Splide: Splide}) => {
 
         let imgSizes = function (slider) {
+            slider.querySelector('.splide__list').classList.add('d-flex');
             slider.querySelectorAll('.splide__slide').forEach(function (slide) {
                 slide.querySelectorAll('picture').forEach(function (picture) {
                     const hoverCard = picture.closest('.hover-card');
-                    if (!hoverCard) {
-                        picture.style.width = picture.clientWidth + 'px';
+                    const width = picture.clientWidth;
+                    if (!hoverCard && width > 0) {
+                        picture.style.width = width + 'px';
                     }
                 });
             });
@@ -491,7 +491,7 @@ export default function (sliders) {
                                 if (typeof event.stopImmediatePropagation === 'function') {
                                     event.stopImmediatePropagation();
                                 }
-                                const plyBtn = psBtn.closest('.arrows-wrap').querySelector('.btn-play');
+                                const plyBtn = (psBtn.closest('.arrows-wrap, .slider-pause-wrap') || psBtn.parentElement).querySelector('.btn-play');
                                 splide.Components.Autoplay.pause();
                                 psBtn.classList.add('d-none');
                                 plyBtn.classList.remove('d-none');

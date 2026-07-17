@@ -43,6 +43,10 @@
     background: rgba($black, .45);
     backdrop-filter: blur(1px);
     -webkit-backdrop-filter: blur(1px);
+    // État de repos visible : l'animation ne gère que l'entrée. Sans cet opacity
+    // de base, l'élément resterait bloqué à l'opacity 0 du keyframe `from` quand
+    // l'animation ne (re)joue pas (loader monté en d-none puis réaffiché).
+    opacity: 1;
     animation: appLoaderBackdropFade .2s $transition-base-timing forwards;
 }
 
@@ -62,6 +66,8 @@
     font-size: 13px;
     font-weight: 500;
     box-shadow: 0 8px 24px rgba($black, .35);
+    // État de repos visible (cf. .app-loader-backdrop) : l'animation ne gère que l'entrée.
+    opacity: 1;
     animation: appLoaderToastSlide .2s $transition-base-timing forwards;
     max-width: calc(100% - #{$space-6 * 2});
 

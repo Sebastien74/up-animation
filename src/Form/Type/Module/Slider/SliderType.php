@@ -178,6 +178,11 @@ class SliderType extends AbstractType
                 'row_attr' => ['class' => 'col-12 col-md-12 col-lg-3'],
             ]);
 
+            $builder->add('cropSizes', \App\Form\Type\Media\CropSizesType::class, [
+                'label' => false,
+                'row_attr' => ['class' => 'col-12'],
+            ]);
+
             $builder->add('focus', Type\ChoiceType::class, [
                 'label' => $this->translator->trans('Focus (Ordinateur)', [], 'admin'),
                 'display' => 'search',
@@ -319,6 +324,7 @@ class SliderType extends AbstractType
                     $this->translator->trans('En bas à gauche', [], 'admin') => 'bottom-start',
                     $this->translator->trans('En bas à droite', [], 'admin') => 'bottom-end',
                     $this->translator->trans('En bas à centré', [], 'admin') => 'bottom-center',
+                    $this->translator->trans('Sur les côtés', [], 'admin') => 'side',
                 ],
                 'attr' => ['data-config' => true],
                 'row_attr' => ['class' => 'col-12 col-md-12 col-lg-4'],

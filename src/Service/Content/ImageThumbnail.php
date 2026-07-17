@@ -303,6 +303,67 @@ class ImageThumbnail implements ImageThumbnailInterface
     }
 
     /**
+     * Compute the target thumbnail dimensions for the CURRENT screen WITHOUT
+     * generating any file. Mirrors the width/height logic of execute()/infos()
+     * so a deferred loader can reserve the exact thumbnail box (avoids CLS),
+     * whether or not the variant has already been generated.
+     */
+    public function screenSize(?MediaModel $mediaModel = null, array $thumbs = [], array $options = []): array
+    {
+        $empty = ['width' => null, 'height' => null];
+        $media = $mediaModel instanceof MediaModel ? $mediaModel->media : null;
+        if (!$media instanceof Media\Media || !$media->getOriginalName()) {
+            return $empty;
+        }
+
+        $this->setDefault($options);
+        $website = $media->getWebsite() ?: ($this->coreLocator->em()->getRepository(Website::class)->findOneByHost($this->schemeAndHttpHost)->entity ?? null);
+        $this->uploadDirname = $website instanceof Website ? $website->getUploadDirname() : $this->uploadDirname;
+        $filename = $media->getOriginalName();
+        $publicDir = $this->projectDirname.'/public';
+        $dirname = (str_contains($filename, '/build/') || str_contains($filename, '/medias/'))
+            ? $this->dirname($publicDir.$filename)
+            : $this->dirname($publicDir.'/uploads/'.$this->uploadDirname.'/'.$filename);
+        if (!$this->filesystem->exists($dirname)) {
+            $dirname = $this->dirname($publicDir.'/medias/placeholder.jpg');
+        }
+
+        $screen = $this->screen ?: 'desktop';
+        $size = self::SCREENS_SIZES_ATTR[$screen] ?? 1920;
+        $mediaRelation = $mediaModel->mediaRelation;
+        $options['sizeInfo'] = $this->coreLocator->fileInfo()->file($website, $filename, $dirname);
+
+        try {
+            $thumbInfos = $this->getScreenThumb($media, $mediaRelation, $thumbs, $screen, $dirname, $size, $options);
+            if (!isset($thumbInfos->thumb)) {
+                return $empty;
+            }
+            $thumbInfos = $mediaRelation ? $this->setRatio($mediaRelation, $thumbInfos, $size, $options) : $thumbInfos;
+            $runtimeConfig = $this->getRuntimeConfig($thumbInfos->thumb, $size, $options);
+            $srcWidth = $options['sizeInfo']->getWidth();
+            $srcHeight = $options['sizeInfo']->getHeight();
+
+            $width = !empty($runtimeConfig['thumbnail']['size'][0]) ? $runtimeConfig['thumbnail']['size'][0] : null;
+            $height = !empty($runtimeConfig['thumbnail']['size'][1]) ? $runtimeConfig['thumbnail']['size'][1] : null;
+            if (!$width && !$height && !empty($runtimeConfig['relative_resize']['heighten'])) {
+                $height = $runtimeConfig['relative_resize']['heighten'];
+                $width = $srcHeight ? (int) ceil(($height * $srcWidth) / $srcHeight) : null;
+            } elseif (!$width && !$height && !empty($runtimeConfig['relative_resize']['widen'])) {
+                $width = $runtimeConfig['relative_resize']['widen'];
+                $height = $srcWidth ? (int) ceil(($width * $srcHeight) / $srcWidth) : null;
+            }
+            if (!$width && !$height) {
+                $width = $thumbInfos->cropInfos->width ?? null;
+                $height = $thumbInfos->cropInfos->height ?? null;
+            }
+
+            return ['width' => $width ? (int) $width : null, 'height' => $height ? (int) $height : null];
+        } catch (\Throwable $e) {
+            return $empty;
+        }
+    }
+
+    /**
      * To get default vars.
      */
     private function setDefault(array $options = []): void

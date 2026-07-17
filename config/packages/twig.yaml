@@ -12,6 +12,7 @@ twig:
     strict_variables: '%kernel.debug%'
     form_themes:
         - 'core/form/admin_fields.html.twig'
+        - 'core/form/crop-sizes.html.twig'
         - 'core/form/security_fields.html.twig'
         - 'core/form/bootstrap_5_layout.html.twig'
         - 'core/form/front_calendar_slot_date.html.twig'

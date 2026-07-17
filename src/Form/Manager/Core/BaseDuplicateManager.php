@@ -80,6 +80,7 @@ class BaseDuplicateManager
                     $mediaRelation->setMaxHeight($mediaRelationToDuplicate->getMaxHeight());
                     $mediaRelation->setPosition($mediaRelationToDuplicate->getPosition());
                     $mediaRelation->setDownloadable($mediaRelationToDuplicate->isDownloadable());
+                    $mediaRelation->setRadius($mediaRelationToDuplicate->isRadius());
 
                     if (!$sameSite) {
                         $path = $this->projectDir.'/public/uploads/'.$referWebsite->getUploadDirname().'/'.$mediaToDuplicate->getOriginalName();

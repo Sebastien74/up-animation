@@ -354,7 +354,7 @@
             <label for="{{ id }}" class="cursor btn btn-{{ color }}{% if class %} {{ class }}{% endif %}{% if checked %} active{% endif %}">
                 <i class="icm-check"></i>{{ label }}
             </label>
-            <input id="{{ id }}" type="checkbox" class="btn-check" value="{{ checked }}" name="{{ full_name }}" {% if checked %} checked{% endif %}{% if values %} data-values="{{ values }}" {% endif %}>
+            <input id="{{ id }}" type="checkbox" class="btn-check" autocomplete="off" value="{{ value }}" name="{{ full_name }}" {% if checked %} checked{% endif %}{% if values %} data-values="{{ values }}" {% endif %}>
         {%- else -%}
             {{- form_label(form, null, { widget: parent() }) -}}
         {%- endif -%}

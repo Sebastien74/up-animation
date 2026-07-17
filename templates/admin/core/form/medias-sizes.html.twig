@@ -4,11 +4,13 @@
 {%- set displayTitle = form.maxWidth.vars.attr.displayTitle is defined ? form.maxWidth.vars.attr.displayTitle : false -%}
 {%- set tabSize = form.maxWidth.vars.attr.tabSize is defined ? form.maxWidth.vars.attr.tabSize : 12 -%}
 {%- set displayTabs = form.maxWidth is defined or form.maxHeight is defined
+    or form.laptopMaxWidth is defined or form.laptopMaxHeight is defined
     or form.tabletMaxWidth is defined or form.tabletMaxHeight is defined
     or form.mobileMaxWidth is defined or form.mobileMaxHeight is defined -%}
 
 {%- set tabs = {
     desktop: {title: "Ordinateur"|trans, icon: 'desktop'},
+    laptop: {title: "Ordinateur portable"|trans, icon: 'laptop'},
     tablet: {title: "Tablette"|trans, icon: 'tablet'},
     mobile: {title: "Mobile"|trans, icon: 'mobile'}} -%}
 
@@ -36,6 +38,13 @@
                             {%- endif -%}
                             {%- if form.maxHeight is defined -%}
                                 {{ form_row(form.maxHeight) }}
+                            {%- endif -%}
+                        {%- elseif tabId == 'laptop' -%}
+                            {%- if form.laptopMaxWidth is defined -%}
+                                {{ form_row(form.laptopMaxWidth) }}
+                            {%- endif -%}
+                            {%- if form.laptopMaxHeight is defined -%}
+                                {{ form_row(form.laptopMaxHeight) }}
                             {%- endif -%}
                         {%- elseif tabId == 'tablet' -%}
                             {%- if form.tabletMaxWidth is defined -%}

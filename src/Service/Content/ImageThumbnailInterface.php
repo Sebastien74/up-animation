@@ -15,6 +15,8 @@ interface ImageThumbnailInterface
 {
     public function execute(?MediaModel $mediaModel = null, array $thumbs = [], array $options = [], bool $generator = false): mixed;
 
+    public function screenSize(?MediaModel $mediaModel = null, array $thumbs = [], array $options = []): array;
+
     public function getThumbnail(object $thumbInfos, array $runtimeConfig, ?string $filter, array $options = []): string;
 
     public function getSizes(): array;

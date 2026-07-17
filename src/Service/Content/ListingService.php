@@ -155,9 +155,142 @@ class ListingService
             }
         }
 
+        $this->teaserPagesFallback($entitiesIndex, $entities, $listingClassname, $classname, $locale, $website);
+
         $this->cache['indexes_pages'][$listingClassname] = $entitiesIndex;
 
         return $entitiesIndex;
+    }
+
+    /**
+     * Teaser-based index fallback.
+     *
+     * The listing loop above only covers entities reachable through an index/listing page.
+     * An entity displayed solely inside a teaser block (not part of any listing) stays
+     * unmapped, and the URL builder then falls back to the first index page — a wrong prefix.
+     * Here we look up the teaser blocks placed on pages: when a page hosts a teaser that
+     * renders a still-unmapped entity, that page's URL becomes the entity's index prefix.
+     *
+     * @param array<int, string> $entitiesIndex entityId => page url code (mutated in place)
+     * @param array<object>       $entities
+     *
+     * @throws NonUniqueResultException
+     */
+    private function teaserPagesFallback(
+        array &$entitiesIndex,
+        array $entities,
+        string $listingClassname,
+        string $classname,
+        string $locale,
+        Website $website,
+    ): void {
+
+        $hasUnmapped = false;
+        foreach ($entities as $entity) {
+            if (!array_key_exists($entity->getId(), $entitiesIndex)) {
+                $hasUnmapped = true;
+                break;
+            }
+        }
+        if (!$hasUnmapped) {
+            return;
+        }
+
+        /** Derive the teaser class from the listing class (same module namespace). */
+        if (!str_ends_with($listingClassname, '\\Listing')) {
+            return;
+        }
+        $teaserClassname = substr($listingClassname, 0, -strlen('\\Listing')).'\\Teaser';
+        if (!class_exists($teaserClassname)) {
+            return;
+        }
+
+        $teasers = $this->teasers($teaserClassname, $website);
+        if (!$teasers) {
+            return;
+        }
+
+        $teaserIds = [];
+        foreach ($teasers as $teaser) {
+            $teaserIds[] = $teaser->getId();
+        }
+
+        $pageRepository = $this->coreLocator->em()->getRepository(Page::class);
+        $pagesByTeaserId = $pageRepository->findAllByAction($website, $locale, $teaserClassname, $teaserIds);
+        if (!$pagesByTeaserId) {
+            return;
+        }
+
+        $pageIds = [];
+        foreach ($pagesByTeaserId as $page) {
+            $pageIds[] = $page->getId();
+        }
+        $pagesUrlCodes = $pageRepository->findPagesIndexByUrl($pageIds, $teaserClassname, $locale);
+        $websiteModel = $this->coreLocator->website();
+
+        foreach ($teasers as $teaser) {
+            $teaserId = $teaser->getId();
+            if (empty($pagesByTeaserId[$teaserId])) {
+                continue;
+            }
+            $page = $pagesByTeaserId[$teaserId];
+            $code = !empty($pagesUrlCodes[$page->getId()]) ? $pagesUrlCodes[$page->getId()] : null;
+            if (!$code) {
+                continue;
+            }
+            $teaserEntities = $this->findTeaserEntities($teaser, $locale, $classname, $websiteModel, true);
+            $teaserEntitiesIds = [];
+            $this->collectEntityIds($teaserEntities, $teaserEntitiesIds);
+            foreach (array_keys($teaserEntitiesIds) as $eId) {
+                if (!array_key_exists($eId, $entitiesIndex)) {
+                    $entitiesIndex[$eId] = $code;
+                }
+            }
+        }
+    }
+
+    /**
+     * Collect unique entity ids from a (possibly nested) teaser result set.
+     *
+     * @param array<int, bool> $ids indexed by entity id (mutated in place)
+     */
+    private function collectEntityIds(mixed $value, array &$ids): void
+    {
+        if (is_iterable($value)) {
+            foreach ($value as $item) {
+                $this->collectEntityIds($item, $ids);
+            }
+        } elseif (is_object($value) && method_exists($value, 'getId')) {
+            $ids[$value->getId()] = true;
+        }
+    }
+
+    /**
+     * Get website teasers (request-cached), with category/catalog relations preloaded.
+     *
+     * @return array<object>
+     */
+    private function teasers(string $teaserClassname, Website $website): array
+    {
+        if (array_key_exists('teasers', $this->cache) && array_key_exists($teaserClassname, $this->cache['teasers'])) {
+            return $this->cache['teasers'][$teaserClassname];
+        }
+
+        $referTeaser = new $teaserClassname();
+        $queryBuilder = $this->coreLocator->em()->getRepository($teaserClassname)->createQueryBuilder('t')
+            ->andWhere('t.website = :website')
+            ->setParameter('website', $website);
+        if (method_exists($referTeaser, 'getCategories')) {
+            $queryBuilder->leftJoin('t.categories', 'tc')->addSelect('tc');
+        }
+        if (method_exists($referTeaser, 'getCatalogs')) {
+            $queryBuilder->leftJoin('t.catalogs', 'tca')->addSelect('tca');
+        }
+        if (method_exists($referTeaser, 'getSubCategories')) {
+            $queryBuilder->leftJoin('t.subCategories', 'tsc')->addSelect('tsc');
+        }
+
+        return $this->cache['teasers'][$teaserClassname] = $queryBuilder->getQuery()->getResult();
     }
 
     private function inListingFast(

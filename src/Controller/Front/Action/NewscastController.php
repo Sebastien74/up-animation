@@ -68,7 +68,7 @@ class NewscastController extends ActionController
      *
      * @throws ContainerExceptionInterface|NotFoundExceptionInterface|MappingException|NonUniqueResultException|InvalidArgumentException|\ReflectionException|QueryException
      */
-    #[Route('/action/newscast/index/{block}/{url}/{filter}/{category}', name: 'front_newscast_teaser', options: ['isMainRequest' => false], defaults: ['category' => null], methods: 'GET', schemes: '%protocol%')]
+    #[Route('/action/newscast/teaser/{block}/{url}/{filter}/{category}', name: 'front_newscast_teaser', options: ['isMainRequest' => false], defaults: ['category' => null], methods: 'GET', schemes: '%protocol%')]
     public function teaser(
         Request $request,
         NewscastFiltersInterface $frontFilterManager,

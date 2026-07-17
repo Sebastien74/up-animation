@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Entity\Media\CropSizes;
 use App\Entity\Media\Media;
 use App\Entity\Media\MediaRelationIntl;
 use Doctrine\DBAL\Types\Types;
@@ -57,23 +58,8 @@ class BaseMediaRelation extends BaseInterface
     #[ORM\Column(type: Types::BOOLEAN)]
     protected bool $rotation = false;
 
-    #[ORM\Column(type: Types::INTEGER, nullable: true)]
-    protected ?int $maxWidth = null;
-
-    #[ORM\Column(type: Types::INTEGER, nullable: true)]
-    protected ?int $maxHeight = null;
-
-    #[ORM\Column(type: Types::INTEGER, nullable: true)]
-    protected ?int $tabletMaxWidth = null;
-
-    #[ORM\Column(type: Types::INTEGER, nullable: true)]
-    protected ?int $tabletMaxHeight = null;
-
-    #[ORM\Column(type: Types::INTEGER, nullable: true)]
-    protected ?int $mobileMaxWidth = null;
-
-    #[ORM\Column(type: Types::INTEGER, nullable: true)]
-    protected ?int $mobileMaxHeight = null;
+    #[ORM\Embedded(class: CropSizes::class, columnPrefix: false)]
+    protected CropSizes $cropSizes;
 
     #[ORM\Column(type: Types::INTEGER, nullable: true)]
     protected ?int $position = 1;
@@ -100,6 +86,11 @@ class BaseMediaRelation extends BaseInterface
     #[ORM\ManyToOne(targetEntity: Media::class, cascade: ['persist'], fetch: 'EAGER')]
     #[ORM\JoinColumn(name: 'media_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
     protected ?Media $media = null;
+
+    public function __construct()
+    {
+        $this->cropSizes = new CropSizes();
+    }
 
     public function getId(): ?int
     {
@@ -226,64 +217,98 @@ class BaseMediaRelation extends BaseInterface
         return $this;
     }
 
+    public function getCropSizes(): CropSizes
+    {
+        return $this->cropSizes;
+    }
+
+    public function setCropSizes(CropSizes $cropSizes): void
+    {
+        $this->cropSizes = $cropSizes;
+    }
+
+    // Tailles par écran : accès délégué à l'embeddable CropSizes.
+    // Les noms historiques (desktop/tablet/mobile) sont conservés pour la
+    // compatibilité ; l'écran "laptop" (Ordinateur portable) est nouveau.
+
     public function getMaxWidth(): ?int
     {
-        return $this->maxWidth;
+        return $this->cropSizes->getCropWidthDesktop();
     }
 
     public function setMaxWidth(?int $maxWidth): void
     {
-        $this->maxWidth = $maxWidth;
+        $this->cropSizes->setCropWidthDesktop($maxWidth);
     }
 
     public function getMaxHeight(): ?int
     {
-        return $this->maxHeight;
+        return $this->cropSizes->getCropHeightDesktop();
     }
 
     public function setMaxHeight(?int $maxHeight): void
     {
-        $this->maxHeight = $maxHeight;
+        $this->cropSizes->setCropHeightDesktop($maxHeight);
+    }
+
+    public function getLaptopMaxWidth(): ?int
+    {
+        return $this->cropSizes->getCropWidthLaptop();
+    }
+
+    public function setLaptopMaxWidth(?int $laptopMaxWidth): void
+    {
+        $this->cropSizes->setCropWidthLaptop($laptopMaxWidth);
+    }
+
+    public function getLaptopMaxHeight(): ?int
+    {
+        return $this->cropSizes->getCropHeightLaptop();
+    }
+
+    public function setLaptopMaxHeight(?int $laptopMaxHeight): void
+    {
+        $this->cropSizes->setCropHeightLaptop($laptopMaxHeight);
     }
 
     public function getTabletMaxWidth(): ?int
     {
-        return $this->tabletMaxWidth;
+        return $this->cropSizes->getCropWidthTablet();
     }
 
     public function setTabletMaxWidth(?int $tabletMaxWidth): void
     {
-        $this->tabletMaxWidth = $tabletMaxWidth;
+        $this->cropSizes->setCropWidthTablet($tabletMaxWidth);
     }
 
     public function getTabletMaxHeight(): ?int
     {
-        return $this->tabletMaxHeight;
+        return $this->cropSizes->getCropHeightTablet();
     }
 
     public function setTabletMaxHeight(?int $tabletMaxHeight): void
     {
-        $this->tabletMaxHeight = $tabletMaxHeight;
+        $this->cropSizes->setCropHeightTablet($tabletMaxHeight);
     }
 
     public function getMobileMaxWidth(): ?int
     {
-        return $this->mobileMaxWidth;
+        return $this->cropSizes->getCropWidthMobile();
     }
 
     public function setMobileMaxWidth(?int $mobileMaxWidth): void
     {
-        $this->mobileMaxWidth = $mobileMaxWidth;
+        $this->cropSizes->setCropWidthMobile($mobileMaxWidth);
     }
 
     public function getMobileMaxHeight(): ?int
     {
-        return $this->mobileMaxHeight;
+        return $this->cropSizes->getCropHeightMobile();
     }
 
     public function setMobileMaxHeight(?int $mobileMaxHeight): void
     {
-        $this->mobileMaxHeight = $mobileMaxHeight;
+        $this->cropSizes->setCropHeightMobile($mobileMaxHeight);
     }
 
     public function getPosition(): ?int

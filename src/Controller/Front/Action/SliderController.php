@@ -8,6 +8,7 @@ use App\Controller\Front\FrontController;
 use App\Entity\Layout\Block;
 use App\Entity\Module\Slider\Slider;
 use App\Model\MediasModel;
+use App\Service\Content\ImageUpscaler;
 use Exception;
 use Psr\Cache\InvalidArgumentException;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,6 +30,7 @@ class SliderController extends FrontController
      */
     public function view(
         Request $request,
+        ImageUpscaler $imageUpscaler,
         ?Block $block = null,
         mixed $filter = null,
     ): Response {
@@ -52,6 +54,13 @@ class SliderController extends FrontController
         $uri = $this->coreLocator->request()->getPathInfo();
         $arrowsAlignment = $slider->getArrowAlignment();
         $arrowsColor = $slider->getArrowColor();
+        // Tailles de crop des vignettes par écran (embeddable CropSizes) -> option screensSizes du rendu.
+        $cropSizes = $slider->getCropSizes();
+        $screensSizes = $cropSizes->isDefined() ? $cropSizes->toScreensSizes() : [];
+        // Agrandit les sources trop petites pour honorer les tailles de crop demandées.
+        if ($cropSizes->isDefined()) {
+            $imageUpscaler->ensureCropSizes($slider->getMediaRelations(), $cropSizes);
+        }
 
         return $this->cache($request, 'front/'.$template.'/actions/slider/view.html.twig', $slider, [
             'websiteTemplate' => $template,
@@ -65,6 +74,7 @@ class SliderController extends FrontController
             'arrowsAsBtn' => $arrowsColor && str_contains($arrowsColor, 'btn'),
             'arrowsColor' => $arrowsColor ? str_replace(['btn-', 'text-'], '', $arrowsColor) : 'primary',
             'medias' => MediasModel::fromEntity($slider, $this->coreLocator)->mediasAndVideos,
+            'screensSizes' => $screensSizes,
         ]);
     }
 }

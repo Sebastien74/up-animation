@@ -7,6 +7,7 @@ export default function (e, el) {
         let trans = document.getElementById('data-translation');
         let href = el instanceof jQuery ? el.attr('href') : el.getAttribute('href');
         let reload = el instanceof jQuery ? el.data('reload') : el.getAttribute('data-reload');
+        let method = ((el instanceof jQuery ? el.data('method') : el.getAttribute('data-method')) || 'GET').toUpperCase();
 
         swal({
             title: trans.getAttribute('data-swal-title'),
@@ -26,11 +27,14 @@ export default function (e, el) {
 
             let url = href + (href.indexOf('?') > -1 ? '&ajax=true' : '?ajax=true');
 
+            let headers = {'X-Requested-With': 'XMLHttpRequest'};
+            if ('GET' !== method) {
+                headers['X-CSRF-Token'] = trans.getAttribute('data-csrf-delete') || '';
+            }
+
             fetch(url, {
-                method: "GET",
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest'
-                }
+                method: method,
+                headers: headers
             })
                 .then(response => response.json())
                 .then(response => {

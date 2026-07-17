@@ -1,0 +1,35 @@
+{%- trans_default_domain 'admin' -%}
+
+{# Rendu du sous-formulaire CropSizes (embeddable) : tailles de vignette par écran, en onglets. #}
+{%- block crop_sizes_widget -%}
+    {%- set uid = form.vars.id -%}
+    {%- set tabs = {
+        desktop: {title: "Ordinateur"|trans, icon: 'desktop', w: 'cropWidthDesktop', h: 'cropHeightDesktop'},
+        laptop: {title: "Ordinateur portable"|trans, icon: 'laptop', w: 'cropWidthLaptop', h: 'cropHeightLaptop'},
+        tablet: {title: "Tablette"|trans, icon: 'tablet', w: 'cropWidthTablet', h: 'cropHeightTablet'},
+        mobile: {title: "Mobile"|trans, icon: 'mobile', w: 'cropWidthMobile', h: 'cropHeightMobile'}
+    } -%}
+    <div class="crop-sizes-tabs col-12">
+        <h4 class="main-subtitle"><i class="icm-expand"></i>{{ "Tailles des vignettes par écran"|trans|raw }}</h4>
+        <nav class="nav nav-tabs gap-3 border-0" role="tablist">
+            {%- for tabId, config in tabs -%}
+                <a id="nav-crop-{{ tabId }}-tab-{{ uid }}" class="btn-app{% if loop.first %} active{% endif %}"
+                   aria-controls="tab-crop-{{ tabId }}-{{ uid }}"
+                   data-bs-toggle="tab" href="#tab-crop-{{ tabId }}-{{ uid }}" role="tab" aria-selected="{{ loop.first ? 'true' : 'false' }}">
+                    <i class="icm-{{ config.icon }}"></i><span class="d-none d-sm-inline-block">{{ config.title }}</span>
+                </a>
+            {%- endfor -%}
+        </nav>
+        <div class="tab-content pt-4">
+            {%- for tabId, config in tabs -%}
+                <div class="tab-pane w-100{% if loop.first %} active{% endif %}" id="tab-crop-{{ tabId }}-{{ uid }}"
+                     role="tabpanel" aria-labelledby="nav-crop-{{ tabId }}-tab-{{ uid }}">
+                    <div class="row">
+                        {{ form_row(attribute(form, config.w)) }}
+                        {{ form_row(attribute(form, config.h)) }}
+                    </div>
+                </div>
+            {%- endfor -%}
+        </div>
+    </div>
+{%- endblock -%}

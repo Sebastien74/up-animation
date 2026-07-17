@@ -7,6 +7,11 @@
 {%- set fade = slider.effect == 'fade' ? 'fade' : 'loop' -%}
 {%- set arrows = slider.control and medias|length > 1 -%}
 {%- set focus = slider.focus is defined and slider.focus ? slider.focus : '' -%}
+{%- set accessibility = website.configuration.accessibilityStatus is defined ? website.configuration.accessibilityStatus : true -%}
+{# Galerie à vignettes (thumbnails) OU alignement 'side' → flèches rondes floutées centrées sur les côtés + bouton pause, comme les fiches. #}
+{%- set sideArrows = arrows and ((slider.arrowAlignment is defined and 'side' in slider.arrowAlignment) or (slider.thumbnails is defined and slider.thumbnails)) -%}
+{%- set arrowsAsBtn = sideArrows ? true : (arrowsAsBtn is defined ? arrowsAsBtn : false) -%}
+{%- set arrowsColor = sideArrows ? 'blur' : (arrowsColor is defined ? arrowsColor : false) -%}
 {%- if slider.itemsPerSlide > 1 -%}
     {%- set fade = 'loop' -%}
 {%- endif -%}
@@ -79,10 +84,10 @@
          data-offset-mobile="{{ slider.offsetMobile }}"
          data-interval="{{ slider.intervalDuration }}">
         <div class="splide__track">
-            {%- if arrows and 'side' in slider.arrowAlignment -%}
+            {%- if sideArrows -%}
                 {{ macro.arrowsPrev(arrowsAsBtn, arrowsColor, 'vertical-center') }}
             {%- endif -%}
-            {%- if arrows and 'top' in slider.arrowAlignment -%}
+            {%- if arrows and not sideArrows and 'top' in slider.arrowAlignment -%}
                 {{ macro.arrows(slider, arrowsSide, arrowsColor, arrowsAsBtn, 'top') }}
             {%- endif -%}
             <ul class="splide__list {%- if medias|length < slider.itemsPerSlide -%} d-lg-flex justify-content-lg-center{% endif %}">
@@ -115,6 +120,7 @@
                                         notInBox: true,
                                         maxWidth: fileSizes.width is defined ? fileSizes.width : null,
                                         maxHeight: fileSizes.height is defined ? fileSizes.height : null,
+                                        screensSizes: screensSizes is defined and screensSizes is not empty ? screensSizes : {},
                                         popupGallery: slider.popup,
                                         fullPopup: slider.popup,
                                         colSize: colSize is defined ? colSize : null
@@ -157,11 +163,22 @@
                     {%- endif -%}
                 {%- endfor -%}
             </ul>
-            {%- if arrows and 'bottom' in slider.arrowAlignment -%}
+            {%- if arrows and not sideArrows and 'bottom' in slider.arrowAlignment -%}
                 {{ macro.arrows(slider, arrowsSide, arrowsColor, arrowsAsBtn, slider.arrowAlignment) }}
             {%- endif -%}
-            {%- if arrows and 'side' in slider.arrowAlignment -%}
+            {%- if sideArrows -%}
                 {{ macro.arrowsNext(arrowsAsBtn, arrowsColor, 'vertical-center') }}
+            {%- endif -%}
+            {# Accessibilité (WCAG 2.2.2) : bouton pause/lecture pour les galeries en autoplay ; positionné en SCSS (.slider-pause-wrap) dans le coin inférieur droit des images. #}
+            {%- if sideArrows and slider.autoplay and accessibility -%}
+                <div class="slider-pause-wrap">
+                    <button class="btn-arrow btn-pause cursor btn-circle btn btn-{{ arrowsColor ? arrowsColor : 'blur' }}" aria-label="{{ 'Mettre le carrousel en pause'|trans|striptags }}">
+                        <i class="icon-pause text-white" aria-hidden="true"></i>
+                    </button>
+                    <button class="btn-arrow btn-play d-none cursor btn-circle btn btn-{{ arrowsColor ? arrowsColor : 'blur' }}" aria-label="{{ 'Reprendre la lecture du carrousel'|trans|striptags }}">
+                        <i class="icon-play text-white" aria-hidden="true"></i>
+                    </button>
+                </div>
             {%- endif -%}
         </div>
         {%- if slider.thumbnails and medias|length > 1 -%}

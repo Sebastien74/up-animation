@@ -314,35 +314,34 @@ export function tinymcePlugin() {
                             }
                         });
 
-                        tinymceEl.on('paste', () => {
-                            setTimeout(() => {
-                                setTimeout(() => {
-                                    let content = tinymceEl.getContent();
-                                    // Nettoyage du contenu collé
-                                    content = content.replace(/<!--[\s\S]*?-->/g, "") // Supprime commentaires HTML
-                                        .replace(/<\/?(span|o:p|st1:|xml|meta|link|font)[^>]*>/g, "") // Supprime balises parasites de Word
-                                        .replace(/<[^\/>]+>\s*[\r\n]+\s*<\/[^>]+>/g, ""); // Supprime balises contenant uniquement des retours à la ligne
-                                    // Suppression des balises inutiles
-                                    content = content.trim()
-                                        .replace(/^(<p[^>]*>\s*)+/, "<p>")
-                                        .replace(/(\s*<\/p>)+$/, "</p>")
-                                        .replace(/<p>\s*(?:&nbsp;|<br\s*\/?>)*\s*<\/p>/gi, "<br>")
-                                        .replace(/^(<br\s*\/?>\s*)+/i, "")
-                                        .replace(/(\s*<br\s*\/?>)+$/i, "")
-                                        .replace(/<h([1-6])[^>]*>([\s\S]*?)<\/h\1>/gi, function (match, tag, innerContent) {
-                                            let cleanedText = innerContent.replace(/<\/?[^>]+>/g, ''); // Supprime toutes les balises internes
-                                            let newTag = parseInt(tag) === 1 ? 2 : tag;
-                                            return `<h${newTag}>${cleanedText}</h${newTag}>`; // Reconstruit la balise propre
-                                        })
-                                        .replace(/<([a-zA-Z0-9]+)[^>]*>\s*<\/\1>/gi, "")
-                                        .replace(/(<br\s*\/?>\s*){2,}/gi, "<br>")
-                                        .replace(/<br\s*\/?>\s*(<([a-zA-Z0-9]+)[^>]*>)/gi, "$1");
-                                    // Suppression des attributs
-                                    content = content.replace(/<(\w+)(?:\s+[^>]*?)?>/g, "<$1>");
-                                    // Remet le contenu nettoyé dans l’éditeur
-                                    tinymceEl.setContent(content);
-                                }, 0);
-                            });
+                        // Nettoyage du contenu collé UNIQUEMENT (fragment collé, pas tout l'éditeur).
+                        // PastePreProcess fournit e.content = le seul fragment collé, inséré ensuite
+                        // au curseur par TinyMCE : le contenu déjà présent et sa mise en forme sont préservés.
+                        tinymceEl.on('PastePreProcess', (e) => {
+                            let content = e.content;
+                            // Nettoyage du contenu collé
+                            content = content.replace(/<!--[\s\S]*?-->/g, "") // Supprime commentaires HTML
+                                .replace(/<\/?(span|o:p|st1:|xml|meta|link|font)[^>]*>/g, "") // Supprime balises parasites de Word
+                                .replace(/<[^\/>]+>\s*[\r\n]+\s*<\/[^>]+>/g, ""); // Supprime balises contenant uniquement des retours à la ligne
+                            // Suppression des balises inutiles
+                            content = content.trim()
+                                .replace(/^(<p[^>]*>\s*)+/, "<p>")
+                                .replace(/(\s*<\/p>)+$/, "</p>")
+                                .replace(/<p>\s*(?:&nbsp;|<br\s*\/?>)*\s*<\/p>/gi, "<br>")
+                                .replace(/^(<br\s*\/?>\s*)+/i, "")
+                                .replace(/(\s*<br\s*\/?>)+$/i, "")
+                                .replace(/<h([1-6])[^>]*>([\s\S]*?)<\/h\1>/gi, function (match, tag, innerContent) {
+                                    let cleanedText = innerContent.replace(/<\/?[^>]+>/g, ''); // Supprime toutes les balises internes
+                                    let newTag = parseInt(tag) === 1 ? 2 : tag;
+                                    return `<h${newTag}>${cleanedText}</h${newTag}>`; // Reconstruit la balise propre
+                                })
+                                .replace(/<([a-zA-Z0-9]+)[^>]*>\s*<\/\1>/gi, "")
+                                .replace(/(<br\s*\/?>\s*){2,}/gi, "<br>")
+                                .replace(/<br\s*\/?>\s*(<([a-zA-Z0-9]+)[^>]*>)/gi, "$1");
+                            // Suppression des attributs
+                            content = content.replace(/<(\w+)(?:\s+[^>]*?)?>/g, "<$1>");
+                            // Renvoie uniquement le fragment collé nettoyé (inséré au curseur)
+                            e.content = content;
                         });
                     }
                 });

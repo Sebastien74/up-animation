@@ -6,6 +6,7 @@ namespace App\Entity\Module\Slider;
 
 use App\Entity\BaseEntity;
 use App\Entity\Core\Website;
+use App\Entity\Media\CropSizes;
 use App\Repository\Module\Slider\SliderRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -64,6 +65,12 @@ class Slider extends BaseEntity
 
     #[ORM\Column(type: Types::INTEGER, nullable: true)]
     private ?int $offsetMobile = 50;
+
+    /**
+     * Tailles de crop des vignettes par écran (objet embarqué réutilisable).
+     */
+    #[ORM\Embedded(class: CropSizes::class, columnPrefix: false)]
+    private CropSizes $cropSizes;
 
     #[ORM\Column(type: Types::STRING, nullable: true)]
     private ?string $focus = 'left';
@@ -152,6 +159,7 @@ class Slider extends BaseEntity
     public function __construct()
     {
         $this->mediaRelations = new ArrayCollection();
+        $this->cropSizes = new CropSizes();
     }
 
     public function getTemplate(): ?string
@@ -270,6 +278,18 @@ class Slider extends BaseEntity
     public function setOffsetMobile(?int $offsetMobile): static
     {
         $this->offsetMobile = $offsetMobile;
+
+        return $this;
+    }
+
+    public function getCropSizes(): CropSizes
+    {
+        return $this->cropSizes;
+    }
+
+    public function setCropSizes(CropSizes $cropSizes): static
+    {
+        $this->cropSizes = $cropSizes;
 
         return $this;
     }

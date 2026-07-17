@@ -53,6 +53,7 @@ class IconRuntime implements RuntimeExtensionInterface
         }
 
         $iconExist = false;
+        $options['icon'] = !empty($options['icon']) ? $options['icon'] : $icon;
         $options['class'] = !empty($options['class']) ? $options['class'] : $class;
         $options['width'] = !empty($options['width']) ? $options['width'] : $width;
         $options['height'] = !empty($options['height']) ? $options['height'] : $height;

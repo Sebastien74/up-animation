@@ -21,7 +21,7 @@ export default class Cursor {
                 '-link': 'a',
                 '-magnetic': '.is-magnetic',
                 '-card-arrow': '.card .card-header:has(a)',
-                '-faded': '.favorite-toggle',
+                '-faded': '.favorite-toggle, .circle-wrap-icon',
                 '-primary': '.footer-contact, .footer-main, #footer-bottom',
                 '-small': '.city, .footer-link, .agencies-description-footer a, #footer-bottom a',
             },

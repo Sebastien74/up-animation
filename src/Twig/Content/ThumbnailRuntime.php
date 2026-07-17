@@ -163,20 +163,44 @@ class ThumbnailRuntime implements RuntimeExtensionInterface
             $options['loader'] = $generateThumbs;
             $options['loaderFilename'] = $filename;
             $options['lazyFiles'] = $options['onlyLazy'] = !$generateThumbs;
-            $thumbnails = !isset($options['beforeRender']) && ($generateThumbs || $options['lazyFiles']) ? $this->imageThumbnail->execute($media, $thumbs, $options) : [];
+            // Defer raster thumbnail generation to the background mediaLoader fragment so the
+            // main request never blocks generating variants inline (cf. pathLoaderRender / hinclude).
+            // Front only: admin, the synchronous beforeRender/path modes and SVG/gif/exception
+            // extensions still resolve inline (cheap, or a path is needed immediately).
+            // Ne déférer au fragment mediaLoader (hinclude async) que si la vignette n'est pas
+            // encore générée : une fois présente dans le cache JSON, on rend directement le
+            // <picture> final (media|thumb) sans round-trip /_fragment.
+            $deferToFragment = $generateThumbs
+                && $allowedExtension
+                && !$inAdmin
+                && !isset($options['beforeRender'])
+                && (!isset($options['path']) || !$options['path']);
+            $thumbnails = (isset($options['beforeRender']) || $deferToFragment) ? [] : $this->imageThumbnail->execute($media, $thumbs, $options);
+            if ($deferToFragment) {
+                $screenSize = $this->imageThumbnail->screenSize($media, $thumbs, $options);
+                $width = $screenSize['width'] ?? $width;
+                $height = $screenSize['height'] ?? $height;
+                $options['width'] = $width;
+                $options['height'] = $height;
+            }
+            $sizedSvg = 'data:image/svg+xml,%3Csvg width="'.$width.'" height="'.$height.'" xmlns="http://www.w3.org/2000/svg"%3E%3Crect width="'.$width.'" height="'.$height.'" fill="none"/%3E%3C/svg%3E';
+            $options['loaderSvgSrc'] = !empty($thumbnails['lazyFileSvg']) ? $thumbnails['lazyFileSvg'] : (is_string($src) ? $src : $sizedSvg);
             $options['loaderSrc'] = $options['dataSource'] = !empty($thumbnails['dataSource'])
                 ? $thumbnails['dataSource'] : (!is_object($src) ? $src : '/uploads/'.$this->coreLocator->website()->uploadDirname.'/'.$media->media->getOriginalName());
-            $options['loaderSvgSrc'] = !empty($thumbnails['lazyFileSvg']) ? $thumbnails['lazyFileSvg'] : (is_string($src) ? $src : 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==');
             $options['entity'] = $src;
             $options['thumbs'] = $thumbnails['thumbs'] ?? null;
             $options['alt'] = $thumbnails['infos']['alt'] ?? null;
             $options['title'] = $thumbnails['infos']['title'] ?? null;
-            $options['width'] = $thumbnails['infos']['width'] ?? null;
-            $options['height'] = $thumbnails['infos']['height'] ?? null;
-            $options['extension'] = $thumbnails['infos']['extension'] ?? null;
+            $options['width'] = $thumbnails['infos']['width'] ?? $width;
+            $options['height'] = $thumbnails['infos']['height'] ?? $height;
+            $options['extension'] = $thumbnails['infos']['extension'] ?? $media->media->getExtension();
             $options['lazyFiles'] = $thumbnails['lazyFiles'] ?? [];
             $options['media'] = $media;
-            $options['generateThumbs'] = $generateThumbs && $allowedExtension;
+            // Loader async (+ background hinclude) uniquement quand on défère, c.-à-d. quand la
+            // vignette n'est pas encore générée : le fragment rend alors le <picture> final en
+            // asynchrone. Sinon (déjà en cache JSON) rendu inline direct.
+            $options['generateThumbs'] = $deferToFragment ? $allowedExtension : ($generateThumbs && $allowedExtension);
+            $options['onlyLazy'] = $deferToFragment ? false : $options['onlyLazy'];
             $options['display'] = !isset($options['path']) || !$options['path'];
             $options['spinnerColor'] = $inAdmin ? 'white-50' : 'primary';
             $options['inAdmin'] = $inAdmin;
