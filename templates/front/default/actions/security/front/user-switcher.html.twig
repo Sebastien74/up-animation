@@ -5,7 +5,7 @@
 {%- block metaTitle -%}{{ "Connectez-vous"|trans|htmlEntities }}{%- endblock -%}
 
 {%- block stylesheets -%}
-    {{ encore_entry_link_tags('front-'~websiteTemplate~'-'~templateName~'-'~frontTheme, null, webpack, {nonce: csp_nonce()}) }}
+    {{ encore_entry_link_tags('front-'~websiteTemplate~'-'~templateName, null, webpack, {nonce: csp_nonce()}) }}
     <link rel="modulepreload" href="{{ preload(asset('build/front/'~websiteTemplate~'/front-'~websiteTemplate~'-'~templateName~'.js', webpack), {as: 'script', importance: 'low'}) }}" as="script" fetchpriority="low" nonce="{{ csp_nonce() }}">
     {{ parent() }}
 {%- endblock -%}

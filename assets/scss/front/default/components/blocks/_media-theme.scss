@@ -1,0 +1,20 @@
+@charset "UTF-8";
+
+/* -----------------------------------------------------------------
+    Front - Media block chunk (compile-once, theme-agnostic)
+
+    Lazy-loaded by medias.js. Replaces the former per-theme _media-light /
+    _media-dark chunks: light styles at the root, dark colour overrides scoped
+    under [data-theme="dark"], so one chunk serves both themes.
+------------------------------------------------------------------ */
+
+@import "../../themes/_light";
+@import "../../utilities/mixins";
+@import "_media";
+
+// Dark overrides (grey ramp / body-bg driven colours), scoped.
+@import "../../variables-dark";
+
+[data-theme="dark"] {
+    @import "_media";
+}

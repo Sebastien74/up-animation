@@ -14,7 +14,7 @@ const postcss = require('postcss');
 
 const DIR = path.join(__dirname, '..', '..', '..', 'public', 'build', 'front', 'default');
 const MIN_DESKTOP = 992;
-const NAME_RE = /^front-default-(light|dark)(\.[0-9a-f]+)?\.css$/;
+const NAME_RE = /^front-default(\.[0-9a-f]+)?\.css$/;
 
 if (!fs.existsSync(DIR)) {
     process.exit(0);
@@ -40,7 +40,7 @@ for (const file of fs.readdirSync(DIR)) {
     const baseCss = root.toString();
     const deskCss = desktop.toString();
     fs.writeFileSync(full, baseCss);
-    const deskName = file.replace(/^(front-default-(?:light|dark))(\.|$)/, '$1-desktop$2');
+    const deskName = file.replace(/^(front-default)(\.|$)/, '$1-desktop$2');
     fs.writeFileSync(path.join(DIR, deskName), deskCss);
     totalSaved += deskCss.length;
     console.log(`[split-mobile-css] ${file}: desktop ${(deskCss.length / 1024).toFixed(0)}KB -> ${deskName}`);

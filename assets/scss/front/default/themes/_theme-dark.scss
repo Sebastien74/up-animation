@@ -1,0 +1,160 @@
+@charset "UTF-8";
+
+/* -----------------------------------------------------------------
+    Front - Dark theme: single attribute-driven layer (compile-once)
+    Copyright : 2026
+    Author : Sebastien FOURNIER <fournier.sebastien@outlook.com>
+
+    The framework is compiled ONCE with the light scalars. The dark theme is no
+    longer a second build: it is this block, applied at runtime via the
+    data-theme="dark" attribute on <html> (see base.html.twig). Same mechanism as
+    uninstantmagique: Bootstrap consumes its --bs-* custom properties via var(),
+    so overriding them under [data-theme="dark"] flips the whole framework without
+    a second build. Bootstrap itself is not modified.
+
+    The --bs-* / project runtime values below are extracted exactly from the
+    previous dark build. variables-dark.scss re-declares the dark scalars so
+    maps-dark can rebuild the hand-tuned dark $elements matrix, which is re-emitted
+    scoped (custom properties cannot drive per-background heading colours).
+------------------------------------------------------------------ */
+
+@import '../variables-dark';   // dark colour globals (for the scoped matrix)
+@import 'maps-dark';           // rebuilds the dark $theme-colors / $elements maps
+@import '../utilities/each-element';
+
+// Dark section surfaces (former _dark-surfaces): backgrounds cannot be inverted
+// through $theme-colors (each token also feeds .text-X / .border-X), so they are
+// remapped here, on the dark layer only.
+$dark-surfaces: (
+    'white': #1e1e1e,
+    'beige': #211c14,
+    'secondary-lighten': #191c2e,
+    'info-lighten': #122a31,
+    'info-light': #0f3540,
+);
+
+/*-- Runtime theme tokens: override Bootstrap --bs-* + project vars (root level) --*/
+
+:root[data-theme="dark"] {
+    --body-bg: #121212;
+    --body-color: #e0e0e0;
+    --main-navigation-bg: #1e1e1e;
+    --footer-bg: #000000;
+    --footer-color: #e0e0e0;
+
+    --bs-body-bg: #121212;
+    --bs-body-bg-rgb: 18, 18, 18;
+    --bs-body-color: #e0e0e0;
+    --bs-body-color-rgb: 224, 224, 224;
+
+    --bs-border-color: #343a40;
+    --bs-highlight-color: #e0e0e0;
+
+    --bs-gray-100: #1a1b21;
+    --bs-gray-200: #212529;
+    --bs-gray-300: #343a40;
+    --bs-gray-400: #495057;
+    --bs-gray-500: #adb5bd;
+    --bs-gray-600: #ced4da;
+    --bs-gray-700: #2a2a2a;
+    --bs-gray-800: #1e1e1e;
+    --bs-gray-900: #121212;
+    --bs-gray: #ced4da;
+    --bs-gray-dark: #1e1e1e;
+
+    --bs-secondary-bg: #212529;
+    --bs-secondary-bg-rgb: 33, 37, 41;
+    --bs-secondary-color: rgba(224, 224, 224, 0.75);
+    --bs-secondary-color-rgb: 224, 224, 224;
+    --bs-tertiary-bg: #1a1b21;
+    --bs-tertiary-bg-rgb: 26, 27, 33;
+    --bs-tertiary-color: rgba(224, 224, 224, 0.5);
+    --bs-tertiary-color-rgb: 224, 224, 224;
+
+    --bs-dark: #121212;
+    --bs-dark-rgb: 18, 18, 18;
+    --bs-dark-lighten: #1e1e1e;
+    --bs-dark-lighten-rgb: 30, 30, 30;
+    --bs-dark-bg-subtle: #495057;
+    --bs-dark-border-subtle: #adb5bd;
+    --bs-dark-text-emphasis: #2a2a2a;
+
+    --bs-light: #343a40;
+    --bs-light-rgb: 52, 58, 64;
+    --bs-light-bg-subtle: #8d8d90;
+    --bs-light-border-subtle: #212529;
+    --bs-light-text-emphasis: #2a2a2a;
+
+    --bs-lighten: #212529;
+    --bs-lighten-rgb: 33, 37, 41;
+    --bs-muted: #adb5bd;
+    --bs-muted-rgb: 173, 181, 189;
+}
+
+[data-theme="dark"] {
+
+    // Card component tokens (consumed via var() by .card) — dark values.
+    .card {
+        --bs-card-bg: #1e1e1e;
+        --bs-card-color: #e0e0e0;
+        --bs-card-cap-color: #e0e0e0;
+    }
+
+    // Hand-tuned dark element matrix (heading weights/transforms, text colours,
+    // and text-on-.bg-* colours). Re-emitted scoped so it wins over the light
+    // matrix when the dark theme is active.
+    @include each-elements($elements);
+
+    // Section surface remaps + wave/curve divider fills realigned on each surface.
+    @each $name, $color in $dark-surfaces {
+        .bg-#{$name} { background-color: $color !important; }
+
+        .layout-zone.bg-#{$name} {
+            .wave-divider-top .shape-fill,
+            .curve-divider-bottom-left .shape-fill { fill: $color !important; }
+        }
+        .layout-zone.next-bg-#{$name} {
+            .wave-divider-bottom .shape-fill { fill: $color !important; }
+        }
+    }
+
+    // Dark-on-dark text: navy/black text utilities and form labels must read light...
+    .text-secondary,
+    .text-dark,
+    .text-black,
+    .form-label,
+    .label-wrap,
+    .form-check-label,
+    .form-floating .form-label,
+    .form-floating .form-label span {
+        color: $body-color !important;
+    }
+
+    // ...except where the surface stays light (primary / warning accents, contact icon).
+    .bg-primary .text-secondary,
+    .bg-primary .text-dark,
+    .bg-primary .text-black,
+    .bg-primary .form-label,
+    .bg-primary .label-wrap,
+    .bg-primary .form-check-label,
+    .bg-primary .form-floating .form-label,
+    .bg-primary .form-floating .form-label span,
+    .bg-warning .text-secondary,
+    .bg-warning .text-dark,
+    .bg-warning .text-black,
+    .contact-icon .text-secondary {
+        color: $secondary !important;
+    }
+
+    // Secondary text buttons (blur / glass / outline): label + border read light.
+    .btn-blur-secondary,
+    .btn-blur-secondary .link-label,
+    .btn-glass-secondary,
+    .btn-outline-secondary {
+        color: $body-color !important;
+    }
+
+    .btn-outline-secondary {
+        border-color: $body-color !important;
+    }
+}

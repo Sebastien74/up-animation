@@ -8,9 +8,9 @@ import {isInViewport} from "../functions"
  */
 
 if (document.documentElement.dataset.theme === 'dark') {
-    import('../../../../scss/front/default/components/blocks/_media-dark.scss');
+    import('../../../../scss/front/default/components/blocks/_media-theme.scss');
 } else {
-    import('../../../../scss/front/default/components/blocks/_media-light.scss');
+    import('../../../../scss/front/default/components/blocks/_media-theme.scss');
 }
 
 export default function (blocksMedias) {

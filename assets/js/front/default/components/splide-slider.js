@@ -30,9 +30,9 @@ export default function (sliders) {
     if (sliders.length > 0) {
         import('../../../../scss/vendor/components/_splide.scss');
         if (document.documentElement.dataset.theme === 'dark') {
-            import('../../../../scss/front/default/components/_carousel-dark.scss');
+            import('../../../../scss/front/default/components/_carousel-theme.scss');
         } else {
-            import('../../../../scss/front/default/components/_carousel-light.scss');
+            import('../../../../scss/front/default/components/_carousel-theme.scss');
         }
     }
 

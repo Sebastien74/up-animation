@@ -6,7 +6,7 @@
 {%- set webpack = webpack is defined ? webpack : 'front_'~websiteTemplate|replace({'-': '_'}) -%}
 
 {%- block stylesheets -%}
-    {{ encore_entry_link_tags('front-'~websiteTemplate~'-error-'~frontTheme, null, webpack) }}
+    {{ encore_entry_link_tags('front-'~websiteTemplate~'-error', null, webpack) }}
 {%- endblock -%}
 
 <div id="content-exception" class="template-page col-lg-12">

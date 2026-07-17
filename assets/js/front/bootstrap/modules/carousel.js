@@ -9,14 +9,14 @@ const isDark = document.documentElement.dataset.theme === 'dark';
 
 if (isHome) {
     if (isDark) {
-        import(/* webpackPreload: true */ '../../../../scss/front/default/components/_carousel-dark.scss');
+        import(/* webpackPreload: true */ '../../../../scss/front/default/components/_carousel-theme.scss');
     } else {
-        import(/* webpackPreload: true */ '../../../../scss/front/default/components/_carousel-light.scss');
+        import(/* webpackPreload: true */ '../../../../scss/front/default/components/_carousel-theme.scss');
     }
 } else if (isDark) {
-    import('../../../../scss/front/default/components/_carousel-dark.scss');
+    import('../../../../scss/front/default/components/_carousel-theme.scss');
 } else {
-    import('../../../../scss/front/default/components/_carousel-light.scss');
+    import('../../../../scss/front/default/components/_carousel-theme.scss');
 }
 
 export default function () {

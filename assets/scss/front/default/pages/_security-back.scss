@@ -45,7 +45,7 @@
     background:
         radial-gradient(ellipse at top right, rgba($beige, .35), transparent 55%),
         radial-gradient(ellipse at bottom left, rgba($secondary-lighten, .35), transparent 60%),
-        $lighten;
+        var(--bs-lighten);
 
     .profile-hero {
         border-radius: $border-radius;
@@ -110,7 +110,7 @@
         }
 
         .profile-greeting-hi {
-            color: $gray-500;
+            color: var(--bs-gray-500);
             display: block;
             font-size: 18px;
             font-weight: 400;
@@ -161,7 +161,7 @@
             }
 
             &.is-off {
-                color: $gray-600;
+                color: var(--bs-gray-600);
 
                 i {
                     color: $danger;
@@ -351,7 +351,7 @@
         }
 
         .info-tile-label {
-            color: $gray-500;
+            color: var(--bs-gray-500);
             display: block;
             font-size: 11px;
             font-weight: 700;
@@ -546,8 +546,14 @@
         }
 
         &.is-off .security-2fa-dot {
-            background: $gray-500;
+            background: var(--bs-gray-500);
             box-shadow: 0 0 0 3px rgba($gray-500, .18);
+
+            // rgba() needs an r,g,b triplet (no hex custom property), so the dark
+            // grey-500 (#adb5bd) is applied via a scoped override here.
+            [data-theme="dark"] & {
+                box-shadow: 0 0 0 3px rgba(173, 181, 189, .18);
+            }
         }
     }
 
@@ -693,7 +699,7 @@
 
     .action-tile-label {
         align-items: center;
-        color: $gray-500;
+        color: var(--bs-gray-500);
         display: inline-flex;
         font-size: 11px;
         font-weight: 700;
@@ -732,7 +738,7 @@
 
     .action-tile-cta {
         align-items: center;
-        color: $gray-600;
+        color: var(--bs-gray-600);
         display: inline-flex;
         font-size: 13px;
         font-weight: 600;
@@ -882,7 +888,7 @@
 
             > .form-label,
             > label {
-                color: $gray-600;
+                color: var(--bs-gray-600);
                 font-size: 14px;
                 font-weight: 600;
                 letter-spacing: .02em;
@@ -940,7 +946,7 @@
         height: 100%;
 
         .profile-form-aside-label {
-            color: $gray-600;
+            color: var(--bs-gray-600);
             display: block;
             font-size: 11px;
             font-weight: 700;

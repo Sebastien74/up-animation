@@ -1,7 +1,7 @@
 @charset "UTF-8";
 
 /* -----------------------------------------------------------------
-    Front - Dark Theme entry
+    Front - Light Theme entry
 
     Architecture (axe 5) : ce fichier produit le framework CSS complet
     chargé une fois, mis en cache et partagé par toutes les pages.
@@ -13,7 +13,7 @@
    1 ) Theme tokens + maps
 -----------------------------------*/
 
-@import '_dark';
+@import '_light';
 
 /*-----------------------------------
    2 ) Component opt-ins
@@ -51,6 +51,9 @@ $enable-gdpr-page: false;
 
 /*-----------------------------------
    4 ) Screen-scoped extras
+   (ex-vendor-desktop.scss : iteration buttons + scroll-top + appMargins
+   restent ici car ils dépendent de $screens / $breakpoint qui ne sont
+   pas définis dans vendor.scss)
 -----------------------------------*/
 
 $screens: 'all';
@@ -67,7 +70,9 @@ $breakpoint: 'all';
 }
 
 /*-----------------------------------
-   5 ) Dark section surfaces (overrides .bg-* + wave fills, dark bundle only)
+   5 ) Dark theme layer (compile-once)
+   Runtime overrides driven by data-theme="dark": one bundle serves both themes.
+   Appends only [data-theme="dark"]-scoped rules; the light output above is unchanged.
 -----------------------------------*/
 
-@import '_dark-surfaces';
+@import '_theme-dark';

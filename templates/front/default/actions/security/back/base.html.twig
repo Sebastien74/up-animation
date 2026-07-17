@@ -9,7 +9,7 @@
 {%- block metaRobots -%}{%- endblock -%}
 
 {%- block stylesheets -%}
-    {{ encore_entry_link_tags('front-'~websiteTemplate~'-'~templateName~'-'~frontTheme, null, webpack) }}
+    {{ encore_entry_link_tags('front-'~websiteTemplate~'-'~templateName, null, webpack) }}
     {{ parent() }}
 {%- endblock -%}
 

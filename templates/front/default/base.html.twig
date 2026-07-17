@@ -150,8 +150,8 @@
              and still apply on desktop (no FOUC, no jump). No SRI here: the build splits the
              base file after hashing, so a stale integrity hash would block it. In dev (no
              split) the base is the full bundle and the -desktop link 404s harmlessly. -->
-        {%- for cssFile in encore_entry_css_files('front-'~websiteTemplate~'-'~frontTheme, webpack) -%}
-            {%- set desktopFile = cssFile|replace({('front-'~websiteTemplate~'-'~frontTheme~'.'): ('front-'~websiteTemplate~'-'~frontTheme~'-desktop.')}) -%}
+        {%- for cssFile in encore_entry_css_files('front-'~websiteTemplate, webpack) -%}
+            {%- set desktopFile = cssFile|replace({('front-'~websiteTemplate~'.'): ('front-'~websiteTemplate~'-desktop.')}) -%}
             <link rel="stylesheet" href="{{ cssFile }}" data-turbo-track="reload" nonce="{{ csp_nonce() }}">
             <link rel="stylesheet" href="{{ desktopFile }}" media="(min-width:992px)" data-turbo-track="reload" nonce="{{ csp_nonce() }}">
         {%- endfor -%}

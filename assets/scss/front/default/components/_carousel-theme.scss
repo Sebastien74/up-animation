@@ -1,0 +1,21 @@
+@charset "UTF-8";
+
+/* -----------------------------------------------------------------
+    Front - Carousel chunk (compile-once, theme-agnostic)
+
+    Lazy-loaded by carousel.js / splide-slider.js. Replaces the former per-theme
+    _carousel-light / _carousel-dark chunks: the light styles are emitted at the
+    root and the dark colour overrides are scoped under [data-theme="dark"], so a
+    single chunk serves both themes and follows the runtime theme switch.
+------------------------------------------------------------------ */
+
+@import "../themes/_light";
+@import "../utilities/mixins";
+@import "_carousel";
+
+// Dark overrides (grey ramp / body-bg driven colours), scoped.
+@import "../variables-dark";
+
+[data-theme="dark"] {
+    @import "_carousel";
+}

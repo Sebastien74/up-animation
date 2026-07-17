@@ -1,0 +1,40 @@
+@charset "UTF-8";
+
+/* -----------------------------------------------------------------
+    Front - Dark theme: SCALARS (dark counterpart of variables.scss)
+    Copyright : 2026
+    Author : Sebastien FOURNIER <fournier.sebastien@outlook.com>
+
+    Compile-once model: the framework is compiled once with the light scalars.
+    This file re-declares, as !global, only the scalars that DIFFER in dark, so
+    that themes/_theme-dark.scss can rebuild the dark maps ($theme-colors,
+    $elements) and re-emit the hand-tuned dark matrix scoped under
+    [data-theme="dark"]. It emits no CSS on its own.
+
+    Brand colours ($primary, $secondary, $success...) are theme-invariant and
+    stay as defined in variables.scss - not repeated here.
+------------------------------------------------------------------ */
+
+/*-- Grey ramp - dark --*/
+
+$gray-50:  #f8f9fa !global;
+$gray-100: #1a1b21 !global;
+$gray-200: #212529 !global;
+$gray-300: #343a40 !global;
+$gray-400: #495057 !global;
+$gray-500: #adb5bd !global;
+$gray-600: #ced4da !global;
+$gray-700: #2a2a2a !global;
+$gray-800: #1e1e1e !global;
+$gray-900: #121212 !global;
+
+/*-- Body / neutrals derived from the dark ramp --*/
+
+$body-bg:       #121212 !global;
+$body-color:    #e0e0e0 !global;
+$light:         $gray-300 !global;
+$lighten:       $gray-200 !global;
+$dark:          $gray-900 !global;
+$dark-lighten:  $gray-800 !global;
+
+$focus-color:   #ff9800 !global; // keyboard focus ring - dark (orange, reads on dark bg)
