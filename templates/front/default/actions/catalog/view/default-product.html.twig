@@ -11,7 +11,7 @@
         customMedia: entity.mainMediaInHeader ? entity.headerMedia : null,
         fullSize: true,
         page: page,
-        pageTitle: entity.intl.title,
+        pageTitle: entity.asAgency ? entity.intl.title : (entity.intl.title ~ ' %location%'),
         template: websiteTemplate,
         thumbConfiguration: thumbConfigurationHeader
     } -%}
