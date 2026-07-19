@@ -9,6 +9,7 @@ use App\Model\Module\ProductModel;
 use App\Service\Core\Urlizer;
 use App\Service\Interface\CoreLocatorInterface;
 use App\Twig\Content\LocationPrepositionRuntime;
+use Symfony\Component\Intl\Countries;
 
 /**
  * LocationTokenService.
@@ -76,7 +77,7 @@ final class LocationTokenService
 
         $context = $this->locationMap()[$locationSlug] ?? null;
         $value = $context
-            ? $this->locationPreposition->buildLocationLabel($context['city'], $context['department'], $context['region'], $context['dimension'])
+            ? $this->locationPreposition->buildLocationLabel($context['city'], $context['department'], $context['region'], $context['country'], $context['dimension'])
             : '';
 
         return $this->valueCache[$locationSlug] = $value;
@@ -96,7 +97,7 @@ final class LocationTokenService
 
         $agencies = $this->agencyLocations();
         $map = [];
-        foreach (['city', 'department', 'region'] as $dimension) {
+        foreach (['city', 'department', 'region', 'country'] as $dimension) {
             foreach ($agencies as $agency) {
                 $value = $agency[$dimension] ?? null;
                 if (!$value) {
@@ -111,6 +112,7 @@ final class LocationTokenService
                     'city' => 'city' === $dimension ? $agency['city'] : null,
                     'department' => in_array($dimension, ['city', 'department'], true) ? $agency['department'] : null,
                     'region' => $agency['region'],
+                    'country' => in_array($dimension, ['city', 'country'], true) ? $agency['country'] : null,
                 ];
             }
         }
@@ -134,7 +136,9 @@ final class LocationTokenService
                 continue;
             }
             $model = ProductModel::fromEntity($agencyDb, $this->coreLocator, ['onlyForUrl' => true]);
+            $countryCode = !empty($model->country) ? strtoupper((string) $model->country) : null;
             $locations[] = [
+                'country' => ($countryCode && 'FR' !== $countryCode) ? Countries::getName($countryCode) : null,
                 'city' => $model->city ?: null,
                 'department' => $model->department ?: null,
                 'region' => $model->region ?: null,

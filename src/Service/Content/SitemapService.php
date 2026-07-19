@@ -21,6 +21,7 @@ use Doctrine\ORM\Query\QueryException;
 use Exception;
 use Psr\Cache\InvalidArgumentException;
 use ReflectionException;
+use Symfony\Component\Intl\Countries;
 
 /**
  * SitemapService.
@@ -348,9 +349,15 @@ class SitemapService
         $routeName = $urlInfos->pageUrl ? $urlInfos->routeName : $urlInfos->routeNameOnly;
 
         $seen = [];
-        foreach (['city', 'department', 'region'] as $dimension) {
+        foreach (['city', 'department', 'region', 'country'] as $dimension) {
             foreach ($agencies as $agency) {
-                $value = $agency->{$dimension} ?? null;
+                if ('country' === $dimension) {
+                    // Hors France uniquement : "en {pays}" (ex. "en Suisse"), slug depuis le nom.
+                    $code = !empty($agency->country) ? strtoupper((string) $agency->country) : null;
+                    $value = ($code && 'FR' !== $code) ? Countries::getName($code) : null;
+                } else {
+                    $value = $agency->{$dimension} ?? null;
+                }
                 if (!$value) {
                     continue;
                 }

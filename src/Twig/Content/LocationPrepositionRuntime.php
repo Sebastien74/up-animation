@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Twig\Content;
 
+use Symfony\Component\Intl\Countries;
 use Twig\Extension\RuntimeExtensionInterface;
 
 /**
@@ -169,8 +170,8 @@ final class LocationPrepositionRuntime implements RuntimeExtensionInterface
      * Build the SEO location label for a product variant, from an agency-like object
      * exposing city/department/region, according to the active dimension.
      *
-     * @param mixed       $agency    Objet exposant ->city / ->department / ->region
-     * @param string|null $dimension city|department|region (null = base)
+     * @param mixed       $agency    Objet exposant ->city / ->department / ->region / ->country
+     * @param string|null $dimension city|department|region|country (null = base)
      */
     public function getLocationLabel(mixed $agency, ?string $dimension = null): string
     {
@@ -178,10 +179,14 @@ final class LocationPrepositionRuntime implements RuntimeExtensionInterface
             return '';
         }
 
+        $countryCode = !empty($agency->country) ? strtoupper((string) $agency->country) : null;
+        $country = ($countryCode && 'FR' !== $countryCode) ? Countries::getName($countryCode) : null;
+
         return $this->buildLocationLabel(
             !empty($agency->city) ? (string) $agency->city : null,
             !empty($agency->department) ? (string) $agency->department : null,
             !empty($agency->region) ? (string) $agency->region : null,
+            $country,
             $dimension,
         );
     }
@@ -189,15 +194,34 @@ final class LocationPrepositionRuntime implements RuntimeExtensionInterface
     /**
      * Build the SEO location label from raw values + active dimension.
      * Source de vérité partagée (sitemap + substitution du token %location%).
+     * Hors France : la dimension 'region' est remplacée par 'country' (dépt/région vides),
+     * et la parenthèse ville utilise le pays.
      */
-    public function buildLocationLabel(?string $city, ?string $department, ?string $region, ?string $dimension = null): string
+    public function buildLocationLabel(?string $city, ?string $department, ?string $region, ?string $country = null, ?string $dimension = null): string
     {
         return match ($dimension) {
-            'city' => $city ? (($department && $department !== $city) ? sprintf('à %s (%s)', $city, $department) : 'à '.$city) : '',
+            'city' => $city ? $this->cityLabel($city, $department, $country) : '',
             'department' => $department ? $this->concatPreposition($this->getDepartmentPreposition($department), $department) : '',
             'region' => $region ? $this->concatPreposition($this->getRegionPreposition($region), $region) : '',
+            'country' => $country ? 'en '.$country : '',
             default => '',
         };
+    }
+
+    /**
+     * Libellé ville : "à {ville} ({département})" en France, "à {ville} ({pays})" à l'étranger,
+     * "à {ville}" à défaut.
+     */
+    private function cityLabel(string $city, ?string $department, ?string $country): string
+    {
+        if ($department && $department !== $city) {
+            return sprintf('à %s (%s)', $city, $department);
+        }
+        if ($country) {
+            return sprintf('à %s (%s)', $city, $country);
+        }
+
+        return 'à '.$city;
     }
 
     /**
