@@ -357,6 +357,7 @@ class CoreExtension extends AbstractExtension
             new TwigFunction('transitionAttributes', [ContentRuntime\LayoutRuntime::class, 'transitionAttributes']),
             new TwigFunction('deptPreposition', [ContentRuntime\LocationPrepositionRuntime::class, 'getDepartmentPreposition']),
             new TwigFunction('regPreposition', [ContentRuntime\LocationPrepositionRuntime::class, 'getRegionPreposition']),
+            new TwigFunction('locationLabel', [ContentRuntime\LocationPrepositionRuntime::class, 'getLocationLabel']),
             new TwigFunction('deptName', [ContentRuntime\LocationPrepositionRuntime::class, 'getDepartmentName']),
             new TwigFunction('deptCode', [ContentRuntime\LocationPrepositionRuntime::class, 'getDepartmentCode']),
             new TwigFunction('deCityPrefix', [ContentRuntime\LocationPrepositionRuntime::class, 'getDeCityPrefix']),

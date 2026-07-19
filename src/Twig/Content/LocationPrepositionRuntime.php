@@ -166,6 +166,51 @@ final class LocationPrepositionRuntime implements RuntimeExtensionInterface
     }
 
     /**
+     * Build the SEO location label for a product variant, from an agency-like object
+     * exposing city/department/region, according to the active dimension.
+     *
+     * @param mixed       $agency    Objet exposant ->city / ->department / ->region
+     * @param string|null $dimension city|department|region (null = base)
+     */
+    public function getLocationLabel(mixed $agency, ?string $dimension = null): string
+    {
+        if (!is_object($agency)) {
+            return '';
+        }
+
+        return $this->buildLocationLabel(
+            !empty($agency->city) ? (string) $agency->city : null,
+            !empty($agency->department) ? (string) $agency->department : null,
+            !empty($agency->region) ? (string) $agency->region : null,
+            $dimension,
+        );
+    }
+
+    /**
+     * Build the SEO location label from raw values + active dimension.
+     * Source de vérité partagée (sitemap + substitution du token %location%).
+     */
+    public function buildLocationLabel(?string $city, ?string $department, ?string $region, ?string $dimension = null): string
+    {
+        return match ($dimension) {
+            'city' => $city ? (($department && $department !== $city) ? sprintf('à %s (%s)', $city, $department) : 'à '.$city) : '',
+            'department' => $department ? $this->concatPreposition($this->getDepartmentPreposition($department), $department) : '',
+            'region' => $region ? $this->concatPreposition($this->getRegionPreposition($region), $region) : '',
+            default => '',
+        };
+    }
+
+    /**
+     * Concatène une préposition et un nom en gérant l'espace (élision « l'/d' » incluse).
+     */
+    private function concatPreposition(string $preposition, string $name): string
+    {
+        $preposition = rtrim($preposition);
+
+        return str_ends_with($preposition, "'") ? $preposition.$name : $preposition.' '.$name;
+    }
+
+    /**
      * Resolve an input (name, department code or postal code) into a normalized payload.
      *
      * @return array{code?: string, name?: string, prep?: string}

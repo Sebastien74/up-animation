@@ -35,15 +35,10 @@
         {%- set children = trees[interfaceName][url.entityId] is defined and trees[interfaceName][url.entityId] is not empty ? trees[interfaceName][url.entityId]
             : (url.children is defined and url.children is not empty ? url.children : []) -%}
         {%- set display = not url.isInfill or (url.isInfill and children is not empty) -%}
-        {%- if url.agencyEntity is defined and url.agencyEntity -%}
-            {%- if url.agencyEntity.city -%}
-                {%- set title = title~' à '|trans~url.agencyEntity.city -%}
-            {%- endif -%}
-            {%- if url.agencyEntity.department -%}
-                {%- set title = title~' '~url.agencyEntity.department|deptPreposition~url.agencyEntity.department -%}
-            {%- endif -%}
-            {%- if url.agencyEntity.region -%}
-                {%- set title = title~' '~url.agencyEntity.region|regPreposition~url.agencyEntity.region -%}
+        {%- if url.agencyEntity is defined and url.agencyEntity and url.dimension is defined and url.dimension -%}
+            {%- set locationLabel = locationLabel(url.agencyEntity, url.dimension) -%}
+            {%- if locationLabel -%}
+                {%- set title = title~' '~locationLabel -%}
             {%- endif -%}
         {%- endif -%}
         {%- if display -%}

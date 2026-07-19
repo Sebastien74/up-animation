@@ -584,6 +584,11 @@ class SeoService implements SeoInterface
                     'indexPage' => $indexPage,
                     'uri' => $uri,
                     'canonical' => $canonical,
+                    'pageUrl' => $pageUrl,
+                    'code' => $code,
+                    'locale' => $locale,
+                    'routeName' => 'front_'.$interface['name'].'_view',
+                    'routeNameOnly' => 'front_'.$interface['name'].'_view_only',
                 ];
             }
 
@@ -664,7 +669,20 @@ class SeoService implements SeoInterface
      */
     private function getOgFullTitle(): ?string
     {
-        return $this->ogTitle ?: $this->fullTitle;
+        // Sans og:title dédié : reprend le <title> complet (déjà suffixé du nom de site).
+        if (!$this->ogTitle) {
+            return $this->fullTitle;
+        }
+        // Avec og:title dédié : concatène le nom de site comme le <title> (si afterDash actif).
+        if ($this->titleSecond) {
+            $secondTitle = trim($this->titleSecond);
+            $firstChar = $secondTitle ? substr($secondTitle, 0, 1) : null;
+            $ogFullTitle = '-' === $firstChar || '|' === $firstChar ? $this->ogTitle.' '.$secondTitle : $this->ogTitle.' | '.$secondTitle;
+
+            return trim($ogFullTitle, ' |');
+        }
+
+        return $this->ogTitle;
     }
 
     /**

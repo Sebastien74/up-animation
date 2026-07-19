@@ -13,6 +13,7 @@ use App\Model\Core\ConfigurationModel;
 use App\Model\Core\WebsiteModel;
 use App\Model\Module\CatalogModel;
 use App\Model\ViewModel;
+use App\Service\Core\Urlizer;
 use App\Service\Interface\CoreLocatorInterface;
 use Doctrine\ORM\Mapping\MappingException;
 use Doctrine\ORM\NonUniqueResultException;
@@ -317,34 +318,68 @@ class SitemapService
                     'urlEntity' => $urlEntity,
                     'isInfill' => false,
                 ];
-                $entityDb = $entity->entity;
-                if ($entityDb instanceof Product) {
-                    $catalog = $entityDb->getCatalog();
-                    $catalogSlug = $catalog?->getSlug();
-                    if ($catalogSlug && $catalogSlug !== 'agencies') {
-                        $catalogModel = $this->agenciesCatalogModel();
-                        $xml = $this->xml[$interface['name']][$entity->id][$urlEntity->getLocale()];
-                        foreach (($catalogModel->products ?? []) as $agency) {
-                            $this->xml[$interface['name']][$entity->id.'-agency-'.$agency->id][$urlEntity->getLocale()] = [
-                                'update' => $xml['update'],
-                                'uri' => $xml['uri'].'/'.$agency->slug,
-                                'url' => $xml['url'].'/'.$agency->slug,
-                                'active' => $xml['active'],
-                                'interface' => $xml['interface'],
-                                'entity' => $xml['entity'],
-                                'urlEntity' => $xml['urlEntity'],
-                                'isInfill' => $xml['isInfill'],
-                                'agency' => 'agency-'.$agency->id,
-                                'agencyEntity' => $agency,
-                            ];
-                        }
-                    }
-                }
+                $this->addLocationVariants($entity, $interface, $urlEntity, $urlInfos);
+
                 return $this->xml[$interface['name']][$entity->id][$urlEntity->getLocale()];
             }
         }
 
         return null;
+    }
+
+    /**
+     * Ajoute au sitemap les variantes d'URL localisées d'un produit — une par localisation
+     * UNIQUE (ville / département / région) issue du catalog Agences, pour le SEO local.
+     * Pas de segment d'agence dans l'URL : dépt/région sont partagés par plusieurs agences,
+     * donc dédoublonnés globalement (priorité ville > département > région).
+     * Ne concerne que les catalogs 'events', 'rentals' et 'services'. URLs générées via le router.
+     */
+    private function addLocationVariants(mixed $entity, array $interface, Url $urlEntity, object $urlInfos): void
+    {
+        $entityDb = $entity->entity;
+        if (!$entityDb instanceof Product || !in_array($entityDb->getCatalog()?->getSlug(), ['events', 'rentals', 'services'], true)) {
+            return;
+        }
+
+        $catalogModel = $this->agenciesCatalogModel();
+        $agencies = $catalogModel->products ?? [];
+        $xml = $this->xml[$interface['name']][$entity->id][$urlEntity->getLocale()];
+        $host = substr($xml['url'], 0, strlen($xml['url']) - strlen($xml['uri']));
+        $routeName = $urlInfos->pageUrl ? $urlInfos->routeName : $urlInfos->routeNameOnly;
+
+        $seen = [];
+        foreach (['city', 'department', 'region'] as $dimension) {
+            foreach ($agencies as $agency) {
+                $value = $agency->{$dimension} ?? null;
+                if (!$value) {
+                    continue;
+                }
+                $locationSlug = Urlizer::urlize((string) $value);
+                if (!$locationSlug || isset($seen[$locationSlug])) {
+                    continue;
+                }
+                $seen[$locationSlug] = true;
+                $params = ['url' => $urlInfos->code, 'location' => $locationSlug];
+                if ($urlInfos->pageUrl) {
+                    $params['pageUrl'] = $urlInfos->pageUrl;
+                }
+                $variantUri = $this->coreLocator->router()->generate($routeName, $params);
+                $variantUrl = $host.$variantUri;
+                $this->xml[$interface['name']][$entity->id.'-loc-'.$locationSlug][$urlEntity->getLocale()] = [
+                    'update' => $xml['update'],
+                    'uri' => $variantUri,
+                    'url' => $variantUrl,
+                    'active' => $this->coreLocator->request() && $variantUrl === $this->coreLocator->request()->getUri(),
+                    'interface' => $xml['interface'],
+                    'entity' => $xml['entity'],
+                    'urlEntity' => $xml['urlEntity'],
+                    'isInfill' => $xml['isInfill'],
+                    'agency' => 'loc-'.$locationSlug,
+                    'agencyEntity' => $agency,
+                    'dimension' => $dimension,
+                ];
+            }
+        }
     }
 
     /**

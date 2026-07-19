@@ -61,23 +61,6 @@
                         <h{{ titleForce }} class="title text-uppercase fw-900 mb-0{% if style is defined and style %} {{ style }}{% endif %}{% if anim.title.class %} {{ anim.title.class|raw }}{% endif %}"
                             {% if anim.title.attr %} {{ anim.title.attr|raw }}{% endif %}>
                             {{ title|unescape|raw }}
-                            {%- if city -%}
-                                <span class="city text-primary">
-                                    {{ 'à %city%'|trans({
-                                        '%city%': city
-                                    })|raw }}
-                                </span>
-                            {%- endif -%}
-                            {%- if department -%}
-                                <span class="department text-primary">
-                                    {{ department|deptPreposition~department }}
-                                </span>
-                            {%- endif -%}
-                            {%- if region -%}
-                                <span class="region text-primary">
-                                    {{ region|regPreposition~region }}
-                                </span>
-                            {%- endif -%}
                         </h{{ titleForce }}>
                         {%- if subTitle -%}
                             <div class="w-100 mt-2 {% if anim.subtitle.class %} {{ anim.subtitle.class|raw }}{% endif %}"

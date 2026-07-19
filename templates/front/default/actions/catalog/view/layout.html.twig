@@ -30,6 +30,12 @@
         {%- endif -%}
     {%- endif -%}
 
+    {#- Localisation du H1 : le token %location% est substitué au rendu par LocationTokenSubscriber
+        (retiré si aucun contexte agence dans l'URL). Hors agences (qui bâtissent leur propre titre). -#}
+    {%- if not asAgency and pageTitle -%}
+        {%- set pageTitle = pageTitle~' %location%' -%}
+    {%- endif -%}
+
     {%- set screensSizes = {} -%}
     {%- if asAgency -%}
         {%- set screensSizes = {
