@@ -98,9 +98,9 @@
                                                     <div class="col-6 col-sm-4 col-md-3">
                                                         <a href="{{ path }}"
                                                            class="d-inline-flex align-items-center justify-content-center btn btn-app text-center w-100 h-100 p-3 btn-add-block">
-                                                            <span class="inner d-inline-block">
+                                                            <span class="inner d-inline-flex justify-content-center align-items-center flex-column">
                                                                 {%- set icon = blockAction.iconClass ? blockAction.iconClass : "question" -%}
-                                                                {{ icon|icon(null, 40, 'white w-100 d-inline-block mb-2') }}
+                                                                {{ icon|icon(null, 40, 'white w-100 mb-2') }}
                                                                 <span class="add-block-title d-inline-block">{{ title|removeBetween(['(', ')']) }}</span>
                                                             </span>
                                                         </a>

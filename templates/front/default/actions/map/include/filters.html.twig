@@ -22,12 +22,12 @@
                                     <div class="custom-control custom-checkbox">
                                         <input type="checkbox" id="map-filter-{{ category.id }}" name="map_filter_{{ category.id }}" required="required" class="map-filter-checkbox custom-control-input d-none" checked>
                                         <label class="cursor custom-control-label required d-flex align-items-center" for="map-filter-{{ category.id }}">
-                                            <span class="me-3">{{ asset(categoryMarker)|file({}, {width: 40, height: 40, title: title}) }}</span>
+                                            <span class="me-3">{{ asset(categoryMarker)|file({}, {screensSizes: {mobile: {width: 40, height: 40}, tablet: {width: 40, height: 40}, laptop: {width: 40, height: 40}, desktop: {width: 40, height: 40}}, title: title}) }}</span>
                                             <span>{{ title|raw }}</span>
                                         </label>
                                     </div>
                                 {%- else -%}
-                                    <span class="me-2">{{ asset(categoryMarker)|file({}, {width: 40, height: 40, title: title}) }}</span>
+                                    <span class="me-2">{{ asset(categoryMarker)|file({}, {screensSizes: {mobile: {width: 40, height: 40}, tablet: {width: 40, height: 40}, laptop: {width: 40, height: 40}, desktop: {width: 40, height: 40}}, title: title}) }}</span>
                                     <span class="category-name">{{ title|raw }}</span>
                                 {%- endif -%}
                             </div>
@@ -72,13 +72,13 @@
                                 <div class="custom-control custom-checkbox">
                                     <input type="checkbox" id="map-filter-{{ category.id }}" name="map_filter_{{ category.id }}" required="required" class="map-filter-checkbox custom-control-input" checked>
                                     <label class="cursor custom-control-label required" for="map-filter-{{ category.id }}">
-                                        <span class="float-start me-2">{{ asset(categoryMarker)|file({}, {width: 40, height: 40, title: title}) }}</span>
+                                        <span class="float-start me-2">{{ asset(categoryMarker)|file({}, {screensSizes: {mobile: {width: 40, height: 40}, tablet: {width: 40, height: 40}, laptop: {width: 40, height: 40}, desktop: {width: 40, height: 40}}, title: title}) }}</span>
                                         <span class="float-start">{{ title|raw }}</span>
                                     </label>
                                 </div>
                             {%- else -%}
                                 <div class="d-inline-block content">
-                                    <span class="float-start me-2">{{ asset(categoryMarker)|file({}, {width: 40, height: 40, title: title}) }}</span>
+                                    <span class="float-start me-2">{{ asset(categoryMarker)|file({}, {screensSizes: {mobile: {width: 40, height: 40}, tablet: {width: 40, height: 40}, laptop: {width: 40, height: 40}, desktop: {width: 40, height: 40}}, title: title}) }}</span>
                                     <span class="float-start">{{ title|raw }}</span>
                                 </div>
                             {%- endif -%}

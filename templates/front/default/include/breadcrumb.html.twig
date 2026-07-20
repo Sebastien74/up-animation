@@ -28,7 +28,7 @@
                            data-position="{{ loop.index }}">
                     {%- endif -%}
                         <span itemprop="name" class="text-secondary d-inline-block{% if loop.last %} active{% endif %}" aria-label="{{ item.title|striptags }}">
-                            {{ item.title|truncate(75) }}
+                            {{ item.title|truncate(75)|raw }}
                         </span>
                     {%- if haveUrl -%}
                         </a>
@@ -46,7 +46,7 @@
                     {%- if haveUrl -%}
                         <a href="{{ absolute_url(item.url) }}">
                     {%- endif -%}
-                            <span class="{% if loop.last %} active{% else %}text-white{% endif %}">{{ item.title|truncate(30) }}</span>
+                            <span class="{% if loop.last %} active{% else %}text-white{% endif %}">{{ item.title|truncate(30)|raw }}</span>
                     {%- if haveUrl -%}
                         </a>
                     {%- endif -%}

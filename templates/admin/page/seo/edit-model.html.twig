@@ -17,27 +17,31 @@
 {%- endblock -%}
 
 {%- block body -%}
-
-    <div class="row">
-        <div class="col-md-4 mb-4">
-            <div class="card p-0">
-                {%- include 'admin/page/seo/include/filter-header.html.twig' -%}
-                <div class="card-body pb-2">
-                    {%- include 'admin/page/seo/include/filter-categories.html.twig' -%}
+    <div id="seo-edition">
+        <div class="row ajax-content reveal-stagger">
+            <div class="col-md-4 mb-4 reveal">
+                <div class="card">
+                    <div class="card-body pb-2">
+                        {%- include 'admin/page/seo/include/filter-header.html.twig' -%}
+                        <div id="seo-filter-categories">
+                            {%- if entities is defined -%}
+                                {%- include 'admin/page/seo/include/filter-categories.html.twig' -%}
+                            {%- endif -%}
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="col-md-8 mb-4">
-            <div class="row">
-                <div id="preview-container" class="col-md-6">
-                    {%- include 'admin/page/seo/include/fields-model.html.twig' -%}
-                </div>
-                <div id="seo-form-container" class="col-md-6">
-                    {%- include 'admin/page/seo/include/edition-model.html.twig' -%}
+            <div class="col-md-8 mb-4 reveal">
+                <div class="row reveal-stagger">
+                    <div id="preview-container" class="col-md-6 reveal">
+                        {%- include 'admin/page/seo/include/fields-model.html.twig' -%}
+                    </div>
+                    <div id="seo-form-container" class="col-md-6 reveal">
+                        {%- include 'admin/page/seo/include/edition-model.html.twig' -%}
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-
 {%- endblock -%}
 

@@ -84,7 +84,7 @@
                                     </span>
                                 {%- else -%}
                                     <a class="glightbox d-inline-block" href="{{ asset(mediaRelation|file({}, {path: true, placeholder: true})) }}">
-                                        {{ mediaRelation|file({}, {width: 30, height: 30}) }}
+                                        {{ mediaRelation|file({}, {screensSizes: {mobile: {width: 30, height: 30}, tablet: {width: 30, height: 30}, laptop: {width: 30, height: 30}, desktop: {width: 30, height: 30}}}) }}
                                     </a>
                                 {%- endif -%}
                                 {%- set filename = mediaRelation.media.originalName is defined ? mediaRelation.media.originalName : null -%}

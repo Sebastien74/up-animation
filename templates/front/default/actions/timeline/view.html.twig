@@ -24,7 +24,7 @@
                             </div>
                             {%- if intlMedia -%}
                                 <div class="icon">
-                                    {{ intlMedia|file(thumbConfiguration, {maxWidth: 80, maxHeight: 80}) }}
+                                    {{ intlMedia|file(thumbConfiguration, {screensSizes: {mobile: {width: 80, height: 80}, tablet: {width: 80, height: 80}, laptop: {width: 80, height: 80}, desktop: {width: 80, height: 80}}}) }}
                                 </div>
                             {%- endif -%}
                         </div>

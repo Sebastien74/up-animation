@@ -1222,7 +1222,9 @@ body.resizing-active {
         }
 
         i, svg {
-            font-size: 2.4rem;
+            font-size: 2rem;
+            width: 4rem !important;
+            height: 4rem !important;
         }
 
         svg, svg * {

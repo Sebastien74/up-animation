@@ -13,7 +13,7 @@
 {%- endif -%}
 
 {%- block title -%}{{ pageTitle|htmlEntities }}{%- endblock -%}
-{%- block pageTitle -%}{{ pageTitle|truncate(50, false) }}{%- endblock -%}
+{%- block pageTitle -%}{{ pageTitle|truncate(50, false)|raw }}{%- endblock -%}
 
 {%- block stylesheets -%}
     {{ parent() }}

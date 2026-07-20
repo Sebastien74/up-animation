@@ -20,7 +20,7 @@
                 <span class="item-link">
                     <a href="{{ path('admin_seo_edit', {website: websiteId(), entitylocale: entitylocale, url: url.id}) }}"
                        class="link-item {% if url == currentUrl %} active bold{% endif %}">
-                        {{ entity.adminName|truncate(60, false) }}
+                        {{ entity.adminName|truncate(60, false)|raw }}
                     </a>
                 </span>
             </div>

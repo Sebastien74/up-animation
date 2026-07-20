@@ -54,26 +54,41 @@
         {%- if displayMedia -%}
             <div class="card-header bg-transparent border-0 p-0">
                 {%- set haveSize = mediaWidth > 0 and mediaHeight > 0 -%}
+                {# Explicit link stays in the DOM while the async thumbnail loader regenerates (it does not re-inject the link) #}
+                {%- if targetLink -%}
+                    <a href="{{ targetLink }}" class="img-container d-inline-block overflow-hidden position-relative"{% if newTab %} target="_blank"{% endif %}{% if externalLink %} rel="noopener noreferrer"{% endif %}>
+                {%- endif -%}
                 {%- if thumbConfiguration and not haveSize -%}
                     {{ media|file(thumbConfiguration, {
                         parentEntity: entity,
-                        targetLink: targetLink,
+                        targetLink: targetLink ? false : targetLink,
+                        onlyLink: targetLink ? true : false,
+                        haveLink: targetLink ? true : false,
                         isInBox: isInBox,
                         placeholder: thumbPlaceholder,
                         class: mediaClass
                     }) }}
                 {%- else -%}
                     {{ media|file(thumbConfiguration, {
-                        maxWidth: mediaWidth,
-                        maxHeight: mediaHeight,
+                        screensSizes: {
+                            mobile: {width: mediaWidth, height: mediaHeight},
+                            tablet: {width: mediaWidth, height: mediaHeight},
+                            laptop: {width: mediaWidth, height: mediaHeight},
+                            desktop: {width: mediaWidth, height: mediaHeight}
+                        },
                         colSize: colSize,
                         zoneFullSize: fullSize,
                         parentEntity: entity,
-                        targetLink: targetLink,
+                        targetLink: targetLink ? false : targetLink,
+                        onlyLink: targetLink ? true : false,
+                        haveLink: targetLink ? true : false,
                         isInBox: isInBox,
                         placeholder: thumbPlaceholder,
                         class: mediaClass
                     }) }}
+                {%- endif -%}
+                {%- if targetLink -%}
+                    </a>
                 {%- endif -%}
             </div>
         {%- endif -%}
@@ -126,10 +141,10 @@
                 {%- endif -%}
                 <div class="text-block">
                     {%- if not disabledIntro and intro -%}
-                        <p class="card-text introduction mt-2 text-bold">{{ intro|truncate(truncate) }}</p>
+                        <p class="card-text introduction mt-2 text-bold">{{ intro|truncate(truncate)|raw }}</p>
                     {%- endif -%}
                     {%- if not disabledBody and not intro and body and truncate -%}
-                        <p class="card-text body mt-2">{{ body|truncate(truncate) }}</p>
+                        <p class="card-text body mt-2">{{ body|truncate(truncate)|raw }}</p>
                     {%- endif -%}
                     {%- if not disabledBody and not intro and body and not truncate -%}
                         <div class="card-text body mt-2">{{ body|raw }}</div>
@@ -141,8 +156,12 @@
                         <div class="pictogram-wrap w-100 text-center mt-4">
                             {{ asset(pictogram)|file({}, {
                                 class: 'pictogram position-relative',
-                                width: null,
-                                height: 120,
+                                screensSizes: {
+                                    mobile: {width: null, height: 120},
+                                    tablet: {width: null, height: 120},
+                                    laptop: {width: null, height: 120},
+                                    desktop: {width: null, height: 120}
+                                },
                             }) }}
                         </div>
                     {%- endif -%}
@@ -197,7 +216,7 @@
                 class: 'mb-3',
             }) }}
             {%- if vars.entity.intl.introduction -%}
-                <p class="card-text mb-0">{{ vars.entity.intl.introduction|truncate(150) }}</p>
+                <p class="card-text mb-0">{{ vars.entity.intl.introduction|truncate(150)|raw }}</p>
             {%- endif -%}
         </div>
         <div class="card-footer border-0 d-flex justify-content-end">
@@ -256,7 +275,7 @@
                     class: 'img-fluid w-100'
                 }) }}
             </a>
-            {%- set element = entity.indexUrl ? 'a' : span -%}
+            {%- set element = entity.indexUrl ? 'a' : 'span' -%}
             {%- set asLink = 'a' == element and not isIndex -%}
             {%- set linkLabel = catalog.intl.placeholder ? catalog.intl.placeholder : 'Tout voir'|trans -%}
             <{{ element }}{% if asLink %} href="{{ entity.indexUrl }}"{% endif %} class="circle-wrap-icon shadow bg-{{ entity.color }} d-flex align-items-center justify-content-center"

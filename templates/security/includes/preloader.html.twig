@@ -3,7 +3,7 @@
 <div id="main-preloader" class="row m-0">
     <div class="col-12 my-auto">
         <div class="w-100 text-center mb-4">
-            {{ logoPath|file({}, {id: 'logo', maxHeight: 150, lazyLoad: false}) }}
+            {{ logoPath|file({}, {id: 'logo', screensSizes: {mobile: {width: null, height: 150}, tablet: {width: null, height: 150}, laptop: {width: null, height: 150}, desktop: {width: null, height: 150}}, lazyLoad: false}) }}
         </div>
         <div id="fountainG">
             <div id="fountainG_1" class="fountainG"></div>

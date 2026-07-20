@@ -67,8 +67,12 @@
                                 popupGallery: popup,
                                 fullPopup: popup,
                                 placeholder: true,
-                                maxWidth: fileSizes.width is defined ? fileSizes.width : null,
-                                maxHeight: fileSizes.height is defined ? fileSizes.height : null,
+                                screensSizes: {
+                                    mobile: {width: fileSizes.width is defined ? fileSizes.width : null, height: fileSizes.height is defined ? fileSizes.height : null},
+                                    tablet: {width: fileSizes.width is defined ? fileSizes.width : null, height: fileSizes.height is defined ? fileSizes.height : null},
+                                    laptop: {width: fileSizes.width is defined ? fileSizes.width : null, height: fileSizes.height is defined ? fileSizes.height : null},
+                                    desktop: {width: fileSizes.width is defined ? fileSizes.width : null, height: fileSizes.height is defined ? fileSizes.height : null}
+                                },
                                 colSize: colSize,
                                 lazyLoad: not isFirstZone or (isFirstZone and not loop.first),
                                 priority: not isFirstZone or (isFirstZone and not loop.first) ? 'low': 'high',
@@ -99,7 +103,7 @@
                                     {%- endif -%}
                                     {%- if media.intl.pictogram -%}
                                         <div class="pictogram-wrap vertical-align col-12 order-2 order-lg-3">
-                                            {{ asset(media.intl.pictogram)|file({}, {class: 'pictogram', width: null, height: 350, title: media.intl.title}) }}
+                                            {{ asset(media.intl.pictogram)|file({}, {class: 'pictogram', screensSizes: {mobile: {width: null, height: 350}, tablet: {width: null, height: 350}, laptop: {width: null, height: 350}, desktop: {width: null, height: 350}}, title: media.intl.title}) }}
                                         </div>
                                     {%- endif -%}
                                     {%- if arrows and 'bottom' in slider.arrowAlignment -%}

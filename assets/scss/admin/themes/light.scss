@@ -2375,6 +2375,24 @@ body {
     }
 }
 
+/* Keyword badges (models fields) : accent light lisible sur papier crème.
+   admin-seo.css (valeurs dark) est chargé après admin-light.css, d'où le
+   !important pour repasser en palette light — même mécanique que .copy-link. */
+#seo-edition #preview-container .item.btn {
+
+    background: $theme-accent-bg !important;
+    border-color: $theme-accent-border !important;
+
+    &:hover {
+        background: $theme-accent-bg-strong !important;
+        border-color: $theme-accent-border-mid !important;
+    }
+
+    .to-copy {
+        color: $theme-text !important;
+    }
+}
+
 /*--- Translation (admin-translation.css en bundle séparé : mêmes overrides
      que le bloc SEO ci-dessus — $crumb-* et statuts sémantiques restent
      aux valeurs dark dans le bundle page, on repasse ici en palette light. ---*/

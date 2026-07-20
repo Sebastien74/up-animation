@@ -13,7 +13,7 @@
                 <button class="btn-close" data-bs-dismiss="modal" aria-label="{{"Fermer"|trans|raw }}"></button>
                 {%- if logo -%}
                     <a class="d-inline-block mb-4" href="{{ app.request.getSchemeAndHttpHost() }}">
-                        {{ asset(logo)|file({}, {noFluid: true, class: 'modal-logo', width: null, height: 100 }) }}
+                        {{ asset(logo)|file({}, {noFluid: true, class: 'modal-logo', screensSizes: {mobile: {width: null, height: 100}, tablet: {width: null, height: 100}, laptop: {width: null, height: 100}, desktop: {width: null, height: 100}} }) }}
                     </a>
                 {%- endif -%}
                 <p class="m-0 text-bold text-black">{{ modalMessage|raw }}</p>

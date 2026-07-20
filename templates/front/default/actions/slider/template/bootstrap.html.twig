@@ -107,9 +107,12 @@
                                 popupGallery: popup ? 'carousel-gallery-'~sliderSlug : false,
                                 fullPopup: popup,
                                 placeholder: true,
-                                maxWidth: fileSizes.width is defined ? fileSizes.width : (maxWidth is defined ? maxWidth : null),
-                                maxHeight: fileSizes.height is defined ? fileSizes.height : (maxHeight is defined ? maxHeight : null),
-                                screensSizes: screensSizes is defined and screensSizes is not empty ? screensSizes : {},
+                                screensSizes: screensSizes is defined and screensSizes is not empty ? screensSizes : {
+                                    mobile: {width: fileSizes.width is defined ? fileSizes.width : (maxWidth is defined ? maxWidth : null), height: fileSizes.height is defined ? fileSizes.height : (maxHeight is defined ? maxHeight : null)},
+                                    tablet: {width: fileSizes.width is defined ? fileSizes.width : (maxWidth is defined ? maxWidth : null), height: fileSizes.height is defined ? fileSizes.height : (maxHeight is defined ? maxHeight : null)},
+                                    laptop: {width: fileSizes.width is defined ? fileSizes.width : (maxWidth is defined ? maxWidth : null), height: fileSizes.height is defined ? fileSizes.height : (maxHeight is defined ? maxHeight : null)},
+                                    desktop: {width: fileSizes.width is defined ? fileSizes.width : (maxWidth is defined ? maxWidth : null), height: fileSizes.height is defined ? fileSizes.height : (maxHeight is defined ? maxHeight : null)}
+                                },
                                 colSize: colSize,
                                 lazyLoad: not isFirstZone or (isFirstZone and not loop.first),
                                 priority: not isFirstZone or (isFirstZone and not loop.first) ? 'low': 'high',

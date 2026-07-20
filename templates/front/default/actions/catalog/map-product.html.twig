@@ -2,7 +2,7 @@
 
 <div class="map-product">
     {%- if product.mainMedia -%}
-        {{ product.mainMedia|file({}, {width: 150, height: 150, placeholder: true}) }}
+        {{ product.mainMedia|file({}, {screensSizes: {mobile: {width: 150, height: 150}, tablet: {width: 150, height: 150}, laptop: {width: 150, height: 150}, desktop: {width: 150, height: 150}}, placeholder: true}) }}
     {%- endif -%}
     {{ product.intl.title|raw }}
 </div>

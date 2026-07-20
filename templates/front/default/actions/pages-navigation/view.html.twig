@@ -34,7 +34,12 @@
                             <a href="{{ page.url }}" class="item-page text-center d-inline-block mx-4">
                                 {{ media|file({}, {
                                     notInBox: true,
-                                    maxHeight: 200,
+                                    screensSizes: {
+                                        mobile: {width: null, height: 200},
+                                        tablet: {width: null, height: 200},
+                                        laptop: {width: null, height: 200},
+                                        desktop: {width: null, height: 200}
+                                    },
                                     popupGallery: false,
                                     fullPopup: false }) }}
                                 {%- if media.intl.title -%}

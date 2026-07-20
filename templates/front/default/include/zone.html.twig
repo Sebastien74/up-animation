@@ -65,7 +65,7 @@
         <div class="zone-container position-relative {{ zoneClass }}{% if not zoneBgFullSize %} {{ zoneContainerBg ~ zoneMarginsAndPaddings }}{% endif %}"
             {% if bgColorHexa %} style="background: {{ bgColorHexa }};" data-hexadecimal="{{ bgColorHexa }}" {% endif %} tabindex="-1">
             {%- if intlZone.title is defined and intlZone.title|striptags|length > 0 -%}
-                 Simplified title position management
+                {# Simplified title position management #}
                 {%- set tp = zone.titlePosition -%}
                 {%- set titlePosClass = ('right' in tp ? 'right' : 'left') ~ ('top' in tp ? ' top' : ('center' in tp ? ' center' : ('bottom' in tp ? ' bottom' : ''))) -%}
                 <div class="text-vertical {{ titlePosClass }}">

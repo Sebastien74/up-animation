@@ -204,8 +204,12 @@
                                                     {%- set mainMedia = entity|mainMedia(defaultLocale) -%}
                                                     <a class="glightbox d-inline-block" href="{{ asset(mainMedia|file({}, {path: true, placeholder: true})) }}">
                                                         {{ mainMedia|file({}, {
-                                                            width: 30,
-                                                            height: 30,
+                                                            screensSizes: {
+                                                                mobile: {width: 30, height: 30},
+                                                                tablet: {width: 30, height: 30},
+                                                                laptop: {width: 30, height: 30},
+                                                                desktop: {width: 30, height: 30}
+                                                            },
                                                             placeholder: true
                                                         }) }}
                                                     </a>

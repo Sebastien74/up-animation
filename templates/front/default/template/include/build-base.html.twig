@@ -9,8 +9,12 @@
                         {%- set screen = isMobile() ? 'xs' : (isTablet() ? 'md' : 'lg') -%}
                         {%- set config = {xs: {width: null, height: 180}, md: {width: null, height: 180}, lg: {width: null, height: 180}} -%}
                         {{ asset(logoPath)|file({}, {
-                            width: config[screen]['width'],
-                            height: config[screen]['height'],
+                            screensSizes: {
+                                mobile: {width: config[screen]['width'], height: config[screen]['height']},
+                                tablet: {width: config[screen]['width'], height: config[screen]['height']},
+                                laptop: {width: config[screen]['width'], height: config[screen]['height']},
+                                desktop: {width: config[screen]['width'], height: config[screen]['height']}
+                            },
                             title: companyName,
                             id: 'in-build-logo',
                             class: 'force-size initial-color',

@@ -52,7 +52,7 @@
                         <div class="avatar-frame">
                             <div class="avatar-ring"></div>
                             <div class="avatar-media bg-secondary-light">
-                                {{ asset(user|profile_img)|file({}, {maxHeight: 220}) }}
+                                {{ asset(user|profile_img)|file({}, {screensSizes: {mobile: {width: null, height: 220}, tablet: {width: null, height: 220}, laptop: {width: null, height: 220}, desktop: {width: null, height: 220}}}) }}
                             </div>
                         </div>
                     </div>

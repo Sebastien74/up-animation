@@ -2,7 +2,7 @@
 
 {%- trans_default_domain 'admin' -%}
 
-{%- set pageTitle = seo.title is defined and seo.title|truncate(40, false)|length > 0 ? "Référencement :"|trans~" "~seo.title|truncate(40) : "Référencement"|trans -%}
+{%- set pageTitle = seo.title is defined and seo.title|truncate(40, false)|length > 0 ? "Référencement :"|trans~" "~seo.title|truncate(40)|raw : "Référencement"|trans -%}
 {%- block title -%}{{ pageTitle|htmlEntities }}{%- endblock -%}
 {%- block pageTitle -%}{{ pageTitle }}{%- endblock -%}
 

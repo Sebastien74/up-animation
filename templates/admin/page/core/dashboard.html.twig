@@ -543,7 +543,7 @@
                                     {%- for entity in notFoundUrls|slice(0, notFoundFeedLimit) -%}
                                         {%- set displayUri = entity.uri ?: entity.url -%}
                                         <li class="notfound-row">
-                                            <span class="notfound-uri" title="{{ entity.url }}">{{ displayUri|truncate(54) }}</span>
+                                            <span class="notfound-uri" title="{{ entity.url }}">{{ displayUri|truncate(54)|raw }}</span>
                                             <span class="notfound-date">{{ entity.createdAt|ago }}</span>
                                             {%- if routeExist('admin_notfoundurl_redirection') -%}
                                                 <a href="{{ path('admin_notfoundurl_redirection', {website: websiteId(), notfoundUrl: entity.id}) }}"

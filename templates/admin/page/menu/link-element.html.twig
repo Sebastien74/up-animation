@@ -18,7 +18,7 @@
             {%- set isArchived = intlUrl.archived is defined and intlUrl.archived -%}
             {%- set tooltipTitle = isArchived ? "Page archivée"|trans : (not isOnline ? "Page non publiée"|trans : null) -%}
             <label for="item-page-{{ page.id }}" class="cursor mb-0{% if tooltipTitle %} text-muted opacity-50{% endif %}"
-                {% if tooltipTitle %} data-bs-toggle="tooltip" title="{{ tooltipTitle|striptags }}" {% endif %}>{{ page.adminName|truncate(40) }}</label>
+                {% if tooltipTitle %} data-bs-toggle="tooltip" title="{{ tooltipTitle|striptags }}" {% endif %}>{{ page.adminName|truncate(40)|raw }}</label>
         </div>
         <div class="push">
             <div class="custom-control custom-checkbox">

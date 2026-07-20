@@ -41,7 +41,7 @@
                                                         {%- if icon -%}
                                                             {{ icon|icon(null, 40, 'dark-50') }}
                                                         {%- else -%}
-                                                            {{ media|file({}, {width: 240, height: 240, class: 'media-thumb-img'}) }}
+                                                            {{ media|file({}, {screensSizes: {mobile: {width: 240, height: 240}, tablet: {width: 240, height: 240}, laptop: {width: 240, height: 240}, desktop: {width: 240, height: 240}}, class: 'media-thumb-img'}) }}
                                                         {%- endif -%}
                                                     </div>
                                                     {%- if not asCopy -%}

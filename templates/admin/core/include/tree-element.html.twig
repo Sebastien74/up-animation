@@ -64,7 +64,7 @@
                         <i class="icm-circle text-{{ color }}"></i>
                     </span>
                 {%- endif -%}
-                {%- if entity.adminName is defined and entity.adminName -%}<span>{{ entity.adminName|truncate(75, false) }}</span>{%- endif -%}
+                {%- if entity.adminName is defined and entity.adminName -%}<span>{{ entity.adminName|truncate(75, false)|raw }}</span>{%- endif -%}
             </span>
 
             {%- if children -%}

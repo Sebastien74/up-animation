@@ -118,8 +118,12 @@
                                         popupGallery: slider.popup or media.popup,
                                         fullPopup: slider.popup or media.popup,
                                         placeholder: true,
-                                        maxWidth: fileSizes.width is defined ? fileSizes.width : null,
-                                        maxHeight: fileSizes.height is defined ? fileSizes.height : null,
+                                        screensSizes: {
+                                            mobile: {width: fileSizes.width is defined ? fileSizes.width : null, height: fileSizes.height is defined ? fileSizes.height : null},
+                                            tablet: {width: fileSizes.width is defined ? fileSizes.width : null, height: fileSizes.height is defined ? fileSizes.height : null},
+                                            laptop: {width: fileSizes.width is defined ? fileSizes.width : null, height: fileSizes.height is defined ? fileSizes.height : null},
+                                            desktop: {width: fileSizes.width is defined ? fileSizes.width : null, height: fileSizes.height is defined ? fileSizes.height : null}
+                                        },
                                         colSize: colSize ? (colSize * 5 / 12) : 5,
                                         lazyLoad: not isFirstZone or (isFirstZone and not loop.first),
                                         priority: not isFirstZone or (isFirstZone and not loop.first) ? 'low': 'high',

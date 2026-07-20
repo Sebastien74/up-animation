@@ -30,7 +30,7 @@
                 <div class="avatar-frame avatar-frame-sm">
                     <div class="avatar-ring"></div>
                     <div class="avatar-media bg-secondary-light">
-                        {{ asset(user|profile_img)|file({}, {maxHeight: 140}) }}
+                        {{ asset(user|profile_img)|file({}, {screensSizes: {mobile: {width: null, height: 140}, tablet: {width: null, height: 140}, laptop: {width: null, height: 140}, desktop: {width: null, height: 140}}}) }}
                     </div>
                 </div>
             </div>

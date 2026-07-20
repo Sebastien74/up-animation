@@ -118,9 +118,12 @@
                                         class: 'radius-medium',
                                         disableLink: true,
                                         notInBox: true,
-                                        maxWidth: fileSizes.width is defined ? fileSizes.width : null,
-                                        maxHeight: fileSizes.height is defined ? fileSizes.height : null,
-                                        screensSizes: screensSizes is defined and screensSizes is not empty ? screensSizes : {},
+                                        screensSizes: screensSizes is defined and screensSizes is not empty ? screensSizes : {
+                                            mobile: {width: fileSizes.width is defined ? fileSizes.width : null, height: fileSizes.height is defined ? fileSizes.height : null},
+                                            tablet: {width: fileSizes.width is defined ? fileSizes.width : null, height: fileSizes.height is defined ? fileSizes.height : null},
+                                            laptop: {width: fileSizes.width is defined ? fileSizes.width : null, height: fileSizes.height is defined ? fileSizes.height : null},
+                                            desktop: {width: fileSizes.width is defined ? fileSizes.width : null, height: fileSizes.height is defined ? fileSizes.height : null}
+                                        },
                                         popupGallery: slider.popup,
                                         fullPopup: slider.popup,
                                         colSize: colSize is defined ? colSize : null
@@ -130,7 +133,7 @@
                                     <div class="content d-flex mt-4 pt-3">
                                         {%- if media.pictogram -%}
                                             <div class="pictogram-wrap">
-                                                {{ asset(media.pictogram)|file({}, {class: 'pictogram', width: 40, height: 40}) }}
+                                                {{ asset(media.pictogram)|file({}, {class: 'pictogram', screensSizes: {mobile: {width: 40, height: 40}, tablet: {width: 40, height: 40}, laptop: {width: 40, height: 40}, desktop: {width: 40, height: 40}}}) }}
                                             </div>
                                         {%- endif -%}
                                         <div class="inner">
@@ -197,8 +200,6 @@
                                     class: 'radius',
                                     disableLink: true,
                                     notInBox: false,
-                                    maxWidth: null,
-                                    maxHeight: null,
                                     popupGallery: false,
                                     fullPopup: false,
                                 }) }}

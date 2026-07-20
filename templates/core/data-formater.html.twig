@@ -168,7 +168,7 @@
                 {%- set dataValue = matches|last|replace({'MediaRelation': ' MediaRelation'}) -%}
             {%- endif -%}
             {%- set dotes = dotes is defined ? dotes : false -%}
-            {{ dataValue|truncate(truncate, dotes) }}
+            {{ dataValue|truncate(truncate, dotes)|raw }}
         {%- else -%}
             {{ dataValue|raw }}
         {%- endif -%}

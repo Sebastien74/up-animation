@@ -9,6 +9,7 @@ use App\Entity\Media\Media;
 use App\Entity\Seo\Url;
 use App\Service\Interface\AdminLocatorInterface;
 use App\Service\Interface\CoreLocatorInterface;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\NonUniqueResultException;
 use Knp\Bundle\PaginatorBundle\Pagination\SlidingPagination;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
@@ -75,7 +76,7 @@ class DeleteService
                     $entities = [];
                 }
             }
-            $this->remove($entities, $entityToDelete);
+            $this->remove($entities, $entityToDelete, is_array($interface) ? $interface : []);
         }
 
         $masterField = is_array($interface) && !empty($interface['masterField']) ? $interface['masterField'] : null;
@@ -113,7 +114,7 @@ class DeleteService
     /**
      * Remove Entity & set others Entities positions.
      */
-    private function remove(mixed $entities, mixed $entityToDelete): void
+    private function remove(mixed $entities, mixed $entityToDelete, array $interface = []): void
     {
         if (is_object($entityToDelete) && method_exists($entityToDelete, 'getLevel')
             && method_exists($entityToDelete, 'getParent')) {
@@ -136,9 +137,55 @@ class DeleteService
                 }
             }
         } else {
+            $this->detachFromMasterCollection($entityToDelete, $interface);
             $this->coreLocator->em()->remove($entityToDelete);
         }
         $this->coreLocator->em()->flush();
+    }
+
+    /**
+     * Detach the entity from its master (parent) inverse collection before removal.
+     *
+     * When a child entity (Zone/Col/Block…) is removed via em()->remove() but is still
+     * referenced in its parent's cascade:['persist'] collection, a parent touched during
+     * the same flush (see LayoutSubscriber) cascades the persist back onto the child and
+     * cancels the scheduled deletion. Removing it from the parent collection first triggers
+     * orphanRemoval and prevents the resurrection.
+     */
+    private function detachFromMasterCollection(object $entityToDelete, array $interface): void
+    {
+        $masterField = !empty($interface['masterField']) ? $interface['masterField'] : null;
+        if (!$masterField) {
+            return;
+        }
+
+        $em = $this->coreLocator->em();
+        $metadata = $em->getClassMetadata(get_class($entityToDelete));
+        if (!$metadata->hasAssociation($masterField)) {
+            return;
+        }
+
+        $mapping = $metadata->getAssociationMapping($masterField);
+        $inversedBy = is_array($mapping) ? ($mapping['inversedBy'] ?? null) : ($mapping->inversedBy ?? null);
+        if (!$inversedBy) {
+            return;
+        }
+
+        $parentGetter = 'get'.ucfirst($masterField);
+        $parent = method_exists($entityToDelete, $parentGetter) ? $entityToDelete->$parentGetter() : null;
+        if (!is_object($parent)) {
+            return;
+        }
+
+        $collectionGetter = 'get'.ucfirst($inversedBy);
+        if (!method_exists($parent, $collectionGetter)) {
+            return;
+        }
+
+        $collection = $parent->$collectionGetter();
+        if ($collection instanceof Collection && $collection->contains($entityToDelete)) {
+            $collection->removeElement($entityToDelete);
+        }
     }
 
     /**

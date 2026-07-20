@@ -29,8 +29,12 @@
                 <div class="pictogram-wrap rounded-circle d-flex align-items-center justify-content-center shadow-primary position-relative">
                     {{ asset(media.pictogram)|file({}, {
                         class: 'pictogram',
-                        width: media.pictogramMaxWidth ? media.pictogramMaxWidth : null,
-                        height: media.pictogramMaxHeight ? media.pictogramMaxHeight : 50,
+                        screensSizes: {
+                            mobile: {width: media.pictogramMaxWidth ? media.pictogramMaxWidth : null, height: media.pictogramMaxHeight ? media.pictogramMaxHeight : 50},
+                            tablet: {width: media.pictogramMaxWidth ? media.pictogramMaxWidth : null, height: media.pictogramMaxHeight ? media.pictogramMaxHeight : 50},
+                            laptop: {width: media.pictogramMaxWidth ? media.pictogramMaxWidth : null, height: media.pictogramMaxHeight ? media.pictogramMaxHeight : 50},
+                            desktop: {width: media.pictogramMaxWidth ? media.pictogramMaxWidth : null, height: media.pictogramMaxHeight ? media.pictogramMaxHeight : 50}
+                        },
                     }) }}
                 </div>
             </div>
@@ -68,8 +72,12 @@
                         disableLink: true,
                         targetLink: false,
                         lazyLoad: lazyLoad,
-                        maxWidth: mediaWidth,
-                        maxHeight: mediaHeight,
+                        screensSizes: {
+                            mobile: {width: mediaWidth, height: mediaHeight},
+                            tablet: {width: mediaWidth, height: mediaHeight},
+                            laptop: {width: mediaWidth, height: mediaHeight},
+                            desktop: {width: mediaWidth, height: mediaHeight}
+                        },
                         forceThumb: forceThumb,
                         colSize: col.size,
                         zoneFullSize: fullSize,
@@ -94,8 +102,12 @@
                     {%- else -%}
                         {{ block|file(thumbConfiguration, {
                             lazyLoad: lazyLoad,
-                            maxWidth: mediaWidth,
-                            maxHeight: mediaHeight,
+                            screensSizes: {
+                                mobile: {width: mediaWidth, height: mediaHeight},
+                                tablet: {width: mediaWidth, height: mediaHeight},
+                                laptop: {width: mediaWidth, height: mediaHeight},
+                                desktop: {width: mediaWidth, height: mediaHeight}
+                            },
                             forceThumb: forceThumb,
                             colSize: col.size,
                             zoneFullSize: fullSize,

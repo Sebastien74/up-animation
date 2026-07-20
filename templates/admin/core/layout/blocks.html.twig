@@ -43,7 +43,7 @@
                                 {%- elseif 'media' == blockTypeCode -%}
                                     {%- if haveMedia -%}
                                         <a href="{{ asset(mediaRelation|file({}, {path: true})) }}" class="glightbox d-inline-block text-center">
-                                            {{ mediaRelation|file({}, {width: 28, height: 28}) }}
+                                            {{ mediaRelation|file({}, {screensSizes: {mobile: {width: 28, height: 28}, tablet: {width: 28, height: 28}, laptop: {width: 28, height: 28}, desktop: {width: 28, height: 28}}}) }}
                                         </a>
                                     {%- else -%}
                                         <span class="btn-icon small {{ btnColor }}" data-bs-toggle="tooltip" title="{{ title|striptags }}">
@@ -70,10 +70,10 @@
                                         <span class="title-info">H{{ intl.titleForce }}</span>
                                     {%- endif -%}
                                     {%- if intl.title is defined and intl.title -%}
-                                        <small class="info-text italic">{{ intl.title|truncate(35, false) }}</small>
+                                        <small class="info-text italic">{{ intl.title|truncate(35, false)|raw }}</small>
                                     {%- endif -%}
                                 {%- elseif interface.name in displayAdminName -%}
-                                    <small class="info-text italic">{{ block.adminName|truncate(35, false) }}</small>
+                                    <small class="info-text italic">{{ block.adminName|truncate(35, false)|raw }}</small>
                                 {%- elseif 'layout-catalog-features' == blockTypeCode -%}
                                     {%- set featureId = block.data.featureId is defined ? block.data.featureId : false -%}
                                     {%- if featureId -%}
@@ -83,9 +83,9 @@
 
                                 {%- if intl.introduction is defined and intl.introduction or intl.body is defined and intl.body -%}
                                     {%- set description = intl.body|striptags|length > 0 ? intl.body : intl.introduction -%}
-                                    <small class="info-text italic">{{ description|truncate(35, false) }}</small>
+                                    <small class="info-text italic">{{ description|truncate(35, false)|raw }}</small>
                                 {%- elseif intl.targetLabel is defined and intl.targetLabel -%}
-                                    <small class="info-text italic">{{ intl.targetLabel|truncate(35, false) }}</small>
+                                    <small class="info-text italic">{{ intl.targetLabel|truncate(35, false)|raw }}</small>
                                 {%- endif -%}
 
                             </div>

@@ -52,10 +52,10 @@
                         {%- endif -%}
                         <div class="col-xl-10">
                             {%- if lastEntity.intl.introduction -%}
-                                <p class="introduction">{{ lastEntity.intl.introduction|truncate(150) }}</p>
+                                <p class="introduction">{{ lastEntity.intl.introduction|truncate(150)|raw }}</p>
                             {%- endif -%}
                             {%- if lastEntity.intl.body -%}
-                                <p class="introduction">{{ lastEntity.intl.body|truncate(150) }}</p>
+                                <p class="introduction">{{ lastEntity.intl.body|truncate(150)|raw }}</p>
                             {%- endif -%}
                             {%- include 'front/'~websiteTemplate~'/blocks/link/default.html.twig' with {
                                 intl: {'link': lastEntity.url, linkStyle: 'mt-3 text-uppercase'}

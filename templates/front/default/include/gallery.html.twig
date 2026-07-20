@@ -20,8 +20,12 @@
                     <div class="media-wrap radius overflow-hidden">
                         {{ media|file(thumbConfiguration, {
                             popupGallery: popup and not media.hideHover,
-                            maxWidth: mediaWidth,
-                            maxHeight: mediaHeight,
+                            screensSizes: {
+                                mobile: {width: mediaWidth, height: mediaHeight},
+                                tablet: {width: mediaWidth, height: mediaHeight},
+                                laptop: {width: mediaWidth, height: mediaHeight},
+                                desktop: {width: mediaWidth, height: mediaHeight}
+                            },
                             class: imgClass,
                             activeLazy: true,
                             colSize: colSize }) }}

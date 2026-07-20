@@ -54,10 +54,10 @@
             <span class="date mb-3 d-inline-block w-100">{{ entity.date|format_datetime(pattern=entity.category.formatDate|replace({'Y': 'y'}), locale=app.request.locale)|capitalize }}</span>
         {%- endif -%}
         {%- if entity.showIntro -%}
-            <p class="introduction text-bold mt-3">{{ entity.intl.introduction|truncate(200) }}</p>
+            <p class="introduction text-bold mt-3">{{ entity.intl.introduction|truncate(200)|raw }}</p>
         {%- endif -%}
         {%- if entity.showBody -%}
-            <p class="body mt-3">{{ entity.intl.body|truncate(200) }}</p>
+            <p class="body mt-3">{{ entity.intl.body|truncate(200)|raw }}</p>
         {%- endif -%}
     {%- endif -%}
 {%- endmacro -%}

@@ -176,19 +176,19 @@ class ImageThumbnail implements ImageThumbnailInterface
             ? $this->dirname($this->projectDirname.'/public'.$media->getOriginalName()) : $this->dirname($this->projectDirname.'/public/uploads/'.$this->uploadDirname.'/'.$media->getOriginalName()));
         $originalExist = $this->filesystem->exists($originalDirname);
         $originalInfoFile = $media->getOriginalName() ? $this->coreLocator->fileInfo()->file($website, $media->getOriginalName(), $originalDirname) : null;
-            $isEnableMaxSizes = $originalInfoFile && $originalInfoFile->getWidth() <= self::MAX_FILE_WIDTH && $originalInfoFile->getHeight() <= self::MAX_FILE_HEIGHT && $originalInfoFile->getSize() <= self::MAX_FILE_SIZE;
-            $mediaRelation = $options['mediaRelation'] = !empty($options['mediaRelation']) ? $options['mediaRelation'] : ($asMediaModel ? $mediaModel->mediaRelation : null);
-            $execute = $infoFile = false;
+        $isEnableMaxSizes = $originalInfoFile && $originalInfoFile->getWidth() <= self::MAX_FILE_WIDTH && $originalInfoFile->getHeight() <= self::MAX_FILE_HEIGHT && $originalInfoFile->getSize() <= self::MAX_FILE_SIZE;
+        $mediaRelation = $options['mediaRelation'] = !empty($options['mediaRelation']) ? $options['mediaRelation'] : ($asMediaModel ? $mediaModel->mediaRelation : null);
+        $execute = $infoFile = false;
 
-            $loaderFilename = $options['loaderFilename'] ?? null;
-            if ($loaderFilename && !$generator) {
-                $prefix = $this->inAdmin ? 'admin' : 'front';
-                $cacheFile = $this->projectDirname . '/public/thumbnails/generated/' . $prefix . '-' . $this->uploadDirname . '.cache.json';
-                $cacheFile = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $cacheFile);
-                if (!isset($this->cache['json_data']) && $this->filesystem->exists($cacheFile)) {
-                    $this->cache['json_data'] = (array)json_decode(file_get_contents($cacheFile));
-                }
+        $loaderFilename = $options['loaderFilename'] ?? null;
+        if ($loaderFilename && !$generator) {
+            $prefix = $this->inAdmin ? 'admin' : 'front';
+            $cacheFile = $this->projectDirname . '/public/thumbnails/generated/' . $prefix . '-' . $this->uploadDirname . '.cache.json';
+            $cacheFile = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $cacheFile);
+            if (!isset($this->cache['json_data']) && $this->filesystem->exists($cacheFile)) {
+                $this->cache['json_data'] = (array)json_decode(file_get_contents($cacheFile));
             }
+        }
 
         if ($media instanceof Media\Media && $media->getOriginalName()) {
             $extension = $this->getExtension($media);

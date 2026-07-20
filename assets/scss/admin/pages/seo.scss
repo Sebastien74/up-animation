@@ -152,7 +152,53 @@
 }
 
 /*-----------------------------------
-   6 ) Misc
+   6 ) Keyword badges (models fields)
+-----------------------------------*/
+
+/* Les mots-clés copiables des modèles SEO (`[entity.intl.title]`…) sont
+   des chips : surface teintée accent + bordure pour les distinguer du fond
+   de la carte (auparavant ton sur ton). Valeurs dark par défaut ; l'override
+   light vit dans themes/light.scss (#seo-edition .item.btn). */
+#seo-edition {
+
+    #preview-container .item.btn {
+        display: inline-flex;
+        width: auto;
+        margin: 0 $space-1 $space-1 0;
+        padding: $space-1 $space-1 $space-1 $space-2;
+        background: rgba($primary, .12);
+        border: 1px solid rgba($primary, .30);
+        border-radius: $radius-sm;
+        transition: background $transition-fast, border-color $transition-fast;
+
+        &:hover {
+            background: rgba($primary, .20);
+            border-color: rgba($primary, .55);
+        }
+
+        .refer-copy {
+            gap: $space-2;
+        }
+
+        .to-copy {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+            font-size: 12px;
+            font-weight: 500;
+            line-height: 1.5;
+            color: $crumb-text;
+            word-break: break-word;
+        }
+
+        /* Le bouton copier hérite déjà de .copy-link ; on neutralise juste sa
+           bordure sombre pour qu'il se fonde dans le chip accentué. */
+        .copy-link {
+            border-color: transparent;
+        }
+    }
+}
+
+/*-----------------------------------
+   7 ) Misc
 -----------------------------------*/
 
 .copy-link {

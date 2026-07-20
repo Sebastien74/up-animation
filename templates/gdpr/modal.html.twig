@@ -24,7 +24,7 @@
             <div id="gdpr-main" class="switch-block">
                 <div class="modal-header">
                     <div class="text-center w-100">
-                        {{ asset('build/gdpr/images/cookie-main.svg', 'gdpr')|file({}, {width: 120, height: 100, title: "Cookies"|trans}) }}
+                        {{ asset('build/gdpr/images/cookie-main.svg', 'gdpr')|file({}, {screensSizes: {mobile: {width: 120, height: 100}, tablet: {width: 120, height: 100}, laptop: {width: 120, height: 100}, desktop: {width: 120, height: 100}}, title: "Cookies"|trans}) }}
                     </div>
                 </div>
                 <div class="modal-body text-center pt-5 pe-5 ps-5 pb-4" data-simplebar>
@@ -50,7 +50,7 @@
             <div id="gdpr-choices" class="switch-block d-none">
                 <div class="modal-header">
                     <div class="text-center w-100">
-                        {{ asset('build/gdpr/images/cookie-choices.svg', 'gdpr')|file({}, {width: 98, height: 100, title: "Cookies"|trans}) }}
+                        {{ asset('build/gdpr/images/cookie-choices.svg', 'gdpr')|file({}, {screensSizes: {mobile: {width: 98, height: 100}, tablet: {width: 98, height: 100}, laptop: {width: 98, height: 100}, desktop: {width: 98, height: 100}}, title: "Cookies"|trans}) }}
                     </div>
                 </div>
                 <!-- .modal-body -->
@@ -65,7 +65,7 @@
                                         <li>
                                             <div class="row m-0">
                                                 <div class="col-2 text-center">
-                                                    {{ asset('build/gdpr/images/'~group.slug~'-gdpr.svg', 'gdpr')|file({}, {width: null, height: 20, title: group.adminName}) }}
+                                                    {{ asset('build/gdpr/images/'~group.slug~'-gdpr.svg', 'gdpr')|file({}, {screensSizes: {mobile: {width: null, height: 20}, tablet: {width: null, height: 20}, laptop: {width: null, height: 20}, desktop: {width: null, height: 20}}, title: group.adminName}) }}
                                                 </div>
                                                 <div class="col-8">
                                                     <b>{{ group.adminName|unescape|raw }}</b>
