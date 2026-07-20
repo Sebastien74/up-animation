@@ -95,13 +95,13 @@ class NewscastController extends ActionController
      * @throws ContainerExceptionInterface|InvalidArgumentException|NonUniqueResultException|NotFoundExceptionInterface|\ReflectionException|MappingException|\Exception
      */
     #[Route([
-        'fr' => '/{pageUrl}/fiche-actualite/{url}',
-        'en' => '/{pageUrl}/news-card/{url}',
-    ], name: 'front_newscast_view', methods: 'GET', schemes: '%protocol%', priority: 300)]
+        'fr' => '/{pageUrl}/fiche-actualite/{url}/{location}',
+        'en' => '/{pageUrl}/news-card/{url}/{location}',
+    ], name: 'front_newscast_view', defaults: ['location' => null], methods: 'GET', schemes: '%protocol%', priority: 300)]
     #[Route([
-        'fr' => '/fiche-actualite/{url}',
-        'en' => '/news-card/{url}',
-    ], name: 'front_newscast_view_only', methods: 'GET', schemes: '%protocol%', priority: 300)]
+        'fr' => '/fiche-actualite/{url}/{location}',
+        'en' => '/news-card/{url}/{location}',
+    ], name: 'front_newscast_view_only', defaults: ['location' => null], methods: 'GET', schemes: '%protocol%', priority: 300)]
     #[Cache(expires: 'tomorrow', public: true)]
     public function view(
         Request $request,

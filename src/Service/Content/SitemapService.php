@@ -8,10 +8,12 @@ use App\Entity\Core\Website;
 use App\Entity\Layout\Page;
 use App\Entity\Module\Catalog\Catalog;
 use App\Entity\Module\Catalog\Product;
+use App\Entity\Module\Newscast\Newscast;
 use App\Entity\Seo\Url;
 use App\Model\Core\ConfigurationModel;
 use App\Model\Core\WebsiteModel;
 use App\Model\Module\CatalogModel;
+use App\Model\Module\ProductModel;
 use App\Model\ViewModel;
 use App\Service\Core\Urlizer;
 use App\Service\Interface\CoreLocatorInterface;
@@ -338,12 +340,38 @@ class SitemapService
     private function addLocationVariants(mixed $entity, array $interface, Url $urlEntity, object $urlInfos): void
     {
         $entityDb = $entity->entity;
-        if (!$entityDb instanceof Product || !in_array($entityDb->getCatalog()?->getSlug(), ['events', 'rentals', 'services'], true)) {
+
+        // Produits localisés : toutes les agences du catalog 'agencies'.
+        if ($entityDb instanceof Product && in_array($entityDb->getCatalog()?->getSlug(), ['events', 'rentals', 'services'], true)) {
+            $catalogModel = $this->agenciesCatalogModel();
+            $this->emitLocationVariants($catalogModel->products ?? [], $entity, $interface, $urlEntity, $urlInfos);
+
             return;
         }
 
-        $catalogModel = $this->agenciesCatalogModel();
-        $agencies = $catalogModel->products ?? [];
+        // Actualités : uniquement les agences explicitement sélectionnées dans l'actualité.
+        if ($entityDb instanceof Newscast && $entityDb->getAgencies()->count() > 0) {
+            $agencies = [];
+            foreach ($entityDb->getAgencies() as $agencyDb) {
+                $agencies[] = ProductModel::fromEntity($agencyDb, $this->coreLocator, ['onlyForUrl' => true]);
+            }
+            $this->emitLocationVariants($agencies, $entity, $interface, $urlEntity, $urlInfos);
+        }
+    }
+
+    /**
+     * Émet dans le sitemap une variante d'URL localisée par localisation UNIQUE (ville / département /
+     * région / pays) issue de la liste d'agences fournie. Dédoublonnage global par slug
+     * (priorité ville > département > région > pays). Pas de segment d'agence dans l'URL.
+     *
+     * @param list<object> $agencies modèles d'agences exposant ->city/->department/->region/->country
+     */
+    private function emitLocationVariants(array $agencies, mixed $entity, array $interface, Url $urlEntity, object $urlInfos): void
+    {
+        if (!$agencies) {
+            return;
+        }
+
         $xml = $this->xml[$interface['name']][$entity->id][$urlEntity->getLocale()];
         $host = substr($xml['url'], 0, strlen($xml['url']) - strlen($xml['uri']));
         $routeName = $urlInfos->pageUrl ? $urlInfos->routeName : $urlInfos->routeNameOnly;

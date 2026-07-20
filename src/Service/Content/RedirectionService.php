@@ -147,17 +147,17 @@ class RedirectionService
             if (self::$redirectionCache) {
                 $cache = self::$redirectionCache;
                 $currentRequestSSLUri = 'https://'.$domain.$request->getRequestUri();
-                $item = $cache->getItem('redirection.'.$locale.'.'.$website->id.'.'.Urlizer::urlize($currentRequestSSLUri));
+                $item = $cache->getItem('redirection.'.$locale.'.'.$website->id.'.'.Urlizer::urlizePath($currentRequestSSLUri));
                 if ($item->isHit()) {
                     return $item->get();
                 }
                 $currentRequestNoSLLUri = $domain.$request->getRequestUri();
-                $item = $cache->getItem('redirection.'.$locale.'.'.$website->id.'.'.Urlizer::urlize($currentRequestNoSLLUri));
+                $item = $cache->getItem('redirection.'.$locale.'.'.$website->id.'.'.Urlizer::urlizePath($currentRequestNoSLLUri));
                 if ($item->isHit()) {
                     return $item->get();
                 }
                 if ($request->getRequestUri()) {
-                    $item = $cache->getItem('redirection.'.$locale.'.'.$website->id.'.'.Urlizer::urlize($request->getRequestUri()));
+                    $item = $cache->getItem('redirection.'.$locale.'.'.$website->id.'.'.Urlizer::urlizePath($request->getRequestUri()));
                     if ($item->isHit()) {
                         return $item->get();
                     }

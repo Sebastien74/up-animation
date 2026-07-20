@@ -38,9 +38,20 @@
         {%- if url.agencyEntity is defined and url.agencyEntity and url.dimension is defined and url.dimension -%}
             {%- set locationLabel = locationLabel(url.agencyEntity, url.dimension) -%}
             {%- if locationLabel -%}
-                {%- set title = title~' '~locationLabel -%}
+                {%- if '%location%' in title -%}
+                    {#- titre porteur du token (actualités) : substitution in-place -#}
+                    {%- set title = title|replace({'%location%': locationLabel}) -%}
+                {%- else -%}
+                    {#- titre sans token (produits) : append, capitalisé après . ! ? -#}
+                    {%- if title|striptags|trim|slice(-1) in ['.', '!', '?'] -%}
+                        {%- set locationLabel = locationLabel|slice(0, 1)|upper ~ locationLabel|slice(1) -%}
+                    {%- endif -%}
+                    {%- set title = title~' '~locationLabel -%}
+                {%- endif -%}
             {%- endif -%}
         {%- endif -%}
+        {#- nettoie un token résiduel (canonique base sans localisation, ou sécurité) -#}
+        {%- set title = title|replace({' %location%': '', '%location%': ''}) -%}
         {%- if display -%}
             <li class="d-inline-block align-items-start">
                 {%- if url.url and not url.isInfill -%}
@@ -78,6 +89,20 @@
                     {%- elseif groupName != 'main' and urls.entity is defined and urls.url is defined -%}
                         {%- set title = urls.entity.intlCard.title is defined and urls.entity.intlCard.title ? urls.entity.intlCard.title : (urls.title is defined ? urls.title : null) -%}
                         {%- if title -%}
+                            {%- if urls.agencyEntity is defined and urls.agencyEntity and urls.dimension is defined and urls.dimension -%}
+                                {%- set locationLabel = locationLabel(urls.agencyEntity, urls.dimension) -%}
+                                {%- if locationLabel -%}
+                                    {%- if '%location%' in title -%}
+                                        {%- set title = title|replace({'%location%': locationLabel}) -%}
+                                    {%- else -%}
+                                        {%- if title|striptags|trim|slice(-1) in ['.', '!', '?'] -%}
+                                            {%- set locationLabel = locationLabel|slice(0, 1)|upper ~ locationLabel|slice(1) -%}
+                                        {%- endif -%}
+                                        {%- set title = title~' '~locationLabel -%}
+                                    {%- endif -%}
+                                {%- endif -%}
+                            {%- endif -%}
+                            {%- set title = title|replace({' %location%': '', '%location%': ''}) -%}
                             <li class="d-inline-block align-items-start"><a href="{{ urls.url }}" class="mb-2 d-inline-block" title="{{ title|striptags|raw }}">{{ title|striptags|raw }}</a></li>
                         {%- endif -%}
                     {%- elseif groupName == 'main' -%}

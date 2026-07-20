@@ -86,7 +86,7 @@ class RedirectionManager
         $dirname = $this->clearCache();
         $cacheData = [];
         foreach ($redirections as $redirection) {
-            $cacheData['redirection.'.$redirection->getLocale().'.'.$redirection->getWebsite()->getId().'.'.Urlizer::urlize($redirection->getOld())] = $redirection->getNew();
+            $cacheData['redirection.'.$redirection->getLocale().'.'.$redirection->getWebsite()->getId().'.'.Urlizer::urlizePath($redirection->getOld())] = $redirection->getNew();
         }
         $cache = new PhpArrayAdapter($dirname, new FilesystemAdapter());
         $cache->warmUp($cacheData);

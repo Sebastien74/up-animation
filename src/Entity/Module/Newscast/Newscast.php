@@ -7,6 +7,7 @@ namespace App\Entity\Module\Newscast;
 use App\Entity\BaseEntity;
 use App\Entity\Core\Website;
 use App\Entity\Layout\Layout;
+use App\Entity\Module\Catalog\Product;
 use App\Entity\Seo\Url;
 use App\Repository\Module\Newscast\NewscastRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -126,6 +127,16 @@ class Newscast extends BaseEntity
     private ArrayCollection|PersistentCollection $tags;
 
     /**
+     * Agences (produits du catalog 'agencies') associées à l'actualité : pilotent la génération
+     * des variantes d'URL localisées (%location%) dans le sitemap. Sélection manuelle en admin.
+     */
+    #[ORM\ManyToMany(targetEntity: Product::class)]
+    #[ORM\JoinTable(name: 'module_newscast_agencies')]
+    #[ORM\JoinColumn(name: 'newscast_id', referencedColumnName: 'id', onDelete: 'cascade')]
+    #[ORM\InverseJoinColumn(name: 'product_id', referencedColumnName: 'id', onDelete: 'cascade')]
+    private ArrayCollection|PersistentCollection $agencies;
+
+    /**
      * Newscast constructor.
      */
     public function __construct()
@@ -135,6 +146,7 @@ class Newscast extends BaseEntity
         $this->mediaRelations = new ArrayCollection();
         $this->urls = new ArrayCollection();
         $this->tags = new ArrayCollection();
+        $this->agencies = new ArrayCollection();
     }
 
     /**
@@ -433,6 +445,30 @@ class Newscast extends BaseEntity
     public function removeTag(Tag $tag): static
     {
         $this->tags->removeElement($tag);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Product>
+     */
+    public function getAgencies(): Collection
+    {
+        return $this->agencies;
+    }
+
+    public function addAgency(Product $agency): static
+    {
+        if (!$this->agencies->contains($agency)) {
+            $this->agencies->add($agency);
+        }
+
+        return $this;
+    }
+
+    public function removeAgency(Product $agency): static
+    {
+        $this->agencies->removeElement($agency);
 
         return $this;
     }

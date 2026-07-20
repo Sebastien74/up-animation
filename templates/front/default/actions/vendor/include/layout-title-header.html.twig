@@ -2,7 +2,8 @@
 
 {%- if entity.intl.title -%}
     {%- set pageTitle = entity.intl.title is defined ? entity.intl.title : (pageTitle is defined ? pageTitle : null) -%}
-    {#- Localisation du H1 pour les fiches produit catalog (hors agences) : %location% substitué au rendu. -#}
+    {#- Localisation du H1 pour les fiches produit catalog (hors agences) : %location% substitué au rendu.
+       (Les actualités portent déjà %location% dans leur titre de contenu, pas d'append ici.) -#}
     {%- if pageTitle and entity.asAgency is defined and not entity.asAgency -%}
         {%- set pageTitle = pageTitle~' %location%' -%}
     {%- endif -%}

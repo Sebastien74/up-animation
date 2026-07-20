@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Form\Type\Module\Newscast;
 
 use App\Entity\Core\Website;
+use App\Entity\Module\Catalog\Product;
 use App\Entity\Module\Newscast\Category;
 use App\Entity\Module\Newscast\Newscast;
 use App\Form\Widget as WidgetType;
@@ -114,6 +115,29 @@ class NewscastType extends AbstractType
                 'label' => $this->translator->trans('Mettre en avant', [], 'admin'),
                 'attr' => ['class' => 'col-12 w-100'],
                 'row_attr' => ['class' => 'col-12 col-md-8 col-lg-2 d-flex align-items-end'],
+            ]);
+
+            $builder->add('agencies', EntityType::class, [
+                'label' => $this->translator->trans('Agences (SEO local %location%)', [], 'admin'),
+                'multiple' => true,
+                'required' => false,
+                'display' => 'search',
+                'help' => $this->translator->trans("Génère les variantes d'URL localisées de cette actualité (ville / département / région de chaque agence sélectionnée).", [], 'admin'),
+                'attr' => [
+                    'data-placeholder' => $this->translator->trans('Sélectionnez des agences', [], 'admin'),
+                    'row_attr' => ['class' => 'col-12'],
+                ],
+                'class' => Product::class,
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('p')
+                        ->join('p.catalog', 'c')
+                        ->andWhere('c.slug = :slug')->setParameter('slug', 'agencies')
+                        ->andWhere('p.website = :website')->setParameter('website', $this->website)
+                        ->orderBy('p.adminName', 'ASC');
+                },
+                'choice_label' => function ($entity) {
+                    return strip_tags((string) $entity->getAdminName());
+                },
             ]);
 
             if ($data->getCategory() && $data->getCategory()->isAsEvents()) {
