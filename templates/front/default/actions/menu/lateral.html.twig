@@ -83,9 +83,9 @@
             </div>
             {%- endif -%}
             {%- if link.children and (not isHeader or link.level == 2) -%}
-                <div class="submenu text-start ps-4 pe-4 ps-lg-5 pe-lg-5 py-5 bg-white submenu-level-{{ link.level }}{% if isHeader %} is-header-submenu{% endif %}" data-level="{{ link.level }}">
+                <div class="submenu text-start ps-4 pe-4 ps-lg-5 pe-lg-5 py-lg-5 submenu-level-{{ link.level }}{% if isHeader %} is-header-submenu{% endif %}" data-level="{{ link.level }}">
                     {%- set displayBack = link.level >= 1 -%}
-                    <div class="d-flex mb-5 pb-5 pb-lg-0">
+                    <div class="d-none d-lg-inline-flex mb-5 pb-5 pb-lg-0">
                         <a class="d-none d-lg-inline-flex me-4" aria-label="{{ companyName|striptags }}" href="{{ app.request.getSchemeAndHttpHost() }}">
                             {{ asset(logo)|file({}, {
                                 screensSizes: {
@@ -111,7 +111,11 @@
                     {%- set subLabel = link.subTitle ? link.subTitle : link.title -%}
                     {%- set parentEl = link.link ? 'a' : 'div' -%}
                     {%- set asLink = 'a' == parentEl -%}
-                    <{{ parentEl }}{% if asLink %} href="{{ link.link }}" {% endif %} class="parent-label-wrap d-flex fw-700 align-items-center{% if not asLink %} dropdown-back-level-{{ link.level }}{% endif %}{% if not displayBack %} d-none{% endif %}{% if asLink %} btn btn-blur btn-blur-secondary d-inline-flex{% endif %}">
+                    <div class="dropdown-back mb-4 fw-600 nav-link text-primary text-start dropdown-item d-lg-none" aria-hidden="true">
+                        <i class="icon-arrow-left text-primary me-3" aria-hidden="true"></i>
+                        <span class="label-back text-secondary position-relative fw-500">{{ 'Retour'|raw }}</span>
+                    </div>
+                    <{{ parentEl }}{% if asLink %} href="{{ link.link }}" {% endif %} class="parent-label-wrap fw-700 align-items-center{% if not asLink %} d-none dropdown-back-level-{{ link.level }}{% else %}d-flex{% endif %}{% if not displayBack %} d-none{% endif %}{% if asLink %} btn btn-blur btn-blur-secondary d-inline-flex{% endif %}">
                         {%- if not asLink -%}
                             <i class="icon-arrow-left text-primary me-2 me-md-3"></i>
                         {%- endif -%}

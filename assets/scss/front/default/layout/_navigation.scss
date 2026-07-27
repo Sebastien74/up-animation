@@ -449,6 +449,7 @@ body.menu-open {
 
         @include mediaQuery(max-lg) {
             width: 100%;
+            padding-top: 6.5rem;
         }
 
         @include mediaQuery(min-lg) {
@@ -525,16 +526,9 @@ body.menu-open {
 
         .dropdown-back {
 
-            border-bottom: 1px solid transparentize($white, .8);
+            border-bottom: 1px solid transparentize($secondary, .8);
             line-height: 1.1;
-
-            @include mediaQuery(max-md) {
-                font-size: 21px;
-            }
-
-            @include mediaQuery(min-md) {
-                font-size: 26px;
-            }
+            font-size: 1rem;
 
             .close-menu {
                 position: relative;
@@ -731,7 +725,7 @@ body.menu-open {
 
                 font-size: 22px;
                 background-color: transparent !important;
-                padding: .5rem 1.5rem !important;
+                padding: 0 0 .75rem 0 !important;
 
                 svg {
                     margin-top: 2px;
@@ -768,15 +762,18 @@ body.menu-open {
                 }
 
                 .parent-label-wrap {
+
                     max-width: 100%;
+
                     @include mediaQuery(max-md) {
                         span, i {
-                            font-size: 14px;
+                            font-size: 1rem;
                         }
                     }
                 }
 
                 li {
+
                     width: 100%;
 
                     a:not(.parent-label-wrap) {
@@ -791,6 +788,7 @@ body.menu-open {
 
                         &.active {
                             color: $secondary !important;
+                            border: 0;
                         }
                     }
                 }

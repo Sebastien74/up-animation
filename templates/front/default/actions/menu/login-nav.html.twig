@@ -6,11 +6,11 @@
 {%- set displayLogout = false -%}
 {%- set adminInSession = not isUserFront(app.user) ? adminBackUser() : null -%}
 
-<div id="login-nav" class="navbar-nav mx-auto ms-{{ expand }}-auto me-{{ expand }}-0 mt-4 mt-{{ expand }}-0 text-center">
+<div id="login-nav" class="navbar-nav mx-auto ms-{{ expand }}-auto me-{{ expand }}-0 text-center">
     {%- if adminInSession -%}
         {%- set adminLabel = adminInSession.username ?: adminInSession.email -%}
         <a href="{{ path('security_front_forms') }}"
-           class="ms-{{ expand }}-4 mb-3 mb-{{ expand }}-0 btn btn-circle btn-blur btn-blur-secondary"
+           class="ms-{{ expand }}-4 btn btn-circle btn-blur btn-blur-secondary"
            aria-label="{{ ('Connecté en admin : %name%'|trans({'%name%': adminLabel})~' - '~'Choisir un compte utilisateur'|trans)|striptags }}"
            data-bs-toggle="tooltip" data-bs-placement="bottom"
            title="{{ ('Connecté en admin : %name%'|trans({'%name%': adminLabel})~' - '~'Choisir un compte utilisateur'|trans)|striptags }}">
@@ -18,7 +18,7 @@
         </a>
     {%- elseif not isUserFront(app.user) -%}
         <a href="{{ path('security_front_forms') }}"
-           class="ms-{{ expand }}-4 mb-3 mb-{{ expand }}-0 btn btn-circle btn-blur btn-blur-secondary"
+           class="ms-{{ expand }}-4 btn btn-circle btn-blur btn-blur-secondary"
            aria-label="{{ 'Connectez-vous'|trans|striptags }}"
            data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ 'Connectez-vous'|trans|striptags }}">
             <i class="icon-user" aria-hidden="true"></i>
@@ -34,7 +34,7 @@
     {%- elseif is_granted('IS_AUTHENTICATED_FULLY') -%}
         {%- if displayLogout -%}
             <a href="{{ logoutPath }}"
-               class="btn btn-circle btn-blur btn-blur-secondary ms-{{ expand }}-4 mb-3 mb-{{ expand }}-0"
+               class="btn btn-circle btn-blur btn-blur-secondary ms-{{ expand }}-4"
                aria-label="{{ 'Déconnectez-vous'|trans|striptags }}"
                data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ 'Déconnectez-vous'|trans|striptags }}">
                 <i class="icon-power-off" aria-hidden="true"></i>
