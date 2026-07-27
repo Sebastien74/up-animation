@@ -668,8 +668,12 @@ class ImageThumbnail implements ImageThumbnailInterface
                 $height = $originalHeight;
             }
             if ($originalWidth && $width && $width > $size) {
+                // Cap the width to $size while preserving the TARGET crop ratio
+                // (current width/height) - not the source ratio, which would
+                // discard the crop computed above and yield a portrait output
+                // (e.g. a 590x450 request on a portrait source at retina size).
+                $height = $height ? ($height * $size) / $width : $height;
                 $width = $size;
-                $height = ($originalHeight * $width) / $originalWidth;
             }
         }
 
