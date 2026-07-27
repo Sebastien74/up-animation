@@ -38,6 +38,10 @@
     overflow: hidden;
     transition: border-color $transition-fast, transform $transition-fast, box-shadow $transition-fast;
 
+    &[data-select2-id] {
+        overflow: initial !important;
+    }
+
     // 3 px accent rail — always present, opacity-driven so the form
     // and the data cards share the same scaffolding. Goes full $primary
     // on .is-active or hover.

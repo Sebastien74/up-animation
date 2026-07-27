@@ -13,7 +13,7 @@
 {%- endif -%}
 
 {%- block title -%}{{ pageTitle|htmlEntities }}{%- endblock -%}
-{%- block pageTitle -%}{{ pageTitle|truncate(50, false)|raw }}{%- endblock -%}
+{%- block pageTitle -%}{{ pageTitle|truncate(50, false) }}{%- endblock -%}
 
 {%- block stylesheets -%}
     {{ parent() }}
@@ -29,7 +29,9 @@
     {%- if granted('ROLE_LAYOUT_'~interface.name|upper) -%}
         <div id="layout-grid" class="mb-4">
             {%- set layout = entity.layout is defined and entity.layout ? entity.layout : (layout is defined ? layout : null) -%}
-            {%- include 'admin/core/layout/cache-invalidate-button.html.twig' -%}
+            <div class="mb-3">
+                {%- include 'admin/core/layout/cache-invalidate-button.html.twig' -%}
+            </div>
             {%- include 'admin/core/layout/zones.html.twig' -%}
         </div>
     {%- endif -%}
