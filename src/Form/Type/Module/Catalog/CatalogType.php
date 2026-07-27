@@ -107,7 +107,7 @@ class CatalogType extends AbstractType
             ]);
 
             $builder->add('layout', WidgetType\LayoutType::class, [
-                'row_attr' => ['class' => 'col-12 px-0']
+                'row_attr' => ['class' => 'col-12']
             ]);
 
             $mediaRelations = new WidgetType\MediaRelationsCollectionType($this->coreLocator);

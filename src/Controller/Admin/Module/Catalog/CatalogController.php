@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Controller\Admin\Module\Catalog;
 
 use App\Controller\Admin\AdminController;
-use App\Entity\Layout\Page;
 use App\Entity\Module\Catalog\Catalog;
 use App\Entity\Seo\Seo;
 use App\Entity\Seo\Url;
