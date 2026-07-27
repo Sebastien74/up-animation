@@ -2,17 +2,46 @@
 
     {%- import _self as macro -%}
 
-    {%- macro dropdown(activeLocale, locales, routes, microDataActive, flags, class, currentFlag, fullName) -%}
+    {%- macro dropdown(activeLocale, locales, routes, microDataActive, flags, class, currentFlag, fullName, count) -%}
+        {%- if count == 2 -%}
+            {# Deux langues : afficher directement un lien vers l'autre langue (pas de dropdown) #}
+            {%- set otherLocale = null -%}
+            {%- for locale in locales -%}
+                {%- if locale != activeLocale and routes[locale] is defined -%}
+                    {%- set otherLocale = locale -%}
+                {%- endif -%}
+            {%- endfor -%}
+            {%- if otherLocale -%}
+                {%- set languageName = otherLocale|languageName(otherLocale) -%}
+                <div class="locales-switcher switcher{% if class %} {{ class }}{% endif %}"
+                     {% if microDataActive %} itemprop="availableLanguage" itemscope itemtype="https://schema.org/Language" {% endif %}>
+                    {%- if microDataActive -%}
+                        <span itemprop="name" class="d-none">{{ languageName }}</span>
+                    {%- endif -%}
+                    <a class="d-flex align-items-center justify-content-center" href="{{ routes[otherLocale] }}"
+                       aria-label="{{ languageName }}"
+                       hreflang="{{ otherLocale }}" lang="{{ otherLocale }}">
+                        {%- if flags -%}
+                            {{ ('flags '~otherLocale~'-round')|icon(25, 25, null, {title: languageName}) }}
+                        {%- else -%}
+                            {%- set name = fullName ? otherLocale|languageName(otherLocale)|capitalize : otherLocale|upper -%}
+                            {{ name }}
+                        {%- endif -%}
+                    </a>
+                </div>
+            {%- endif -%}
+        {%- else -%}
         <div class="dropdown switcher{% if class %} {{ class }}{% endif %}">
             <a class="dropdown-toggle d-flex align-items-center justify-content-center" aria-label="{{"Langues"|trans|striptags }}"
                href="#" role="button" id="locales-switcher" data-bs-toggle="dropdown" aria-expanded="false">
                 {%- if flags -%}
                     {{ ('flags '~activeLocale~'-round')|icon(25, 25, 'me-1 me-xl-2', {title: activeLocale|languageName}) }}
-                    <span class="d-none d-xl-inline-block">{{ activeLocale|capitalize }}</span>
+{#                    <span class="d-none d-xl-inline-block">{{ activeLocale|capitalize }}</span>#}
                 {%- else -%}
                     {%- set name = fullName ? activeLocale|languageName(activeLocale)|capitalize : activeLocale|upper -%}
                     {{ name }}
-                {%- endif -%}<i class="icon-chevron-down ms-1 position-relative"></i>
+                {%- endif -%}
+{#                <i class="icon-chevron-down ms-1 position-relative"></i>#}
             </a>
             <ul class="dropdown-menu bg-transparent p-0 border-0 no-min-width" aria-labelledby="locales-switcher">
                 {%- for locale in locales -%}
@@ -37,6 +66,7 @@
                 {%- endfor -%}
             </ul>
         </div>
+        {%- endif -%}
     {%- endmacro -%}
 
     {%- macro inline(activeLocale, locales, routes, microDataActive, count, flags, class, currentFlag, fullName) -%}
@@ -93,7 +123,7 @@
         {%- if inline -%}
             {{ macro.inline(activeLocale, locales, routes, microDataActive, count, flags, class, currentFlag, fullName) }}
         {%- else -%}
-            {{ macro.dropdown(activeLocale, locales, routes, microDataActive, flags, class, currentFlag, fullName) }}
+            {{ macro.dropdown(activeLocale, locales, routes, microDataActive, flags, class, currentFlag, fullName, count) }}
         {%- endif -%}
     {%- endif -%}
 {%- endif -%}
