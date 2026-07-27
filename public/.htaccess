@@ -123,8 +123,12 @@ AddDefaultCharset UTF-8
 	# Header append Link "<https://fonts.gstatic.com>; rel=preconnect; crossorigin"
 
     # 1 year: 60 seconds × 60 minutes × 24 hours × 365 days = 31536000 seconds
+    # Prod : assets versionnés par hash de contenu → cache long + immutable (jamais revalidé).
+    # Dev (*.local) : pas d'immutable — sinon les changements CSS/JS ne sont jamais rechargés
+    # (le navigateur ne revalide pas un asset immutable, même sur F5). On force la revalidation.
     <FilesMatch "\.(ico|jpe?g|png|gif|svg|webp|avif|css|js|woff2?|mp4|webm|ogv|ogg|mov|avi|mpeg)$">
-        Header set Cache-Control "max-age=31557600, public, immutable"
+        Header set Cache-Control "max-age=31557600, public, immutable" "expr=%{HTTP_HOST} !~ /\.local$/"
+        Header set Cache-Control "no-cache, must-revalidate" "expr=%{HTTP_HOST} =~ /\.local$/"
         Header unset Pragma
     </FilesMatch>
 
