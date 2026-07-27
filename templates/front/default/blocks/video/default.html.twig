@@ -23,6 +23,16 @@
 {%- if intlVideo -%}
     <div id="video-{{ videoId }}" class="video-block {% if radius %} radius{% endif %}{% if portrait %} portrait{% endif %}">
         {{ intlVideo|video(media, {thumbConfiguration: thumbConfiguration, portrait: portrait}) }}
+        {%- if haveContent -%}
+            <details class="mt-3">
+                {%- if title -%}
+                    <summary>{{ title }}</summary>
+                {%- endif -%}
+                {%- if body -%}
+                    <p>{{ body|raw }}</p>
+                {%- endif -%}
+            </details>
+        {%- endif -%}
     </div>
 {%- elseif intlMedia.media is defined and intlMedia.media -%}
     {%- set haveVideo = false -%}
