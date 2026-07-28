@@ -91,6 +91,8 @@ jobs:
             --exclude='.env.prod' \
             --exclude='.env.dev' \
             --exclude='.env.test' \
+            --exclude='translations/*.yaml' \
+            --exclude='translations/*.yml' \
             --exclude='var/' \
             --exclude='public/medias/' \
             --exclude='public/uploads/' \
