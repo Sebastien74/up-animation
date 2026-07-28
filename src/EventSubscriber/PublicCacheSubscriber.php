@@ -27,6 +27,8 @@ use Symfony\Component\HttpKernel\KernelEvents;
 final class PublicCacheSubscriber implements EventSubscriberInterface
 {
     private const int SHARED_MAX_AGE = 600;
+    private const int STALE_WHILE_REVALIDATE = 86400;
+    private const int STALE_IF_ERROR = 86400;
 
     public static function getSubscribedEvents(): array
     {
@@ -80,6 +82,13 @@ final class PublicCacheSubscriber implements EventSubscriberInterface
         $response->headers->remove('Expires');
         $response->headers->remove('Pragma');
         $response->headers->remove('Cache-Control');
-        $response->headers->set('Cache-Control', 'public, s-maxage='.self::SHARED_MAX_AGE.', max-age=0');
+        // stale-while-revalidate/stale-if-error keep a cold shared-cache node from blocking a
+        // visitor on the slow origin render (root cause of the intermittent Varnish 503).
+        $response->headers->set('Cache-Control', sprintf(
+            'public, s-maxage=%d, max-age=0, stale-while-revalidate=%d, stale-if-error=%d',
+            self::SHARED_MAX_AGE,
+            self::STALE_WHILE_REVALIDATE,
+            self::STALE_IF_ERROR
+        ));
     }
 }
