@@ -85,7 +85,7 @@
             {%- if link.children and (not isHeader or link.level == 2) -%}
                 <div class="submenu text-start ps-4 pe-4 ps-lg-5 pe-lg-5 py-lg-5 submenu-level-{{ link.level }}{% if isHeader %} is-header-submenu{% endif %}" data-level="{{ link.level }}">
                     {%- set displayBack = link.level >= 1 -%}
-                    <div class="d-none d-lg-inline-flex mb-5 pb-5 pb-lg-0">
+                    <div class="d-none d-lg-inline-flex mb-5 pb-5 pb-lg-0 w-100">
                         <a class="d-none d-lg-inline-flex me-4" aria-label="{{ companyName|striptags }}" href="{{ app.request.getSchemeAndHttpHost() }}">
                             {{ asset(logo)|file({}, {
                                 screensSizes: {
