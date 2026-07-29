@@ -1,3 +1,5 @@
+import DOMPurify from 'dompurify';
+
 /**
  * Media loader
  *
@@ -31,7 +33,10 @@ export default function () {
                         const loaderWrap = el.closest('.img-loader-wrap');
                         if (loaderWrap) {
                             const innerLoader = loaderWrap.querySelector('.img-loader');
-                            loaderWrap.innerHTML = response.html;
+                            // Trusted Types (CSP `require-trusted-types-for 'script'`) : innerHTML
+                            // exige un TrustedHTML. DOMPurify crée à la volée la policy `dompurify`
+                            // (déjà whitelistée dans SecurityPolicySubscriber) et renvoie un TrustedHTML.
+                            loaderWrap.innerHTML = DOMPurify.sanitize(response.html, {RETURN_TRUSTED_TYPE: true});
                             if (innerLoader) {
                                 innerLoader.remove();
                             }
@@ -80,4 +85,4 @@ export default function () {
             });
         }
     }, { passive: true });
-};
+};
