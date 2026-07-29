@@ -170,10 +170,7 @@ class ThumbnailRuntime implements RuntimeExtensionInterface
             // Ne déférer au fragment mediaLoader (hinclude async) que si la vignette n'est pas
             // encore générée : une fois présente dans le cache JSON, on rend directement le
             // <picture> final (media|thumb) sans round-trip /_fragment.
-            // Never defer an eager (above-the-fold) image: it is the LCP candidate and must be
-            // in the initial HTML, not injected later by the async fragment.
             $deferToFragment = $generateThumbs
-                && !empty($options['lazyLoad'])
                 && $allowedExtension
                 && !$inAdmin
                 && !isset($options['beforeRender'])
