@@ -162,3 +162,34 @@ Mesure comparative de la même page, à code identique :
 - 8 fichiers de police pour ~218 Ko, dont 4 préchargés en priorité haute. Attention :
   `font-display: optional` est en place, retirer un preload peut faire rendre le texte en
   police de repli.
+
+---
+
+## État final confirmé (2026-08-20, après invalidation du cache du site)
+
+Vignettes générées + cache du site invalidé : la page canonique sert le rendu propre
+(0 bloc `generating`, 0 original pleine résolution) avec le preload corrigé.
+
+Quatre mesures PSI mobile consécutives : **91, 92, 92, 92** (médiane 92). La dispersion est
+retombée à 1 point, contre 76-89 lors des mesures prises juste après déploiement, cache froid
+et génération de vignettes en cours - ce qui confirme qu'il faut mesurer sur un site au repos.
+
+| Indicateur | Avant | Après |
+| --- | --- | --- |
+| Score mobile | 86-89 | **91-92** |
+| Score desktop | - | **97** |
+| LCP | 3,6 s | **2,9 s** |
+| TBT | 95 ms | **52 ms** (score plein) |
+| CLS | 0 | 0 |
+| Poids page | 1 385 Ko | **431 Ko** |
+| dont images | 1 011 Ko | **59 Ko** |
+| Requêtes | 64 | 57 |
+| Requêtes hero | 3 (89 Ko) | **1 (49 Ko)** |
+
+Seul indicateur en retrait : le **FCP** (1,2 s -> 1,9 s). Ce n'est pas une régression de
+rendu : à taille de document quasi identique (28,8 Ko contre 28,5 Ko compressés), la durée
+modélisée du document est passée de 1 513 ms à 1 987 ms. C'est la variance Lantern décrite
+plus haut, pas un effet du code.
+
+Leviers restants, par ordre d'intérêt : `unused-css-rules` (~48 Ko), `render-blocking`, puis
+les 218 Ko de polices (avec la réserve `font-display: optional`).
