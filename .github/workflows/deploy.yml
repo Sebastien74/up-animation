@@ -40,7 +40,22 @@ jobs:
           cache: yarn
 
       - name: Install JS dependencies
-        run: yarn install --frozen-lockfile
+        run: |
+          set +e
+          yarn install --frozen-lockfile 2>&1 | tee /tmp/yarn-install.log
+          code=${PIPESTATUS[0]}
+          if [ "$code" != "0" ]; then
+            {
+              echo "## Echec de \`yarn install --frozen-lockfile\` (exit $code)"
+              echo ""
+              echo "Runner: \`$ImageOS\` / node \`$(node -v)\` / yarn \`$(yarn -v)\` / python \`$(python3 -V 2>&1)\`"
+              echo ""
+              echo '```'
+              tail -n 120 /tmp/yarn-install.log
+              echo '```'
+            } >> "$GITHUB_STEP_SUMMARY"
+          fi
+          exit $code
 
       - name: Build assets
         run: |
