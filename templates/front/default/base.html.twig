@@ -174,17 +174,11 @@
             <link rel="modulepreload" href="{{ preload(asset('build/front/'~websiteTemplate~'/front-'~websiteTemplate~'-'~filename~'.js', webpack), {as: 'script', importance: configFile.importance, nonce: csp_nonce()}) }}" as="script" fetchpriority="{{ configFile.importance }}">
         {%- endfor -%}
 
-        {%- if preloadFiles.images is defined -%}
-            {% set mediaQueries = {
-                480: '(max-width: 767px)',
-                768: '(min-width: 768px) and (max-width: 1199px)',
-                1200: '(min-width: 1200px) and (max-width: 1399px)',
-                1920: '(min-width: 1400px)'
-            } %}
-            {% for size, preloadFile in preloadFiles.images %}
-                <link rel="preload" fetchpriority="high" as="image" href="{{ preloadFile }}" nonce="{{ csp_nonce() }}" type="image/{{ preloadFile|split('.')|last }}"
-                        {% if mediaQueries[size] is defined %} media="{{ mediaQueries[size] }}"{% endif %}>
-            {% endfor %}
+        {#- Responsive preload mirroring the rendered <picture>: a fixed href per breakpoint made the browser fetch a candidate the picture never used. -#}
+        {%- if preloadFiles.images.srcset is defined and preloadFiles.images.srcset -%}
+            <link rel="preload" fetchpriority="high" as="image" href="{{ preloadFiles.images.href }}"
+                  imagesrcset="{{ preloadFiles.images.srcset }}" imagesizes="{{ preloadFiles.images.sizes }}"
+                  nonce="{{ csp_nonce() }}"{% if preloadFiles.images.type %} type="{{ preloadFiles.images.type }}"{% endif %}>
         {%- endif -%}
 
         {{ macroApi.render({

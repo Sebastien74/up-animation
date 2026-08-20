@@ -27,6 +27,17 @@ use Symfony\Component\WebLink\Link;
 ])]
 class ThumbService
 {
+    private const string PRELOAD_SIZES = '100vw';
+    private const array MIME_BY_EXTENSION = [
+        'jpg' => 'image/jpeg',
+        'jpeg' => 'image/jpeg',
+        'png' => 'image/png',
+        'webp' => 'image/webp',
+        'avif' => 'image/avif',
+        'gif' => 'image/gif',
+        'svg' => 'image/svg+xml',
+    ];
+
     private static array $preloadJsonRaw = [];
     private array $thumbConfigurationCache = [];
     private array $thumbsActionsCache = [];
@@ -67,32 +78,40 @@ class ThumbService
 
         if ($jsonData && $originalName && str_contains($jsonData, $originalName)) {
             $files = $this->thumbnail->execute($mediaModel, $thumbConfiguration);
-            $thumbs = !empty($files['lazyFile']) ? [$files['lazyFile']] : [];
-            $thumbs = !empty($files['files']) ? array_replace($thumbs, $files['files']) : $thumbs;
-            $sizesDisplay = !empty($files['sizesDisplay']) ? $files['sizesDisplay'] : $this->thumbnail->getSizes();
-            $mediaQueries = [
-                480 => '(max-width: 767px)',
-                768 => '(min-width: 768px) and (max-width: 1199px)',
-                1200 => '(min-width: 1200px) and (max-width: 1399px)',
-                1920 => '(min-width: 1400px)',
-            ];
+            $thumbs = !empty($files['files']) ? $files['files'] : [];
+            ksort($thumbs);
+
+            // Same candidate set as the rendered <picture> (all sizes, deduplicated): a narrower set makes the browser preload a variant the picture never uses.
+            $srcset = $seen = [];
             foreach ($thumbs as $key => $thumb) {
-                if ('0' == $key || in_array($key, $sizesDisplay) && !in_array($key, $this->thumbnail->getRetinaSizes()) && !str_contains($thumb, '-blur.')) {
-                    $thumbsRender[$key] = $thumb;
-                    $linkProvider = $this->coreLocator->request()->attributes->get('_links', new GenericLinkProvider());
-                    $linkPath = str_replace('/public/', '/', $thumb);
-                    $link = (new Link('preload', $linkPath))
-                        ->withAttribute('as', 'image')
-                        ->withAttribute('fetchpriority', 'high');
-                    if (isset($mediaQueries[$key])) {
-                        $link = $link->withAttribute('media', $mediaQueries[$key]);
-                    }
-                    $extension = pathinfo($thumb, PATHINFO_EXTENSION);
-                    if ($extension) {
-                        $link = $link->withAttribute('type', 'image/' . $extension);
-                    }
-                    $this->coreLocator->request()->attributes->set('_links', $linkProvider->withLink($link));
+                if ((int) $key <= 0 || !$thumb || str_contains($thumb, '-blur.') || in_array($thumb, $seen, true)) {
+                    continue;
                 }
+                $seen[] = $thumb;
+                $srcset[$key] = str_replace('/public/', '/', $thumb).' '.(int) $key.'w';
+            }
+
+            if ($srcset) {
+                $href = (string) strtok((string) reset($srcset), ' ');
+                $extension = strtolower(pathinfo(parse_url($href, PHP_URL_PATH) ?: $href, PATHINFO_EXTENSION));
+                $mime = self::MIME_BY_EXTENSION[$extension] ?? null;
+                $thumbsRender = [
+                    'href' => $href,
+                    'srcset' => implode(', ', $srcset),
+                    'sizes' => self::PRELOAD_SIZES,
+                    'type' => $mime,
+                ];
+
+                $link = (new Link('preload', $href))
+                    ->withAttribute('as', 'image')
+                    ->withAttribute('fetchpriority', 'high')
+                    ->withAttribute('imagesrcset', $thumbsRender['srcset'])
+                    ->withAttribute('imagesizes', self::PRELOAD_SIZES);
+                if ($mime) {
+                    $link = $link->withAttribute('type', $mime);
+                }
+                $linkProvider = $this->coreLocator->request()->attributes->get('_links', new GenericLinkProvider());
+                $this->coreLocator->request()->attributes->set('_links', $linkProvider->withLink($link));
             }
         }
 
