@@ -99,3 +99,66 @@ le `<picture>` utilise `sizesDesktop` calculé depuis `colSize` (par exemple `41
 hero en `col-lg-5`). Le comportement n'est pas dégradé par rapport à l'existant, qui posait
 déjà une hypothèse pleine largeur, mais un preload desktop parfaitement aligné demanderait de
 propager `colSize` jusqu'à ce chemin.
+
+---
+
+## Résultat mesuré après déploiement (2026-08-20)
+
+Le correctif est en ligne et vérifié sur la page canonique : **un seul** preload
+`as="image"` avec `imagesrcset`, le preload `media1` inutilisé a disparu, et le hero ne
+télécharge plus qu'**une** variante (49,0 Ko contre 89,3 Ko en trois requêtes). Le TBT est
+passé de 100 ms à 10-50 ms.
+
+En revanche le **score n'a pas bougé grâce à ce correctif seul**, et c'est l'enseignement
+principal de la campagne de mesure.
+
+### Le score mobile est limité par la bande passante, pas par le preload
+
+Sur une mesure stabilisée, les phases du LCP somment à **1 012 ms** (TTFB 16 +
+`resourceLoadDelay` 620 + `resourceLoadDuration` 70 + `elementRenderDelay` 306) alors que la
+métrique LCP annoncée est de **5,4 s**. L'écart n'est pas une incohérence : les phases
+proviennent de la trace **réelle** (le hero peint en ~1 s), la métrique est la **simulation**
+4G de Lantern. À ~1,6 Mbps, les 1 356 Ko de la page valent à eux seuls ~6,8 s de
+téléchargement.
+
+Conséquence pratique : **tant que le poids total reste élevé, optimiser le preload ne peut
+pas déplacer le score.** Deux corollaires observés :
+
+- dans le graphe Lantern, une sous-ressource ne démarre jamais avant la **fin du document** :
+  le hero part systématiquement ~48 ms après lui. Un preload ne rattrape pas ce verrou ;
+- la durée modélisée du document est très instable d'un run à l'autre (589 ms à 2 192 ms pour
+  une taille identique de ~29 Ko compressés), ce qui suffit à faire varier le score d'une
+  dizaine de points. **Ne jamais conclure sur un seul run.**
+
+### Le vrai levier : les placeholders `generating`
+
+Quand les vignettes d'un média ne sont pas encore générées, `image-loader.html.twig` rend un
+placeholder dont le `background-image` pointe sur l'**original pleine résolution**. Sur la
+home, cela représentait **912 Ko sur 1 356 Ko, soit 67 % du poids de la page** (deux JPEG
+1920x1080 et un `share.jpg`).
+
+Mesure comparative de la même page, à code identique :
+
+| Version | Score | LCP | Poids | Originaux |
+| --- | --- | --- | --- | --- |
+| Placeholders `generating` | 79 | 5,4 s | 1 356 Ko | 912 Ko |
+| Vignettes générées | **90-92** | **2,7-2,9 s** | **431 Ko** | 0 |
+
+### Procédure de remise en état
+
+1. Générer les vignettes manquantes. L'étape « warm » du déploiement ne suffit pas : elle
+   récupère les URLs `/thumbnails/` présentes dans le HTML, mais **pas** les fragments
+   `_fragment ... mediaLoader` qui déclenchent la génération. Les appeler explicitement
+   (ils sont signés par `_hash`, donc valides tels quels dans le HTML) ou utiliser
+   `app:thumbs:generate`.
+2. **Invalider le cache du site** (bouton du dashboard admin, qui bompe `cacheClearDate`).
+   Sans cette étape, l'URL canonique continue de servir le rendu en cache avec les
+   placeholders alors que `?x=RANDOM` rend déjà la version correcte - le symptôme classique
+   « canonique vieux / query param neuf ».
+
+### Reste à faire
+
+- `unused-css-rules` : ~48 Ko de CSS non utilisé sur la home.
+- 8 fichiers de police pour ~218 Ko, dont 4 préchargés en priorité haute. Attention :
+  `font-display: optional` est en place, retirer un preload peut faire rendre le texte en
+  police de repli.
