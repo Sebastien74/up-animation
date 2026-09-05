@@ -36,18 +36,6 @@
     {%- endif -%}
 {%- endif -%}
 
-{%- set args = {} -%}
-{%- if onlyHx or (generateThumbs or onlyLazy) -%}
-    {%- if entity -%}
-        {%- set args = {classname: getClass(entity)|url_encode, id: entity.id, loaderFilename: loaderFilename|url_encode}|merge(options) -%}
-        {%- for key, value in args -%}
-            {%- if isObject(value) -%}
-                {%- set args = args|unset(key) -%}
-            {%- endif -%}
-        {%- endfor -%}
-    {%- endif -%}
-{%- endif -%}
-
 {%- if generateThumbs and popupWithoutBox -%}
     <a href="{{ loaderSrc }}" class="glightbox">
 {%- endif -%}
@@ -69,7 +57,8 @@
                             <div class="spinner-border text-{{ spinnerColor }}" role="status"></div>
                         </div>
                     {%- endif -%}
-                    <div class="inner position-relative overflow-hidden{% if radius %} {{ radiusClass }}{% endif %}" style="background-image: url({{ absolute_url(asset(loaderSrc)) }});">
+                    {%- set loaderPreviewSrc = loaderPreviewSrc is defined ? loaderPreviewSrc : null -%}
+                    <div class="inner position-relative overflow-hidden{% if radius %} {{ radiusClass }}{% endif %}"{% if loaderPreviewSrc %} style="background-image: url({{ absolute_url(asset(loaderPreviewSrc)) }});"{% endif %}>
                         <img src="{{ loaderSvgSrc }}" alt="SVG Loader" class="img-fluid force-size{% if class %} {{ class }}{% endif %}" width="{{ width }}"{% if height %} height="{{ height }}"{% endif %}>
                     </div>
                 </div>

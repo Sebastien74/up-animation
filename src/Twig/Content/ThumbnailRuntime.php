@@ -32,6 +32,9 @@ use Twig\Extension\RuntimeExtensionInterface;
  */
 class ThumbnailRuntime implements RuntimeExtensionInterface
 {
+    // Above this weight the original is a costlier placeholder than the thumbnail it stands in for.
+    private const int LOADER_PREVIEW_MAX_BYTES = 153600;
+
     private ?Request $request = null;
     private string $projectDirname;
     private array $options = [];
@@ -187,6 +190,9 @@ class ThumbnailRuntime implements RuntimeExtensionInterface
             $options['loaderSvgSrc'] = !empty($thumbnails['lazyFileSvg']) ? $thumbnails['lazyFileSvg'] : (is_string($src) ? $src : $sizedSvg);
             $options['loaderSrc'] = $options['dataSource'] = !empty($thumbnails['dataSource'])
                 ? $thumbnails['dataSource'] : (!is_object($src) ? $src : '/uploads/'.$this->coreLocator->website()->uploadDirname.'/'.$media->media->getOriginalName());
+            $mediaSize = $media->media->getSize();
+            $options['loaderPreviewSrc'] = $mediaSize && $mediaSize <= self::LOADER_PREVIEW_MAX_BYTES
+                ? $options['loaderSrc'] : null;
             $options['entity'] = $src;
             $options['thumbs'] = $thumbnails['thumbs'] ?? null;
             $options['alt'] = $thumbnails['infos']['alt'] ?? null;
