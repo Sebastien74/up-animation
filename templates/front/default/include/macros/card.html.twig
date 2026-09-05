@@ -275,8 +275,8 @@
                     class: 'img-fluid w-100'
                 }) }}
             </a>
-            {%- set element = entity.indexUrl ? 'a' : 'span' -%}
-            {%- set asLink = 'a' == element and not isIndex -%}
+            {%- set asLink = entity.indexUrl and not isIndex -%}
+            {%- set element = asLink ? 'a' : 'span' -%}
             {%- set linkLabel = catalog.intl.placeholder ? catalog.intl.placeholder : 'Tout voir'|trans -%}
             <{{ element }}{% if asLink %} href="{{ entity.indexUrl }}"{% endif %} class="circle-wrap-icon shadow bg-{{ entity.color }} d-flex align-items-center justify-content-center"
                 {% if asLink %}data-bs-toggle="tooltip" data-bs-title="{{ linkLabel|striptags }}" aria-label="{{ linkLabel|striptags }}"{% endif %}>

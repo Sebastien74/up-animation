@@ -5,6 +5,7 @@
 {%- set maxPage = maxPage is defined ? maxPage : 1 -%}
 {%- set pageNum = pageNum is defined ? pageNum : 1 -%}
 {%- set colSize = 'agencies' == listing.slug ? 3 : 3 -%}
+{%- set titleForce = titleForce is defined ? titleForce : (isIndex ? 2 : 3) -%}
 
 <div id="results" class="results row d-flex listing-{{ listing.slug }}" data-page="{{ pageNum }}" data-max="{{ maxPage }}">
     {%- for product in products -%}
@@ -17,6 +18,7 @@
             {%- if 'agencies' == product.catalogSlug -%}
                 {{ macroCard.agency({
                     entity: product,
+                    titleForce: titleForce,
                     screensSizes: {
                         mobile: {width: 456, height: 295},
                         tablet: {width: 456, height: 295},
@@ -28,6 +30,7 @@
                 {{ macroCard.product({
                     entity: product,
                     isIndex: isIndex,
+                    titleForce: titleForce,
                     screensSizes: {
                         mobile: {width: 456, height: 295},
                         tablet: {width: 456, height: 295},

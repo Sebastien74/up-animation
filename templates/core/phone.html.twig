@@ -16,6 +16,9 @@
     {%- set tagNumber = only_href and phone.number ? phone.number : (phone.number ? phone.number|encrypt(website) : null) -%}
 {%- endif -%}
 {%- set href = only_href ? 'tel:'~tagNumber : '#' -%}
+{%- set visibleLabel = options.text is defined ? options.text|striptags : (only_href ? phone.number : null) -%}
+{%- set ariaLabel = "Téléphone"|trans|striptags -%}
+{%- set ariaLabel = visibleLabel ? ariaLabel~' : '~visibleLabel : ariaLabel -%}
 
 <div class="phone-link-wrap d-inline-flex align-items-center">
     {%- if icon -%}
@@ -25,7 +28,7 @@
     {%- endif -%}
     <a href="{{ href }}" {% if not only_href %} data-tel="{{ phone.tagNumber|encrypt(website) }}" {% endif %}
        class="phone-link position-relative{% if class %} {{ class }}{% endif %}{% if not only_href %} loading{% endif %}{% if phoneTrack %} fb-phone-track{% endif %} {% if isMobile() %}as-mobile{% else %}as-desktop{% endif %}{{ btnClasses }}"
-       aria-label="{{"Téléphone"|trans|striptags }}"
+       aria-label="{{ ariaLabel }}"
         {% if not only_href %}data-text="{{ phone.number|encrypt(website) }}" {% endif %}
        data-id="{{ website.id }}" {% if microDataActive and itemprop %} itemscope="itemscope" itemtype="https://schema.org/Organization" {% endif %}>
         {%- if options.text is defined -%}

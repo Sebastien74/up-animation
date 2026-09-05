@@ -65,10 +65,11 @@
                     font-weight: 700;
                     padding: 0 !important;
                     background-color: transparent !important;
-
-                    @include mediaQuery(max-md) {
-                        padding: $pagination-padding-y $pagination-padding-y;
-                    }
+                    min-width: 24px;
+                    min-height: 24px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
 
                     &:hover {
                         color: $primary;

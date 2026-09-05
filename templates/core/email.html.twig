@@ -6,6 +6,9 @@
 {%- set labelHTML = '' -%}
 {%- set email = only_href ? email : email|encrypt(website) -%}
 {%- set mailto = only_href ? 'mailto:'~email : '#' -%}
+{%- set visibleLabel = options.text is defined ? options.text|striptags : (only_href ? email : null) -%}
+{%- set ariaLabel = "E-mail"|trans|striptags -%}
+{%- set ariaLabel = visibleLabel ? ariaLabel~' : '~visibleLabel : ariaLabel -%}
 
 <div class="email-link-wrap d-inline-flex align-items-center">
     {%- if icon -%}
@@ -16,7 +19,7 @@
     <a href="{{ mailto }}" {% if not only_href %} data-mailto="{{ email|encrypt(website) }}" {% endif %}
        class="email-link position-relative d-inline-flex align-items-center{% if class %} {{ class }}{% endif %}{% if not only_href %} loading{% else %} only-href{% endif %}{{ btnClasses }}"
        data-id="{{ website.id }}"
-       aria-label="{{"E-mail"|trans|striptags }}"
+       aria-label="{{ ariaLabel }}"
        data-toggle="tooltip"
        title="{{"Envoyer un email"|trans|raw }}">
         {%- if asBtn and labelHTML -%}
