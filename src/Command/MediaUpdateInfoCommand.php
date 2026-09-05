@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Command;
 
-use App\Entity\Media\Media;
 use App\Repository\Media\MediaRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -31,54 +30,34 @@ class MediaUpdateInfoCommand extends Command
         $projectDir = $this->parameterBag->get('kernel.project_dir');
         $uploadDir = $projectDir . '/public/uploads';
 
+        $paths = $this->indexFiles($uploadDir);
         $medias = $this->mediaRepository->findAll();
         $io->progressStart(count($medias));
 
         $updatedCount = 0;
+        $processed = 0;
         foreach ($medias as $media) {
             $filename = $media->getOriginalName();
-            if (!$filename) {
-                $io->progressAdvance();
-                continue;
-            }
+            $filePath = $filename ? ($paths[$filename] ?? null) : null;
 
-            // VichUploader often uses subdirectories based on entity or website
-            // Since we don't know the exact logic of DirectoryNamer here, 
-            // we search for the file in the upload directory.
-            $filePath = $this->findFile($uploadDir, $filename);
-
-            if ($filePath && file_exists($filePath)) {
+            if ($filePath) {
                 $needsUpdate = false;
                 if (!$media->getSize()) {
-                    $media->setSize(filesize($filePath));
+                    $media->setSize(filesize($filePath) ?: null);
                     $needsUpdate = true;
                 }
                 if (!$media->getMimeType()) {
                     $media->setMimeType(mime_content_type($filePath) ?: null);
                     $needsUpdate = true;
                 }
-                if (!$media->getOriginalName()) {
-                    $media->setOriginalName($filename);
-                    $needsUpdate = true;
-                }
-                if (empty($media->getDimensions())) {
-                    $sizes = @getimagesize($filePath);
-                    if ($sizes) {
-                        $media->setDimensions([$sizes[0], $sizes[1]]);
-                        $needsUpdate = true;
-                    } else {
-                        $media->setDimensions([]);
-                        $needsUpdate = true;
-                    }
-                }
                 if ($needsUpdate) {
-                    $updatedCount++;
+                    ++$updatedCount;
                 }
             }
 
             $io->progressAdvance();
-            
-            if ($updatedCount % 50 === 0) {
+
+            if (0 === ++$processed % 50) {
                 $this->entityManager->flush();
             }
         }
@@ -90,14 +69,23 @@ class MediaUpdateInfoCommand extends Command
         return Command::SUCCESS;
     }
 
-    private function findFile(string $dir, string $filename): ?string
+    /**
+     * @return array<string, string> original name => absolute path
+     */
+    private function indexFiles(string $dir): array
     {
-        $it = new \RecursiveDirectoryIterator($dir);
-        foreach (new \RecursiveIteratorIterator($it) as $file) {
-            if ($file->getFilename() === $filename) {
-                return $file->getPathname();
+        if (!is_dir($dir)) {
+            return [];
+        }
+
+        $paths = [];
+        $iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($dir, \FilesystemIterator::SKIP_DOTS));
+        foreach ($iterator as $file) {
+            if ($file->isFile() && !isset($paths[$file->getFilename()])) {
+                $paths[$file->getFilename()] = $file->getPathname();
             }
         }
-        return null;
+
+        return $paths;
     }
 }
