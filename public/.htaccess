@@ -23,7 +23,7 @@ AddDefaultCharset UTF-8
     RewriteEngine On
 
 	# 🔒 Redirect sensitive paths to denied.php (permanent redirect)
-	RewriteCond %{REQUEST_URI} (^|/)(wp-|cgi-bin|xwiki|player|casino|poker|slot|adm/js|adm/plugins|themes/seotheme|doc/function\.php|as/function|function\.php|config\.env|post\.php|smartoptimizer|seotheme|twentytwenty|autoload_classmap/post\.php)(/|$) [NC,OR]
+	RewriteCond %{REQUEST_URI} (^|/)(wp-|cgi-bin|xwiki|player|poker|slot|adm/js|adm/plugins|themes/seotheme|doc/function\.php|as/function|function\.php|config\.env|post\.php|smartoptimizer|seotheme|twentytwenty|autoload_classmap/post\.php)(/|$) [NC,OR]
 	RewriteCond %{REQUEST_URI} (^|/)(credentials\.json|app\.config\.json)$ [NC]
 	RewriteRule .* /denied.php [L,R=301]
 
